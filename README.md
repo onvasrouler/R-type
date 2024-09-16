@@ -35,8 +35,8 @@ mkdir build && cd build && cmake .. && cmake --build .
 ## Contributing
 Feel free to open issues and submit pull requests. For major changes, please discuss them in an issue first.
 
-See the CONTRIBUTING.md for details.
+See the [CONTRIBUTING.md](https://github.com/onvasrouler/R-type/blob/main/CONTRIBUTING.md) for details.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more information.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/onvasrouler/R-type/blob/main/License.md) file for more information.
 
