@@ -1,0 +1,41 @@
+name: "Feature Request"
+description: "Suggest a new feature for the project"
+title: "[Feature Request]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please provide the following details to help us understand your request better.
+
+  - type: input
+    id: feature_summary
+    attributes:
+      label: "Feature Summary"
+      description: "Briefly summarize the feature you'd like to see added."
+      placeholder: "e.g., Add power-up items for the player's ship"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: "Detailed Description"
+      description: "Provide a detailed explanation of the feature and why it's important."
+      placeholder: "Explain the use case or problem that this feature would solve."
+    validations:
+      required: true
+
+  - type: input
+    id: alternatives
+    attributes:
+      label: "Alternatives"
+      description: "Have you considered any alternative solutions or workarounds?"
+      placeholder: "e.g., Use an existing item to increase player health."
+  
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: "Additional Context"
+      description: "Provide any other information or context that might be useful."
+      placeholder: "e.g., Screenshots, references to similar features in other games, etc."
