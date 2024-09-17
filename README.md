@@ -30,7 +30,8 @@ mkdir build && cd build && cmake .. && cmake --build .
 ## Run the game:
 
 ```bash
-./r-type
+./r-type_server
+./r-type_client
 ```
 ## Contributing
 Feel free to open issues and submit pull requests. For major changes, please discuss them in an issue first.
