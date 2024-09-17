@@ -9,10 +9,10 @@ A C++ recreation of the classic arcade game R-Type, featuring 2D side-scrolling 
 - Cross-platform support (Windows, macOS, Linux)
 ## Requirements
 C++17 compatible compiler (e.g., GCC, Clang, MSVC)
+
 CMake 3.10+
 
-#SDL2 (Simple DirectMedia Layer)
-#OpenGL (Optional for graphical enhancements)
+ray-lib
 ## Installation
 #### Clone the repository:
 
@@ -30,8 +30,7 @@ mkdir build && cd build && cmake .. && cmake --build .
 ## Run the game:
 
 ```bash
-./r-type_server
-./r-type_client
+./r-type
 ```
 ## Contributing
 Feel free to open issues and submit pull requests. For major changes, please discuss them in an issue first.
