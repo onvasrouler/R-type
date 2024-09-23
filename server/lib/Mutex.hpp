@@ -7,17 +7,18 @@
 */
 
 #pragma once
-#include <csignal>
 #include <pthread.h>
 #include <memory>
 
 class Mutex {
     public :
         Mutex();
+        Mutex(const Mutex &mutex);
         ~Mutex();
         void lock();
         void unlock();
         bool isLocked();
+        Mutex &operator=(const Mutex &mutex);
     private :
-        std::unique_ptr<pthread_mutex_t> _mutex;
+        pthread_mutex_t _mutex{};
 };
