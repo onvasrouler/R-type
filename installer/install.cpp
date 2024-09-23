@@ -65,7 +65,7 @@ Installer::Installer()
     // storing the window size in a var to use it later
     sf::Vector2i windowRatio = {static_cast<int>(windowWidth), static_cast<int>(windowHeight)};
 
-    textManager.loadFont("assets/font/arial/arial.ttf"); // loading the font that will be used for every text
+    textManager.loadFont("assets/font/arial/arialbd_1.ttf"); // loading the font that will be used for every text
     textManager.setWindowRatio(windowRatio); // setting the windows ratio as it will be used to decide where to place the text and with which size
     confirmText = textManager.createText("Do you want to install the program? (Y/N)"); // creating the texts
     progressText = textManager.createText("Installing...");
