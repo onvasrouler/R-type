@@ -7,14 +7,14 @@
 */
 
 #include "ScopedLock.hpp"
+#include <iostream>
 
-ScopedLock::ScopedLock(Mutex &mutex)
+ScopedLock::ScopedLock(Mutex &mutex) : _mutex(mutex)
 {
-    _mutex.reset(&mutex);
-    _mutex->lock();
+    mutex.lock();
 }
 
 ScopedLock::~ScopedLock()
 {
-    _mutex->unlock();
+    _mutex.unlock();
 }

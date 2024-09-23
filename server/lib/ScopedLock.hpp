@@ -14,5 +14,5 @@ class ScopedLock {
         ScopedLock(Mutex &mutex);
         ~ScopedLock();
     private :
-        std::shared_ptr<Mutex> _mutex;
+        Mutex _mutex;
 };
