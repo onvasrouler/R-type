@@ -42,6 +42,11 @@ public:
     TextManager();
 
     /**
+     * @brief Destroys the TextManager object.
+     */
+    ~TextManager() = default;
+
+    /**
      * @brief Loads a font from the specified file path.
      *
      * @param path The file path to the font file.

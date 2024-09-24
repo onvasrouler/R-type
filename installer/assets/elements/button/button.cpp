@@ -8,15 +8,6 @@
 #include "button.hpp"
 
 /**
- * @brief Default constructor for the Button class.
- * 
- * This constructor initializes a new instance of the Button class.
- */
-Button::Button()
-{
-}
-
-/**
  * @brief Constructs a Button object with specified text, font, window ratio, and alignment.
  * 
  * @param text The text to display on the button.

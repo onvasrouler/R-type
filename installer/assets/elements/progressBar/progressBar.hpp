@@ -23,12 +23,12 @@ public:
     /**
      * @brief Constructs a new ProgressBar object.
      */
-    ProgressBar();
+    ProgressBar() = default;
 
     /**
      * @brief Destroys the ProgressBar object.
      */
-    ~ProgressBar();
+    ~ProgressBar() = default;
 
     /**
      * @brief Sets the window ratio for the progress bar.

@@ -25,7 +25,14 @@ public:
      *
      * Initializes a Button object with default properties.
      */
-    Button();
+    Button() = default;
+
+    /**
+     * @brief Destroys the Button object.
+     * 
+     * The destructor for the Button class.
+     */
+    ~Button() = default;
 
     /**
      * @brief Parameterized constructor for the Button class.

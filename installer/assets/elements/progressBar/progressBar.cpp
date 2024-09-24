@@ -8,25 +8,6 @@
 #include "progressBar.hpp"
 
 /**
- * @brief Default constructor for the ProgressBar class.
- * 
- * Initializes a new instance of the ProgressBar class with default values.
- */
-ProgressBar::ProgressBar()
-{
-}
-
-/**
- * @brief Destructor for the ProgressBar class.
- *
- * This destructor is responsible for cleaning up any resources
- * that the ProgressBar object may have acquired during its lifetime.
- */
-ProgressBar::~ProgressBar()
-{
-}
-
-/**
  * @brief Sets the position of the progress bar and its outline based on the window ratio.
  * 
  * This function calculates the position of the progress bar and its outline
