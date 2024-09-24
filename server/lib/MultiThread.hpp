@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2024
-** Plaza
+** R-type
 ** File description:
 ** No file there , just an epitech header example .
 ** You can even have multiple lines if you want !
@@ -26,9 +26,9 @@ class MultiThreadElement {
         virtual void encodeInterCommunication(std::string message);
         Thread _thread;
         std::vector<MultiThreadData> _datas;
-        std::vector<int> _otherElements;
-        std::vector<std::string> _sendingMessages;
-        std::vector<std::string> _receivedMessages;
+        std::vector<int> _otherModules;
+        std::vector<std::string> _sendingIntern;
+        std::vector<std::string> _receivedIntern;
         int _socket;
 };
 
