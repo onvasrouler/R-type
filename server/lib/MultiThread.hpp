@@ -16,11 +16,11 @@
 
 class MultiThreadElement {
     public:
-        MultiThreadElement() = default;
-        MultiThreadElement(const int serverInterSocket);
         Thread getThread() const;
         virtual void run() = 0;
     protected:
+        MultiThreadElement();
+        MultiThreadElement(const int serverInterSocket);
         ~MultiThreadElement() = default;
         virtual void decodeInterCommunication(std::string message);
         virtual void encodeInterCommunication(std::string message);

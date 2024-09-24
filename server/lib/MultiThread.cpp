@@ -9,6 +9,19 @@
 #include "MultiThread.hpp"
 #include "sys/socket.h"
 
+MultiThreadElement::MultiThreadElement()
+{
+    _thread = Thread();
+    _datas = std::vector<MultiThreadData>();
+    _otherElements = std::vector<int>();
+    _sendingMessages = std::vector<std::string>();
+    _receivedMessages = std::vector<std::string>();
+    _socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (_socket == -1) {
+        std::throw_with_nested(std::runtime_error("Error: socket creation failed"));
+    }
+}
+
 MultiThreadElement::MultiThreadElement(const int serverInterSocket)
 {
     _thread = Thread();
@@ -20,16 +33,6 @@ MultiThreadElement::MultiThreadElement(const int serverInterSocket)
     _socket = socket(AF_INET, SOCK_STREAM, 0);
     if (_socket == -1) {
         std::throw_with_nested(std::runtime_error("Error: socket creation failed"));
-    }
-    if (connect(_socket, (struct sockaddr *)&serverInterSocket, sizeof(serverInterSocket)) == -1) {
-        std::throw_with_nested(std::runtime_error("Error: connection failed"));
-    }
-    send(_socket, "100", 5, 0);
-    char buffer[1024] = {0};
-    recv(_socket, buffer, 1024, 0);
-    std::string message = buffer;
-    if (message != "100") {
-        std::throw_with_nested(std::runtime_error("Error: connection failed"));
     }
 }
 
