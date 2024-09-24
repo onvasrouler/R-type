@@ -143,13 +143,19 @@ const std::unique_ptr<FpsCounter>& RlibWindow::getFpsCounter() const
     return _fpsCounter;
 }
 
-void RlibWindow::InitRlib() const
+const std::shared_ptr<JsonParser>& RlibWindow::getJsonParser() const
+{
+    return _jsonParser;
+}
+
+void RlibWindow::InitRlib()
 {
     InitWindow(_WindowWidth, _WindowHeight, _Title.c_str());
     SetTargetFPS(_FrameRateLimit);
     if (_IsFullscreen)
         ToggleFullscreen();
     SetWindowPosition(_windowX, _windowY);
+    _Menus = std::make_unique<MenuManager>(_jsonParser);
 }
 
 void RlibWindow::CloseRlibWindow() const
@@ -165,6 +171,7 @@ bool RlibWindow::ShouldClose() const
 void RlibWindow::BeginRlibDraw() const
 {
     BeginDrawing();
+    _Menus->drawMenu();
     _fpsCounter->draw();
 
 }
@@ -184,3 +191,4 @@ void RlibWindow::ClearRlibBackground(Color color) const
 {
     ClearBackground(color);
 }
+

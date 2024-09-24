@@ -11,6 +11,7 @@
 #include <raylib.h>
 #include "../fpsCounter/fpsCounter.hpp"
 #include "../jsonParser/jsonParser.hpp"
+#include "../menu/menuManager.hpp"
 
 class RlibWindow {
 public:
@@ -45,8 +46,9 @@ public:
     int getFrameRateLimit() const;
 
     const std::unique_ptr<FpsCounter>& getFpsCounter() const;
+    const std::shared_ptr<JsonParser>& getJsonParser() const;
 
-    void InitRlib() const;
+    void InitRlib();
     void CloseRlibWindow() const;
 
     bool ShouldClose() const;
@@ -66,5 +68,6 @@ private:
     int _FrameRateLimit;
 
     std::unique_ptr<FpsCounter> _fpsCounter;
-    std::unique_ptr<JsonParser> _jsonParser;
+    std::shared_ptr<JsonParser> _jsonParser;
+    std::unique_ptr<MenuManager> _Menus;
 };
