@@ -18,6 +18,6 @@ clean:
 	rm -rf build
 
 re:
-	cd build && cmake --build .
+	make clean && make build
 
 .PHONY: build clean server client
