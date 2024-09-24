@@ -1,6 +1,7 @@
 #include <array>
 #include <boost/asio.hpp>
 #include <iostream>
+#include <vector>
 
 using boost::asio::ip::udp;
 
@@ -25,14 +26,21 @@ class UDPServer {
     }
 
     void handle_receive(std::size_t length) {
-        std::cout << "Received: " << std::string(recv_buffer_.data(), length)
-                  << std::endl;
+        std::cout << "Received binary data: ";
+        for (std::size_t i = 0; i < length; ++i) {
+            std::cout << std::bitset<8>(recv_buffer_[i]) << " ";
+        }
+        std::cout << std::endl;
+
+        std::string decoded_message(recv_buffer_.data(), length);
+        std::cout << "Decoded message: " << decoded_message << std::endl;
 
         std::string response = "Message received!";
         socket_.async_send_to(
             boost::asio::buffer(response), remote_endpoint_,
             [this](std::error_code, std::size_t) { start_receive(); });
     }
+
     udp::socket socket_;
     udp::endpoint remote_endpoint_;
     std::array<char, 1024> recv_buffer_;
