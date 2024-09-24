@@ -2,3 +2,5 @@
 *.a
 .git
 /build
+Doxyfile.bak
+docs

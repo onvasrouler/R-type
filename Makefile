@@ -20,4 +20,7 @@ clean:
 re:
 	make clean && make build
 
+doc:
+	doxygen Doxyfile && xdg-open index.html
+
 .PHONY: build clean server client
