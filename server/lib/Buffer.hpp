@@ -29,17 +29,17 @@ class Buffer {
          */
         Buffer(const std::size_t size, const std::string &startSentence, const std::string &endSentence);
 
-        Buffer(const Buffer &other);
         /**
          * @brief Copy constructor
          *
          * @param other The buffer to copy
          */
+        Buffer(const Buffer &other);
 
-        ~Buffer() = default;
         /**
          * @brief Destructor
          */
+        ~Buffer() = default;
 
         /**
          * @brief Get the next data from the buffer
