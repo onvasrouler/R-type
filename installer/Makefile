@@ -20,7 +20,6 @@ SRC = 	install.cpp	\
 		
 # File object
 ELEMENTS = 	progressBar/progressBar.cpp	\
-			utils/utils.cpp	\
 			text/textManager.cpp \
 			button/button.cpp
 
