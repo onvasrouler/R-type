@@ -22,6 +22,3 @@ echo "80" > progress.txt
 # Step 5 (100% done)
 sleep 2
 echo "100" > progress.txt
-
-# Installation complete
-echo "Installation complete."
