@@ -17,6 +17,7 @@ SRCS = 	raylibWindow/raylibWindow.cpp \
 		raylibText/raylibText.cpp	\
 		fpsCounter/fpsCounter.cpp	\
 		jsonParser/jsonParser.cpp	\
+		menu/menuManager.cpp		\
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRCS))
 
