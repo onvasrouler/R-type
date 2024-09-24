@@ -8,7 +8,7 @@
 
 using boost::asio::ip::udp;
 
-auto main() -> int {
+int main() {
     try {
         boost::asio::io_context io_context;
 
