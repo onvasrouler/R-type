@@ -25,6 +25,15 @@ RaylibText::RaylibText(std::string text, int posX, int posY, int fontSize, Color
     this->color = color;
 }
 
+RaylibText::RaylibText(std::string text, int posX, int posY, int fontSize, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+    this->posX = posX;
+    this->posY = posY;
+    this->fontSize = fontSize;
+    this->text = text;
+    this->color = {r, g, b, a};
+}
+
 void RaylibText::setPosX(int posX)
 {
     this->posX = posX;

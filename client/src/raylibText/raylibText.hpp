@@ -14,6 +14,8 @@ class RaylibText {
 public:
     RaylibText();
     RaylibText(std::string text = "hello world", int posX = 0, int posY = 0, int fontSize = 10, Color color = BLACK);
+    RaylibText(std::string text = "hello world", int posX = 0, int posY = 0, int fontSize = 10, unsigned char r = 0, unsigned char g = 0, unsigned char b = 0, unsigned char a = 255);
+
     ~RaylibText() = default;
 
     void setPosX(int posX);
