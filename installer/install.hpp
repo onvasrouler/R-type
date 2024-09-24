@@ -9,6 +9,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <thread>
+#include <fstream>
+#include <string>
 #include "assets/elements/text/textManager.hpp"
 #include "assets/elements/progressBar/progressBar.hpp"
 #include "assets/elements/button/button.hpp"
@@ -133,4 +135,7 @@ private:
     bool waitingForConfirmation = true;
     float progress = 0.0f;
     float threadProcess = 0.0f;
+
+    std::string scriptFile;
+
 };

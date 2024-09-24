@@ -29,9 +29,13 @@
  * @see install.hpp
  */
 
-#include "install.hpp"
-#include "assets/elements/utils/utils.hpp"
 
+#include "install.hpp"
+#ifdef _WIN32
+#include <windows.h>  // For Windows-specific script execution
+#else
+#include <unistd.h>   // For Linux-specific script execution
+#endif
 /**
  * @brief Constructs an Installer object.
  * 
@@ -87,6 +91,13 @@ Installer::Installer()
         window.getSize().x / static_cast<float>(backgroundTexture.getSize().x),
         window.getSize().y / static_cast<float>(backgroundTexture.getSize().y)
     );
+
+    // platform specific file 
+    #ifdef _WIN32
+        scriptFile = "./assets/script/install.bat";  // Windows uses .bat or .cmd script
+    #else
+        scriptFile = "./assets/script/install.sh"; // Linux uses shell script
+    #endif
 }
 
 
@@ -97,7 +108,7 @@ Installer::Installer()
  * The script is expected to handle the necessary installation procedures.
  */
 void Installer::runShellScript() {
-    system("./assets/script/install.sh");
+    system(scriptFile.c_str());
 }
 
 /** * @brief Retrieves the installation progress from a file. *  * This function reads the progress from a file named "progress.txt" and converts it to a float value.
