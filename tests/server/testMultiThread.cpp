@@ -18,7 +18,8 @@ TEST(MultiThreadData, test1)
 
 TEST(MultiThreadData, test2)
 {
-    MultiThreadData data = MultiThreadData("test");
+    MultiThreadData data = MultiThreadData(std::string("test"));
 
-    ASSERT_EQ(std::any_cast<std::string>(data.getData()), "test");
+    std::string dataStr = std::any_cast<std::string>(data.getData());
+    ASSERT_EQ(dataStr, "test");
 }
