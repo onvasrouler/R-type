@@ -11,7 +11,6 @@
 
 MultiThreadElement::MultiThreadElement()
 {
-    // _thread = Thread();
     _datas = std::vector<MultiThreadData>();
     _otherModules = std::vector<int>();
     _sendingIntern = std::vector<std::string>();
@@ -24,7 +23,6 @@ MultiThreadElement::MultiThreadElement()
 
 MultiThreadElement::MultiThreadElement(const int serverInterSocket)
 {
-    // _thread = Thread();
     _datas = std::vector<MultiThreadData>();
     _otherModules = std::vector<int>();
     _otherModules.push_back(serverInterSocket);
