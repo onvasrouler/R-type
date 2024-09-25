@@ -16,7 +16,7 @@ TEST(MultiThreadData, test1)
     ASSERT_EQ(std::any_cast<int>(data.getData()), 1);
 }
 
-TEST(MultiThreadData, test1)
+TEST(MultiThreadData, test2)
 {
     MultiThreadData data = MultiThreadData("test");
 
