@@ -19,5 +19,6 @@ public:
     void start(const std::function<void *(void *)>& func, void *arg);
     void join();
     void detach();
+    void stop();
     pthread_t getThread() const;
 };

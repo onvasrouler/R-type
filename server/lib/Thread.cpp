@@ -39,6 +39,11 @@ void Thread::detach()
     pthread_detach(_thread);
 }
 
+void Thread::stop()
+{
+    pthread_cancel(_thread);
+}
+
 pthread_t Thread::getThread() const
 {
     return _thread;
