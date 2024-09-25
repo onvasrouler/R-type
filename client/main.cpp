@@ -5,14 +5,9 @@
 ** main
 */
 
-#include <iostream>
-#include <raylib.h>
-#include <string>
-#include <memory>
-#include <nlohmann/json.hpp>
 #include "src/raylibWindow/raylibWindow.hpp"
-#include "src/raylibText/raylibText.hpp"
 #include "src/fpsCounter/fpsCounter.hpp"
+#include "src/include.hpp"
 
 int main() {
     // Create a Raylib window
@@ -20,7 +15,7 @@ int main() {
     window.InitRlib();
     
     // Create a FpsCounter
-    std::unique_ptr<FpsCounter> rlibFpsCounter = std::make_unique<FpsCounter>(100, 0, 30, BLACK);
+    std::unique_ptr<FpsCounter> rlibFpsCounter = std::make_unique<FpsCounter>(Vector2{100, 0}, 30, BLACK);
     window.setFpsCounter(std::move(rlibFpsCounter));
     // Main game loop
     while (!window.ShouldClose()) {
