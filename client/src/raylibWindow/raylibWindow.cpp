@@ -150,6 +150,7 @@ const std::shared_ptr<JsonParser>& RlibWindow::getJsonParser() const
 
 void RlibWindow::InitRlib()
 {
+    SetTraceLogCallback(CustomLog);
     InitWindow(_WindowWidth, _WindowHeight, _Title.c_str());
     SetTargetFPS(_FrameRateLimit);
     if (_IsFullscreen)

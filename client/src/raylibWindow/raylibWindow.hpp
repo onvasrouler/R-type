@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include <string>
-#include <raylib.h>
 #include "../fpsCounter/fpsCounter.hpp"
 #include "../jsonParser/jsonParser.hpp"
 #include "../menu/menuManager.hpp"
+#include "../include.hpp"
+#include "utils.hpp"
 
 class RlibWindow {
 public:
