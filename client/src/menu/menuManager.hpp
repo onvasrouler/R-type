@@ -8,8 +8,9 @@
 #pragma once
 
 #include "../jsonParser/jsonParser.hpp"
-#include "../raylibText/raylibText.hpp"
-#include <iostream>
+#include "menu.hpp"
+#include "../include.hpp"
+
 
 enum menuType {
     MAIN_MENU,
@@ -36,12 +37,14 @@ public:
 
     private:
 
-    RaylibText createTtile(const nlohmann::json &text);
+    void createMenu(const nlohmann::json &menu);
+    RaylibText createTexts(const nlohmann::json &text);
+    RaylibButton createButton(const nlohmann::json &button);
 
     nlohmann::json _menuJson;
 
     menuType _type;
     std::shared_ptr<JsonParser> _jsonParser;
 
-    std::map<menuType, std::vector<RaylibText>> _menu;
+    std::map<menuType, std::shared_ptr<Menu>> _menuList;
 };
