@@ -8,22 +8,24 @@
 #pragma once
 
 #include <memory>
-#include "../raylibText/raylibText.hpp"
+#include "../elements/raylibText/raylibText.hpp"
 
 class FpsCounter {
 public:
     FpsCounter() = default;
-    FpsCounter(int posX = 0, int posY = 0, int fontSize = 10, Color color = BLACK);
+    FpsCounter(Vector2 pos = {0, 0}, int fontSize = 10, Color color = BLACK);
     ~FpsCounter() = default;
 
     void setPosX(int posX);
     void setPosY(int posY);
+    void setPos(Vector2 pos);
     void setFontSize(int fontSize);
     void setFps(float fps);
     void setFpsText(std::unique_ptr<RaylibText> fpsText);
 
     int getPosX() const;
     int getPosY() const;
+    Vector2 getPos() const;
     int getFontSize() const;
     float getFps() const;
     const std::unique_ptr<RaylibText>& getFpsText() const;
@@ -34,6 +36,8 @@ public:
     void update();
 
 private:
+    Vector2 _Position;
+
     float _fps;
     float _frameCount;
     float _elapsedTime;

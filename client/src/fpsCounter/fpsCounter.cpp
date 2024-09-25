@@ -7,12 +7,13 @@
 
 #include "fpsCounter.hpp"
 
-FpsCounter::FpsCounter(int posX, int posY, int fontSize, Color color)
+FpsCounter::FpsCounter(Vector2 pos, int fontSize, Color color)
 {
+    _Position = pos;
     _fps = 0;
     _frameCount = 0;
     _elapsedTime = 0;
-    _fpsText = std::make_unique<RaylibText>("FPS: 0", posX, posY, fontSize, color);
+    _fpsText = std::make_unique<RaylibText>("FPS: 0", pos, fontSize, color);
 }
 
 void FpsCounter::setPosX(int posX)
@@ -23,6 +24,11 @@ void FpsCounter::setPosX(int posX)
 void FpsCounter::setPosY(int posY)
 {
     _fpsText->setPosY(posY);
+}
+
+void FpsCounter::setPos(Vector2 pos)
+{
+    _fpsText->setPos(pos);
 }
 
 void FpsCounter::setFontSize(int fontSize)
@@ -49,6 +55,11 @@ int FpsCounter::getPosX() const
 int FpsCounter::getPosY() const
 {
     return _fpsText->getPosY();
+}
+
+Vector2 FpsCounter::getPos() const
+{
+    return _fpsText->getPos();
 }
 
 int FpsCounter::getFontSize() const
