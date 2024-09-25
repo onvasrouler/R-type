@@ -7,8 +7,7 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
-#include <fstream>
+#include "../include.hpp"
 
 class JsonParser {
     public:
