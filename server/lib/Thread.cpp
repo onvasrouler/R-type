@@ -10,6 +10,8 @@
 
 Thread::~Thread()
 {
+    if (_running)
+        stop();
 }
 
 struct ThreadArgs {
@@ -26,6 +28,7 @@ static void *middleman(void *arg) {
 
 void Thread::start(const std::function<void *(void *)>& func, void *arg) {
     auto *args = new ThreadArgs{func, arg};
+    _running = true;
     pthread_create(&_thread, nullptr, middleman, args);
 }
 
@@ -41,7 +44,8 @@ void Thread::detach()
 
 void Thread::stop()
 {
-    pthread_cancel(_thread);
+    if (_running)
+        pthread_cancel(_thread);
 }
 
 pthread_t Thread::getThread() const
