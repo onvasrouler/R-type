@@ -11,7 +11,7 @@
 
 MultiThreadElement::MultiThreadElement()
 {
-    _thread = Thread();
+    // _thread = Thread();
     _datas = std::vector<MultiThreadData>();
     _otherModules = std::vector<int>();
     _sendingIntern = std::vector<std::string>();
@@ -24,7 +24,7 @@ MultiThreadElement::MultiThreadElement()
 
 MultiThreadElement::MultiThreadElement(const int serverInterSocket)
 {
-    _thread = Thread();
+    // _thread = Thread();
     _datas = std::vector<MultiThreadData>();
     _otherModules = std::vector<int>();
     _otherModules.push_back(serverInterSocket);
@@ -34,11 +34,6 @@ MultiThreadElement::MultiThreadElement(const int serverInterSocket)
     if (_socket == -1) {
         std::throw_with_nested(std::runtime_error("Error: socket creation failed"));
     }
-}
-
-Thread MultiThreadElement::getThread() const
-{
-    return _thread;
 }
 
 MultiThreadData::MultiThreadData()

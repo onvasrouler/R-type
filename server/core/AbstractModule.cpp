@@ -31,7 +31,8 @@ AbstractModule::~AbstractModule()
 void AbstractModule::start()
 {
     _Running = true;
-    _thread.start([this](void *_) -> void * {
+    // _thread.start([this](void *_) -> void * {
+    _thread = std::thread([this](void *_) -> void * {
         struct sockaddr_in server_addr;
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(8080);  // Utilisez le même port que celui défini dans le serveur
@@ -62,13 +63,16 @@ void AbstractModule::start()
 void AbstractModule::run()
 {
     std::cout << "running" << std::endl;
+    while (_Running) {
+    }
+    std::cout << "stopped" << std::endl;
 }
 
 void AbstractModule::stop()
 {
     _Running = false;
     close(_socket);
-    _thread.stop();
+    _thread.join();
 }
 
 void AbstractModule::decodeInterCommunication(std::string message)

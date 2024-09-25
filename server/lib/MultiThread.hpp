@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "Thread.hpp"
 #include "Mutex.hpp"
 #include <memory>
 #include <iostream>
 #include <any>
+#include <thread>
+#include <vector>
 
 class MultiThreadData {
     public:
@@ -28,7 +29,6 @@ class MultiThreadData {
 
 class MultiThreadElement {
     public:
-        Thread getThread() const;
         virtual void run() = 0;
     protected:
         MultiThreadElement();
@@ -36,7 +36,7 @@ class MultiThreadElement {
         virtual ~MultiThreadElement() = default;
         virtual void decodeInterCommunication(std::string message) = 0;
         virtual void encodeInterCommunication(std::string message) = 0;
-        Thread _thread;
+        std::thread _thread;
         std::vector<MultiThreadData> _datas;
         std::vector<int> _otherModules;
         std::vector<std::string> _sendingIntern;
