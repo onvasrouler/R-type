@@ -15,7 +15,8 @@ Server::Server() : MultiThreadElement()
 
 Server::~Server()
 {
-    //stop the server if it is running
+    if (_Running)
+        stop();
 }
 
 void Server::start()

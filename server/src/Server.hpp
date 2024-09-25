@@ -8,6 +8,7 @@
 
 #pragma once
 #include "MultiThread.hpp"
+#include "AbstractModule.hpp"
 
 class Server : MultiThreadElement {
     public:
@@ -20,4 +21,5 @@ class Server : MultiThreadElement {
         void decodeInterCommunication(std::string message) override;
         void encodeInterCommunication(std::string message) override;
         bool _Running;
+        std::vector<AbstractModule> _modules;
 };
