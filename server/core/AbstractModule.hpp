@@ -13,7 +13,11 @@
 class AbstractModule : public MultiThreadElement {
     public:
         AbstractModule();
-        AbstractModule(const int serverInterSocket);
+        #ifdef _WIN32
+            AbstractModule(const SOCKET serverInterSocket);
+        #else
+            AbstractModule(const int serverInterSocket);
+        #endif
         ~AbstractModule();
         void start();
         void run() override;

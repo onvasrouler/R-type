@@ -13,6 +13,15 @@
 #include <any>
 #include <thread>
 #include <vector>
+#ifdef _WIN32
+     #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib") // Lien avec la bibliothèque WS2_32.lib
+#else
+    #include "sys/socket.h"
+#endif
+
+#define PORT 8081
 
 class MultiThreadData {
     public:
@@ -31,14 +40,23 @@ class MultiThreadElement {
         virtual void run() = 0;
     protected:
         MultiThreadElement();
-        MultiThreadElement(const int serverInterSocket);
+        #ifdef _WIN32
+            MultiThreadElement(const SOCKET serverInterSocket);
+        #else
+            MultiThreadElement(const int serverInterSocket);
+        #endif
         virtual ~MultiThreadElement() = default;
         virtual void decodeInterCommunication(std::string message) = 0;
         virtual void encodeInterCommunication(std::string message) = 0;
         std::thread _thread;
         std::vector<MultiThreadData> _datas;
-        std::vector<int> _otherModules;
         std::vector<std::string> _sendingIntern;
         std::vector<std::string> _receivedIntern;
-        int _socket;
+        #ifdef _WIN32
+            SOCKET _socket;
+            std::vector<SOCKET> _otherModules;
+        #else
+            int _socket;
+            std::vector<int> _otherModules;
+        #endif
 };

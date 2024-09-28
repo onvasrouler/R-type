@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 option(SERVER "Build the server" ON)
 option(CLIENT "Build the client" ON)
+option(TESTS "Build the tests" ON)
 
 if (SERVER)
     add_subdirectory(server)
