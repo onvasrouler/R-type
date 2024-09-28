@@ -23,40 +23,89 @@
 
 #define PORT 8081
 
+/**
+ * @brief The MultiThreadData class is a class to store data in a multithread context.
+ * Every module of the server and the server itself are multithread elements.
+ */
 class MultiThreadData {
     public:
+        /**
+         * @brief Constructor of MultiThreadData.
+         */
         MultiThreadData();
+        /**
+         * @brief Constructor of MultiThreadData.
+         * @param data The data to store.
+         */
         MultiThreadData(const std::any data);
+        /**
+         * @brief Destructor of MultiThreadData.
+         */
         ~MultiThreadData() = default;
+        /**
+         * @brief Get the data stored.
+         * @return The data stored.
+         */
         std::any getData() const;
+        /**
+         * @brief Set the data stored.
+         * @param data The data to store.
+         */
         void setData(const std::any data);
+        /**
+         * @brief Set the data stored.
+         * @param data The data to store.
+         */
         void setData(std::any &data);
     protected:
-        std::any _data;
+        std::any _data; /*!< The data stored. */
 };
 
 class MultiThreadElement {
     public:
+        /**
+         * @brief The main loop of a multithread element
+         */
         virtual void run() = 0;
     protected:
+        /**
+         * @brief Constructor of MultiThreadElement.
+         */
         MultiThreadElement();
         #ifdef _WIN32
+            /**
+             * @brief Constructor of MultiThreadElement.
+             * @param serverInterSocket The socket of the server.
+             */
             MultiThreadElement(const SOCKET serverInterSocket);
         #else
+            /*
+            * @brief Constructor of MultiThreadElement.
+            * @param serverInterSocket The socket of the server.
+            */
             MultiThreadElement(const int serverInterSocket);
         #endif
+        /**
+         * @brief Destructor of MultiThreadElement.
+         */
         virtual ~MultiThreadElement() = default;
+        /**
+         * @brief Start the module.
+         */
         virtual void decodeInterCommunication(std::string message) = 0;
+        /**
+         * @brief Stop the module.
+         */
         virtual void encodeInterCommunication(std::string message) = 0;
-        std::thread _thread;
-        std::vector<MultiThreadData> _datas;
-        std::vector<std::string> _sendingIntern;
-        std::vector<std::string> _receivedIntern;
+        std::thread _thread; /*!< The thread of the module. */
+        std::vector<MultiThreadData> _datas; /*!< The data stored. */
+        std::vector<std::string> _sendingIntern; /*!< The messages to send. */
+        std::vector<std::string> _receivedIntern; /*!< The messages received. */
         #ifdef _WIN32
-            SOCKET _socket;
-            std::vector<SOCKET> _otherModules;
+            SOCKET _socket; /*!< The socket of the module. */
+            std::vector<SOCKET> _otherModules; /*!< The sockets of the other modules. */
         #else
-            int _socket;
-            std::vector<int> _otherModules;
+            int _socket; /*!< The socket of the module. */
+            std::vector<int> _otherModules; /*!< The sockets of the other modules. */
         #endif
 };
