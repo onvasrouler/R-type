@@ -38,14 +38,18 @@ TEST(AbstractModule, testAbstractModuleWithSocket)
 
 TEST(AbstractModule, testAbstractModuleWithoutSocket)
 {
-    WSADATA wsaData;
-    int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (result != 0) {
-        std::cerr << "WSAStartup failed: " << result << std::endl;
-        ASSERT_FALSE(true);
-    }
-    ASSERT_NO_THROW(AbstractModule module = AbstractModule());
-    WSACleanup();
+    #ifdef _WIN32
+        WSADATA wsaData;
+        int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+        if (result != 0) {
+            std::cerr << "WSAStartup failed: " << result << std::endl;
+            ASSERT_FALSE(true);
+        }
+        ASSERT_NO_THROW(AbstractModule module = AbstractModule());
+        WSACleanup();
+    #else
+        ASSERT_NO_THROW(AbstractModule module = AbstractModule());
+    #endif
 }
 
 TEST(AbstractModule, testAbstractModuleFailedBasicConstructor)
@@ -128,9 +132,11 @@ TEST(AbstractModule, testAbstractModuleStart)
         serv_addr.sin_addr.s_addr = INADDR_ANY;
     #endif
     int binded = bind(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-    if (binded < 0) {
-        std::cout << WSAGetLastError() << std::endl;
-    }
+    #ifdef _WIN32
+        if (binded < 0) {
+            std::cout << WSAGetLastError() << std::endl;
+        }
+    #endif
     ASSERT_EQ(binded, 0);
     int listenSock = listen(sock, 3);
     ASSERT_EQ(listenSock, 0);
