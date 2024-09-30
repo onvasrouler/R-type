@@ -17,12 +17,14 @@
 #include <vector>
 #include <tuple>
 #include "sparse_array.hpp"
+#include "entity/AEntity.hpp"
+#include "entity/Player.hpp"
 
 class EntityManager;
 
 class Registry {
 public:
-    using entity_t = size_t;
+    using entity_t = std::shared_ptr<AEntity>;
 
     template <typename Component>
     sparse_array<Component>& register_component();
@@ -40,7 +42,7 @@ public:
     void remove_component(entity_t entity);
 
     entity_t create_entity();
-    void destroy_entity(entity_t entity);
+    void destroy_entity(entity_t& entity);
 
     template <class... Components, typename Function>
     void add_system(Function&& f);
@@ -93,13 +95,13 @@ sparse_array<Component> const& Registry::get_component_array() const {
 template <typename Component>
 void Registry::add_component(entity_t entity, Component&& component) {
     auto& array = get_component_array<Component>();
-    array.insert_at(entity, std::forward<Component>(component));
+    array.insert_at(entity->get_id(), std::forward<Component>(component));
 }
 
 template <typename Component>
 void Registry::remove_component(entity_t entity) {
     auto& array = get_component_array<Component>();
-    array.erase(entity);
+    array.erase(entity->get_id());
 }
 
 template <class... Components, typename Function>

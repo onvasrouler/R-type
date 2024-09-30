@@ -20,7 +20,7 @@ public:
 
     entity_t spawn_entity();
     entity_t entity_from_index(std::size_t idx);
-    void kill_entity(entity_t const& e);
+    void kill_entity(entity_t& e);
 
     template <typename Component>
     typename sparse_array<Component>::reference_type add_component(entity_t const& to, Component&& c);
