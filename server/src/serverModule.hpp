@@ -10,18 +10,45 @@
 
 #include "../core/AbstractModule.hpp"
 
+/** @class serverModule
+ * @brief The serverModule class is a class that store a module and a socket.
+ * It will be used by the server to store the modules.
+ * And to store know which socket to use to communicate with the module.
+ */
 class serverModule {
     public:
+        /*
+        * @brief Constructor of serverModule.
+        * @param module The module to store.
+        * @param serverInterSocket The socket to communicate with the module.
+        */
         serverModule(AbstractModule *module, const int serverInterSocket);
+        /*
+        * @brief Copy constructor of serverModule.
+        * @param module The module to store.
+        *
+        * Copy the module and the socket.
+        */
         serverModule(const serverModule &module);
+        /*
+        * @brief Destructor of serverModule.
+        */
         ~serverModule() = default;
+        /*
+        * @brief Copy operator of serverModule.
+        * @param module The module to store.
+        * @return The new serverModule.
+        */
         serverModule &operator=(const serverModule &module);
+        /*
+        * @brief Stop the module.
+        */
         void stop();
     private:
-        std::shared_ptr<AbstractModule> _module;
+        std::shared_ptr<AbstractModule> _module; // The module to store.
         #ifdef _WIN32
-            SOCKET _serverInterSocket;
+            SOCKET _serverInterSocket; // The socket to communicate with the module.
         #else
-            int _serverInterSocket;
+            int _serverInterSocket; // The socket to communicate with the module.
         #endif
 };

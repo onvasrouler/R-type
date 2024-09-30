@@ -10,14 +10,42 @@
 
 #include "../core/AbstractModule.hpp"
 
+/** @class GameModule
+ *  @brief The GameModule class is the class for the game module.
+ * It inherits from AbstractModule.
+ * It will handle the communication with the game engine.
+ * It will also handle the game logic.
+*/
 class GameModule : public AbstractModule {
     public:
-        GameModule();
+        /**
+        * @brief Constructor of GameModule.
+        */
+        GameModule() = default;
+        /**
+        * @brief Constructor of GameModule.
+        * @param name The name of the module.
+        */
         GameModule(std::string name);
+        /**
+        * @brief Destructor of GameModule.
+        * if the module is running, it will stop it.
+        */
         ~GameModule();
-        void encodeInterCommunication(std::string message) override;
-        void decodeInterCommunication(std::string message) override;
+        /**
+        * @brief The main loop of the module
+        */
         void run() override;
     private:
+        /**
+        * @brief Encode the message to send to the server.
+        * @param message The message to encode.
+        */
+        void encodeInterCommunication(std::string message) override;
+        /**
+        * @brief Decode the message received from the server.
+        * @param message The message to decode.
+        */
+        void decodeInterCommunication(std::string message) override;
         //Need to be implemented with the game engine
 };
