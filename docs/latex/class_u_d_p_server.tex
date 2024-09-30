@@ -1,0 +1,47 @@
+\doxysection{UDPServer Class Reference}
+\hypertarget{class_u_d_p_server}{}\label{class_u_d_p_server}\index{UDPServer@{UDPServer}}
+
+
+A simple UDP server that asynchronously receives and responds to messages.  
+
+
+
+
+{\ttfamily \#include $<$UDPServer.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_u_d_p_server_ab4b1ea94a174d28a58e7251a1ef21fc9}{UDPServer}} (boost\+::asio\+::io\+\_\+context \&io\+\_\+context, short port)
+\begin{DoxyCompactList}\small\item\em Constructs the \doxylink{class_u_d_p_server}{UDPServer} and starts listening on the given port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A simple UDP server that asynchronously receives and responds to messages. 
+
+This class represents a UDP server using Boost.\+Asio for asynchronous communication. The server listens on a specified port, receives binary-\/encoded messages, decodes them, and sends a response back to the client. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_u_d_p_server_ab4b1ea94a174d28a58e7251a1ef21fc9}\index{UDPServer@{UDPServer}!UDPServer@{UDPServer}}
+\index{UDPServer@{UDPServer}!UDPServer@{UDPServer}}
+\doxysubsubsection{\texorpdfstring{UDPServer()}{UDPServer()}}
+{\footnotesize\ttfamily \label{class_u_d_p_server_ab4b1ea94a174d28a58e7251a1ef21fc9} 
+UDPServer\+::\+UDPServer (\begin{DoxyParamCaption}\item[{boost\+::asio\+::io\+\_\+context \&}]{io\+\_\+context}{, }\item[{short}]{port}{}\end{DoxyParamCaption})}
+
+
+
+Constructs the \doxylink{class_u_d_p_server}{UDPServer} and starts listening on the given port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em io\+\_\+context} & The I/O context used for asynchronous operations. \\
+\hline
+{\em port} & The port number on which the server will listen for incoming messages. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+server/src/\mbox{\hyperlink{_u_d_p_server_8hpp}{UDPServer.\+hpp}}\item 
+server/src/\mbox{\hyperlink{_u_d_p_server_8cpp}{UDPServer.\+cpp}}\end{DoxyCompactItemize}
