@@ -10,7 +10,7 @@
 #include "gameModule.hpp"
 #include "sendModule.hpp"
 #include "readModule.hpp"
-#include <unistd.h>
+// #include <unistd.h>
 #include <signal.h>
 #ifdef _WIN32
     #include <winsock2.h>  // For Windows socket functions
@@ -44,6 +44,7 @@ Server::~Server()
 
 void Server::start()
 {
+    std::cout << "Starting the server" << std::endl;
     struct sockaddr_in serv_addr;
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT);
@@ -114,9 +115,15 @@ void Server::createModule(AbstractModule *module)
 {
     try {
         module->start();
-        int moduleSocket = accept(_socket, (struct sockaddr *)NULL, NULL);
-        if (moduleSocket < 0)
-            throw std::runtime_error("Error while creating a module: accept failed");
+        #ifdef _WIN32
+            SOCKET moduleSocket = accept(_socket, (struct sockaddr *)NULL, NULL);
+            if (moduleSocket == INVALID_SOCKET)
+                throw std::runtime_error("Error while creating a module: accept failed");
+        #else
+            int moduleSocket = accept(_socket, (struct sockaddr *)NULL, NULL);
+            if (moduleSocket < 0)
+                throw std::runtime_error("Error while creating a module: accept failed");
+        #endif
         if (send(moduleSocket, "200\n\t", 5, 0) < 0)
             throw std::runtime_error("Error while creating a module: send failed");
         char buffer[1024] = {0};
