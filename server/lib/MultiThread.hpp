@@ -72,19 +72,6 @@ class MultiThreadElement {
          * @brief Constructor of MultiThreadElement.
          */
         MultiThreadElement();
-        #ifdef _WIN32
-            /**
-             * @brief Constructor of MultiThreadElement.
-             * @param serverInterSocket The socket of the server.
-             */
-            MultiThreadElement(const SOCKET serverInterSocket);
-        #else
-            /*
-            * @brief Constructor of MultiThreadElement.
-            * @param serverInterSocket The socket of the server.
-            */
-            MultiThreadElement(const int serverInterSocket);
-        #endif
         /**
          * @brief Destructor of MultiThreadElement.
          */
