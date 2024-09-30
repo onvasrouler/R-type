@@ -13,9 +13,9 @@
         std::cout << "WSAStartup succeeded" << std::endl;
         return 0;
     };
+int tmp = setupWinsock();
 #endif
 
-int tmp = setupWinsock();
 Server server;
 
 void signalHandler(int signum) {
