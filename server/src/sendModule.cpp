@@ -8,12 +8,9 @@
 
 #include "sendModule.hpp"
 
-SendModule::SendModule() : AbstractModule()
-{
-}
-
 SendModule::SendModule(std::string name) : AbstractModule(name)
 {
+    // need to be implemented with the network lib
 }
 
 SendModule::~SendModule()

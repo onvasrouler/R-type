@@ -8,12 +8,9 @@
 
 #include "readModule.hpp"
 
-ReadModule::ReadModule() : AbstractModule()
-{
-}
-
 ReadModule::ReadModule(std::string name) : AbstractModule(name)
 {
+    // need to be implemented with the network lib
 }
 
 ReadModule::~ReadModule()

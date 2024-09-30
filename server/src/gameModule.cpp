@@ -8,12 +8,9 @@
 
 #include "gameModule.hpp"
 
-GameModule::GameModule() : AbstractModule()
-{
-}
-
 GameModule::GameModule(std::string name) : AbstractModule(name)
 {
+    //Need to be implemented with the game engine
 }
 
 GameModule::~GameModule()
