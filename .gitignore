@@ -10,3 +10,4 @@ r-type_tests
 .vscode
 .vs
 compile.sh
+vgcore*
