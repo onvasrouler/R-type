@@ -7,8 +7,8 @@
 */
 
 #pragma once
-#include "MultiThread.hpp"
-#include "AbstractModule.hpp"
+#include "../lib/MultiThread.hpp"
+#include "serverModule.hpp"
 
 /**
  * @brief The Server class is the main class of the server.
@@ -59,6 +59,14 @@ class Server : MultiThreadElement {
         * @param message The message to encode.
         */
         void encodeInterCommunication(std::string message) override;
+        /*
+        * @brief The function that create a new module
+        * This function will create a new module and add it to the vector _modules
+        * It will also check if the module is connected
+        * And throw an exception if it is not
+        * @param module The module to create
+        */
+        void createModule(AbstractModule *module);
         bool _Running; /*!< The state of the server. */
-        std::vector<AbstractModule> _modules; /*!< The modules of the server. */
+        std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
 };
