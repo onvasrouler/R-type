@@ -32,7 +32,7 @@ TEST(AbstractModule, testAbstractModuleWithSocket)
         ASSERT_NO_THROW(AbstractModule module = AbstractModule(sock));
         WSACleanup();
     #else
-        ASSERT_NO_THROW(AbstractModule module = AbstractModule(55));
+        ASSERT_NO_THROW(AbstractModule module = AbstractModule());
     #endif
 }
 
@@ -92,7 +92,7 @@ TEST(AbstractModule, testAbstractModuleFailedConstructor)
         }
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         ASSERT_EQ(sock, -1);
-        ASSERT_THROW(AbstractModule module = AbstractModule(55), std::runtime_error);
+        ASSERT_THROW(AbstractModule module = AbstractModule(), std::runtime_error);
     #endif
 }
 
@@ -140,7 +140,7 @@ TEST(AbstractModule, testAbstractModuleStart)
     ASSERT_EQ(binded, 0);
     int listenSock = listen(sock, 3);
     ASSERT_EQ(listenSock, 0);
-    AbstractModule module = AbstractModule(sock);
+    AbstractModule module = AbstractModule();
     ASSERT_NO_THROW(module.start());
     int serverInterSocket = accept(sock, (struct sockaddr *)NULL, NULL);
     ASSERT_NE(serverInterSocket, -1);
