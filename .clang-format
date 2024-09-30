@@ -1,7 +1,0 @@
-BasedOnStyle: LLVM
-IndentWidth: 4
-ColumnLimit: 80
-DerivePointerAlignment: false
-PointerAlignment: Left
-AllowShortIfStatementsOnASingleLine: false
-Standard: Cpp11
