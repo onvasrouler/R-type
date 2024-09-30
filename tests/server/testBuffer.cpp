@@ -8,14 +8,14 @@
 #include <gtest/gtest.h>
 #include "Buffer.hpp"
 
-// TEST(Buffer, constructor)
-// {
-//     Buffer buffer = Buffer(10, "\t", "\n");
-//     EXPECT_EQ(buffer.getData(), "");
-//     EXPECT_EQ(buffer.getSize(), 10);
-//     EXPECT_EQ(buffer.getStartSentence(), "\t");
-//     EXPECT_EQ(buffer.getEndSentence(), "\n");
-// }
+TEST(Buffer, constructor)
+{
+    Buffer buffer = Buffer(10, "\t", "\n");
+    EXPECT_EQ(buffer.getData(), "");
+    EXPECT_EQ(buffer.getSize(), 10);
+    EXPECT_EQ(buffer.getStartSentence(), "\t");
+    EXPECT_EQ(buffer.getEndSentence(), "\n");
+}
 
 TEST(Buffer, append)
 {
