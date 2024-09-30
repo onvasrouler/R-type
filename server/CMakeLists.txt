@@ -10,6 +10,10 @@ set(SOURCES
     src/registry.cpp
     src/entity_manager.cpp
     src/system.cpp
+    src/entity/AEntity.cpp
+    src/entity/Player.cpp
+    src/tools/Point.cpp
+    src/tools/Rect.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

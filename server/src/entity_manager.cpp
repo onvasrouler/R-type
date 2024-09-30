@@ -11,6 +11,6 @@ EntityManager::entity_t EntityManager::entity_from_index(std::size_t idx) {
     throw std::out_of_range("Entity index out of range");
 }
 
-void EntityManager::kill_entity(entity_t const& e) {
+void EntityManager::kill_entity(entity_t& e) {
     _registry.destroy_entity(e);
 }

@@ -30,7 +30,7 @@ int main() {
         registry.add_component(static_entity, Target{});
     }
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "ECS Example");
+    sf::RenderWindow window(sf::VideoMode(1800, 800), "ECS Example");
 
     sf::Clock clock;
     while (window.isOpen()) {
