@@ -29,46 +29,18 @@ MultiThreadElement::MultiThreadElement() {
         if (_socket == INVALID_SOCKET) {
             std::throw_with_nested(std::runtime_error("Error: socket creation failed"));
         }
+        int opt = 1;
+        setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
     #else
         _otherModules = std::vector<int>();
         _socket = socket(AF_INET, SOCK_STREAM, 0);
         if (_socket == -1) {
             std::throw_with_nested(std::runtime_error("Error: socket creation failed"));
         }
+        int opt = 1;
+        setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     #endif
 }
-
-#ifdef _WIN32
-    MultiThreadElement::MultiThreadElement(const SOCKET serverInterSocket) {
-        if (serverInterSocket == INVALID_SOCKET) {
-            std::throw_with_nested(std::runtime_error("Error: invalid socket"));
-        }
-        _datas = std::vector<MultiThreadData>();
-        _otherModules = std::vector<SOCKET>();
-        _otherModules.push_back(serverInterSocket);
-        _sendingIntern = std::vector<std::string>();
-        _receivedIntern = std::vector<std::string>();
-        _socket = socket(AF_INET, SOCK_STREAM, 0);
-        if (_socket == INVALID_SOCKET) {
-            std::throw_with_nested(std::runtime_error("Error: socket creation failed"));
-        }
-    }
-#else
-    MultiThreadElement::MultiThreadElement(const int serverInterSocket) {
-        if (serverInterSocket == -1) {
-            std::throw_with_nested(std::runtime_error("Error: invalid socket"));
-        }
-        _datas = std::vector<MultiThreadData>();
-        _otherModules = std::vector<int>();
-        _otherModules.push_back(serverInterSocket);
-        _sendingIntern = std::vector<std::string>();
-        _receivedIntern = std::vector<std::string>();
-        _socket = socket(AF_INET, SOCK_STREAM, 0);
-        if (_socket == -1) {
-            std::throw_with_nested(std::runtime_error("Error: socket creation failed"));
-        }
-    }
-#endif
 
 MultiThreadData::MultiThreadData() {
     _data = std::any();
