@@ -18,8 +18,8 @@ using boost::asio::ip::udp;
  * @class UDPServer
  * @brief A simple UDP server that asynchronously receives and responds to messages.
  *
- * This class represents a UDP server using Boost.Asio for asynchronous 
- * communication. The server listens on a specified port, receives binary-encoded 
+ * This class represents a UDP server using Boost.Asio for asynchronous
+ * communication. The server listens on a specified port, receives binary-encoded
  * messages, decodes them, and sends a response back to the client.
  */
 class UDPServer {
