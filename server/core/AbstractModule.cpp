@@ -23,15 +23,11 @@ AbstractModule::AbstractModule() : MultiThreadElement()
     _Running = false;
 }
 
-#ifdef _WIN32
-    AbstractModule::AbstractModule(const SOCKET serverInterSocket) : MultiThreadElement(serverInterSocket) {
-        _Running = false;
-    }
-#else
-    AbstractModule::AbstractModule(const int serverInterSocket) : MultiThreadElement(serverInterSocket) {
-        _Running = false;
-    }
-#endif
+AbstractModule::AbstractModule(const std::string name) : MultiThreadElement()
+{
+    _ModuleName = name;
+    _Running = false;
+}
 
 AbstractModule::~AbstractModule()
 {
@@ -43,16 +39,18 @@ void AbstractModule::start()
 {
     _Running = true;
     _thread = std::thread([this](void *_) -> void * {
+        std::cout << "Starting module: " << _ModuleName << std::endl;
         struct sockaddr_in server_addr;
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(PORT);  // Utilisez le même port que celui défini dans le serveur
         server_addr.sin_addr.s_addr = INADDR_ANY;  // Adresse IP locale
         inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
-        int connectVal = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
+        int serverSocket = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
 
-        if (connectVal == -1) {
+        if (serverSocket == -1) {
             std::throw_with_nested(std::runtime_error("Error: connection failed"));
         }
+        _otherModules.push_back(serverSocket);
         char buffer[1024] = {0};
         int valread = recv(_socket, buffer, 1024, 0);
         if (valread == -1) {
@@ -68,7 +66,8 @@ void AbstractModule::start()
             sleep(2);
         #endif
         send(_socket, "200\n\t", 5, 0);
-        std::cout << "Connection established" << std::endl;
+        std::cout << "Module: " << _ModuleName << " started" << std::endl;
+        _Running = true;
         run();
         return nullptr;
     }, nullptr);
@@ -76,14 +75,16 @@ void AbstractModule::start()
 
 void AbstractModule::run()
 {
-    std::cout << "running" << std::endl;
+    std::cout << "Module: " << _ModuleName << " is running" << std::endl;
     while (_Running) {
     }
-    std::cout << "stopped" << std::endl;
+    std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
 }
 
 void AbstractModule::stop()
 {
+    if (!_Running)
+        return;
     _Running = false;
     #ifdef _WIN32
         closesocket(_socket);
@@ -92,6 +93,7 @@ void AbstractModule::stop()
         close(_socket);
     #endif
     _thread.join();
+    std::cout << "Module: " << _ModuleName << " is stopped" << std::endl;
 }
 
 void AbstractModule::decodeInterCommunication(std::string message)

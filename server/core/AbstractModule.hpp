@@ -26,17 +26,11 @@ class AbstractModule : public MultiThreadElement {
         /** @brief Constructor of AbstractModule.
          */
         AbstractModule();
-        #ifdef _WIN32
-            /** @brief Constructor of AbstractModule.
-             *  @param serverInterSocket The socket of the server.
-             */
-            AbstractModule(const SOCKET serverInterSocket);
-        #else
-            /** @brief Constructor of AbstractModule.
-             *  @param serverInterSocket The socket of the server.
-             */
-            AbstractModule(const int serverInterSocket);
-        #endif
+        /*
+        * @brief Constructor of AbstractModule.
+        * @param name The name of the module.
+        */
+        AbstractModule(std::string name);
         /** @brief Destructor of AbstractModule.
          */
         ~AbstractModule();
@@ -64,4 +58,5 @@ class AbstractModule : public MultiThreadElement {
          */
         virtual void encodeInterCommunication(std::string message) override;
         bool _Running; /*!< The state of the module. */
+        std::string _ModuleName; /*!< The name of the module. */
 };
