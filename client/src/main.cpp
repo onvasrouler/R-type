@@ -13,7 +13,7 @@ int main() {
 
         udp::resolver resolver(io_context);
         udp::resolver::results_type endpoints =
-            resolver.resolve(udp::v4(), "127.0.0.1", "8080");
+            resolver.resolve(udp::v4(), "127.0.0.1", "3000");
 
         std::string message = "Hello from client!";
         std::vector<char> binary_message(message.begin(), message.end());
