@@ -22,6 +22,7 @@
 #endif
 
 #define PORT 8081
+#define THREAD_END_MESSAGE "\n\t"
 
 /**
  * @brief The MultiThreadData class is a class to store data in a multithread context.
@@ -79,11 +80,11 @@ class MultiThreadElement {
         /**
          * @brief Start the module.
          */
-        virtual void decodeInterCommunication(std::string message) = 0;
+        virtual std::string decodeInterCommunication(std::string message) = 0;
         /**
          * @brief Stop the module.
          */
-        virtual void encodeInterCommunication(std::string message) = 0;
+        virtual std::string encodeInterCommunication(std::string message) = 0;
         std::thread _thread; /*!< The thread of the module. */
         std::vector<MultiThreadData> _datas; /*!< The data stored. */
         std::vector<std::string> _sendingIntern; /*!< The messages to send. */

@@ -8,13 +8,11 @@
 
 #include "gameModule.hpp"
 
-GameModule::GameModule(std::string name) : AbstractModule(name)
-{
-    //Need to be implemented with the game engine
+GameModule::GameModule(std::string name) : AbstractModule(name) {
+    // Need to be implemented with the game engine
 }
 
-GameModule::~GameModule()
-{
+GameModule::~GameModule() {
     std::cout << "Module: " << _ModuleName << " is destroying" << std::endl;
     if (_Running) {
         stop();
@@ -22,23 +20,21 @@ GameModule::~GameModule()
     std::cout << "Module: " << _ModuleName << " destroyed" << std::endl;
 }
 
-void GameModule::encodeInterCommunication(std::string message)
-{
+std::string GameModule::encodeInterCommunication(std::string message) {
     std::string encodedMessage = message;
-    //Encode message
-    //Send message
-    //send(serverInterSocket, encodedMessage.c_str(), encodedMessage.size(), 0);
+    // Encode message
+    // Send message
+    // send(serverInterSocket, encodedMessage.c_str(), encodedMessage.size(),
+    // 0);
 }
 
-void GameModule::decodeInterCommunication(std::string message)
-{
+std::string GameModule::decodeInterCommunication(std::string message) {
     std::string decodedMessage = message;
-    //Decode message
-    //Do something with the message
+    // Decode message
+    // Do something with the message
 }
 
-void GameModule::run()
-{
+void GameModule::run() {
     std::cout << "Module: " << _ModuleName << " is running" << std::endl;
     while (_Running) {
     }
