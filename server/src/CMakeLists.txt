@@ -10,4 +10,7 @@ target_sources(rtype_server_lib
   ${CMAKE_CURRENT_SOURCE_DIR}/Server.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serverModule.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serverModule.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/UDPError.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/UDPServer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/UDPServer.hpp
 )

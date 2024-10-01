@@ -11,7 +11,6 @@ target_include_directories(rtype_server_lib PUBLIC include)
 
 add_executable(r-type_server
     src/main.cpp
-    src/UDPServer.cpp
 )
 
 target_link_libraries(r-type_server Boost::boost rtype_server_lib)
