@@ -9,6 +9,7 @@
 #pragma once
 #include "../lib/MultiThread.hpp"
 #include "serverModule.hpp"
+#include "UDPServer.hpp"
 
 /**
  * @brief The Server class is the main class of the server.
@@ -53,12 +54,12 @@ class Server : MultiThreadElement {
         * @brief Decode the message received from the server.
         * @param message The message to decode.
         */
-        void decodeInterCommunication(std::string message) override;
+        std::string decodeInterCommunication(std::string message) override;
         /*
         * @brief Encode the message to send to the server.
         * @param message The message to encode.
         */
-        void encodeInterCommunication(std::string message) override;
+        std::string encodeInterCommunication(std::string message) override;
         /*
         * @brief The function that create a new module
         * This function will create a new module and add it to the vector _modules
