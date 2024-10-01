@@ -2,10 +2,8 @@ target_sources(rtype_server_lib
   PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/gameModule.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/gameModule.hpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/readModule.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/readModule.hpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/sendModule.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/sendModule.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/networkModule.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/networkModule.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Server.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Server.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serverModule.cpp
