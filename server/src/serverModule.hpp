@@ -44,6 +44,14 @@ class serverModule {
         * @brief Stop the module.
         */
         void stop();
+
+        std::shared_ptr<AbstractModule> getModule();
+
+        #ifdef _WIN32
+            SOCKET getSocket();
+        #else
+            int getSocket();
+        #endif
     private:
         std::shared_ptr<AbstractModule> _module; // The module to store.
         #ifdef _WIN32
