@@ -38,7 +38,7 @@ TRUE_SRC 	= 	$(patsubst %,src/%, $(SRCS))
 OBJS = $(TRUE_SRC:.cpp=.o)
 
 # Output executable
-TARGET = raylib_example
+TARGET = Rtype
 
 # Build target
 all: $(TARGET)
