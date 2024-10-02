@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <time.h>  
 #include <raylib.h>
+#include "raygui/raygui.h"
 #include <iostream>
 #include <vector>
 #include <memory>
