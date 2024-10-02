@@ -52,6 +52,7 @@ public:
     void InitRlib();
     void CloseRlibWindow() const;
 
+    void update();
     bool ShouldClose() const;
     void BeginRlibDraw() const;
     void EndRlibDraw() const;
@@ -67,6 +68,8 @@ private:
     std::string _Title;
     Color _BackgroundColor;
     int _FrameRateLimit;
+
+    bool _AutoReloadMenus;
 
     std::unique_ptr<FpsCounter> _fpsCounter;
     std::shared_ptr<JsonParser> _jsonParser;

@@ -14,6 +14,7 @@ RlibWindow::RlibWindow()
     _Title = "R-type";
     _BackgroundColor = WHITE;
     _FrameRateLimit = 60;
+    _AutoReloadMenus = false;
 }
 
 RlibWindow::RlibWindow(int windowWidth, int windowHeight, std::string title, Color backgroundColor, int frameRateLimit)
@@ -23,6 +24,7 @@ RlibWindow::RlibWindow(int windowWidth, int windowHeight, std::string title, Col
     this->_Title = title;
     this->_BackgroundColor = backgroundColor;
     this->_FrameRateLimit = frameRateLimit;
+    _AutoReloadMenus = false;
 }
 
 RlibWindow::RlibWindow(std::string filename)
@@ -168,6 +170,22 @@ void RlibWindow::CloseRlibWindow() const
 bool RlibWindow::ShouldClose() const
 {
     return WindowShouldClose();
+}
+
+void RlibWindow::update()
+{
+    this->ClearRlibBackground();
+    this->BeginRlibDraw();
+    this->ClearRlibBackground();
+    this->_Menus->drawMenu();
+    _fpsCounter->draw();
+    if (IsKeyPressed(KEY_F11))
+        ToggleFullscreen();
+    if (IsKeyPressed(KEY_R))
+        _AutoReloadMenus = !_AutoReloadMenus;
+    if (_AutoReloadMenus)
+        _Menus->reloadOnChanges();
+    this->EndRlibDraw();
 }
 
 void RlibWindow::BeginRlibDraw() const

@@ -18,10 +18,7 @@ int main() {
     std::unique_ptr<FpsCounter> rlibFpsCounter = std::make_unique<FpsCounter>(Vector2{100, 0}, 30, BLACK);
     window.setFpsCounter(std::move(rlibFpsCounter));
     // Main game loop
-    while (!window.ShouldClose()) {
-        window.ClearRlibBackground();
-        window.BeginRlibDraw();
-        window.EndRlibDraw();
-    }
+    while (!window.ShouldClose())
+        window.update();
     return 0;
 }
