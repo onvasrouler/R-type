@@ -7,10 +7,12 @@
  
 #include "AEntity.hpp"
 
-AEntity::AEntity(int x, int y, int l, int h)
+AEntity::AEntity(int x, int y, int l, int h, int type, int id)
 {
     this->_origin = std::make_unique<Point>(x, y);
     this->_dimension = std::make_unique<Rect>(l, h);
+    this->_type = std::make_unique<Type>(type);
+    this->_id = std::make_unique<Id>(id);
 }
 
 
@@ -34,6 +36,16 @@ int AEntity::get_h()
     return (this->_dimension->get_h());
 }
 
+int AEntity::get_type()
+{
+    return (this->_type->get_value());
+}
+
+int AEntity::get_id()
+{
+    return (this->_id->get_value());
+}
+
 
 void AEntity::set_x(int x)
 {
@@ -53,4 +65,9 @@ void AEntity::set_l(int l)
 void AEntity::set_h(int h)
 {
     this->_dimension->set_h(h);
+}
+
+void AEntity::set_type(int type)
+{
+    this->_dimension->set_h(type);
 }
