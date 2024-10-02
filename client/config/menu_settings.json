@@ -8,14 +8,14 @@
                     "id": 0,
                     "text": "Main Menu",
                     "position": {
-                        "x": 100,
+                        "x": 300,
                         "y": 100
                     },
-                    "fontSize": 40,
+                    "fontSize": 30,
                     "color": {
                         "r": 0,
                         "g": 255,
-                        "b": 0,
+                        "b": 255,
                         "a": 255
                     }
                 }
@@ -80,6 +80,20 @@
                     },
                     "type": 0,
                     "action": "exit"
+                }
+            ],
+            "toggleGroups": [
+                {
+                    "position": {
+                        "x": 15,
+                        "y": 10
+                    },
+                    "size": {
+                        "width": 190,
+                        "height": 50
+                    },
+                    "text": "General;Video;Audio;COuille",
+                    "active": 0
                 }
             ]
         },
