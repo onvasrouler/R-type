@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include "AEntity.hpp"
+#include "ACharacter.hpp"
 
-class Enemy : virtual public AEntity
+class Enemy : public ACharacter
 {
 public:
-    Enemy(int x, int y, int l, int h);
+    Enemy(int x, int y, int l, int h, int type, int id, int hp, int level);
     ~Enemy();
 
     void move_entity();

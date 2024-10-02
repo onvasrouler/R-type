@@ -7,7 +7,7 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(int x, int y, int l, int h) : AEntity(x, y, l, h)
+Enemy::Enemy(int x, int y, int l, int h, int type, int id, int hp, int level) : ACharacter(x, y, l, h, type, id, hp, level)
 {
 
 }
