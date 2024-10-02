@@ -33,6 +33,9 @@ public:
     menuType getMenuType() const;
 
     void loadMenu();
+    void reloadMenu();
+
+    void reloadOnChanges();
 
     void setJsonParser(std::shared_ptr<JsonParser> jsonParser);
 
@@ -41,8 +44,26 @@ public:
     private:
 
     void createMenu(const nlohmann::json &menu);
+    void eraseMenu();
+
     RaylibText createTexts(const nlohmann::json &text);
     GButton createButton(const nlohmann::json &button);
+    GWindBox createWindBox(const nlohmann::json &windBox);
+    GCheckBox createCheckBox(const nlohmann::json &checkBox);
+    GSlider createSlider(const nlohmann::json &slider);
+    GList createList(const nlohmann::json &list);
+    GListEx createListEx(const nlohmann::json &listEx);
+    GTextInput createInputText(const nlohmann::json &inputText);
+    GTextInputBox createInputTextBox(const nlohmann::json &inputTextBox);
+    GSpinner createSpinner(const nlohmann::json &spinner);
+    GValueBox createValueBox(const nlohmann::json &valueBox);
+    GGroup createGroup(const nlohmann::json &group);
+    GToggleGroup createToggleGroup(const nlohmann::json &toggleGroup);
+    GToggleSlider createToggleSlider(const nlohmann::json &toggleSlider);
+    GPannel createPannel(const nlohmann::json &pannel);
+    GColorPicker createColorPicker(const nlohmann::json &colorPicker);
+    GProgressBar createProgressBar(const nlohmann::json &progressBar);
+    GDropDown createDropDown(const nlohmann::json &dropDown);
 
     nlohmann::json _menuJson;
 
