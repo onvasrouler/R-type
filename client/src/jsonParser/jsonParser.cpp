@@ -25,6 +25,28 @@ nlohmann::json JsonParser::parseFile(const std::string &filename)
     return json;
 }
 
+void JsonParser::eraseCache(const std::string &filename)
+{
+    if (_jsons.find(filename) != _jsons.end())
+        _jsons.erase(filename);
+}
+
+bool JsonParser::fileHasChanged(const std::string &filename)
+{
+    std::ifstream file(filename);
+    if (!file.is_open())
+        throw std::runtime_error("Could not open file: " + filename);
+
+    nlohmann::json currentJson;
+    file >> currentJson;
+    file.close();
+
+    if (_jsons.find(filename) == _jsons.end())
+        return true;
+
+    return _jsons[filename] != currentJson;
+}
+
 void JsonParser::writeFile(const std::string &filename, nlohmann::json &json)
 {
     std::ofstream file(filename);

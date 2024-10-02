@@ -15,6 +15,11 @@ class JsonParser {
         ~JsonParser() = default;
 
         nlohmann::json parseFile(const std::string &filename);
+
+        void eraseCache(const std::string &filename);
+
+        bool fileHasChanged(const std::string &filename);
+
         void writeFile(const std::string &filename, nlohmann::json &json);
         void writePrettyFile(const std::string &filename, nlohmann::json &json);
         void writePrettyFile(const std::string &filename, nlohmann::json &json, int indent);
