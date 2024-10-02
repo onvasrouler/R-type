@@ -8,7 +8,22 @@ CXXFLAGS = -Wall -std=c++14
 INCLUDES = -I./
 
 # Libraries to link with
-LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+LIBS = -lm -lpthread 
+
+# Additional include directories for Windows
+ifeq ($(OS),Windows_NT)
+    VCPKG_DIR = $(USERPROFILE)/vcpkg
+	LIBS += -L"$(VCPKG_DIR)/installed/x64-windows/lib"
+	LIBS += -L"C:\Program Files\raylib"
+	LIBS += -lopengl32 -lgdi32 -lwinmm
+	INCLUDES += -I"$(VCPKG_DIR)/installed/x64-windows/include"
+	INCLUDES += -I"C:\Program Files\raylib"
+else
+	LIBS += -lGL -ldl -lrt -lX11 -lvcpkg -ljsoncpp 
+endif
+
+LIBS += -lraylib 
+
 
 # Files
 MAIN = 	main.cpp
@@ -31,16 +46,16 @@ OBJS = $(TRUE_SRC:.cpp=.o)
 ELEMOBJS = $(TRUE_ELEMENTS:.cpp=.o)
 
 # Output executable
-TARGET = raylib_example
+TARGET = Rtype
 
 # Build target
 all: $(TARGET)
 
 $(TARGET): $(ELEMOBJS) $(OBJS)
-	$(CXX) $(OBJS) $(ELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS)
+	$(CXX) $(OBJS) $(ELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS) $(INCLUDES)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(LIBS) $(INCLUDES) -c $< -o $@ 
 
 # Clean the build
 clean:
