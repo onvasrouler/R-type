@@ -46,16 +46,16 @@ void MenuManager::createMenu(const nlohmann::json &menu)
     try {
         menuType type = static_cast<menuType>(menu["id"]);
         std::vector<RaylibText> texts;
-        std::vector<RaylibButton> buttons;
+        std::vector<GButton> buttons;
         if (menu.contains("texts"))
             for (auto &text : menu["texts"])
                 texts.push_back(this->createTexts(text));
         if (menu.contains("buttons"))
             for (auto &button : menu["buttons"])
                 buttons.push_back(this->createButton(button));
-        _menuList[type] = std::make_shared<Menu>();
+        _menuList[type] = std::make_shared<RGui>();
         _menuList[type]->setTexts(texts);
-        _menuList[type]->setButtons(buttons);
+        _menuList[type]->SetButtons(buttons);
     } catch (std::exception &e) {
         std::cerr << "invalid json : " << e.what() << std::endl;
     }
@@ -70,7 +70,7 @@ void MenuManager::setJsonParser(std::shared_ptr<JsonParser> jsonParser)
 void MenuManager::drawMenu() const
 {
     if (_menuList.find(_type) != _menuList.end())
-        _menuList.at(_type)->drawMenu();
+        _menuList.at(_type)->DrawGui();
 }
 
 RaylibText MenuManager::createTexts(const nlohmann::json &text)
@@ -88,18 +88,16 @@ RaylibText MenuManager::createTexts(const nlohmann::json &text)
     }
 }
 
-RaylibButton MenuManager::createButton(const nlohmann::json &button)
+GButton MenuManager::createButton(const nlohmann::json &button)
 {
     try {
-    return RaylibButton(
-        std::string(button["text"]),
+    return GButton(
         Vector2{button["position"]["x"], button["position"]["y"]},
         Vector2{button["size"]["width"], button["size"]["height"]},
-        Color{button["color"]["r"], button["color"]["g"], button["color"]["b"], button["color"]["a"]},
-        static_cast<ButtonType>(button["type"])
+        std::string(button["text"])
     );
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
-        return RaylibButton("error occured", Vector2{0, 0}, Vector2{0, 0}, Color{255, 0, 0, 255}, ButtonType::ERROR);
+        return GButton( Vector2{0, 0}, Vector2{0, 0}, "error occured");
     }
 }

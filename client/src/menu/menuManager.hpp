@@ -8,7 +8,10 @@
 #pragma once
 
 #include "../jsonParser/jsonParser.hpp"
-#include "menu.hpp"
+#include "../elements/raylibText/raylibText.hpp"
+#include "../elements/guiElements/gui.hpp"
+#include "../elements/guiElements/guiElem.hpp"
+
 #include "../include.hpp"
 
 
@@ -39,12 +42,12 @@ public:
 
     void createMenu(const nlohmann::json &menu);
     RaylibText createTexts(const nlohmann::json &text);
-    RaylibButton createButton(const nlohmann::json &button);
+    GButton createButton(const nlohmann::json &button);
 
     nlohmann::json _menuJson;
 
     menuType _type;
     std::shared_ptr<JsonParser> _jsonParser;
 
-    std::map<menuType, std::shared_ptr<Menu>> _menuList;
+    std::map<menuType, std::shared_ptr<RGui>> _menuList;
 };
