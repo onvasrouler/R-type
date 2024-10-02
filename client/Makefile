@@ -8,7 +8,16 @@ CXXFLAGS = -Wall -std=c++14
 INCLUDES = -I./
 
 # Libraries to link with
-LIBS = -lm -lpthread 
+LIBS = -lm -lpthread
+
+
+LIBGUIPATH = ./src/raygui/
+
+FULLLIBGUIPATH = $(LIBGUIPATH)raygui
+
+LIBGUI = $(LIBGUIPATH)libraygui.so
+
+LIBGUIFLAGS = -L$(LIBGUIPATH) -Wl,-rpath,$(LIBGUIPATH) -lraygui
 
 # Additional include directories for Windows
 ifeq ($(OS),Windows_NT)
@@ -19,7 +28,7 @@ ifeq ($(OS),Windows_NT)
 	INCLUDES += -I"$(VCPKG_DIR)/installed/x64-windows/include"
 	INCLUDES += -I"C:\Program Files\raylib"
 else
-	LIBS += -lGL -ldl -lrt -lX11 -lvcpkg -ljsoncpp 
+	LIBS += -lGL -ldl -lrt -lX11
 endif
 
 LIBS += -lraylib 
@@ -35,10 +44,12 @@ TRUE_ELEMENTS = $(patsubst %,src/elements/%, $(ELEMENTS))
 
 SRCS =	fpsCounter/fpsCounter.cpp	\
 		jsonParser/jsonParser.cpp	\
-		menu/menu.cpp		\
+		elements/guiElements/guiElem.cpp	\
+		elements/guiElements/gui.cpp	\
 		menu/menuManager.cpp		\
 		raylibWindow/utils.cpp		\
-		raylibWindow/raylibWindow.cpp \
+		raylibWindow/raylibWindow.cpp
+		
 
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRCS))
 
@@ -51,17 +62,22 @@ TARGET = Rtype
 # Build target
 all: $(TARGET)
 
-$(TARGET): $(ELEMOBJS) $(OBJS)
-	$(CXX) $(OBJS) $(ELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS) $(INCLUDES)
+$(TARGET): $(LIBGUI) $(ELEMOBJS) $(OBJS)
+	$(CXX) $(OBJS) $(ELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS) $(INCLUDES) $(LIBGUIFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS) $(INCLUDES) -c $< -o $@ 
+
+$(LIBGUI):
+	mv $(FULLLIBGUIPATH).h $(FULLLIBGUIPATH).c
+	$(CXX) -o $(LIBGUI) $(FULLLIBGUIPATH).c -shared -fpic -DRAYGUI_IMPLEMENTATION -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+	mv $(FULLLIBGUIPATH).c $(FULLLIBGUIPATH).h
 
 # Clean the build
 clean:
 	rm -f $(OBJS) $(ELEMOBJS)
 
 fclean: clean
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(LIBGUI)
 
 re: fclean all
