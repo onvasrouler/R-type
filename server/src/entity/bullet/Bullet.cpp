@@ -7,9 +7,11 @@
 
 #include "Bullet.hpp"
 
-Bullet::Bullet(int x, int y, int l, int h, int type, int id, int damage) : AEntity(x, y, l, h, type, id)
+Bullet::Bullet(int x, int y) : AEntity()
 {
-    this->_damage = std::make_unique<Damage>(damage);
+    this->_origin = std::make_shared<Point>(x, y);
+    this->_dimension = std::make_shared<Rect>(5, 5);
+    this->_damage = std::make_shared<Damage>(1);
 }
 
 Bullet::~Bullet()
@@ -17,7 +19,7 @@ Bullet::~Bullet()
 
 }
 
-void Bullet::move_entity()
+void Bullet::move()
 {
     this->_origin->set_x(this->_origin->get_x() + 2);
 }
