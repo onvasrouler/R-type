@@ -7,9 +7,10 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(int x, int y, int l, int h, int type, int id, int hp, int level) : ACharacter(x, y, l, h, type, id, hp, level)
+Enemy::Enemy(int y) : ACharacter()
 {
-
+    this->_origin = std::make_shared<Point>(25, y);
+    this->_dimension = std::make_shared<Rect>(10, 10);
 }
 
 Enemy::~Enemy()
@@ -17,7 +18,7 @@ Enemy::~Enemy()
 
 }
 
-void Enemy::move_entity()
+void Enemy::move()
 {
     this->_origin->set_x(this->_origin->get_x() - 2);
 }

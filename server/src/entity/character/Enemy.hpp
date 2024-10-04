@@ -12,8 +12,8 @@
 class Enemy : public ACharacter
 {
 public:
-    Enemy(int x, int y, int l, int h, int type, int id, int hp, int level);
+    Enemy(int y);
     ~Enemy();
 
-    void move_entity();
+    void move();
 };
