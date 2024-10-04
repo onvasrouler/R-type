@@ -16,10 +16,10 @@
 class AEntity : public IEntity
 {
 public:
-    AEntity(int x, int y, int l, int h, int type, int id);
+    AEntity();
     virtual ~AEntity() = default;
 
-    virtual void move_entity() = 0;
+    virtual void move() = 0;
 
     void set_l(int l);
     void set_h(int h);
@@ -35,8 +35,8 @@ public:
     int get_type(void);
 
 protected:
-    std::unique_ptr<Point> _origin;
-    std::unique_ptr<Rect> _dimension;
-    std::unique_ptr<Id> _id;
-    std::unique_ptr<Type> _type;
+    std::shared_ptr<Point> _origin;
+    std::shared_ptr<Rect> _dimension;
+    std::shared_ptr<Id> _id;
+    std::shared_ptr<Type> _type;
 };

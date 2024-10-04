@@ -7,14 +7,11 @@
  
 #include "AEntity.hpp"
 
-AEntity::AEntity(int x, int y, int l, int h, int type, int id)
+AEntity::AEntity()
 {
-    this->_origin = std::make_unique<Point>(x, y);
-    this->_dimension = std::make_unique<Rect>(l, h);
-    this->_type = std::make_unique<Type>(type);
-    this->_id = std::make_unique<Id>(id);
+    this->_id = std::make_shared<Id>();
+    this->_type = std::make_shared<Type>(0);
 }
-
 
 int AEntity::get_x()
 {
