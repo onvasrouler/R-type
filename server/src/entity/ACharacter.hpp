@@ -14,10 +14,10 @@
 class ACharacter : public AEntity
 {
 public:
-    ACharacter(int x, int y, int l, int h, int type, int id, int hp, int level);
+    ACharacter();
     virtual ~ACharacter() = default;
 
-    virtual void move_entity() = 0;
+    virtual void move() = 0;
 
     void set_hp(int hp);
     void set_level(int level);
@@ -26,6 +26,6 @@ public:
     int get_level(void);
 
 protected:
-    std::unique_ptr<Hp> _hp;
-    std::unique_ptr<Level> _level;
+    std::shared_ptr<Hp> _hp;
+    std::shared_ptr<Level> _level;
 };

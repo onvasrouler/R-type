@@ -7,10 +7,10 @@
  
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter(int x, int y, int l, int h, int type, int id, int hp, int level) : AEntity(x, y, l, h, type, id)
+ACharacter::ACharacter() : AEntity()
 {
-    this->_hp = std::make_unique<Hp>(hp);
-    this->_level = std::make_unique<Level>(level);
+    this->_hp = std::make_shared<Hp>(1);
+    this->_level = std::make_shared<Level>(1);
 }
 
 
