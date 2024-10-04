@@ -9,10 +9,14 @@
 
 #include "ATools.hpp"
 
-class Id : public ATools
+class Id
 {
 public:
-    Id() : ATools() {}
-    Id(int value) : ATools(value) {}
-    ~Id() {}
+    Id();
+    ~Id();
+
+    int get_value();
+
+private:
+    int _value;
 };
