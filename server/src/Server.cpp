@@ -73,8 +73,8 @@ void Server::run() {
     _Running = true;
     std::cout << "Server is running" << std::endl;
     while (_Running) {
-        //check the messages from other modules
-        // send the messages to the correct modules
+        // check the messages from other modules
+        //  send the messages to the correct modules
     }
 }
 
@@ -90,10 +90,12 @@ void Server::stop() {
 }
 
 std::string Server::decodeInterCommunication(std::string message) {
+    return "";
     // decode the message
 }
 
 std::string Server::encodeInterCommunication(std::string message) {
+    return "";
     // encode the message
 }
 

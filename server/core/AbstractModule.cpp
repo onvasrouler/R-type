@@ -100,9 +100,11 @@ void AbstractModule::stop()
 std::string AbstractModule::decodeInterCommunication(std::string message)
 {
     std::cout << "Decoding message: " << message << std::endl;
+    return message;
 }
 
 std::string AbstractModule::encodeInterCommunication(std::string message)
 {
     std::cout << "Encoding message: " << message << std::endl;
+    return message;
 }

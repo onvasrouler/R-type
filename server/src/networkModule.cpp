@@ -24,7 +24,7 @@ NetworkModule::~NetworkModule() {
         stop();
     }
     std::cout << "Module: " << _ModuleName << " destroyed" << std::endl;
-    // kill udp server
+    _udpServer.reset();
 }
 
 void NetworkModule::start() {
@@ -87,7 +87,11 @@ void NetworkModule::run() {
         FD_ZERO(&writefds);
         FD_SET(_socket, &readfds);
         FD_SET(_socket, &writefds);
+#ifdef _WIN32
+        int ret = select(0, &readfds, &writefds, NULL, &tv);
+#else
         int ret = select(_socket + 1, &readfds, &writefds, NULL, &tv);
+#endif
         if (ret == -1) {
             std::throw_with_nested(std::runtime_error("Error: select failed"));
         }
@@ -101,7 +105,8 @@ void NetworkModule::run() {
                 std::string message = data.getIp() + ":" +
                                       std::to_string(data.getPort()) + "/" +
                                       data.getData() + THREAD_END_MESSAGE;
-                send(_socket, message.c_str(), message.size(), 0);
+                send(_socket, message.c_str(),
+                     std::any_cast<int>(message.size()), 0);
             }
             _udpServer->getReceivedData().clear();
             _udpServer->getReceiveMutex().unlock();
@@ -127,7 +132,8 @@ void NetworkModule::run() {
             // encode message and send to the clients
             std::string ip = message.substr(0, message.find(":"));
             message = message.substr(message.find(":") + 1);
-            short port = std::stoi(message.substr(0, message.find("/")));
+            short port = std::any_cast<short>(
+                std::stoi(message.substr(0, message.find("/"))));
             message = message.substr(message.find("/") + 1);
             packageData data = packageData(message, ip, port);
             _sentData.push_back(data);
@@ -141,19 +147,25 @@ void NetworkModule::stop() {
     if (!_Running)
         return;
     _Running = false;
+    _udpServer->getStopMutex().lock();
 #ifdef _WIN32
     closesocket(_socket);
     WSACleanup();
 #else
     close(_socket);
 #endif
-    // stop udp server
     std::cout << "Stopping module: " << _ModuleName << std::endl;
     std::cout << "Module: " << _ModuleName << " is stopping the UDP server"
               << std::endl;
-    _udpServer->getSendMutex().unlock();
-    _udpServer->getReceiveMutex().unlock();
+    // if the mutex is lock
+    if (_udpServer->getSendMutex().try_lock()) {
+        _udpServer->getSendMutex().unlock();
+    }
+    if (_udpServer->getReceiveMutex().try_lock()) {
+        _udpServer->getReceiveMutex().unlock();
+    }
     _udpServer->stop();
+    _udpServer->getStopMutex().unlock();
     _io_context.stop();
     _udpThread.join();
     std::cout << "Module: " << _ModuleName << " has stopped the UDP server"

@@ -22,6 +22,7 @@ GameModule::~GameModule() {
 
 std::string GameModule::encodeInterCommunication(std::string message) {
     std::string encodedMessage = message;
+    return message;
     // Encode message
     // Send message
     // send(serverInterSocket, encodedMessage.c_str(), encodedMessage.size(),
@@ -30,6 +31,7 @@ std::string GameModule::encodeInterCommunication(std::string message) {
 
 std::string GameModule::decodeInterCommunication(std::string message) {
     std::string decodedMessage = message;
+    return message;
     // Decode message
     // Do something with the message
 }

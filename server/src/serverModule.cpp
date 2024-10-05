@@ -8,11 +8,19 @@
 
 #include "serverModule.hpp"
 
+#ifdef _WIN32
+serverModule::serverModule(AbstractModule* module,
+                           const SOCKET serverInterSocket) {
+    _module = std::shared_ptr<AbstractModule>(module);
+    _serverInterSocket = serverInterSocket;
+}
+#else
 serverModule::serverModule(AbstractModule* module,
                            const int serverInterSocket) {
     _module = std::shared_ptr<AbstractModule>(module);
     _serverInterSocket = serverInterSocket;
 }
+#endif
 
 serverModule::serverModule(const serverModule& module) {
     _module = module._module;

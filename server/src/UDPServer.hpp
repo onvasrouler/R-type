@@ -49,6 +49,7 @@ class UDPServer {
 
     std::mutex& getSendMutex();
     std::mutex& getReceiveMutex();
+    std::mutex& getStopMutex();
     std::vector<packageData>& getReceivedData();
     std::vector<packageData>& getSentData();
 
@@ -83,4 +84,6 @@ class UDPServer {
     std::vector<packageData> _sentData;
     std::mutex _sendMutex;
     std::mutex _receiveMutex;
+    std::mutex _stopMutex;
+    bool _running;
 };
