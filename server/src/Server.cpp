@@ -12,7 +12,6 @@
 #include <boost/asio.hpp>
 #include <signal.h>
 #ifdef _WIN32
-#include <cassert>                 // For assert
 #include <stdexcept>               // For exception handling
 #include <winsock2.h>              // For Windows socket functions
 #pragma comment(lib, "Ws2_32.lib") // Link with Ws2_32.lib for Winsock
