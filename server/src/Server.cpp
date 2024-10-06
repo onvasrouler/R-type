@@ -72,8 +72,51 @@ void Server::run() {
     _Running = true;
     std::cout << "Server is running" << std::endl;
     while (_Running) {
-        // check the messages from other modules
-        //  send the messages to the correct modules
+        char buffer[1024] = {0};
+        std::string messages = "";
+        for (; recv(_modules[0]->getSocket(), buffer, 1024, 0) > 0;) {
+            messages += buffer;
+        }
+        for (std::string message = "";
+             messages.find(THREAD_END_MESSAGE) != std::string::npos;
+             message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
+                         messages = messages.substr(
+                             messages.find(THREAD_END_MESSAGE) + 2)) {
+            //get ip and port
+            std::string ip = message.substr(0, message.find(":"));
+            message = message.substr(message.find(":") + 1);
+            short port = std::any_cast<short>(
+                std::stoi(message.substr(0, message.find("/"))));
+            message = message.substr(message.find("/") + 1);
+            if (!isClient(ip, port)) {
+                //create new player in the game engine if their is less than 4 players
+                Client client = Client(ip, port);
+                _clients.push_back(client);
+            } else {
+                //send the message to the game engine
+                std::string messageToSend = createMessage(ip, port, message);
+                send(_modules[1]->getSocket(), messageToSend.c_str(),
+                     messageToSend.size(), 0);
+            }
+        }
+        messages.clear();
+        for (; recv(_modules[1]->getSocket(), buffer, 1024, 0) > 0;) {
+            messages += buffer;
+        }
+        for (std::string message = "";
+             messages.find(THREAD_END_MESSAGE) != std::string::npos;
+             message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
+                         messages = messages.substr(
+                             messages.find(THREAD_END_MESSAGE) + 2)) {
+            //get uuid and message
+            std::string uuidString = message.substr(0, message.find("/"));
+            message = message.substr(message.find("/") + 1);
+            //send the message to the client
+            uuid uuid(uuidString);
+            Client client = findClient(uuid);
+            std::string messageToSend = client.getIp() + ":" + std::to_string(client.getPort()) + "/" + message + THREAD_END_MESSAGE;
+            send(_modules[0]->getSocket(), messageToSend.c_str(), messageToSend.size(), 0);
+        }
     }
 }
 
@@ -81,6 +124,11 @@ void Server::stop() {
     if (!_Running)
         return;
     std::cout << "Stopping the server" << std::endl;
+    std::cout << "Send shutdown server message to all clients" << std::endl;
+    for (auto &client : _clients) {
+        std::string message = client.getIp() + ":" + std::to_string(client.getPort()) + "/" + SHUTDOWN_MESSAGE + THREAD_END_MESSAGE;
+        send(_modules[0]->getSocket(), message.c_str(), message.size(), 0);
+    }
     for (auto& module : _modules) {
         module->stop();
     }
@@ -131,4 +179,38 @@ void Server::createModule(AbstractModule* module) {
         throw std::runtime_error(
             "Error while creating a module: module not connected");
     }
+}
+
+bool Server::isClient(const std::string ip, const short port) {
+    for (auto&client : _clients) {
+        if (client.getIp() == ip && client.getPort() == port)
+            return true;
+    }
+    return false;
+}
+
+std::string Server::createMessage(const std::string ip, const short port,
+                          const std::string message) {
+    Client client = findClient(ip, port);
+    std::string messageToSend = client.getUuid().toString() + ":" + message +
+                               THREAD_END_MESSAGE;
+    return messageToSend;
+}
+
+Client Server::findClient(const std::string ip, const short port) {
+    Client client;
+    for (auto& c : _clients) {
+        if (c.getIp() == ip && c.getPort() == port)
+            client = c;
+    }
+    return client;
+}
+
+Client Server::findClient(const uuid uuid) {
+    Client client;
+    for (auto& c : _clients) {
+        if (c.getUuid() == uuid)
+            client = c;
+    }
+    return client;
 }
