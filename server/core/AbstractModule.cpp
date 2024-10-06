@@ -92,16 +92,19 @@ void AbstractModule::stop()
     #else
         close(_socket);
     #endif
+    std::cout << "Stopping module: " << _ModuleName << std::endl;
     _thread.join();
     std::cout << "Module: " << _ModuleName << " is stopped" << std::endl;
 }
 
-void AbstractModule::decodeInterCommunication(std::string message)
+std::string AbstractModule::decodeInterCommunication(std::string message)
 {
     std::cout << "Decoding message: " << message << std::endl;
+    return message;
 }
 
-void AbstractModule::encodeInterCommunication(std::string message)
+std::string AbstractModule::encodeInterCommunication(std::string message)
 {
     std::cout << "Encoding message: " << message << std::endl;
+    return message;
 }

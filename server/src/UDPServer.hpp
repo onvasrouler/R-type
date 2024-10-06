@@ -11,8 +11,21 @@
 #include <bitset>
 #include <boost/asio.hpp>
 #include <iostream>
+#include <mutex>
 
 using boost::asio::ip::udp;
+
+class packageData {
+    public:
+      packageData(const std::string data, const std::string ip, const short port);
+      std::string getData();
+      std::string getIp();
+      short getPort();
+    private:
+      const std::string _data;
+      const std::string _ip;
+      const short _port;
+};
 
 /**
  * @class UDPServer
@@ -31,6 +44,14 @@ class UDPServer {
      * @param port The port number on which the server will listen for incoming messages.
      */
     UDPServer(boost::asio::io_context& io_context, short port);
+
+    void stop();
+
+    std::mutex& getSendMutex();
+    std::mutex& getReceiveMutex();
+    std::mutex& getStopMutex();
+    std::vector<packageData>& getReceivedData();
+    std::vector<packageData>& getSentData();
 
   private:
     /**
@@ -59,4 +80,10 @@ class UDPServer {
 
     /// A buffer to store the received data.
     std::array<char, 1024> _recv_buffer;
+    std::vector<packageData> _receivedData;
+    std::vector<packageData> _sentData;
+    std::mutex _sendMutex;
+    std::mutex _receiveMutex;
+    std::mutex _stopMutex;
+    bool _running;
 };

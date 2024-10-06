@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(UDPServer)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
 
 add_library(rtype_server_lib STATIC)
 
@@ -11,7 +12,6 @@ target_include_directories(rtype_server_lib PUBLIC include)
 
 add_executable(r-type_server
     src/main.cpp
-    src/UDPServer.cpp
 )
 
 target_link_libraries(r-type_server Boost::boost rtype_server_lib)

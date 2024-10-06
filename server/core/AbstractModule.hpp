@@ -37,7 +37,7 @@ class AbstractModule : public MultiThreadElement {
         /**
          * @brief Start the module.
          */
-        void start();
+        virtual void start();
         /**
          * @brief The main loop of the module
          */
@@ -45,18 +45,18 @@ class AbstractModule : public MultiThreadElement {
         /**
          * @brief Stop the module.
          */
-        void stop();
+        virtual void stop();
     protected:
         /**
          * @brief Decode the message received from the server.
          * @param message The message to decode.
          */
-        virtual void decodeInterCommunication(std::string message) override;
+        virtual std::string decodeInterCommunication(std::string message) override;
         /**
          * @brief Encode the message to send to the server.
          * @param message The message to encode.
          */
-        virtual void encodeInterCommunication(std::string message) override;
+        virtual std::string encodeInterCommunication(std::string message) override;
         bool _Running; /*!< The state of the module. */
         std::string _ModuleName; /*!< The name of the module. */
 };
