@@ -72,7 +72,7 @@ class Server : MultiThreadElement {
         */
         void createModule(AbstractModule *module);
         bool isClient(const std::string ip, const short port);
-        std::string Server::createMessage(const std::string ip, const short port, const std::string message);
+        std::string createMessage(const std::string ip, const short port, const std::string message);
         Client findClient(const std::string ip, const short port);
         Client findClient(const uuid uuid);
         bool _Running; /*!< The state of the server. */

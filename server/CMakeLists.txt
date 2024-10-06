@@ -5,10 +5,16 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
+include_directories(/usr/include/uuid)
+find_library(UUID_LIB uuid)
 
 add_library(rtype_server_lib STATIC)
 
 target_include_directories(rtype_server_lib PUBLIC include)
+
+if(UUID_LIB)
+    target_link_libraries(rtype_server_lib ${UUID_LIB})
+endif()
 
 add_executable(r-type_server
     src/main.cpp

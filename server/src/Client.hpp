@@ -16,7 +16,7 @@
     #include "sys/socket.h"
 #endif
 #include <string>
-#include "UUID.hpp"
+#include "../lib/UUID.hpp"
 
 class Client {
     public:
