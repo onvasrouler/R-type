@@ -12,7 +12,7 @@
 class Hp : public ATools
 {
 public:
-    Hp() : ATools() {}
-    Hp(int value) : ATools(value) {}
-    ~Hp() {}
+    Hp() = default;
+    Hp(const int value) : ATools(value) {}
+    ~Hp() = default;
 };
