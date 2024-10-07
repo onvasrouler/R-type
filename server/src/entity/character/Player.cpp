@@ -37,7 +37,7 @@ void Player::move()
     }
 }
 
-bool Player::get_has_shot()
+bool Player::get_has_shot() const
 {
     return (this->_has_shot);
 }
@@ -56,7 +56,7 @@ void Player::set_dir(enum Direction dir)
     this->_dir = dir;
 }
 
-std::clock_t Player::get_cl()
+std::clock_t Player::get_cl() const
 {
     return (this->_cl);
 }

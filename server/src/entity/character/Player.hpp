@@ -28,9 +28,9 @@ public:
     void move();
     enum Direction get_dir();
     void set_dir(enum Direction dir);
-    bool get_has_shot();
+    bool get_has_shot() const;
     void set_has_shot(bool has_shot);
-    std::clock_t get_cl();
+    std::clock_t get_cl() const;
     void restart_cl();
 
 private:

@@ -20,7 +20,7 @@ Id::~Id()
 
 }
 
-int Id::get_value()
+int Id::get_value() const
 {
     return (this->_value);
 }

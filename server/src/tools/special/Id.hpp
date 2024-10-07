@@ -15,7 +15,7 @@ public:
     Id();
     ~Id();
 
-    int get_value();
+    int get_value() const;
 
 private:
     int _value;

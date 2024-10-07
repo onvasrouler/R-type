@@ -24,7 +24,7 @@ void Bullet::move()
     this->_origin->set_x(this->_origin->get_x() + 2);
 }
 
-int Bullet::get_damage()
+int Bullet::get_damage() const
 {
     return (this->_damage->get_value());
 }

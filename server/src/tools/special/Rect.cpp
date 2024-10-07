@@ -34,12 +34,12 @@ void Rect::set_h(int h)
     this->_h = h;
 }
 
-int Rect::get_l()
+int Rect::get_l() const
 {
     return (this->_l);
 }
 
-int Rect::get_h()
+int Rect::get_h() const
 {
     return (this->_h);
 }

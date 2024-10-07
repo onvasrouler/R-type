@@ -27,12 +27,12 @@ public:
     void set_y(int y);
     void set_type(int type);
 
-    int get_x(void);
-    int get_y(void);
-    int get_l(void);
-    int get_h(void);
-    int get_id(void);
-    int get_type(void);
+    int get_x(void) const;
+    int get_y(void) const;
+    int get_l(void) const;
+    int get_h(void) const;
+    int get_id(void) const;
+    int get_type(void) const;
 
 protected:
     std::shared_ptr<Point> _origin;

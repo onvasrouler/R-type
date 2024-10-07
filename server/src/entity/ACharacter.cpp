@@ -14,12 +14,12 @@ ACharacter::ACharacter() : AEntity()
 }
 
 
-int ACharacter::get_hp()
+int ACharacter::get_hp() const
 {
     return (this->_hp->get_value());
 }
 
-int ACharacter::get_level()
+int ACharacter::get_level() const
 {
     return (this->_level->get_value());
 }

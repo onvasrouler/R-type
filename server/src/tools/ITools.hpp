@@ -14,5 +14,5 @@ public:
 
     virtual void set_value(int value) = 0;
 
-    virtual int get_value() = 0;
+    virtual int get_value() const = 0;
 };

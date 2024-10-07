@@ -22,7 +22,7 @@ void ATools::set_value(int value)
     this->_value = value;
 }
 
-int ATools::get_value()
+int ATools::get_value() const
 {
     return (this->_value);
 }

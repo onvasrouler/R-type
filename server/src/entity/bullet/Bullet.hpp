@@ -19,7 +19,7 @@ public:
     void move();
 
     void set_damage(int damage);
-    int get_damage(void);
+    int get_damage(void) const;
 private:
     std::shared_ptr<Damage> _damage;
 };

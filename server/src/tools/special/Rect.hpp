@@ -17,8 +17,8 @@ public:
     void set_l(int l);
     void set_h(int h);
 
-    int get_l();
-    int get_h();
+    int get_l() const;
+    int get_h() const;
 
 private:
     int _h;

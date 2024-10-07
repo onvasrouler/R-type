@@ -22,8 +22,8 @@ public:
     void set_hp(int hp);
     void set_level(int level);
 
-    int get_hp(void);
-    int get_level(void);
+    int get_hp(void) const;
+    int get_level(void) const;
 
 protected:
     std::shared_ptr<Hp> _hp;

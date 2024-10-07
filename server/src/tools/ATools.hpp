@@ -18,7 +18,7 @@ public:
 
     void set_value(int value);
 
-    int get_value();
+    int get_value() const;
 protected:
     int _value;
 };
