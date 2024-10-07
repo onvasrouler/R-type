@@ -22,6 +22,7 @@ public:
     Game();
     ~Game() = default;
 
+    void init();
     void check_collisions();
     void start();
     void run();

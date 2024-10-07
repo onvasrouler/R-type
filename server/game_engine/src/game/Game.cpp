@@ -9,7 +9,7 @@
 
 Game::Game()
 {
-    this->init_game();
+    this->init();
 }
 
 bool Game::create_player()
@@ -134,6 +134,11 @@ void Game::check_collisions()
     for (auto id : to_destroy) {
         this->destroy_enemy(id);
     }
+}
+
+void Game::init()
+{
+    
 }
 
 void Game::start()
