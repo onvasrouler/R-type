@@ -31,6 +31,7 @@ Game::Game()
  */
 bool Game::create_player()
 {
+    std::lock_guard<std::mutex> lock(_player_mutex);
     if (this->_player.size() < 4) {
         this->_player.push_back(Player(50));
     } else {
@@ -49,6 +50,7 @@ bool Game::create_player()
  */
 void Game::create_bullet(const Player player)
 {
+    std::lock_guard<std::mutex> lock(_bullet_mutex);
     this->_bullet.push_back(Bullet(player.get_x() + player.get_l(), player.get_y()));
 }
 
@@ -59,6 +61,7 @@ void Game::create_bullet(const Player player)
  */
 void Game::create_enemy()
 {
+    std::lock_guard<std::mutex> lock(_enemy_mutex);
     this->_enemy.push_back(Enemy(50));
 }
 
@@ -71,6 +74,7 @@ void Game::create_enemy()
  */
 void Game::destroy_player(const int player_id)
 {
+    std::lock_guard<std::mutex> lock(_player_mutex);
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
         if (player->get_id() == player_id) {
             this->_player.erase(player);
@@ -88,6 +92,7 @@ void Game::destroy_player(const int player_id)
  */
 void Game::destroy_bullet(const int bullet_id)
 {
+    std::lock_guard<std::mutex> lock(_bullet_mutex);
     for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
         if (it->get_id() == bullet_id) {
             this->_bullet.erase(it);
@@ -105,6 +110,7 @@ void Game::destroy_bullet(const int bullet_id)
  */
 void Game::destroy_enemy(const int enemy_id)
 {
+    std::lock_guard<std::mutex> lock(_enemy_mutex);
     for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
         if (it->get_id() == enemy_id) {
             this->_enemy.erase(it);
@@ -120,6 +126,9 @@ void Game::destroy_enemy(const int enemy_id)
  */
 void Game::update_world()
 {
+    std::lock_guard<std::mutex> lock_player(_player_mutex);
+    std::lock_guard<std::mutex> lock_enemy(_enemy_mutex);
+    std::lock_guard<std::mutex> lock_bullet(_bullet_mutex);
     for (auto& enemy : this->_enemy) {
         enemy.move();
     }

@@ -20,6 +20,7 @@
 #include <string>
 #include <ctime>
 #include <iostream>
+#include <mutex>
 
 /**
  * @class Game
@@ -147,4 +148,8 @@ private:
     std::vector<Enemy> _enemy; ///< List of enemies in the game.
     std::vector<Bullet> _bullet; ///< List of bullets in the game.
     bool _running; ///< Flag indicating if the game is running.
+
+    std::mutex _player_mutex; ///< Mutex for protecting the player vector.
+    std::mutex _enemy_mutex; ///< Mutex for protecting the enemy vector.
+    std::mutex _bullet_mutex; ///< Mutex for protecting the bullet vector.
 };
