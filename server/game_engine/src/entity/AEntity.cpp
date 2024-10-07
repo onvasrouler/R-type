@@ -20,7 +20,7 @@
  */
 AEntity::AEntity()
 {
-    this->_id = Id();
+    this->_id = UUID();
     this->_type = Type(0);
 }
 
@@ -79,7 +79,7 @@ int AEntity::get_type()
  * 
  * @return int The current ID of the entity.
  */
-const std::string& AEntity::get_id() const
+const UUID AEntity::get_id() const
 {
     return this->_id.get_value();
 }

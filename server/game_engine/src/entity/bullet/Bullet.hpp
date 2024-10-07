@@ -15,8 +15,8 @@
 #include "AEntity.hpp"
 #include "Damage.hpp"
 
-#define BULLET_SIZE 5 ///< The size of the bullet.
-#define BULLET_MOVE_DISTANCE 2 ///< The distance to move the bullet in one step.
+#define BULLET_SIZE 5 ///< The size of the bullet in pixels.
+#define BULLET_MOVE_DISTANCE 2 ///< The distance in pixels to move the bullet in one step.
 
 /**
  * @class Bullet

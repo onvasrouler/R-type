@@ -15,9 +15,9 @@
 #include <ctime>
 #include "ACharacter.hpp"
 
-#define INITIAL_X 10 ///< The initial x-coordinate of the player.
-#define INITIAL_DIMENSION 10 ///< The initial dimensions of the player.
-#define MOVE_DISTANCE 1 ///< The distance to move the player in one step.
+#define INITIAL_X 10 ///< The initial x-coordinate of the player in pixels.
+#define INITIAL_DIMENSION 10 ///< The initial dimensions of the player in pixels.
+#define MOVE_DISTANCE 1 ///< The distance to move the player in one step in pixels.
 
 /**
  * @enum Direction

@@ -19,12 +19,17 @@
  */
 Game::Game()
 {
+    std::cout << "Creating game engine" << std::endl;
     _running = false;
+    std::cout << "Game engine created" << std::endl;
 }
 
 Game::~Game()
 {
-    this->stop();
+    std::cout << "Deleting game engine" << std::endl;
+    if (_running)
+        this->stop();
+    std::cout << "Game engine deleted" << std::endl;
 }
 
 /**
@@ -34,7 +39,7 @@ Game::~Game()
  * 
  * This method adds a new player to the game if the number of players is less than 4.
  */
-bool Game::create_player(const std::string& id)
+bool Game::create_player(const UUID id)
 {
     std::lock_guard<std::mutex> lock(_player_mutex);
     if (this->_player.size() < 4) {
@@ -79,7 +84,7 @@ void Game::create_enemy()
  * 
  * This method removes a player from the game based on their ID.
  */
-void Game::destroy_player(const std::string& id)
+void Game::destroy_player(const UUID id)
 {
     std::lock_guard<std::mutex> lock(_player_mutex);
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
@@ -97,7 +102,7 @@ void Game::destroy_player(const std::string& id)
  * 
  * This method removes a bullet from the game based on its ID.
  */
-void Game::destroy_bullet(const std::string& bullet_id)
+void Game::destroy_bullet(const UUID bullet_id)
 {
     std::lock_guard<std::mutex> lock(_bullet_mutex);
     for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
@@ -115,7 +120,7 @@ void Game::destroy_bullet(const std::string& bullet_id)
  * 
  * This method removes an enemy from the game based on their ID.
  */
-void Game::destroy_enemy(const std::string& enemy_id)
+void Game::destroy_enemy(const UUID enemy_id)
 {
     std::lock_guard<std::mutex> lock(_enemy_mutex);
     for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
@@ -228,8 +233,10 @@ void Game::check_collisions()
  */
 void Game::start()
 {
+    std::cout << "Starting game engine" << std::endl;
     std::clock_t cl = clock();
     _running = true;
+    std::cout << "Game engine started" << std::endl;
 }
 
 /**
@@ -239,7 +246,9 @@ void Game::start()
  */
 void Game::stop()
 {
+    std::cout << "Stopping game engine" << std::endl;
     _running = false;
+    std::cout << "Game engine stopped" << std::endl;
 }
 
 /**
@@ -249,6 +258,7 @@ void Game::stop()
  */
 void Game::run()
 {
+    std::cout << "Running game engine" << std::endl;
     while (_running) {
         if (clock() - cl > 100000) { // 1000000 = 1 sec
             cl = clock();
@@ -257,4 +267,5 @@ void Game::run()
         }
         this->check_collisions();
     }
+    std::cout << "Game engine stop run" << std::endl;
 }

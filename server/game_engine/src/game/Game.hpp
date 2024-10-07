@@ -83,7 +83,7 @@ public:
      * 
      * This method adds a new player to the game if the number of players is less than 4.
      */
-    bool create_player(const std::string& id);
+    bool create_player(const UUID id);
 
     /**
      * @brief Create a new bullet for a given player.
@@ -108,7 +108,7 @@ public:
      * 
      * This method removes a player from the game based on their ID.
      */
-    void destroy_player(const std::string& id);
+    void destroy_player(const UUID id);
 
     /**
      * @brief Destroy a bullet by its ID.
@@ -117,7 +117,7 @@ public:
      * 
      * This method removes a bullet from the game based on its ID.
      */
-    void destroy_bullet(const int bullet_id);
+    void destroy_bullet(const UUID bullet_id);
 
     /**
      * @brief Destroy an enemy by their ID.
@@ -126,7 +126,7 @@ public:
      * 
      * This method removes an enemy from the game based on their ID.
      */
-    void destroy_enemy(const int enemy_id);
+    void destroy_enemy(const UUID enemy_id);
 
     /**
      * @brief Update the game world.
