@@ -7,15 +7,10 @@
 
 #include "Enemy.hpp"
 
-Enemy::Enemy(int y) : ACharacter()
+Enemy::Enemy(const int y) : ACharacter()
 {
     this->_origin = Point(25, y);
     this->_dimension = Rect(10, 10);
-}
-
-Enemy::~Enemy()
-{
-
 }
 
 void Enemy::move()

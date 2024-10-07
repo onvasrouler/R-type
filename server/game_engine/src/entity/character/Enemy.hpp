@@ -12,8 +12,8 @@
 class Enemy : public ACharacter
 {
 public:
-    Enemy(int y);
-    ~Enemy();
+    Enemy(const int y);
+    ~Enemy() = default;
 
     void move();
 };
