@@ -12,7 +12,7 @@
 class Damage : public ATools
 {
 public:
-    Damage() : ATools() {}
-    Damage(int value) : ATools(value) {}
-    ~Damage() {}
+    Damage() = default;
+    Damage(const int value) : ATools(value) {}
+    ~Damage() = default;
 };
