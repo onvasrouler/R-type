@@ -12,17 +12,17 @@ ATools::ATools()
     this->_value = 0;
 }
 
-ATools::ATools(int value)
+ATools::ATools(const int value)
 {
     this->_value = value;
 }
 
-void ATools::set_value(int value)
+void ATools::set_value(const int value)
 {
     this->_value = value;
 }
 
-int ATools::get_value() const
+int ATools::get_value()
 {
-    return (this->_value);
+    return this->_value;
 }
