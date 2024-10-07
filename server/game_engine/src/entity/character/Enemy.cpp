@@ -32,5 +32,5 @@ Enemy::Enemy(const int y) : ACharacter()
  */
 void Enemy::move()
 {
-    this->_origin.moveX(ENEMY_MOVE_DISTANCE);
+    this->_origin.moveX(-ENEMY_MOVE_DISTANCE);
 }

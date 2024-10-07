@@ -14,7 +14,7 @@
 
 #include "ACharacter.hpp"
 
-#define ENEMY_MOVE_DISTANCE -2 ///< The distance an enemy moves per update.
+#define ENEMY_MOVE_DISTANCE 2 ///< The distance an enemy moves per update.
 
 /**
  * @class Enemy
