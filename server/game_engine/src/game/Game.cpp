@@ -22,6 +22,11 @@ Game::Game()
     _running = false;
 }
 
+Game::~Game()
+{
+    this->stop();
+}
+
 /**
  * @brief Create a new player in the game.
  * 

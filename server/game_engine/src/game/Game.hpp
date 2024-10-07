@@ -43,7 +43,7 @@ public:
     /**
      * @brief Default destructor for Game.
      */
-    ~Game() = default;
+    ~Game();
 
     /**
      * @brief Check for collisions between entities.
