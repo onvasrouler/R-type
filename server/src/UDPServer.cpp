@@ -81,10 +81,10 @@ void UDPServer::handle_receive(std::size_t length) {
         _sendMutex.lock();
         std::cout << "size:" << _sentData.size() << std::endl;
         for (auto& sendData : _sentData) {
-            // if (sendData.getIp() != _remote_endpoint.address().to_string() ||
-            //     sendData.getPort() != _remote_endpoint.port()) {
-            //     continue;
-            // }
+            if (sendData.getIp() != _remote_endpoint.address().to_string() ||
+                sendData.getPort() != _remote_endpoint.port()) {
+                continue;
+            }
             _socket.async_send_to(
                 boost::asio::buffer(sendData.getData()), _remote_endpoint,
                 [this](std::error_code ec, std::size_t) {
