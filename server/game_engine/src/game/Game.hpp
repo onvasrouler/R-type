@@ -22,9 +22,10 @@ public:
     Game();
     ~Game();
 
-    void init_game();
     void check_collisions();
-
+    void start();
+    void run();
+    void stop();
     bool create_player();
     void create_bullet(Player first);
     void create_enemy();

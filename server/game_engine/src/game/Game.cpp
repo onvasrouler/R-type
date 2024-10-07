@@ -163,13 +163,20 @@ void Game::check_collisions()
     }
 }
 
-
-void Game::init_game()
+void Game::start()
 {
     std::clock_t cl = clock();
     this->create_player();
     this->create_player();
+}
 
+void Game::stop()
+{
+    
+}
+
+void Game::run()
+{
     while (this->_player.size() > 0) {
         if (clock() - cl > 100000) { // 1000000 = 1 sec
             cl = clock();
