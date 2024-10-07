@@ -146,4 +146,5 @@ private:
     std::vector<Player> _player; ///< List of players in the game.
     std::vector<Enemy> _enemy; ///< List of enemies in the game.
     std::vector<Bullet> _bullet; ///< List of bullets in the game.
+    bool _running; ///< Flag indicating if the game is running.
 };

@@ -19,7 +19,7 @@
  */
 Game::Game()
 {
-    
+    _running = false;
 }
 
 /**
