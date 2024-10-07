@@ -3,6 +3,13 @@ project(UDPServer)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(Boost REQUIRED COMPONENTS system filesystem)
+
+if (MACOS)
+    include_directories(/opt/homebrew/include)
+    link_directories(/opt/homebrew/lib)
+endif()
+
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -26,7 +33,7 @@ add_subdirectory(src)
 if (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 elseif (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra -Wpedantic")
 endif()
 
 if (TESTS)
