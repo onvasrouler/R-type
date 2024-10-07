@@ -43,3 +43,11 @@ int Point::get_y() const
 {
     return (this->_y);
 }
+
+void Point::moveX(const int distance) {
+    _x += distance;
+}
+
+void Point::moveY(const int distance) {
+    _y += distance;
+}

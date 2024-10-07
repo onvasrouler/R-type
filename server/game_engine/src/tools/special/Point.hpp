@@ -20,6 +20,9 @@ public:
     int get_x() const;
     int get_y() const;
 
+    void moveX(const int distance);
+    void moveY(const int distance);
+
 private:
     int _x;
     int _y;

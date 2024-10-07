@@ -9,6 +9,8 @@
 
 #include "ACharacter.hpp"
 
+#define ENEMY_MOVE_DISTANCE -2
+
 class Enemy : public ACharacter
 {
 public:
