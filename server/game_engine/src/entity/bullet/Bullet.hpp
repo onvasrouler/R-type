@@ -18,8 +18,8 @@ public:
 
     void move();
 
-    void set_damage(int damage);
-    int get_damage(void) const;
+    void set_damage(const int damage);
+    int get_damage(void);
 private:
     Damage _damage;
 };

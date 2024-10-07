@@ -24,12 +24,12 @@ void Bullet::move()
     this->_origin.set_x(this->_origin.get_x() + 2);
 }
 
-int Bullet::get_damage() const
+int Bullet::get_damage()
 {
     return (this->_damage.get_value());
 }
 
-void Bullet::set_damage(int damage)
+void Bullet::set_damage(const int damage)
 {
     this->_damage.set_value(damage);
 }
