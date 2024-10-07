@@ -12,7 +12,7 @@
 class Velocity : public ATools
 {
 public:
-    Velocity() : ATools() {}
-    Velocity(int value) : ATools(value) {}
-    ~Velocity() {}
+    Velocity() = default;
+    Velocity(const int value) : ATools(value) {}
+    ~Velocity() = default;
 };
