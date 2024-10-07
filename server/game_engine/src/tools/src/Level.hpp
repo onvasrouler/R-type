@@ -12,7 +12,7 @@
 class Level : public ATools
 {
 public:
-    Level() : ATools() {}
-    Level(int value) : ATools(value) {}
-    ~Level() {}
+    Level() = default;
+    Level(const int value) : ATools(value) {}
+    ~Level() = default;
 };
