@@ -22,7 +22,11 @@ class serverModule {
         * @param module The module to store.
         * @param serverInterSocket The socket to communicate with the module.
         */
-        serverModule(AbstractModule *module, const int serverInterSocket);
+        #ifdef _WIN32
+            serverModule(AbstractModule* module, const SOCKET serverInterSocket);
+        #else
+            serverModule(AbstractModule *module, const int serverInterSocket);
+        #endif
         /*
         * @brief Copy constructor of serverModule.
         * @param module The module to store.
@@ -44,6 +48,14 @@ class serverModule {
         * @brief Stop the module.
         */
         void stop();
+
+        std::shared_ptr<AbstractModule> getModule();
+
+        #ifdef _WIN32
+            SOCKET getSocket();
+        #else
+            int getSocket();
+        #endif
     private:
         std::shared_ptr<AbstractModule> _module; // The module to store.
         #ifdef _WIN32

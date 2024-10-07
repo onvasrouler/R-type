@@ -41,11 +41,11 @@ class GameModule : public AbstractModule {
         * @brief Encode the message to send to the server.
         * @param message The message to encode.
         */
-        void encodeInterCommunication(std::string message) override;
+        std::string encodeInterCommunication(std::string message) override;
         /**
         * @brief Decode the message received from the server.
         * @param message The message to decode.
         */
-        void decodeInterCommunication(std::string message) override;
+        std::string decodeInterCommunication(std::string message) override;
         //Need to be implemented with the game engine
 };
