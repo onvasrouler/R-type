@@ -108,31 +108,31 @@ void Game::check_collisions()
 {
     std::vector<int> to_destroy;
 
-    for (long unsigned int i = 0; i < this->_player.size(); i++) {
-        for (long unsigned int u = 0; u < this->_enemy.size(); u++) {
-            if (this->is_in_collision(this->_player[i], this->_enemy[u])) {
-                to_destroy.push_back(this->_player[i].get_id());
+    for (auto& player : this->_player) {
+        for (auto& enemy : this->_enemy) {
+            if (this->is_in_collision(player, enemy)) {
+                to_destroy.push_back(player.get_id());
             }
         }
     }
 
-    for (long unsigned int i = 0; i < to_destroy.size(); i++) {
-        this->destroy_player(to_destroy[i]);
+    for (auto id : to_destroy) {
+        this->destroy_player(id);
     }
 
     to_destroy.clear();
 
-    for (long unsigned int i = 0; i < this->_enemy.size(); i++) {
-        for (long unsigned int u = 0; i < this->_bullet.size(); u++) {
-            if (this->is_in_collision(this->_enemy[i], this->_bullet[u])) {
-                to_destroy.push_back(this->_enemy[i].get_id());
-                this->destroy_bullet(this->_bullet[u].get_id());
+    for (auto& enemy : this->_enemy) {
+        for (auto& bullet : this->_bullet) {
+            if (this->is_in_collision(enemy, bullet)) {
+                to_destroy.push_back(enemy.get_id());
+                this->destroy_bullet(bullet.get_id());
             }
         }
     }
 
-    for (long unsigned int i = 0; i < to_destroy.size(); i++) {
-        this->destroy_enemy(to_destroy[i]);
+    for (auto id : to_destroy) {
+        this->destroy_enemy(id);
     }
 }
 
