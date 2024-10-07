@@ -12,12 +12,6 @@ Game::Game()
     this->init_game();
 }
 
-
-Game::~Game()
-{
-
-}
-
 bool Game::create_player()
 {
     if (this->_player.size() < 4) {

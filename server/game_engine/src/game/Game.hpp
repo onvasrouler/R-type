@@ -20,7 +20,7 @@ class Game
 {
 public:
     Game();
-    ~Game();
+    ~Game() = default;
 
     void check_collisions();
     void start();
