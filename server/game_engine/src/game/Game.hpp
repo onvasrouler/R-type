@@ -15,6 +15,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Bullet.hpp"
+#include "../../../lib/UUID.hpp"
 
 #include <vector>
 #include <string>
@@ -76,11 +77,13 @@ public:
     /**
      * @brief Create a new player in the game.
      * 
+     * @param id The ID of the player to be created.
+     * 
      * @return true if the player was successfully created, false otherwise.
      * 
      * This method adds a new player to the game if the number of players is less than 4.
      */
-    bool create_player();
+    bool create_player(const std::string& id);
 
     /**
      * @brief Create a new bullet for a given player.
@@ -105,7 +108,7 @@ public:
      * 
      * This method removes a player from the game based on their ID.
      */
-    void destroy_player(const int player_id);
+    void destroy_player(const std::string& id);
 
     /**
      * @brief Destroy a bullet by its ID.

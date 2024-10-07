@@ -11,6 +11,7 @@
  */
 
 #include "AEntity.hpp"
+#include <string>
 
 /**
  * @brief Construct a new AEntity object.
@@ -78,7 +79,7 @@ int AEntity::get_type()
  * 
  * @return int The current ID of the entity.
  */
-int AEntity::get_id()
+const std::string& AEntity::get_id() const
 {
     return this->_id.get_value();
 }

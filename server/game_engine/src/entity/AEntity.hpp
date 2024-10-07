@@ -115,7 +115,7 @@ public:
      * 
      * @return int The current ID of the entity.
      */
-    int get_id(void);
+    const std::string& AEntity::get_id() const;
 
     /**
      * @brief Get the type of the entity.

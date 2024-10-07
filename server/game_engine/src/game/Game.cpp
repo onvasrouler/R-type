@@ -29,11 +29,13 @@ Game::Game()
  * 
  * This method adds a new player to the game if the number of players is less than 4.
  */
-bool Game::create_player()
+bool Game::create_player(const std::string& id)
 {
     std::lock_guard<std::mutex> lock(_player_mutex);
     if (this->_player.size() < 4) {
-        this->_player.push_back(Player(50));
+        Player player(50);
+        player.set_id(id);
+        this->_player.push_back(player);
     } else {
         return false;
     }
@@ -72,11 +74,11 @@ void Game::create_enemy()
  * 
  * This method removes a player from the game based on their ID.
  */
-void Game::destroy_player(const int player_id)
+void Game::destroy_player(const std::string& id)
 {
     std::lock_guard<std::mutex> lock(_player_mutex);
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
-        if (player->get_id() == player_id) {
+        if (player->get_id() == id) {
             this->_player.erase(player);
             return;
         }
@@ -90,7 +92,7 @@ void Game::destroy_player(const int player_id)
  * 
  * This method removes a bullet from the game based on its ID.
  */
-void Game::destroy_bullet(const int bullet_id)
+void Game::destroy_bullet(const std::string& bullet_id)
 {
     std::lock_guard<std::mutex> lock(_bullet_mutex);
     for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
@@ -108,7 +110,7 @@ void Game::destroy_bullet(const int bullet_id)
  * 
  * This method removes an enemy from the game based on their ID.
  */
-void Game::destroy_enemy(const int enemy_id)
+void Game::destroy_enemy(const std::string& enemy_id)
 {
     std::lock_guard<std::mutex> lock(_enemy_mutex);
     for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
@@ -184,7 +186,7 @@ bool Game::is_in_collision(AEntity& entity1, AEntity& entity2)
  */
 void Game::check_collisions()
 {
-    std::vector<int> to_destroy;
+    std::vector<std::string> to_destroy;
 
     for (auto& player : this->_player) {
         for (auto& enemy : this->_enemy) {

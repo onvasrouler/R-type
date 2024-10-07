@@ -12,7 +12,9 @@
 
 #pragma once
 
+#include <string>
 #include "ATools.hpp"
+#include "../../../../lib/UUID.hpp"
 
 /**
  * @class Id
@@ -43,8 +45,8 @@ public:
      * 
      * This method returns the value of the ID stored in the _value attribute.
      */
-    int get_value() const;
+    std::string get_value() const;
 
 private:
-    int _value; ///< The value of the ID.
+    std::string _value; ///< The value of the ID.
 };

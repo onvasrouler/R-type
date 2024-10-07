@@ -13,11 +13,6 @@
 #include <Id.hpp>
 
 /**
- * @brief Global variable to keep track of the next ID number.
- */
-int ID_nb = 0;
-
-/**
  * @brief Construct a new Id object.
  * 
  * This constructor initializes the ID value to the current value of ID_nb
@@ -25,8 +20,7 @@ int ID_nb = 0;
  */
 Id::Id()
 {
-    this->_value = ID_nb;
-    ID_nb = ID_nb + 1;
+    this->_value = uuid().toString();
 }
 
 /**
@@ -36,7 +30,7 @@ Id::Id()
  * 
  * This method returns the value of the ID stored in the _value attribute.
  */
-int Id::get_value() const
+std::string Id::get_value() const
 {
     return this->_value;
 }
