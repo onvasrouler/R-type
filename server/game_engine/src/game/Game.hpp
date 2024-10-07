@@ -15,7 +15,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Bullet.hpp"
-#include "../../../lib/UUID.hpp"
+#include "UUID.hpp"
 
 #include <vector>
 #include <string>
