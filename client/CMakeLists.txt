@@ -3,6 +3,10 @@ project(UDPClient)
 
 set(CMAKE_CXX_STANDARD 11)
 
+if (MACOS)
+    set(BOOST_ROOT "/usr/local/opt/boost")
+endif()
+
 find_package(Boost REQUIRED)
 
 add_executable(r-type_client src/main.cpp)
