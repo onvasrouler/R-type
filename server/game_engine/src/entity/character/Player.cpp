@@ -37,7 +37,7 @@ bool Player::get_has_shot()
     return this->_has_shot;
 }
 
-void Player::set_has_shot(bool has_shot)
+void Player::set_has_shot(const bool has_shot)
 {
     this->_has_shot = has_shot;
 }
@@ -46,7 +46,7 @@ enum Direction Player::get_dir()
 {
     return this->_dir;
 }
-void Player::set_dir(enum Direction dir)
+void Player::set_dir(const enum Direction dir)
 {
     this->_dir = dir;
 }

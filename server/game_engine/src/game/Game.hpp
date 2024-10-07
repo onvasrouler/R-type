@@ -22,17 +22,16 @@ public:
     Game();
     ~Game() = default;
 
-    void init();
     void check_collisions();
     void start();
     void run();
     void stop();
     bool create_player();
-    void create_bullet(Player first);
+    void create_bullet(const Player first);
     void create_enemy();
-    void destroy_player(int player_id);
-    void destroy_bullet(int bullet_id);
-    void destroy_enemy(int enemy_id);
+    void destroy_player(const int player_id);
+    void destroy_bullet(const int bullet_id);
+    void destroy_enemy(const int enemy_id);
     void update_word();
     bool is_in_collision(AEntity& entity1, AEntity& entity2);
 private:

@@ -19,11 +19,11 @@ public:
 
     virtual void move() = 0;
 
-    void set_hp(int hp);
-    void set_level(int level);
+    void set_hp(const int hp);
+    void set_level(const int level);
 
-    int get_hp(void) const;
-    int get_level(void) const;
+    int get_hp(void);
+    int get_level(void);
 
 protected:
     Hp _hp;

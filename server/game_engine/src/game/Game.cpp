@@ -9,7 +9,7 @@
 
 Game::Game()
 {
-    this->init();
+    
 }
 
 bool Game::create_player()
@@ -34,7 +34,7 @@ void Game::create_enemy()
     this->_enemy.push_back(Enemy(50));
 }
 
-void Game::destroy_player(int player_id)
+void Game::destroy_player(const int player_id)
 {
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
         if (player->get_id() == player_id) {
@@ -44,7 +44,7 @@ void Game::destroy_player(int player_id)
     }
 }
 
-void Game::destroy_bullet(int bullet_id)
+void Game::destroy_bullet(const int bullet_id)
 {
     for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
         if (it->get_id() == bullet_id) {
@@ -54,7 +54,7 @@ void Game::destroy_bullet(int bullet_id)
     }
 }
 
-void Game::destroy_enemy(int enemy_id)
+void Game::destroy_enemy(const int enemy_id)
 {
     for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
         if (it->get_id() == enemy_id) {
@@ -134,11 +134,6 @@ void Game::check_collisions()
     for (auto id : to_destroy) {
         this->destroy_enemy(id);
     }
-}
-
-void Game::init()
-{
-    
 }
 
 void Game::start()
