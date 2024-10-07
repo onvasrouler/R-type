@@ -7,18 +7,13 @@
 
 #include "Player.hpp"
 
-Player::Player (int y) : ACharacter()
+Player::Player (const int y) : ACharacter()
 {
     this->_origin = Point(10, y);
     this->_dimension = Rect(10, 10);
     this->_has_shot = false;
     this->_dir = NONE;
     this->_cl = clock();
-}
-
-Player::~Player()
-{
-
 }
 
 void Player::move()
@@ -37,9 +32,9 @@ void Player::move()
     }
 }
 
-bool Player::get_has_shot() const
+bool Player::get_has_shot()
 {
-    return (this->_has_shot);
+    return this->_has_shot;
 }
 
 void Player::set_has_shot(bool has_shot)
@@ -49,16 +44,16 @@ void Player::set_has_shot(bool has_shot)
 
 enum Direction Player::get_dir()
 {
-    return (this->_dir);
+    return this->_dir;
 }
 void Player::set_dir(enum Direction dir)
 {
     this->_dir = dir;
 }
 
-std::clock_t Player::get_cl() const
+std::clock_t Player::get_cl()
 {
-    return (this->_cl);
+    return this->_cl;
 }
 
 void Player::restart_cl()
