@@ -17,8 +17,8 @@ public:
     void set_x(const int x);
     void set_y(const int y);
 
-    int get_x() const;
-    int get_y() const;
+    int get_x();
+    int get_y();
 
     void moveX(const int distance);
     void moveY(const int distance);

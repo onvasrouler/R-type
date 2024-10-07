@@ -29,12 +29,12 @@ void Point::set_y(const int y)
     this->_y = y;
 }
 
-int Point::get_x() const
+int Point::get_x()
 {
     return this->_x;
 }
 
-int Point::get_y() const
+int Point::get_y()
 {
     return this->_y;
 }

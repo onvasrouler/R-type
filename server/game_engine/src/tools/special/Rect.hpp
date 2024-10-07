@@ -11,14 +11,14 @@ class Rect
 {
 public:
     Rect();
-    Rect(int l, int h);
-    ~Rect();
+    Rect(const int l, const int h);
+    ~Rect() = default;
 
-    void set_l(int l);
-    void set_h(int h);
+    void set_l(const int l);
+    void set_h(const int h);
 
-    int get_l() const;
-    int get_h() const;
+    int get_l();
+    int get_h();
 
 private:
     int _h;
