@@ -5,35 +5,70 @@
 ** Game
 */
 
+/**
+ * @file Game.cpp
+ * @brief Implementation of the Game class.
+ */
+
 #include "Game.hpp"
 
+/**
+ * @brief Construct a new Game object.
+ * 
+ * This constructor initializes the game state.
+ */
 Game::Game()
 {
     
 }
 
+/**
+ * @brief Create a new player in the game.
+ * 
+ * @return true if the player was successfully created, false otherwise.
+ * 
+ * This method adds a new player to the game if the number of players is less than 4.
+ */
 bool Game::create_player()
 {
     if (this->_player.size() < 4) {
         this->_player.push_back(Player(50));
     } else {
-        return (false);
+        return false;
     }
 
-    return (true);
+    return true;
 }
 
+/**
+ * @brief Create a new bullet for a given player.
+ * 
+ * @param player The player for whom the bullet is created.
+ * 
+ * This method adds a new bullet to the game at the player's current position.
+ */
 void Game::create_bullet(Player player)
 {
     this->_bullet.push_back(Bullet(player.get_x() + player.get_l(), player.get_y()));
 }
 
-
+/**
+ * @brief Create a new enemy in the game.
+ * 
+ * This method adds a new enemy to the game at a predefined position.
+ */
 void Game::create_enemy()
 {
     this->_enemy.push_back(Enemy(50));
 }
 
+/**
+ * @brief Destroy a player by their ID.
+ * 
+ * @param player_id The ID of the player to be destroyed.
+ * 
+ * This method removes a player from the game based on their ID.
+ */
 void Game::destroy_player(const int player_id)
 {
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
@@ -44,6 +79,13 @@ void Game::destroy_player(const int player_id)
     }
 }
 
+/**
+ * @brief Destroy a bullet by its ID.
+ * 
+ * @param bullet_id The ID of the bullet to be destroyed.
+ * 
+ * This method removes a bullet from the game based on its ID.
+ */
 void Game::destroy_bullet(const int bullet_id)
 {
     for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
@@ -54,6 +96,13 @@ void Game::destroy_bullet(const int bullet_id)
     }
 }
 
+/**
+ * @brief Destroy an enemy by their ID.
+ * 
+ * @param enemy_id The ID of the enemy to be destroyed.
+ * 
+ * This method removes an enemy from the game based on their ID.
+ */
 void Game::destroy_enemy(const int enemy_id)
 {
     for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
@@ -64,7 +113,12 @@ void Game::destroy_enemy(const int enemy_id)
     }
 }
 
-void Game::update_word()
+/**
+ * @brief Update the game world.
+ * 
+ * This method updates the positions of all enemies, bullets, and players in the game.
+ */
+void Game::update_world()
 {
     for (auto& enemy : this->_enemy) {
         enemy.move();
@@ -84,6 +138,15 @@ void Game::update_word()
     }
 }
 
+/**
+ * @brief Check if two entities are in collision.
+ * 
+ * @param entity1 The first entity.
+ * @param entity2 The second entity.
+ * @return true if the entities are in collision, false otherwise.
+ * 
+ * This method checks if two entities are colliding based on their positions and dimensions.
+ */
 bool Game::is_in_collision(AEntity& entity1, AEntity& entity2)
 {
     int x1 = entity1.get_x();
@@ -104,6 +167,12 @@ bool Game::is_in_collision(AEntity& entity1, AEntity& entity2)
     return false;
 }
 
+/**
+ * @brief Check for collisions between entities.
+ * 
+ * This method checks for collisions between players and enemies, and between bullets and enemies.
+ * It destroys the entities involved in collisions.
+ */
 void Game::check_collisions()
 {
     std::vector<int> to_destroy;
@@ -136,6 +205,11 @@ void Game::check_collisions()
     }
 }
 
+/**
+ * @brief Start the game.
+ * 
+ * This method initializes the game by creating initial players.
+ */
 void Game::start()
 {
     std::clock_t cl = clock();
@@ -143,18 +217,28 @@ void Game::start()
     this->create_player();
 }
 
+/**
+ * @brief Stop the game.
+ * 
+ * This method stops the game. (Currently not implemented)
+ */
 void Game::stop()
 {
     
 }
 
+/**
+ * @brief Run the game loop.
+ * 
+ * This method runs the main game loop, updating the game world and checking for collisions.
+ */
 void Game::run()
 {
     while (this->_player.size() > 0) {
         if (clock() - cl > 100000) { // 1000000 = 1 sec
             cl = clock();
             std::cout << "move" << std::endl;
-            this->update_word();
+            this->update_world();
         }
         this->check_collisions();
     }
