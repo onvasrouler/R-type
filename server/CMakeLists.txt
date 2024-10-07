@@ -4,14 +4,14 @@ project(UDPServer)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(Boost REQUIRED COMPONENTS system filesystem)
+include_directories(${Boost_INCLUDE_DIRS})
 
 if (MACOS)
     include_directories(/opt/homebrew/include)
     link_directories(/opt/homebrew/lib)
 endif()
 
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
+# find_package(Boost REQUIRED)
 
 add_library(rtype_server_lib STATIC)
 
