@@ -136,7 +136,7 @@ void NetworkModule::run() {
                 std::stoi(message.substr(0, message.find("/"))));
             message = message.substr(message.find("/") + 1);
             packageData data = packageData(message, ip, port);
-            _sentData.push_back(data);
+            _udpServer->getSentData().push_back(data);
         }
         _udpServer->getSendMutex().unlock();
     }

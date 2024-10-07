@@ -13,6 +13,7 @@
 #include "Client.hpp"
 
 #define SHUTDOWN_MESSAGE "500"
+#define NEW_CONNECTION_MESSAGE "201"
 
 /**
  * @brief The Server class is the main class of the server.

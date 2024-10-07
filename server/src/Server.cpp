@@ -88,15 +88,21 @@ void Server::run() {
             short port = std::any_cast<short>(
                 std::stoi(message.substr(0, message.find("/"))));
             message = message.substr(message.find("/") + 1);
-            if (!isClient(ip, port)) {
+            if (!isClient(ip, port) && message == NEW_CONNECTION_MESSAGE) {
                 // create new player in the game engine if their is less than 4
                 // players
                 Client client = Client(ip, port);
                 _clients.push_back(client);
-            } else {
+            } else if (isClient(ip, port)) {
                 // send the message to the game engine
                 std::string messageToSend = createMessage(ip, port, message);
                 send(_modules[1]->getSocket(), messageToSend.c_str(),
+                     messageToSend.size(), 0);
+            } else {
+                // send the message to the client
+                std::string messageToSend = ip + ":" + std::to_string(port) +
+                                            "/" + "" + THREAD_END_MESSAGE;
+                send(_modules[0]->getSocket(), messageToSend.c_str(),
                      messageToSend.size(), 0);
             }
         }
