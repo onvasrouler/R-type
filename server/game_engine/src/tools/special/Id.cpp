@@ -15,11 +15,6 @@ Id::Id()
     ID_nb = ID_nb + 1;
 }
 
-Id::~Id()
-{
-
-}
-
 int Id::get_value() const
 {
     return (this->_value);

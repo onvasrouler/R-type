@@ -13,7 +13,7 @@ class Id
 {
 public:
     Id();
-    ~Id();
+    ~Id() = default;
 
     int get_value() const;
 
