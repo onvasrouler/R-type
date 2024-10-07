@@ -213,8 +213,7 @@ void Game::check_collisions()
 void Game::start()
 {
     std::clock_t cl = clock();
-    this->create_player();
-    this->create_player();
+    _running = true;
 }
 
 /**
@@ -224,7 +223,7 @@ void Game::start()
  */
 void Game::stop()
 {
-    
+    _running = false;
 }
 
 /**
@@ -234,7 +233,7 @@ void Game::stop()
  */
 void Game::run()
 {
-    while (this->_player.size() > 0) {
+    while (_running) {
         if (clock() - cl > 100000) { // 1000000 = 1 sec
             cl = clock();
             std::cout << "move" << std::endl;
