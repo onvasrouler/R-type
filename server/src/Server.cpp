@@ -97,13 +97,13 @@ void Server::run() {
                 // send the message to the game engine
                 std::string messageToSend = createMessage(ip, port, message);
                 send(_modules[1]->getSocket(), messageToSend.c_str(),
-                     messageToSend.size(), 0);
+                     std::any_cast<int>(messageToSend.size()), 0);
             } else {
                 // send the message to the client
                 std::string messageToSend = ip + ":" + std::to_string(port) +
                                             "/" + "" + THREAD_END_MESSAGE;
                 send(_modules[0]->getSocket(), messageToSend.c_str(),
-                     messageToSend.size(), 0);
+                     std::any_cast<int>(messageToSend.size()), 0);
             }
         }
         messages.clear();
@@ -125,7 +125,7 @@ void Server::run() {
                                         std::to_string(client.getPort()) + "/" +
                                         message + THREAD_END_MESSAGE;
             send(_modules[0]->getSocket(), messageToSend.c_str(),
-                 messageToSend.size(), 0);
+                 std::any_cast<int>(messageToSend.size()), 0);
         }
     }
 }
@@ -139,7 +139,8 @@ void Server::stop() {
         std::string message = client.getIp() + ":" +
                               std::to_string(client.getPort()) + "/" +
                               SHUTDOWN_MESSAGE + THREAD_END_MESSAGE;
-        send(_modules[0]->getSocket(), message.c_str(), message.size(), 0);
+        send(_modules[0]->getSocket(), message.c_str(),
+             std::any_cast<int>(message.size()), 0);
     }
     for (auto& module : _modules) {
         module->stop();
