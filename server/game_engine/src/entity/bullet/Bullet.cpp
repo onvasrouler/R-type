@@ -7,16 +7,11 @@
 
 #include "Bullet.hpp"
 
-Bullet::Bullet(int x, int y) : AEntity()
+Bullet::Bullet(const int x, const int y) : AEntity()
 {
     this->_origin = Point(x, y);
     this->_dimension = Rect(5, 5);
     this->_damage = Damage(1);
-}
-
-Bullet::~Bullet()
-{
-
 }
 
 void Bullet::move()

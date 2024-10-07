@@ -13,7 +13,7 @@
 class Bullet : virtual public AEntity
 {
 public:
-    Bullet(int x, int y);
+    Bullet(const int x, const int y);
     ~Bullet() = default;
 
     void move();
