@@ -15,6 +15,9 @@
 #include "AEntity.hpp"
 #include "Damage.hpp"
 
+#define BULLET_SIZE 5 ///< The size of the bullet.
+#define BULLET_MOVE_DISTANCE 2 ///< The distance to move the bullet in one step.
+
 /**
  * @class Bullet
  * @brief Represents a bullet entity in the game.

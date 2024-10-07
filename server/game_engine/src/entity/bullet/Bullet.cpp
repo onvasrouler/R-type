@@ -21,7 +21,7 @@
 Bullet::Bullet(const int x, const int y) : AEntity()
 {
     this->_origin = Point(x, y);
-    this->_dimension = Rect(5, 5);
+    this->_dimension = Rect(BULLET_SIZE, BULLET_SIZE);
     this->_damage = Damage(1);
 }
 
@@ -32,7 +32,7 @@ Bullet::Bullet(const int x, const int y) : AEntity()
  */
 void Bullet::move()
 {
-    this->_origin.set_x(this->_origin.get_x() + 2);
+    this->_origin.set_x(this->_origin.get_x() + BULLET_MOVE_DISTANCE);
 }
 
 /**
