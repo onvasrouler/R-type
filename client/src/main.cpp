@@ -4,6 +4,8 @@
 
 using boost::asio::ip::udp;
 
+#define PORT "8081"
+
 int main() {
     try {
         boost::asio::io_context io_context;
@@ -13,7 +15,7 @@ int main() {
 
         udp::resolver resolver(io_context);
         udp::resolver::results_type endpoints =
-            resolver.resolve(udp::v4(), "127.0.0.1", "3000");
+            resolver.resolve(udp::v4(), "127.0.0.1", PORT);
 
         std::string message = "Hello from client!";
         std::vector<char> binary_message(message.begin(), message.end());
