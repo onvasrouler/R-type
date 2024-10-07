@@ -16,6 +16,9 @@
 #include "Level.hpp"
 #include "Hp.hpp"
 
+#define BASIC_LIFE_VALUE 1
+#define BASIC_LEVEL_VALUE 1
+
 /**
  * @class ACharacter
  * @brief Abstract base class for character entities in the game.

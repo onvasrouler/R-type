@@ -19,8 +19,8 @@
  */
 ACharacter::ACharacter() : AEntity()
 {
-    this->_hp = Hp(1);
-    this->_level = Level(1);
+    this->_hp = Hp(BASIC_LIFE_VALUE);
+    this->_level = Level(BASIC_LEVEL_VALUE);
 }
 
 /**
