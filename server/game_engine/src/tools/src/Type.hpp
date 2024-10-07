@@ -12,7 +12,7 @@
 class Type : public ATools
 {
 public:
-    Type() : ATools() {}
-    Type(int value) : ATools(value) {}
-    ~Type() {}
+    Type() = default;
+    Type(const int value) : ATools(value) {}
+    ~Type() = default;
 };
