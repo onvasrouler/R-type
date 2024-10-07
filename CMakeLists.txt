@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 cmake_policy(SET CMP0167 NEW)
 
+#set your vcpkg path here
 set(CMAKE_TOOLCHAIN_FILE "C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 option(SERVER "Build the server" ON)
