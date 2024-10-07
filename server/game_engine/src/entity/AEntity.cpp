@@ -13,32 +13,32 @@ AEntity::AEntity()
     this->_type = Type(0);
 }
 
-int AEntity::get_x() const
+int AEntity::get_x()
 {
     return this->_origin.get_x();
 }
 
-int AEntity::get_y() const
+int AEntity::get_y()
 {
     return this->_origin.get_y();
 }
 
-int AEntity::get_l() const
+int AEntity::get_l()
 {
     return this->_dimension.get_l();
 }
 
-int AEntity::get_h() const
+int AEntity::get_h()
 {
     return this->_dimension.get_h();
 }
 
-int AEntity::get_type() const
+int AEntity::get_type()
 {
     return this->_type.get_value();
 }
 
-int AEntity::get_id() const
+int AEntity::get_id()
 {
     return this->_id.get_value();
 }

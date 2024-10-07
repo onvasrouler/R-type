@@ -21,18 +21,18 @@ public:
 
     virtual void move() = 0;
 
-    void set_l(int l);
-    void set_h(int h);
-    void set_x(int x);
-    void set_y(int y);
-    void set_type(int type);
+    void set_l(const int l);
+    void set_h(const int h);
+    void set_x(const int x);
+    void set_y(const int y);
+    void set_type(const int type);
 
-    int get_x(void) const;
-    int get_y(void) const;
-    int get_l(void) const;
-    int get_h(void) const;
-    int get_id(void) const;
-    int get_type(void) const;
+    int get_x(void);
+    int get_y(void);
+    int get_l(void);
+    int get_h(void);
+    int get_id(void);
+    int get_type(void);
 
 protected:
     Point _origin;
