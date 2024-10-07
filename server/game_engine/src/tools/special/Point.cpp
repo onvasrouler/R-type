@@ -13,35 +13,30 @@ Point::Point()
     this->_y = 0;
 }
 
-Point::Point(int x, int y)
+Point::Point(const int x, const int y)
 {
     this->_x = x;
     this->_y = y;
 }
 
-Point::~Point()
-{
-
-}
-
-void Point::set_x(int x)
+void Point::set_x(const int x)
 {
     this->_x = x;
 }
 
-void Point::set_y(int y)
+void Point::set_y(const int y)
 {
     this->_y = y;
 }
 
 int Point::get_x() const
 {
-    return (this->_x);
+    return this->_x;
 }
 
 int Point::get_y() const
 {
-    return (this->_y);
+    return this->_y;
 }
 
 void Point::moveX(const int distance) {

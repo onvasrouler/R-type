@@ -11,11 +11,11 @@ class Point
 {
 public:
     Point();
-    Point(int x, int y);
-    ~Point();
+    Point(const int x, const int y);
+    ~Point() = default;
 
-    void set_x(int x);
-    void set_y(int y);
+    void set_x(const int x);
+    void set_y(const int y);
 
     int get_x() const;
     int get_y() const;
