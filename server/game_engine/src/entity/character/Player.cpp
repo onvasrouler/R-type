@@ -36,16 +36,16 @@ Player::Player(const int y) : ACharacter()
 void Player::move()
 {
     if (this->_dir == UP) {
-        this->set_y(this->get_y() - 1);
+        this->set_y(this->get_y() - MOVE_DISTANCE);
     }
     if (this->_dir == DOWN) {
-        this->set_y(this->get_y() + 1);
+        this->set_y(this->get_y() + MOVE_DISTANCE);
     }
     if (this->_dir == RIGHT) {
-        this->set_x(this->get_x() + 1);
+        this->set_x(this->get_x() + MOVE_DISTANCE);
     }
     if (this->_dir == LEFT) {
-        this->set_x(this->get_x() - 1);
+        this->set_x(this->get_x() - MOVE_DISTANCE);
     }
 }
 

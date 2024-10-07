@@ -15,6 +15,8 @@
 #include <ctime>
 #include "ACharacter.hpp"
 
+#define MOVE_DISTANCE 1 ///< The distance to move the player in one step.
+
 /**
  * @enum Direction
  * @brief Represents the possible movement directions for the player.
