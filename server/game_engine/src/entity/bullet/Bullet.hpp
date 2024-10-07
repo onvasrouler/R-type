@@ -14,7 +14,7 @@ class Bullet : virtual public AEntity
 {
 public:
     Bullet(int x, int y);
-    ~Bullet();
+    ~Bullet() = default;
 
     void move();
 
