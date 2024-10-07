@@ -33,9 +33,7 @@ public:
     void destroy_bullet(int bullet_id);
     void destroy_enemy(int enemy_id);
     void update_word();
-    bool is_in_collision(Player first, Enemy second);
-    bool is_in_collision(Enemy first, Bullet second);
-
+    bool is_in_collision(AEntity& entity1, AEntity& entity2);
 private:
     std::vector<Player> _player;
     std::vector<Enemy> _enemy;

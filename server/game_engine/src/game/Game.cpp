@@ -84,45 +84,24 @@ void Game::update_word()
     }
 }
 
-bool Game::is_in_collision(Player first, Enemy second)
+bool Game::is_in_collision(AEntity& entity1, AEntity& entity2)
 {
-    int x1 = first.get_x();
-    int y1 = first.get_y();
-    int l1 = first.get_l();
-    int h1 = first.get_h();
-    int x2 = second.get_x();
-    int y2 = second.get_y();
-    int l2 = second.get_l();
-    int h2 = second.get_h();
+    int x1 = entity1.get_x();
+    int y1 = entity1.get_y();
+    int l1 = entity1.get_l();
+    int h1 = entity1.get_h();
+    int x2 = entity2.get_x();
+    int y2 = entity2.get_y();
+    int l2 = entity2.get_l();
+    int h2 = entity2.get_h();
 
     if ((x1 <= x2 && x1 + l1 >= x2) || (x2 <= x1 && x2 + l2 >= x1)) {
         if ((y1 <= y2 && y1 + h1 >= y2) || (y2 <= y1 && y2 + h2 >= y1)) {
-            return (true);
+            return true;
         }
     }
 
-    return (false);
-}
-
-bool Game::is_in_collision(Enemy first, Bullet second)
-{
-    int x1 = first.get_x();
-    int y1 = first.get_y();
-    int l1 = first.get_l();
-    int h1 = first.get_h();
-    int x2 = second.get_x();
-    int y2 = second.get_y();
-    int l2 = second.get_l();
-    int h2 = second.get_h();
-
-    if ((x1 <= x2 && x1 + l1 >= x2) || (x2 <= x1 && x2 + l2 >= x1)) {
-        if ((y1 <= y2 && y1 + h1 >= y2) || (y2 <= y1 && y2 + h2 >= y1)) {
-            return (true);
-            std::cout << "lol";
-        }
-    }
-
-    return (false);
+    return false;
 }
 
 void Game::check_collisions()
