@@ -62,14 +62,14 @@ public:
      * 
      * @return int The current length of the rectangle.
      */
-    int get_l();
+    int get_l() const;
 
     /**
      * @brief Get the height of the rectangle.
      * 
      * @return int The current height of the rectangle.
      */
-    int get_h();
+    int get_h() const;
 
 private:
     int _h; ///< The height of the rectangle.

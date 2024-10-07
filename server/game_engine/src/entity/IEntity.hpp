@@ -78,28 +78,28 @@ public:
     * 
     * @return int The current x-coordinate of the entity.
     */
-   virtual int get_x(void) = 0;
+   virtual int get_x(void) const = 0;
 
    /**
     * @brief Get the y-coordinate of the entity.
     * 
     * @return int The current y-coordinate of the entity.
     */
-   virtual int get_y(void) = 0;
+   virtual int get_y(void) const = 0;
 
    /**
     * @brief Get the length (l) of the entity's dimension.
     * 
     * @return int The current length of the entity's dimension.
     */
-   virtual int get_l(void) = 0;
+   virtual int get_l(void) const = 0;
 
    /**
     * @brief Get the height (h) of the entity's dimension.
     * 
     * @return int The current height of the entity's dimension.
     */
-   virtual int get_h(void) = 0;
+   virtual int get_h(void) const = 0;
 
    /**
     * @brief Get the ID of the entity.

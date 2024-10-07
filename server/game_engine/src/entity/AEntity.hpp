@@ -87,28 +87,28 @@ public:
      * 
      * @return int The current x-coordinate of the entity.
      */
-    int get_x(void);
+    int get_x(void) const;
 
     /**
      * @brief Get the y-coordinate of the entity.
      * 
      * @return int The current y-coordinate of the entity.
      */
-    int get_y(void);
+    int get_y(void) const;
 
     /**
      * @brief Get the length (l) of the entity's dimension.
      * 
      * @return int The current length of the entity's dimension.
      */
-    int get_l(void);
+    int get_l(void) const;
 
     /**
      * @brief Get the height (h) of the entity's dimension.
      * 
      * @return int The current height of the entity's dimension.
      */
-    int get_h(void);
+    int get_h(void) const;
 
     /**
      * @brief Get the ID of the entity.

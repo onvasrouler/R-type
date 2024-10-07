@@ -62,7 +62,7 @@ void Rect::set_h(const int h)
  * 
  * @return int The current length of the rectangle.
  */
-int Rect::get_l()
+int Rect::get_l() const
 {
     return this->_l;
 }
@@ -72,7 +72,7 @@ int Rect::get_l()
  * 
  * @return int The current height of the rectangle.
  */
-int Rect::get_h()
+int Rect::get_h() const
 {
     return this->_h;
 }

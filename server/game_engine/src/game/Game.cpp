@@ -47,7 +47,7 @@ bool Game::create_player()
  * 
  * This method adds a new bullet to the game at the player's current position.
  */
-void Game::create_bullet(Player player)
+void Game::create_bullet(const Player player)
 {
     this->_bullet.push_back(Bullet(player.get_x() + player.get_l(), player.get_y()));
 }

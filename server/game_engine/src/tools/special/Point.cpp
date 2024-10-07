@@ -62,7 +62,7 @@ void Point::set_y(const int y)
  * 
  * @return int The current x-coordinate of the point.
  */
-int Point::get_x()
+int Point::get_x() const
 {
     return this->_x;
 }
@@ -72,7 +72,7 @@ int Point::get_x()
  * 
  * @return int The current y-coordinate of the point.
  */
-int Point::get_y()
+int Point::get_y() const
 {
     return this->_y;
 }

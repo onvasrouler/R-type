@@ -28,7 +28,7 @@ AEntity::AEntity()
  * 
  * @return int The current x-coordinate of the entity.
  */
-int AEntity::get_x()
+int AEntity::get_x() const
 {
     return this->_origin.get_x();
 }
@@ -38,7 +38,7 @@ int AEntity::get_x()
  * 
  * @return int The current y-coordinate of the entity.
  */
-int AEntity::get_y()
+int AEntity::get_y() const
 {
     return this->_origin.get_y();
 }
@@ -48,7 +48,7 @@ int AEntity::get_y()
  * 
  * @return int The current length of the entity's dimension.
  */
-int AEntity::get_l()
+int AEntity::get_l() const
 {
     return this->_dimension.get_l();
 }
@@ -58,7 +58,7 @@ int AEntity::get_l()
  * 
  * @return int The current height of the entity's dimension.
  */
-int AEntity::get_h()
+int AEntity::get_h() const
 {
     return this->_dimension.get_h();
 }

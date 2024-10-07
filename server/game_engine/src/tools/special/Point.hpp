@@ -63,14 +63,14 @@ public:
      * 
      * @return int The current x-coordinate of the point.
      */
-    int get_x();
+    int get_x() const;
 
     /**
      * @brief Get the y-coordinate of the point.
      * 
      * @return int The current y-coordinate of the point.
      */
-    int get_y();
+    int get_y() const;
 
     /**
      * @brief Move the point along the x-axis by a specified distance.
