@@ -26,17 +26,17 @@ public:
     void check_collisions();
 
     bool create_player();
-    void create_bullet(std::shared_ptr<Player> first);
+    void create_bullet(Player first);
     void create_enemy();
     void destroy_player(int player_id);
     void destroy_bullet(int bullet_id);
     void destroy_enemy(int enemy_id);
     void update_word();
-    bool is_in_collision(std::shared_ptr<Player> first, std::shared_ptr<Enemy> second);
-    bool is_in_collision(std::shared_ptr<Enemy> first, std::shared_ptr<Bullet> second);
+    bool is_in_collision(Player first, Enemy second);
+    bool is_in_collision(Enemy first, Bullet second);
 
 private:
-    std::vector<std::shared_ptr<Player>> _player;
-    std::vector<std::shared_ptr<Enemy>> _enemy;
-    std::vector<std::shared_ptr<Bullet>> _bullet;
+    std::vector<Player> _player;
+    std::vector<Enemy> _enemy;
+    std::vector<Bullet> _bullet;
 };

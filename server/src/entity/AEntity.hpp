@@ -35,8 +35,8 @@ public:
     int get_type(void) const;
 
 protected:
-    std::shared_ptr<Point> _origin;
-    std::shared_ptr<Rect> _dimension;
-    std::shared_ptr<Id> _id;
-    std::shared_ptr<Type> _type;
+    Point _origin;
+    Rect _dimension;
+    Id _id;
+    Type _type;
 };

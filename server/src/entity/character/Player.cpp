@@ -9,8 +9,8 @@
 
 Player::Player (int y) : ACharacter()
 {
-    this->_origin = std::make_shared<Point>(10, y);
-    this->_dimension = std::make_shared<Rect>(10, 10);
+    this->_origin = Point(10, y);
+    this->_dimension = Rect(10, 10);
     this->_has_shot = false;
     this->_dir = NONE;
     this->_cl = clock();

@@ -26,6 +26,6 @@ public:
     int get_level(void) const;
 
 protected:
-    std::shared_ptr<Hp> _hp;
-    std::shared_ptr<Level> _level;
+    Hp _hp;
+    Level _level;
 };
