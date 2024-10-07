@@ -42,9 +42,9 @@ void Game::create_enemy()
 
 void Game::destroy_player(int player_id)
 {
-    for (long unsigned int i = 0; i < this->_player.size(); i++) {
-        if (this->_player[i].get_id() == player_id) {
-            this->_player.erase(this->_player.begin() + i);
+    for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
+        if (player->get_id() == player_id) {
+            this->_player.erase(player);
             return;
         }
     }
@@ -52,9 +52,9 @@ void Game::destroy_player(int player_id)
 
 void Game::destroy_bullet(int bullet_id)
 {
-    for (long unsigned int i = 0; i < this->_bullet.size(); i++) {
-        if (this->_bullet[i].get_id() == bullet_id) {
-            this->_bullet.erase(this->_bullet.begin() + i);
+    for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
+        if (it->get_id() == bullet_id) {
+            this->_bullet.erase(it);
             return;
         }
     }
@@ -62,9 +62,9 @@ void Game::destroy_bullet(int bullet_id)
 
 void Game::destroy_enemy(int enemy_id)
 {
-    for (long unsigned int i = 0; i < this->_enemy.size(); i++) {
-        if (this->_enemy[i].get_id() == enemy_id) {
-            this->_enemy.erase(this->_enemy.begin() + i);
+    for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
+        if (it->get_id() == enemy_id) {
+            this->_enemy.erase(it);
             return;
         }
     }
