@@ -72,20 +72,20 @@ void Game::destroy_enemy(int enemy_id)
 
 void Game::update_word()
 {
-    for (long unsigned int i = 0; i < this->_enemy.size(); i++) {
-        this->_enemy[i].move();
+    for (auto& enemy : this->_enemy) {
+        enemy.move();
     }
-    for (long unsigned int i = 0; i < this->_bullet.size(); i++) {
-        this->_bullet[i].move();
+    for (auto& bullet : this->_bullet) {
+        bullet.move();
     }
-    for (long unsigned int i = 0; i < this->_player.size(); i++) {
-        if (this->_player[i].get_dir() != NONE) {
-            this->_player[i].move();
+    for (auto& player : this->_player) {
+        if (player.get_dir() != NONE) {
+            player.move();
         }
-        if (this->_player[i].get_has_shot() == true && clock() - this->_player[i].get_cl() > 1000000) {
-            this->create_bullet(this->_player[i]);
-            this->_player[i].set_has_shot(false);
-            this->_player[i].restart_cl();
+        if (player.get_has_shot() == true && clock() - player.get_cl() > 1000000) {
+            this->create_bullet(player);
+            player.set_has_shot(false);
+            player.restart_cl();
         }
     }
 }
