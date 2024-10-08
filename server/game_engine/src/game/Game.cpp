@@ -33,7 +33,7 @@ bool Game::create_player()
 {
     std::lock_guard<std::mutex> lock(_player_mutex);
     if (this->_player.size() < 4) {
-        this->_player.push_back(Player(50));
+        this->_player.push_back(Player(500));
     } else {
         return false;
     }
@@ -62,7 +62,7 @@ void Game::create_bullet(const Player player)
 void Game::create_enemy()
 {
     std::lock_guard<std::mutex> lock(_enemy_mutex);
-    this->_enemy.push_back(Enemy(50));
+    this->_enemy.push_back(Enemy(500));
 }
 
 /**
