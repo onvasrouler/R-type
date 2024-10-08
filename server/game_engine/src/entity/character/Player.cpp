@@ -21,8 +21,8 @@
  */
 Player::Player(const int y) : ACharacter()
 {
-    this->_origin = Point(10, y);
-    this->_dimension = Rect(10, 10);
+    this->_origin = Point(100, y);
+    this->_dimension = Rect(70, 70);
     this->_has_shot = false;
     this->_dir = NONE;
     this->_cl = clock();
