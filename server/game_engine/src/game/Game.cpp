@@ -26,10 +26,8 @@ Game::Game()
 
 Game::~Game()
 {
-    std::cout << "Deleting game engine" << std::endl;
     if (_running)
         this->stop();
-    std::cout << "Game engine deleted" << std::endl;
 }
 
 /**
@@ -240,6 +238,8 @@ void Game::start()
  */
 void Game::stop()
 {
+    if (!_running)
+        return;
     std::cout << "Stopping game engine" << std::endl;
     _running = false;
     _thread.join();
@@ -270,7 +270,6 @@ void Game::run()
         }
         this->check_collisions();
     }
-    std::cout << "Game engine stop run" << std::endl;
 }
 
 void Game::handleMessages() {

@@ -10,8 +10,6 @@
 
 GameModule::GameModule(const std::string name)
     : AbstractModule(name), _game(Game()) {
-    // Need to be implemented with the game engine
-    std::cout << "Module: " << _ModuleName << " is creating" << std::endl;
     _Running = false;
     std::cout << "Module: " << _ModuleName << " created" << std::endl;
 }
@@ -21,6 +19,8 @@ GameModule::~GameModule() {
     if (_Running) {
         stop();
     }
+    // destroy game engine
+    _game.~Game();
     std::cout << "Module: " << _ModuleName << " destroyed" << std::endl;
 }
 
@@ -107,14 +107,17 @@ void GameModule::run() {
 }
 
 void GameModule::stop() {
+    if (!_Running) {
+        return;
+    }
     std::cout << "Module: " << _ModuleName << " is stopping" << std::endl;
-    _Running = false;
     if (_game.getReadMutex().try_lock()) {
         _game.getReadMutex().unlock();
     }
     if (_game.getSendMutex().try_lock()) {
         _game.getSendMutex().unlock();
     }
-    _game.stop();
+    _Running = false;
+    _thread.join();
     std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
 }

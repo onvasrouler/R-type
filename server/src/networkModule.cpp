@@ -16,6 +16,7 @@ NetworkModule::NetworkModule(const std::string name) : AbstractModule(name) {
             std::runtime_error("Error while creating the UDP server"));
     }
     _Running = true;
+    std::cout << "Module: " << _ModuleName << " created" << std::endl;
 }
 
 NetworkModule::~NetworkModule() {
