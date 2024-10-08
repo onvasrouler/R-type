@@ -105,3 +105,16 @@ void GameModule::run() {
         std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
     }
 }
+
+void GameModule::stop() {
+    std::cout << "Module: " << _ModuleName << " is stopping" << std::endl;
+    _Running = false;
+    if (_game.getReadMutex().try_lock()) {
+        _game.getReadMutex().unlock();
+    }
+    if (_game.getSendMutex().try_lock()) {
+        _game.getSendMutex().unlock();
+    }
+    _game.stop();
+    std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
+}

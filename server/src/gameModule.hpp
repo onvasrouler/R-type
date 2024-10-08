@@ -37,6 +37,10 @@ class GameModule : public AbstractModule {
         * @brief The main loop of the module
         */
         void run() override;
+        /*
+        * @brief Stop the module.
+        */
+        void stop() override;
     private:
         /**
         * @brief Encode the message to send to the server.
