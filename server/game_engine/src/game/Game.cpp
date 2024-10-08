@@ -41,13 +41,10 @@ Game::~Game()
  */
 bool Game::create_player(const uuid id)
 {
-    _player_mutex.lock();
     if (this->_player.size() < 4) {
         Player player(500, id);
         this->_player.push_back(player);
-        _player_mutex.unlock();
     } else {
-        _player_mutex.unlock();
         return false;
     }
 
@@ -63,9 +60,7 @@ bool Game::create_player(const uuid id)
  */
 void Game::create_bullet(const Player player)
 {
-    _bullet_mutex.lock();
     this->_bullet.push_back(Bullet(player.get_x() + player.get_l(), player.get_y()));
-    _bullet_mutex.unlock();
 }
 
 /**
@@ -75,9 +70,7 @@ void Game::create_bullet(const Player player)
  */
 void Game::create_enemy()
 {
-    _enemy_mutex.lock();
     this->_enemy.push_back(Enemy(500));
-    _enemy_mutex.unlock();
 }
 
 /**
@@ -89,15 +82,12 @@ void Game::create_enemy()
  */
 void Game::destroy_player(const uuid id)
 {
-    _player_mutex.lock();
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
         if (player->get_id() == id) {
             this->_player.erase(player);
-            _player_mutex.unlock();
             return;
         }
     }
-    _player_mutex.unlock();
 }
 
 /**
@@ -109,15 +99,12 @@ void Game::destroy_player(const uuid id)
  */
 void Game::destroy_bullet(const uuid bullet_id)
 {
-    _bullet_mutex.lock();
     for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
         if (it->get_id() == bullet_id) {
             this->_bullet.erase(it);
-            _bullet_mutex.unlock();
             return;
         }
     }
-    _bullet_mutex.unlock();
 }
 
 /**
@@ -129,15 +116,12 @@ void Game::destroy_bullet(const uuid bullet_id)
  */
 void Game::destroy_enemy(const uuid enemy_id)
 {
-    _enemy_mutex.lock();
     for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
         if (it->get_id() == enemy_id) {
             this->_enemy.erase(it);
-            _enemy_mutex.unlock();
             return;
         }
     }
-    _enemy_mutex.unlock();
 }
 
 /**
@@ -147,17 +131,12 @@ void Game::destroy_enemy(const uuid enemy_id)
  */
 void Game::update_world()
 {
-    _enemy_mutex.lock();
     for (auto& enemy : this->_enemy) {
         enemy.move();
     }
-    _enemy_mutex.unlock();
-    _bullet_mutex.lock();
     for (auto& bullet : this->_bullet) {
         bullet.move();
     }
-    _bullet_mutex.unlock();
-    _player_mutex.lock();
     for (auto& player : this->_player) {
         if (player.get_dir() != NONE) {
             player.move();
@@ -168,7 +147,6 @@ void Game::update_world()
             player.restart_cl();
         }
     }
-    _player_mutex.unlock();
 }
 
 /**
@@ -210,8 +188,6 @@ void Game::check_collisions()
 {
     std::vector<uuid> to_destroy;
 
-    _player_mutex.lock();
-    _enemy_mutex.lock();
     for (auto& player : this->_player) {
         for (auto& enemy : this->_enemy) {
             if (this->is_in_collision(player, enemy)) {
@@ -219,7 +195,6 @@ void Game::check_collisions()
             }
         }
     }
-    _player_mutex.unlock();
 
     for (auto id : to_destroy) {
         this->destroy_player(id);
@@ -227,7 +202,6 @@ void Game::check_collisions()
 
     to_destroy.clear();
 
-    _bullet_mutex.lock();
     for (auto& enemy : this->_enemy) {
         for (auto& bullet : this->_bullet) {
             if (this->is_in_collision(enemy, bullet)) {
@@ -236,8 +210,6 @@ void Game::check_collisions()
             }
         }
     }
-    _bullet_mutex.unlock();
-    _enemy_mutex.unlock();
 
     for (auto id : to_destroy) {
         this->destroy_enemy(id);
@@ -271,12 +243,12 @@ void Game::stop()
     std::cout << "Stopping game engine" << std::endl;
     _running = false;
     _thread.join();
-    if (_player_mutex.try_lock())
-        _player_mutex.unlock();
-    if (_bullet_mutex.try_lock())
-        _bullet_mutex.unlock();
-    if (_enemy_mutex.try_lock())
-        _enemy_mutex.unlock();
+    if (_sendMutex.try_lock()) {
+        _sendMutex.unlock();
+    }
+    if (_readMutex.try_lock()) {
+        _readMutex.unlock();
+    }
     std::cout << "Game engine stopped" << std::endl;
 }
 
@@ -291,12 +263,54 @@ void Game::run()
 
     std::cout << "Running game engine" << std::endl;
     while (_running) {
+        handleMessages();
         if (clock() - cl > 100000) { // 1000000 = 1 sec
             cl = clock();
-            std::cout << "move" << std::endl;
             this->update_world();
         }
         this->check_collisions();
     }
     std::cout << "Game engine stop run" << std::endl;
+}
+
+void Game::handleMessages() {
+    _readMutex.lock();
+    for (auto &gameMessage : _readMessages) {
+        //implement whith the protocol
+    }
+    _readMutex.unlock();
+}
+
+void Game::addSendMessage() {
+    _sendMutex.lock();
+    for (auto &gameMessage : _sendMessages) {
+        //implement whith the protocol
+    }
+    _sendMutex.unlock();
+}
+
+std::vector<gameMessage> &Game::getSendMessages() {
+    return _sendMessages;
+}
+
+std::vector<gameMessage> &Game::getReadMessages() {
+    return _readMessages;
+}
+
+std::mutex &Game::getSendMutex() {
+    return _sendMutex;
+}
+
+std::mutex &Game::getReadMutex() {
+    return _readMutex;
+}
+
+gameMessage::gameMessage(const uuid &id, const std::string message) : _id(id), _message(message) {};
+
+const uuid &gameMessage::getId() {
+    return _id;
+}
+
+const std::string gameMessage::getMessage() {
+    return _message;
 }

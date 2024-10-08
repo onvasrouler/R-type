@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "../core/AbstractModule.hpp"
+#include "AbstractModule.hpp"
+#include "Game.hpp"
 
 /** @class GameModule
  *  @brief The GameModule class is the class for the game module.
@@ -48,4 +49,5 @@ class GameModule : public AbstractModule {
         */
         std::string decodeInterCommunication(std::string message) override;
         //Need to be implemented with the game engine
+        Game _game;
 };

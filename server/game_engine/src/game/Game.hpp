@@ -24,6 +24,17 @@
 #include <mutex>
 #include <thread>
 
+class gameMessage {
+    public :
+        gameMessage(const uuid &id, const std::string message);
+        ~gameMessage() = default;
+        const uuid &getId();
+        const std::string getMessage();
+    private:
+        const uuid _id;
+        const std::string _message;
+};
+
 /**
  * @class Game
  * @brief Manages the game state, including players, enemies, and bullets.
@@ -147,14 +158,22 @@ public:
      */
     bool is_in_collision(AEntity& entity1, AEntity& entity2);
 
+    void handleMessages();
+    void addSendMessage();
+    std::vector<gameMessage> &getSendMessages();
+    std::vector<gameMessage> &getReadMessages();
+    std::mutex &getSendMutex();
+    std::mutex &getReadMutex();
+
 private:
     std::vector<Player> _player; ///< List of players in the game.
     std::vector<Enemy> _enemy; ///< List of enemies in the game.
     std::vector<Bullet> _bullet; ///< List of bullets in the game.
     bool _running; ///< Flag indicating if the game is running.
 
-    std::mutex _player_mutex; ///< Mutex for protecting the player vector.
-    std::mutex _enemy_mutex; ///< Mutex for protecting the enemy vector.
-    std::mutex _bullet_mutex; ///< Mutex for protecting the bullet vector.
+    std::mutex _sendMutex;
+    std::vector<gameMessage> _sendMessages;
+    std::mutex _readMutex;
+    std::vector<gameMessage> _readMessages;
     std::thread _thread; ///< Thread for running the game loop.
 };
