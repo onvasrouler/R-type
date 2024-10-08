@@ -11,15 +11,15 @@
 
 MenuManager::MenuManager()
 {
-    this->_type = MAIN_MENU;
-    this->_guiFunction = std::make_shared<guiFunction>(this->getThis());
+    this->_type = SETTINGS_VIDEO;
+    this->_guiFunction = std::make_shared<guiFunction>();
 }
 
 MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
 {
-    this->_type = MAIN_MENU;
+    this->_type = SETTINGS_VIDEO;
     this->_jsonParser = jsonParser;
-    this->_guiFunction = std::make_shared<guiFunction>(this->getThis());
+    this->_guiFunction = std::make_shared<guiFunction>();
     this->loadMenu();
 
 }
@@ -53,20 +53,26 @@ std::shared_ptr<MenuManager> MenuManager::getThis()
 void MenuManager::loadMenu()
 {
     _menuJson = _jsonParser->parseFile("./config/menu_settings.json");
+    _menuTemplate = _menuJson["templates"];
+
     for (auto &menu : _menuJson["menus"]) {
         if (menu["isSimple"] == false)
             continue;
-        if (!menu.is_null())
-            this->createMenu(menu);
+        if (!menu.is_null()) {
+            menuType type = static_cast<menuType>(menu["id"]);
+            _menuList[type] = std::make_shared<RGui>();
+            this->integrateTemplate(menu, menu["id"]);
+            this->createMenu(menu, menu["id"]);
+        }
         
     }
-    _guiFunction->mapFunctions();
+   // _guiFunction->mapFunctions();
 }
 
 void MenuManager::reloadMenu()
 {
     this->eraseMenu();
-    this->_guiFunction->clearCache();
+    //this->_guiFunction->clearCache();
     this->loadMenu();
 }
 
@@ -81,105 +87,206 @@ std::function<void (const std::string &)> MenuManager::getFunction(const std::st
     return _guiFunction->getFunction(functionName);
 }
 
-void MenuManager::createMenu(const nlohmann::json &menu)
+void MenuManager::createMenu(const nlohmann::json &menu, int menuID)
 {
     try {
-        menuType type = static_cast<menuType>(menu["id"]);
-        std::vector<GButton> buttons;
-        std::vector<GWindBox> windBoxes;
-        std::vector<RaylibText> texts;
-        std::vector<GCheckBox> checkBoxes;
-        std::vector<GSlider> sliders;
-        std::vector<GList> lists;
-        std::vector<GListEx> listExs;
-        std::vector<GTextInput> inputTexts;
-        std::vector<GTextInputBox> inputTextsBoxs;
-        std::vector<GSpinner> spinners;
-        std::vector<GValueBox> valueBoxes;
-        std::vector<GGroup> groups;
-        std::vector<GToggleGroup> toggleGroups;
-        std::vector<GToggleSlider> toggleSliders;
-        std::vector<GPannel> pannels;
-        std::vector<GColorPicker> colorPickers;
-        std::vector<GProgressBar> progressBars;
-        std::vector<GDropDown> dropDowns;
-
-        if (menu.contains("buttons"))
-            for (auto &button : menu["buttons"])
-                buttons.push_back(this->createButton(button));
-        if (menu.contains("Boxes"))
-            for (auto &windBox : menu["Boxes"])
-                windBoxes.push_back(this->createWindBox(windBox));
-        if (menu.contains("texts"))
-            for (auto &text : menu["texts"])
-                texts.push_back(this->createTexts(text));
-        if (menu.contains("checkBoxes"))
-            for (auto &checkBox : menu["checkBoxes"])
-                checkBoxes.push_back(this->createCheckBox(checkBox));
-        if (menu.contains("sliders"))
-            for (auto &slider : menu["sliders"])
-                sliders.push_back(this->createSlider(slider));
-        if (menu.contains("lists"))
-            for (auto &list : menu["lists"])
-                lists.push_back(this->createList(list));
-        if (menu.contains("listExs"))
-            for (auto &listEx : menu["listExs"])
-                listExs.push_back(this->createListEx(listEx));
-        if (menu.contains("inputTexts"))
-            for (auto &inputText : menu["inputTexts"])
-                inputTexts.push_back(this->createInputText(inputText));
-        if (menu.contains("inputTextsBoxs"))
-            for (auto &inputText : menu["inputTextsBoxs"])
-                inputTextsBoxs.push_back(this->createInputTextBox(inputText));
-        if (menu.contains("spinners"))
-            for (auto &spinner : menu["spinners"])
-                spinners.push_back(this->createSpinner(spinner));
-        if (menu.contains("valueBoxes"))
-            for (auto &valueBox : menu["valueBoxes"])
-                valueBoxes.push_back(this->createValueBox(valueBox));
-        if (menu.contains("groups"))
-            for (auto &group : menu["groups"])
-                groups.push_back(this->createGroup(group));
-        if (menu.contains("toggleGroups"))
-            for (auto &toggleGroup : menu["toggleGroups"])
-                toggleGroups.push_back(this->createToggleGroup(toggleGroup));
-        if (menu.contains("toggleSliders"))
-            for (auto &toggleSlider : menu["toggleSliders"])
-                toggleSliders.push_back(this->createToggleSlider(toggleSlider));
-        if (menu.contains("pannels"))
-            for (auto &pannel : menu["pannels"])
-                pannels.push_back(this->createPannel(pannel));
-        if (menu.contains("colorPickers"))
-            for (auto &colorPicker : menu["colorPickers"])
-                colorPickers.push_back(this->createColorPicker(colorPicker));
-        if (menu.contains("progressBars"))
-            for (auto &progressBar : menu["progressBars"])
-                progressBars.push_back(this->createProgressBar(progressBar));
-        if (menu.contains("dropDowns"))
-            for (auto &dropDown : menu["dropDowns"])
-                dropDowns.push_back(this->createDropDown(dropDown));
-        _menuList[type] = std::make_shared<RGui>();
-        _menuList[type]->setTexts(texts);
-        _menuList[type]->SetButtons(buttons);
-        _menuList[type]->SetWindBoxes(windBoxes);
-        _menuList[type]->setCheckBoxes(checkBoxes);
-        _menuList[type]->setSliders(sliders);
-        _menuList[type]->setLists(lists);
-        _menuList[type]->setListExs(listExs);
-        _menuList[type]->setInputTexts(inputTexts);
-        _menuList[type]->setInputTextsBoxs(inputTextsBoxs);
-        _menuList[type]->setSpinners(spinners);
-        _menuList[type]->setValueBoxes(valueBoxes);
-        _menuList[type]->setGroups(groups);
-        _menuList[type]->setToggleGroups(toggleGroups);
-        _menuList[type]->setToggleSliders(toggleSliders);
-        _menuList[type]->setPannels(pannels);
-        _menuList[type]->setColorPickers(colorPickers);
-        _menuList[type]->setProgressBars(progressBars);
-        _menuList[type]->setDropDowns(dropDowns);
+        menuType type = static_cast<menuType>(menuID);
+        _menuList[type]->addListText(loadsTexts(menu));
+        _menuList[type]->addListButton(loadsButtons(menu));
+        _menuList[type]->addListWindBox(loadsWindBoxes(menu));
+        _menuList[type]->addListCheckBox(loadsCheckBoxes(menu));
+        _menuList[type]->addListSlider(loadsSliders(menu));
+        _menuList[type]->addListList(loadsLists(menu));
+        _menuList[type]->addListListEx(loadsListExs(menu));
+        _menuList[type]->addListInputText(loadsInputTexts(menu));
+        _menuList[type]->addListInputTextBox(loadsInputTextsBoxs(menu));
+        _menuList[type]->addListSpinner(loadsSpinners(menu));
+        _menuList[type]->addListValueBox(loadsValueBoxes(menu));
+        _menuList[type]->addListGroup(loadsGroups(menu));
+        _menuList[type]->addListToggleGroup(loadsToggleGroups(menu));
+        _menuList[type]->addListToggleSlider(loadsToggleSliders(menu));
+        _menuList[type]->addListPannel(loadsPannels(menu));
+        _menuList[type]->addListColorPicker(loadsColorPickers(menu));
+        _menuList[type]->addListProgressBar(loadsProgressBars(menu));
+        _menuList[type]->addListDropDown(loadsDropDowns(menu));
     } catch (std::exception &e) {
         std::cerr << "invalid json : " << e.what() << std::endl;
     }
+}
+
+std::vector<GButton> MenuManager::loadsButtons(const nlohmann::json &jsonbuttons)
+{
+    std::vector<GButton> buttons;
+    if (jsonbuttons.contains("buttons"))
+        for (auto &button : jsonbuttons["buttons"])
+            buttons.push_back(this->createButton(button));
+    return buttons;
+}
+
+std::vector<GWindBox> MenuManager::loadsWindBoxes(const nlohmann::json &jsonWindBoxes)
+{
+    std::vector<GWindBox> windBoxes;
+    if (jsonWindBoxes.contains("windBoxes"))
+        for (auto &windBox : jsonWindBoxes["windBoxes"])
+            windBoxes.push_back(this->createWindBox(windBox));
+    return windBoxes;
+}
+
+std::vector<RaylibText> MenuManager::loadsTexts(const nlohmann::json &jsonTexts)
+{
+    std::vector<RaylibText> texts;
+    if (jsonTexts.contains("texts"))
+        for (auto &text : jsonTexts["texts"])
+            texts.push_back(this->createTexts(text));
+    return texts;
+}
+
+std::vector<GCheckBox> MenuManager::loadsCheckBoxes(const nlohmann::json &jsonCheckBoxes)
+{
+    std::vector<GCheckBox> checkBoxes;
+    if (jsonCheckBoxes.contains("checkBoxes"))
+        for (auto &checkBox : jsonCheckBoxes["checkBoxes"])
+            checkBoxes.push_back(this->createCheckBox(checkBox));
+    return checkBoxes;
+}
+
+std::vector<GSlider> MenuManager::loadsSliders(const nlohmann::json &jsonSliders)
+{
+    std::vector<GSlider> sliders;
+    if (jsonSliders.contains("sliders"))
+        for (auto &slider : jsonSliders["sliders"])
+            sliders.push_back(this->createSlider(slider));
+    return sliders;
+}
+
+std::vector<GList> MenuManager::loadsLists(const nlohmann::json &jsonLists)
+{
+    std::vector<GList> lists;
+    if (jsonLists.contains("lists"))
+        for (auto &list : jsonLists["lists"])
+            lists.push_back(this->createList(list));
+    return lists;
+}
+
+std::vector<GListEx> MenuManager::loadsListExs(const nlohmann::json &jsonListExs)
+{
+    std::vector<GListEx> listExs;
+    if (jsonListExs.contains("listExs"))
+        for (auto &listEx : jsonListExs["listExs"])
+            listExs.push_back(this->createListEx(listEx));
+    return listExs;
+}
+
+std::vector<GTextInput> MenuManager::loadsInputTexts(const nlohmann::json &jsonInputTexts)
+{
+    std::vector<GTextInput> inputTexts;
+    if (jsonInputTexts.contains("inputTexts"))
+        for (auto &inputText : jsonInputTexts["inputTexts"])
+            inputTexts.push_back(this->createInputText(inputText));
+    return inputTexts;
+}
+
+std::vector<GTextInputBox> MenuManager::loadsInputTextsBoxs(const nlohmann::json &jsonInputTextBoxs)
+{
+    std::vector<GTextInputBox> inputTextBoxs;
+    if (jsonInputTextBoxs.contains("inputTextBoxs"))
+        for (auto &inputTextBox : jsonInputTextBoxs["inputTextBoxs"])
+            inputTextBoxs.push_back(this->createInputTextBox(inputTextBox));
+    return inputTextBoxs;
+}
+
+std::vector<GSpinner> MenuManager::loadsSpinners(const nlohmann::json &jsonSpinners)
+{
+    std::vector<GSpinner> spinners;
+    if (jsonSpinners.contains("spinners"))
+        for (auto &spinner : jsonSpinners["spinners"])
+            spinners.push_back(this->createSpinner(spinner));
+    return spinners;
+}
+
+std::vector<GValueBox> MenuManager::loadsValueBoxes(const nlohmann::json &jsonValueBoxes)
+{
+    std::vector<GValueBox> valueBoxes;
+    if (jsonValueBoxes.contains("valueBoxes"))
+        for (auto &valueBox : jsonValueBoxes["valueBoxes"])
+            valueBoxes.push_back(this->createValueBox(valueBox));
+    return valueBoxes;
+}
+
+std::vector<GGroup> MenuManager::loadsGroups(const nlohmann::json &jsonGroups)
+{
+    std::vector<GGroup> groups;
+    if (jsonGroups.contains("groups"))
+        for (auto &group : jsonGroups["groups"])
+            groups.push_back(this->createGroup(group));
+    return groups;
+}
+
+std::vector<GToggleGroup> MenuManager::loadsToggleGroups(const nlohmann::json &jsonToggleGroups)
+{
+    std::vector<GToggleGroup> toggleGroups;
+    if (jsonToggleGroups.contains("toggleGroups"))
+        for (auto &toggleGroup : jsonToggleGroups["toggleGroups"])
+            toggleGroups.push_back(this->createToggleGroup(toggleGroup));
+    return toggleGroups;
+}
+
+std::vector<GToggleSlider> MenuManager::loadsToggleSliders(const nlohmann::json &jsonToggleSliders)
+{
+    std::vector<GToggleSlider> toggleSliders;
+    if (jsonToggleSliders.contains("toggleSliders"))
+        for (auto &toggleSlider : jsonToggleSliders["toggleSliders"])
+            toggleSliders.push_back(this->createToggleSlider(toggleSlider));
+    return toggleSliders;
+}
+
+std::vector<GPannel> MenuManager::loadsPannels(const nlohmann::json &jsonPannels)
+{
+    std::vector<GPannel> pannels;
+    if (jsonPannels.contains("pannels"))
+        for (auto &pannel : jsonPannels["pannels"])
+            pannels.push_back(this->createPannel(pannel));
+    return pannels;
+}
+
+std::vector<GColorPicker> MenuManager::loadsColorPickers(const nlohmann::json &jsonColorPickers)
+{
+    std::vector<GColorPicker> colorPickers;
+    if (jsonColorPickers.contains("colorPickers"))
+        for (auto &colorPicker : jsonColorPickers["colorPickers"])
+            colorPickers.push_back(this->createColorPicker(colorPicker));
+    return colorPickers;
+}
+
+std::vector<GProgressBar> MenuManager::loadsProgressBars(const nlohmann::json &jsonProgressBars)
+{
+    std::vector<GProgressBar> progressBars;
+    if (jsonProgressBars.contains("progressBars"))
+        for (auto &progressBar : jsonProgressBars["progressBars"])
+            progressBars.push_back(this->createProgressBar(progressBar));
+    return progressBars;
+}
+
+std::vector<GDropDown> MenuManager::loadsDropDowns(const nlohmann::json &jsonDropDowns)
+{
+    std::vector<GDropDown> dropDowns;
+    if (jsonDropDowns.contains("dropDowns"))
+        for (auto &dropDown : jsonDropDowns["dropDowns"])
+            dropDowns.push_back(this->createDropDown(dropDown));
+    return dropDowns;
+}
+
+
+void MenuManager::integrateTemplate(const nlohmann::json &menu, int menuID)
+{
+    if (menu.contains("templates")) {
+        for (auto &templateID : menu["templates"]) {
+            if (_menuTemplate.contains(templateID)) {
+                this->createMenu(_menuTemplate[templateID], menuID);
+            }
+        }
+    }
+
 }
 
 void MenuManager::eraseMenu()
@@ -221,8 +328,7 @@ GButton MenuManager::createButton(const nlohmann::json &button)
     return GButton(
         Vector2{button["position"]["x"], button["position"]["y"]},
         Vector2{button["size"]["width"], button["size"]["height"]},
-        std::string(button["text"]),
-        std::bind(&guiFunction::getFunction, _guiFunction, button["function"])
+        std::string(button["text"])
     );
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
