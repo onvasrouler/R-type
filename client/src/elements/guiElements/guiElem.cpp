@@ -100,13 +100,18 @@ GButton::GButton()
     _text = "Button";
     _pos = {0, 0};
     _size = {100, 50};
+    _isClicked = false;
+    _Action = nullptr;
 }
 
-GButton::GButton(Vector2 pos, Vector2 size, std::string text)
+GButton::GButton(Vector2 pos, Vector2 size, std::string text, std::function<void (const std::string &)> action)
 {
     _text = text;
     _pos = pos;
     _size = size;
+    _isClicked = false;
+    _Action = action;
+
 }
 
 void GButton::DrawRlibButton() const

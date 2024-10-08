@@ -30,6 +30,7 @@ private:
     std::string _text;
     Vector2 _pos;
     Vector2 _size;
+    std::function<void()> _action;
     bool _isOpened;
 
 };
@@ -37,7 +38,7 @@ private:
 class GButton {
 public:
     GButton();
-    GButton(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default button text");
+    GButton(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default button text", std::function<void (const std::string &)> action = nullptr);
     ~GButton() = default;
 
     void DrawRlibButton() const;
@@ -56,6 +57,7 @@ private:
     Vector2 _pos;
     Vector2 _size;
     bool _isClicked = false;
+    std::function<void (const std::string &)> _Action;
 };
 
 class GCheckBox {
