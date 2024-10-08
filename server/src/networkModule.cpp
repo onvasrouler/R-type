@@ -105,8 +105,7 @@ void NetworkModule::run() {
                 std::string message = data.getIp() + ":" +
                                       std::to_string(data.getPort()) + "/" +
                                       data.getData() + THREAD_END_MESSAGE;
-                send(_socket, message.c_str(),
-                     std::any_cast<int>(message.size()), 0);
+                send(_socket, message.c_str(), message.size(), 0);
             }
             _udpServer->getReceivedData().clear();
             _udpServer->getReceiveMutex().unlock();
@@ -115,6 +114,7 @@ void NetworkModule::run() {
         if (!FD_ISSET(_socket, &readfds)) {
             continue;
         }
+        std::cout << "Reading socket" << std::endl;
         // read core messages while their is nothing
         char buffer[1024] = {0};
         std::string messages = "";

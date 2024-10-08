@@ -79,6 +79,7 @@ void UDPServer::handle_receive(std::size_t length) {
         _receivedData.push_back(data);
         _receiveMutex.unlock();
         _sendMutex.lock();
+        std::cout << "size:" << _sentData.size() << std::endl;
         for (auto& sendData : _sentData) {
             if (sendData.getIp() != _remote_endpoint.address().to_string() ||
                 sendData.getPort() != _remote_endpoint.port()) {
