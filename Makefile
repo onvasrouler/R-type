@@ -14,6 +14,9 @@ client:
 server:
 	cd build && cd server && ./r-type_server
 
+tests:
+	cd build && cd tests && ./r-type_tests
+
 clean:
 	rm -rf build
 
