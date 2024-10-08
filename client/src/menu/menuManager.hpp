@@ -18,7 +18,11 @@
 
 enum menuType {
     MAIN_MENU,
-    SETTINGS_MENU,
+    START_MENU,
+    SETTINGS_GENERAL,
+    SETTINGS_VIDEO,
+    SETTINGS_AUDIO,
+    SETTINGS_CONTROLS,
     GAME_MENU,
     PAUSE_MENU,
     GAME_OVER_MENU
@@ -53,7 +57,8 @@ public:
 
     private:
 
-    void createMenu(const nlohmann::json &menu);
+    void createMenu(const nlohmann::json &menu, int menuID = 0);
+    void integrateTemplate(const nlohmann::json &menu, int menuID = 0);
     void eraseMenu();
 
     RaylibText createTexts(const nlohmann::json &text);
@@ -75,7 +80,28 @@ public:
     GProgressBar createProgressBar(const nlohmann::json &progressBar);
     GDropDown createDropDown(const nlohmann::json &dropDown);
 
+    std::vector<GButton> loadsButtons(const nlohmann::json &buttons);
+    std::vector<GWindBox> loadsWindBoxes(const nlohmann::json &windBoxes);
+    std::vector<RaylibText> loadsTexts(const nlohmann::json &texts);
+    std::vector<GCheckBox> loadsCheckBoxes(const nlohmann::json &checkBoxes);
+    std::vector<GSlider> loadsSliders(const nlohmann::json &sliders);
+    std::vector<GList> loadsLists(const nlohmann::json &lists);
+    std::vector<GListEx> loadsListExs(const nlohmann::json &listExs);
+    std::vector<GTextInput> loadsInputTexts(const nlohmann::json &inputTexts);
+    std::vector<GTextInputBox> loadsInputTextsBoxs(const nlohmann::json &inputTextsBoxs);
+    std::vector<GSpinner> loadsSpinners(const nlohmann::json &spinners);
+    std::vector<GValueBox> loadsValueBoxes(const nlohmann::json &valueBoxes);
+    std::vector<GGroup> loadsGroups(const nlohmann::json &groups);
+    std::vector<GToggleGroup> loadsToggleGroups(const nlohmann::json &toggleGroups);
+    std::vector<GToggleSlider> loadsToggleSliders(const nlohmann::json &toggleSliders);
+    std::vector<GPannel> loadsPannels(const nlohmann::json &pannels);
+    std::vector<GColorPicker> loadsColorPickers(const nlohmann::json &colorPickers);
+    std::vector<GProgressBar> loadsProgressBars(const nlohmann::json &progressBars);
+    std::vector<GDropDown> loadsDropDowns(const nlohmann::json &dropDowns);
+
     nlohmann::json _menuJson;
+
+    nlohmann::json _menuTemplate;
 
     menuType _type;
     std::shared_ptr<JsonParser> _jsonParser;
