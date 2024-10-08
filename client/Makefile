@@ -46,6 +46,7 @@ SRCS =	fpsCounter/fpsCounter.cpp	\
 		jsonParser/jsonParser.cpp	\
 		elements/guiElements/guiElem.cpp	\
 		elements/guiElements/gui.cpp	\
+		elements/guiElements/guiFunction.cpp	\
 		menu/menuManager.cpp		\
 		raylibWindow/utils.cpp		\
 		raylibWindow/raylibWindow.cpp
