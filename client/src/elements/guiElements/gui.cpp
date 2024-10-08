@@ -308,3 +308,129 @@ void RGui::setDropDowns(std::vector<GDropDown> dropDowns)
 {
     _DropDowns = dropDowns;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ----------------------- LIST ADDER -----------------------
+
+void RGui::addListButton(std::vector<GButton> buttons)
+{
+    for (const auto &button : buttons)
+        _Buttons.push_back(button);
+}
+
+void RGui::addListWindBox(std::vector<GWindBox> windBoxes)
+{
+    for (const auto &windBox : windBoxes)
+        _WindBoxes.push_back(windBox);
+}
+
+void RGui::addListText(std::vector<RaylibText> texts)
+{
+    for (const auto &text : texts)
+        _Texts.push_back(text);
+}
+
+void RGui::addListCheckBox(std::vector<GCheckBox> checkBoxes)
+{
+    for (const auto &checkBox : checkBoxes)
+        _CheckBoxes.push_back(checkBox);
+}
+
+void RGui::addListSlider(std::vector<GSlider> sliders)
+{
+    for (const auto &slider : sliders)
+        _Sliders.push_back(slider);
+}
+
+void RGui::addListList(std::vector<GList> lists)
+{
+    for (const auto &list : lists)
+        _Lists.push_back(list);
+}
+
+void RGui::addListListEx(std::vector<GListEx> listExs)
+{
+    for (const auto &listEx : listExs)
+        _ListExs.push_back(listEx);
+}
+
+void RGui::addListInputText(std::vector<GTextInput> inputTexts)
+{
+    for (const auto &inputText : inputTexts)
+        _InputTexts.push_back(inputText);
+}
+
+void RGui::addListInputTextBox(std::vector<GTextInputBox> inputTexts)
+{
+    for (const auto &inputText : inputTexts)
+        _InputTextsBoxs.push_back(inputText);
+}
+
+void RGui::addListSpinner(std::vector<GSpinner> spinners)
+{
+    for (const auto &spinner : spinners)
+        _Spinners.push_back(spinner);
+}
+
+void RGui::addListValueBox(std::vector<GValueBox> valueBoxes)
+{
+    for (const auto &valueBox : valueBoxes)
+        _ValueBoxes.push_back(valueBox);
+}
+
+void RGui::addListGroup(std::vector<GGroup> groups)
+{
+    for (const auto &group : groups)
+        _Groups.push_back(group);
+}
+
+void RGui::addListToggleGroup(std::vector<GToggleGroup> toggleGroups)
+{
+    for (const auto &toggleGroup : toggleGroups)
+        _ToggleGroups.push_back(toggleGroup);
+}
+
+void RGui::addListToggleSlider(std::vector<GToggleSlider> toggleSliders)
+{
+    for (const auto &toggleSlider : toggleSliders)
+        _ToggleSliders.push_back(toggleSlider);
+}
+
+void RGui::addListPannel(std::vector<GPannel> pannels)
+{
+    for (const auto &pannel : pannels)
+        _Pannels.push_back(pannel);
+}
+
+void RGui::addListColorPicker(std::vector<GColorPicker> colorPickers)
+{
+    for (const auto &colorPicker : colorPickers)
+        _ColorPickers.push_back(colorPicker);
+}
+
+void RGui::addListProgressBar(std::vector<GProgressBar> progressBars)
+{
+    for (const auto &progressBar : progressBars)
+        _ProgressBars.push_back(progressBar);
+}
+
+void RGui::addListDropDown(std::vector<GDropDown> dropDowns)
+{
+    for (const auto &dropDown : dropDowns)
+        _DropDowns.push_back(dropDown);
+}

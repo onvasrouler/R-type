@@ -54,6 +54,26 @@ public:
     void setColorPickers(std::vector<GColorPicker> colorPickers);
     void setProgressBars(std::vector<GProgressBar> progressBars);
     void setDropDowns(std::vector<GDropDown> dropDowns);
+
+
+    void addListButton(std::vector<GButton> buttons);
+    void addListWindBox(std::vector<GWindBox> windBoxes);
+    void addListText(std::vector<RaylibText> texts);
+    void addListCheckBox(std::vector<GCheckBox> checkBoxes);
+    void addListSlider(std::vector<GSlider> sliders);
+    void addListList(std::vector<GList> lists);
+    void addListListEx(std::vector<GListEx> listExs);
+    void addListInputText(std::vector<GTextInput> inputTexts);
+    void addListInputTextBox(std::vector<GTextInputBox> inputTexts);
+    void addListSpinner(std::vector<GSpinner> spinners);
+    void addListValueBox(std::vector<GValueBox> valueBoxes);
+    void addListGroup(std::vector<GGroup> groups);
+    void addListToggleGroup(std::vector<GToggleGroup> toggleGroups);
+    void addListToggleSlider(std::vector<GToggleSlider> toggleSliders);
+    void addListPannel(std::vector<GPannel> pannels);
+    void addListColorPicker(std::vector<GColorPicker> colorPickers);
+    void addListProgressBar(std::vector<GProgressBar> progressBars);
+    void addListDropDown(std::vector<GDropDown> dropDowns);
 private:
     std::vector<GButton> _Buttons;
     std::vector<GWindBox> _WindBoxes;
