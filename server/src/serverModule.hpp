@@ -56,6 +56,9 @@ class serverModule {
         #else
             int getSocket();
         #endif
+
+        void addMessage(const std::string &message);
+        std::vector<std::string> getMessages();
     private:
         std::shared_ptr<AbstractModule> _module; // The module to store.
         #ifdef _WIN32
@@ -63,4 +66,5 @@ class serverModule {
         #else
             int _serverInterSocket; // The socket to communicate with the module.
         #endif
+        std::vector<std::string> _messages; // The messages to send to the module.
 };
