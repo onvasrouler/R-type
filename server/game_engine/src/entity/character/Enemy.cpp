@@ -21,8 +21,8 @@
  */
 Enemy::Enemy(const int y) : ACharacter()
 {
-    this->_origin = Point(1900, y);
-    this->_dimension = Rect(70, 70);
+    this->_origin = Point(X_POSITION, y);
+    this->_dimension = Rect(ENEMY_SIZE, ENEMY_SIZE);
 }
 
 /**

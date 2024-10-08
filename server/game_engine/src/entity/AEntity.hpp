@@ -15,7 +15,7 @@
 #include "IEntity.hpp"
 #include "Point.hpp"
 #include "Rect.hpp"
-#include "Id.hpp"
+#include "lib/UUID.hpp"
 #include "Type.hpp"
 
 /**
@@ -115,7 +115,7 @@ public:
      * 
      * @return int The current ID of the entity.
      */
-    int get_id(void);
+    const std::string& AEntity::get_id() const;
 
     /**
      * @brief Get the type of the entity.
@@ -127,6 +127,6 @@ public:
 protected:
     Point _origin; ///< The origin point (position) of the entity.
     Rect _dimension; ///< The dimensions (length and height) of the entity.
-    Id _id; ///< The unique identifier of the entity.
+    UUID _id; ///< The unique identifier of the entity.
     Type _type; ///< The type of the entity.
 };
