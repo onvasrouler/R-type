@@ -147,6 +147,8 @@ void NetworkModule::stop() {
     if (!_Running)
         return;
     _Running = false;
+    while (_udpServer->getSentData().size() > 0 && _sentData.size() > 0)
+        ;
     _udpServer->getStopMutex().lock();
 #ifdef _WIN32
     closesocket(_socket);

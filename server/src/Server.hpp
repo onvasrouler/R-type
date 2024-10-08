@@ -10,6 +10,10 @@
 #include "../lib/MultiThread.hpp"
 #include "serverModule.hpp"
 #include "UDPServer.hpp"
+#include "Client.hpp"
+
+#define SHUTDOWN_MESSAGE "500"
+#define NEW_CONNECTION_MESSAGE "201"
 
 /**
  * @brief The Server class is the main class of the server.
@@ -68,6 +72,11 @@ class Server : MultiThreadElement {
         * @param module The module to create
         */
         void createModule(AbstractModule *module);
+        bool isClient(const std::string ip, const short port);
+        std::string createMessage(const std::string ip, const short port, const std::string message);
+        Client findClient(const std::string ip, const short port);
+        Client findClient(const uuid uuid);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
+        std::vector<Client> _clients; /*!< The clients of the server. */
 };
