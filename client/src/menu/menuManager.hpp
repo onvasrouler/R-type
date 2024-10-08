@@ -13,7 +13,6 @@
 #include "../elements/raylibText/raylibText.hpp"
 #include "../elements/guiElements/gui.hpp"
 #include "../elements/guiElements/guiElem.hpp"
-#include "../elements/guiElements/guiFunction.hpp"
 
 
 
@@ -24,6 +23,8 @@ enum menuType {
     PAUSE_MENU,
     GAME_OVER_MENU
 };
+
+class guiFunction;
 
 class MenuManager : public std::enable_shared_from_this<MenuManager> {
 public:
@@ -82,6 +83,6 @@ public:
     std::map<menuType, std::shared_ptr<RGui>> _menuList;
     std::map<std::string, std::function<void(std::string)>> functionRegistry;
 
-    std::shared_ptr<guifunction> _guiFunction;
+    std::shared_ptr<guiFunction> _guiFunction;
 
 };

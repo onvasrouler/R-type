@@ -6,18 +6,20 @@
 */
 
 #include "menuManager.hpp"
+#include "../elements/guiElements/guiFunction.hpp"
+
 
 MenuManager::MenuManager()
 {
     this->_type = MAIN_MENU;
-    this->_guiFunction = std::make_shared<guifunction>(this->getThis());
+    this->_guiFunction = std::make_shared<guiFunction>(this->getThis());
 }
 
 MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
 {
     this->_type = MAIN_MENU;
     this->_jsonParser = jsonParser;
-    this->_guiFunction = std::make_shared<guifunction>(this->getThis());
+    this->_guiFunction = std::make_shared<guiFunction>(this->getThis());
     this->loadMenu();
 
 }
@@ -220,7 +222,7 @@ GButton MenuManager::createButton(const nlohmann::json &button)
         Vector2{button["position"]["x"], button["position"]["y"]},
         Vector2{button["size"]["width"], button["size"]["height"]},
         std::string(button["text"]),
-        std::bind(&guifunction::getFunction, _guiFunction, button["function"])
+        std::bind(&guiFunction::getFunction, _guiFunction, button["function"])
     );
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
