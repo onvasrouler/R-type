@@ -53,5 +53,5 @@ class GameModule : public AbstractModule {
         */
         std::string decodeInterCommunication(const std::string message) override;
         //Need to be implemented with the game engine
-        Game _game;
+        Game _game; //The game engine
 };

@@ -49,15 +49,36 @@ class serverModule {
         */
         void stop();
 
+        /**
+         * @brief Get the module.
+         *
+         * @return The module.
+         */
         std::shared_ptr<AbstractModule> getModule();
 
+        /**
+         * @brief Get the socket.
+         *
+         * @return The socket.
+         */
         #ifdef _WIN32
             SOCKET getSocket();
         #else
             int getSocket();
         #endif
 
+        /**
+         * @brief This function add a message to the list of message that need to be send to other modules
+         *
+         * @param The message that need to be sent
+         */
         void addMessage(const std::string &message);
+
+        /**
+         * @brief This function return the list of message that need to be sent to other modules
+         *
+         * @return The list of message that need to be sent to other modules
+         */
         std::vector<std::string> getMessages();
     private:
         std::shared_ptr<AbstractModule> _module; // The module to store.

@@ -15,16 +15,56 @@
 #endif
 #include <string>
 
+/*
+*
+* @class uuid
+* @brief Class that encapsulate the uuid_t struct from the uuid.h library
+*/
 class uuid {
     public:
-        uuid();
+        /*
+        *
+        * @brief Default constructor of uuid
+        */
+       uuid();
+        /*
+        *
+        * @brief Constructor of uuid
+        * @param id
+        */
         uuid(const std::string& id);
+        /*
+        *
+        * @brief Destructor of uuid
+        */
         ~uuid();
+        /*
+        *
+        * @brief Operator == of uuid
+        * @param other
+        */
         bool operator==(const uuid& other) const;
+        /*
+        *
+        * @brief Operator != of uuid
+        * @param other
+        */
         bool operator!=(const uuid& other) const;
+        /*
+        *
+        * @brief Return the uuid as a string
+        */
         std::string toString() const;
+        /*
+        *
+        * @brief Return the uuid as a const object
+        */
         const uuid_t& getId() const;
+        /*
+        *
+        * @brief Return the uuid
+        */
         uuid_t& getId();
     private:
-        uuid_t _id;
+        uuid_t _id; //the uuid
 };
