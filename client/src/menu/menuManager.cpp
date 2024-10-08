@@ -10,13 +10,16 @@
 MenuManager::MenuManager()
 {
     this->_type = MAIN_MENU;
+    this->_guiFunction = std::make_shared<guifunction>(this->getThis());
 }
 
 MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
 {
     this->_type = MAIN_MENU;
     this->_jsonParser = jsonParser;
+    this->_guiFunction = std::make_shared<guifunction>(this->getThis());
     this->loadMenu();
+
 }
 
 void MenuManager::setMenuType(menuType type)
@@ -24,9 +27,25 @@ void MenuManager::setMenuType(menuType type)
     _type = type;
 }
 
+void MenuManager::setMenuType(int typeId)
+{
+    _type = static_cast<menuType>(typeId);
+}
+
+
 enum menuType MenuManager::getMenuType() const
 {
     return _type;
+}
+
+void MenuManager::hello()
+{
+    std::cout << "hello" << std::endl;
+}
+
+std::shared_ptr<MenuManager> MenuManager::getThis()
+{
+    return shared_from_this();
 }
 
 void MenuManager::loadMenu()
@@ -39,11 +58,13 @@ void MenuManager::loadMenu()
             this->createMenu(menu);
         
     }
+    _guiFunction->mapFunctions();
 }
 
 void MenuManager::reloadMenu()
 {
     this->eraseMenu();
+    this->_guiFunction->clearCache();
     this->loadMenu();
 }
 
@@ -51,6 +72,11 @@ void MenuManager::reloadOnChanges()
 {
     if (_jsonParser->fileHasChanged("./config/menu_settings.json"))
         this->reloadMenu();
+}
+
+std::function<void (const std::string &)> MenuManager::getFunction(const std::string functionName)
+{
+    return _guiFunction->getFunction(functionName);
 }
 
 void MenuManager::createMenu(const nlohmann::json &menu)
@@ -193,7 +219,8 @@ GButton MenuManager::createButton(const nlohmann::json &button)
     return GButton(
         Vector2{button["position"]["x"], button["position"]["y"]},
         Vector2{button["size"]["width"], button["size"]["height"]},
-        std::string(button["text"])
+        std::string(button["text"]),
+        std::bind(&guifunction::getFunction, _guiFunction, button["function"])
     );
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
