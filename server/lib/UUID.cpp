@@ -42,7 +42,12 @@ bool uuid::operator==(const uuid &other) const
 
 bool uuid::operator!=(const uuid &other) const
 {
-    return _id == other.getId();
+    #ifdef _WIN32
+    RPC_STATUS status;
+    return UuidEqual(const_cast<UUID*>(&_id), const_cast<UUID*>(&other.getId()), &status) == FALSE;
+    #else
+    return uuid_compare(_id, other.getId()) != 0;
+    #endif
 }
 
 std::string uuid::toString() const

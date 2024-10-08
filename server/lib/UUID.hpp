@@ -24,7 +24,7 @@ class uuid {
         bool operator!=(const uuid& other) const;
         std::string toString() const;
         const uuid_t& getId() const;
-        uuid_t& uuid::getId();
+        uuid_t& getId();
     private:
         uuid_t _id;
 };
