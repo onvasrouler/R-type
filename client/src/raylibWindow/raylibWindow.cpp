@@ -159,7 +159,7 @@ void RlibWindow::InitRlib()
         ToggleFullscreen();
     SetWindowPosition(_windowX, _windowY);
     GuiLoadStyleDefault();
-    _Menus = std::make_unique<MenuManager>(_jsonParser);
+    _Menus = std::make_shared<MenuManager>(_jsonParser);
 }
 
 void RlibWindow::CloseRlibWindow() const

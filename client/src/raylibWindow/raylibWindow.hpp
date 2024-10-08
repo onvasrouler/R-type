@@ -73,7 +73,7 @@ private:
 
     std::unique_ptr<FpsCounter> _fpsCounter;
     std::shared_ptr<JsonParser> _jsonParser;
-    std::unique_ptr<MenuManager> _Menus;
+    std::shared_ptr<MenuManager> _Menus;
 
     std::unique_ptr<RGui> _GUI;
 };
