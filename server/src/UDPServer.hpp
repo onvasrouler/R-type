@@ -43,7 +43,7 @@ class UDPServer {
      * @param io_context The I/O context used for asynchronous operations.
      * @param port The port number on which the server will listen for incoming messages.
      */
-    UDPServer(boost::asio::io_context& io_context, short port);
+    UDPServer(boost::asio::io_context& io_context, const short port);
 
     void stop();
 

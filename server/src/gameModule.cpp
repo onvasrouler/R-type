@@ -8,7 +8,8 @@
 
 #include "gameModule.hpp"
 
-GameModule::GameModule(std::string name) : AbstractModule(name), _game(Game()) {
+GameModule::GameModule(const std::string name)
+    : AbstractModule(name), _game(Game()) {
     // Need to be implemented with the game engine
     std::cout << "Module: " << _ModuleName << " is creating" << std::endl;
     _Running = false;
@@ -23,7 +24,7 @@ GameModule::~GameModule() {
     std::cout << "Module: " << _ModuleName << " destroyed" << std::endl;
 }
 
-std::string GameModule::encodeInterCommunication(std::string message) {
+std::string GameModule::encodeInterCommunication(const std::string message) {
     std::string encodedMessage = message;
     return message;
     // Encode message
@@ -32,7 +33,7 @@ std::string GameModule::encodeInterCommunication(std::string message) {
     // 0);
 }
 
-std::string GameModule::decodeInterCommunication(std::string message) {
+std::string GameModule::decodeInterCommunication(const std::string message) {
     std::string decodedMessage = message;
     return message;
     // Decode message

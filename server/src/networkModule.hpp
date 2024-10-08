@@ -13,7 +13,7 @@
 
 class NetworkModule : public AbstractModule {
     public:
-        NetworkModule(std::string name);
+        NetworkModule(const std::string name);
         ~NetworkModule();
         void start() override;
         void run() override;
@@ -23,12 +23,12 @@ class NetworkModule : public AbstractModule {
          * @brief Decode the message received from the server.
          * @param message The message to decode.
          */
-        std::string decodeInterCommunication(std::string message) override;
+        std::string decodeInterCommunication(const std::string message) override;
         /**
          * @brief Encode the message to send to the server.
          * @param message The message to encode.
          */
-        std::string encodeInterCommunication(std::string message) override;
+        std::string encodeInterCommunication(const std::string message) override;
         std::vector<packageData> _sentData;
         std::unique_ptr<UDPServer> _udpServer;
         boost::asio::io_context _io_context;

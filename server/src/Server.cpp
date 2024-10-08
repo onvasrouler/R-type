@@ -181,12 +181,12 @@ void Server::stop() {
     std::cout << "Server stopped" << std::endl;
 }
 
-std::string Server::decodeInterCommunication(std::string message) {
+std::string Server::decodeInterCommunication(const std::string message) {
     return "";
     // decode the message
 }
 
-std::string Server::encodeInterCommunication(std::string message) {
+std::string Server::encodeInterCommunication(const std::string message) {
     return "";
     // encode the message
 }

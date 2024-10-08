@@ -18,7 +18,7 @@ std::string packageData::getIp() { return _ip; }
 
 short packageData::getPort() { return _port; }
 
-UDPServer::UDPServer(boost::asio::io_context& io_context, short port)
+UDPServer::UDPServer(boost::asio::io_context& io_context, const short port)
     : _socket(io_context, udp::endpoint(udp::v4(), port)) {
     _running = true;
     start_receive();
