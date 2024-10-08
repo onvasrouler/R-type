@@ -14,7 +14,7 @@
 
 #include "ACharacter.hpp"
 
-#define ENEMY_MOVE_DISTANCE 2 ///< The distance in pixels an enemy moves per update.
+#define ENEMY_MOVE_DISTANCE 3 ///< The distance in pixels an enemy moves per update.
 #define ENEMY_SIZE 70 ///< The size of the enemy in pixels.
 #define X_POSITION 1900 ///< The initial x-coordinate of the enemy in pixels.
 
