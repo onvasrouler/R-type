@@ -100,17 +100,18 @@ void NetworkModule::run() {
             continue;
         }
         // check received messages
-        if (FD_ISSET(_socket, &writefds)) {
-            _udpServer->getReceiveMutex().lock();
-            for (auto& data : _udpServer->getReceivedData()) {
-                std::string message = data.getIp() + ":" +
-                                      std::to_string(data.getPort()) + "/" +
-                                      data.getData() + THREAD_END_MESSAGE;
-                send(_socket, message.c_str(), message.size(), 0);
-            }
-            _udpServer->getReceivedData().clear();
-            _udpServer->getReceiveMutex().unlock();
+        // if (FD_ISSET(_socket, &writefds)) {
+        _udpServer->getReceiveMutex().lock();
+        for (auto& data : _udpServer->getReceivedData()) {
+            std::string message = data.getIp() + ":" +
+                                  std::to_string(data.getPort()) + "/" +
+                                  data.getData() + THREAD_END_MESSAGE;
+            std::cout << "Sending message: " << message << std::endl;
+            send(_socket, message.c_str(), message.size(), 0);
         }
+        _udpServer->getReceivedData().clear();
+        _udpServer->getReceiveMutex().unlock();
+        // }
 
         if (!FD_ISSET(_socket, &readfds)) {
             continue;
@@ -155,6 +156,7 @@ void NetworkModule::stop() {
     closesocket(_socket);
     WSACleanup();
 #else
+    std::cout << "close socket" << std::endl;
     close(_socket);
 #endif
     std::cout << "Stopping module: " << _ModuleName << std::endl;

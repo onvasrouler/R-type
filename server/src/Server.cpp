@@ -43,6 +43,7 @@ void Server::start() {
     serv_addr.sin_port = htons(PORT);
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     int binded = bind(_socket, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
+    _maxSocket = _socket;
 #ifdef _WIN32
     if (binded < 0) {
         std::cout << WSAGetLastError() << std::endl;
@@ -63,8 +64,8 @@ void Server::start() {
     std::cout << "Creating modules" << std::endl;
     GameModule* gameModule = new GameModule("GameModule");
     NetworkModule* networkModule = new NetworkModule("NetworkModule");
-    createModule(gameModule);
     createModule(networkModule);
+    createModule(gameModule);
     std::cout << "Modules created" << std::endl;
 }
 
@@ -86,7 +87,7 @@ void Server::run() {
 #ifdef _WIN32
         int ret = select(0, &readfds, &writefds, NULL, &tv);
 #else
-        int ret = select(_socket + 1, &readfds, &writefds, NULL, &tv);
+        int ret = select(_maxSocket + 1, &readfds, &writefds, NULL, &tv);
 #endif
         if (ret == -1) {
             std::throw_with_nested(std::runtime_error("Error: select failed"));
@@ -97,21 +98,29 @@ void Server::run() {
         char buffer[1024] = {0};
         std::string messages = "";
         if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
-            for (; recv(_modules[0]->getSocket(), buffer, 1024, 0) > 0;) {
+            for (; recv(_modules[0]->getSocket(), buffer, 1024, MSG_DONTWAIT) >
+                   0;) {
                 messages += buffer;
             }
         }
-        for (std::string message = "";
-             messages.find(THREAD_END_MESSAGE) != std::string::npos;
+        std::string message =
+            messages.substr(0, messages.find(THREAD_END_MESSAGE));
+        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
              message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-                         messages = messages.substr(
-                             messages.find(THREAD_END_MESSAGE) + 2)) {
+             messages =
+                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
             // get ip and port
+            std::cout << "message: " << message << std::endl;
             std::string ip = message.substr(0, message.find(":"));
             message = message.substr(message.find(":") + 1);
-            short port = std::any_cast<short>(
-                std::stoi(message.substr(0, message.find("/"))));
+            std::cout << "ip: " << ip << std::endl;
+            std::cout << "message: " << message << std::endl;
+            std::cout << "message: " << message.substr(0, message.find("/"))
+                      << std::endl;
+            short port = std::stoi(message.substr(0, message.find("/")));
+            std::cout << "port: " << port << std::endl;
             message = message.substr(message.find("/") + 1);
+            std::cout << "Message received: " << message << std::endl;
             if (!isClient(ip, port) && message == NEW_CONNECTION_MESSAGE) {
                 // create new player in the game engine if their is less than 4
                 // players
@@ -130,11 +139,12 @@ void Server::run() {
         }
         messages.clear();
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
-            for (; recv(_modules[1]->getSocket(), buffer, 1024, 0) > 0;) {
+            for (; recv(_modules[1]->getSocket(), buffer, 1024, MSG_DONTWAIT) > 0;) {
                 messages += buffer;
             }
         }
-        for (std::string message = "";
+        message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
+        for (;
              messages.find(THREAD_END_MESSAGE) != std::string::npos;
              message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
                          messages = messages.substr(
@@ -204,6 +214,8 @@ void Server::createModule(AbstractModule* module) {
         if (moduleSocket < 0)
             throw std::runtime_error(
                 "Error while creating a module: accept failed");
+        if (moduleSocket > _maxSocket)
+            _maxSocket = moduleSocket;
 #endif
         if (send(moduleSocket, "200\n\t", 5, 0) < 0)
             throw std::runtime_error(

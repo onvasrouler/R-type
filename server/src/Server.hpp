@@ -108,4 +108,9 @@ class Server : MultiThreadElement {
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
         std::vector<Client> _clients; /*!< The clients of the server. */
+        #ifdef _WIN32
+            SOCKET _maxSocket; /*!< The max socket of the server. */
+        #else
+            int _maxSocket; /*!< The max socket of the server. */
+        #endif
 };
