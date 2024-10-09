@@ -19,6 +19,9 @@
     #pragma comment(lib, "ws2_32.lib") // Lien avec la bibliothèque WS2_32.lib
 #else
     #include "sys/socket.h"
+    #ifdef __APPLE__
+        #include "sys/select.h"
+    #endif
 #endif
 
 #define PORT 8081
