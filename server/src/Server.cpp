@@ -124,19 +124,19 @@ void Server::run() {
             if (!isClient(ip, port) && message == NEW_CONNECTION_MESSAGE) {
                 // create new player in the game engine if their is less than 4
                 // players
-                Client client = Client(ip, port);
-                _clients.push_back(client);
+                // _clients.push_back(Client(ip, port));
             } else if (isClient(ip, port)) {
                 // send the message to the game engine
                 std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend);
+                _modules[1]->addMessage(messageToSend); //the problem is here
             } else {
                 // send the message to the client
                 std::string messageToSend = ip + ":" + std::to_string(port) +
                                             "/" + "" + THREAD_END_MESSAGE;
-                _modules[1]->addMessage(messageToSend);
+                _modules[1]->addMessage(messageToSend); //the problem is here
             }
         }
+        continue;
         messages.clear();
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
             for (; recv(_modules[1]->getSocket(), buffer, 1024, MSG_DONTWAIT) >
@@ -154,10 +154,11 @@ void Server::run() {
             message = message.substr(message.find("/") + 1);
             // send the message to the client
             uuid uuid(uuidString);
-            Client client = findClient(uuid);
-            std::string messageToSend = client.getIp() + ":" +
-                                        std::to_string(client.getPort()) + "/" +
-                                        message + THREAD_END_MESSAGE;
+            // Client client = findClient(uuid);
+            std::string messageToSend =
+                findClient(uuid).getIp() + ":" +
+                std::to_string(findClient(uuid).getPort()) + "/" + message +
+                THREAD_END_MESSAGE;
             _modules[0]->addMessage(messageToSend);
         }
         for (auto& module : _modules) {

@@ -49,7 +49,6 @@ void GameModule::run() {
     tv.tv_sec = 0;
     tv.tv_usec = 100;
     while (_Running) {
-        std::cout << "test" << std::endl;
         FD_ZERO(&readfds);
         FD_ZERO(&writefds);
         FD_SET(_socket, &readfds);
