@@ -84,6 +84,7 @@ void NetworkModule::run() {
     tv.tv_sec = 0;
     tv.tv_usec = 100;
     while (_Running) {
+        std::cout << "ok" << std::endl;
         FD_ZERO(&readfds);
         FD_ZERO(&writefds);
         FD_SET(_socket, &readfds);
@@ -116,13 +117,12 @@ void NetworkModule::run() {
         if (!FD_ISSET(_socket, &readfds)) {
             continue;
         }
-        std::cout << "Reading socket" << std::endl;
         // read core messages while their is nothing
         char buffer[1024] = {0};
         std::string messages = "";
-        for (int valread = recv(_socket, buffer, 1024, 0);
+        for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
              valread != -1 && valread != 0;
-             valread = recv(_socket, buffer, 1024, 0)) {
+             valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
             messages += buffer;
         }
         _udpServer->getSendMutex().lock();

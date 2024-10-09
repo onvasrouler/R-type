@@ -139,16 +139,16 @@ void Server::run() {
         }
         messages.clear();
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
-            for (; recv(_modules[1]->getSocket(), buffer, 1024, MSG_DONTWAIT) > 0;) {
+            for (; recv(_modules[1]->getSocket(), buffer, 1024, MSG_DONTWAIT) >
+                   0;) {
                 messages += buffer;
             }
         }
         message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-        for (;
-             messages.find(THREAD_END_MESSAGE) != std::string::npos;
+        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
              message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-                         messages = messages.substr(
-                             messages.find(THREAD_END_MESSAGE) + 2)) {
+             messages =
+                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
             // get uuid and message
             std::string uuidString = message.substr(0, message.find("/"));
             message = message.substr(message.find("/") + 1);
@@ -165,9 +165,10 @@ void Server::run() {
                 !FD_ISSET(module->getSocket(), &writefds))
                 continue;
             for (auto& message : module->getMessages()) {
-                send(module->getSocket(), message.c_str(),
-                     std::any_cast<int>(message.size()), 0);
+                std::cout << "Message to send: " << message << std::endl;
+                send(module->getSocket(), message.c_str(), (message.size()), 0);
             }
+            module->clearMessages();
         }
     }
 }
