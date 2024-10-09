@@ -88,10 +88,12 @@ void UDPServer::handle_receive(std::size_t length) {
             _socket.async_send_to(
                 boost::asio::buffer(sendData.getData()), _remote_endpoint,
                 [this](std::error_code ec, std::size_t) {
-                    if (ec) {
-                        std::cerr << "Error sending response: " << ec.message()
-                                  << std::endl;
+                    _stopMutex.lock();
+                    if (ec && _running) {
+                        throw UDPError("Error sending response: " +
+                                       ec.message());
                     }
+                    _stopMutex.unlock();
                     start_receive();
                 });
         }

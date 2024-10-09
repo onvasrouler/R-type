@@ -167,6 +167,7 @@ void Server::run() {
             for (auto& message : module->getMessages()) {
                 send(module->getSocket(), message.c_str(), message.size(), 0);
             }
+            module->clearMessages();
         }
     }
 }

@@ -48,3 +48,5 @@ void serverModule::addMessage(const std::string& message) {
 }
 
 std::vector<std::string> serverModule::getMessages() { return _messages; }
+
+void serverModule::clearMessages() { _messages.clear(); }
