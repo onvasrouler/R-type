@@ -10,7 +10,7 @@
 
 packageData::packageData(const std::string data, const std::string ip,
                          const short port)
-    : _data(data), _ip(ip), _port(port){};
+    : _data(data), _ip(ip), _port(port) {};
 
 std::string packageData::getData() { return _data; }
 
@@ -89,17 +89,17 @@ void UDPServer::handle_receive(std::size_t length) {
                 boost::asio::buffer(sendData.getData()), _remote_endpoint,
                 [this](std::error_code ec, std::size_t) {
                     if (ec) {
-                        throw UDPError("Error sending response: " +
-                                       ec.message());
+                        std::cerr << "Error sending response: " << ec.message()
+                                  << std::endl;
                     }
                     start_receive();
                 });
         }
         _sendMutex.unlock();
     } catch (const UDPError& e) {
-        std::cout << "crash" << std::endl;
         std::cerr << "UDP Server Error: " << e.what() << std::endl;
     }
+    start_receive();
 }
 
 std::mutex& UDPServer::getSendMutex() { return _sendMutex; }
