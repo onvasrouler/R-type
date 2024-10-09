@@ -69,13 +69,37 @@ void Server::start() {
 }
 
 void Server::run() {
-    _Running = true;
     std::cout << "Server is running" << std::endl;
+    _Running = true;
+    fd_set readfds;
+    fd_set writefds;
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 100;
     while (_Running) {
+        FD_ZERO(&readfds);
+        FD_ZERO(&writefds);
+        for (auto& module : _modules) {
+            FD_SET(module->getSocket(), &readfds);
+            FD_SET(module->getSocket(), &writefds);
+        }
+#ifdef _WIN32
+        int ret = select(0, &readfds, &writefds, NULL, &tv);
+#else
+        int ret = select(_socket + 1, &readfds, &writefds, NULL, &tv);
+#endif
+        if (ret == -1) {
+            std::throw_with_nested(std::runtime_error("Error: select failed"));
+        }
+        if (ret == 0) {
+            continue;
+        }
         char buffer[1024] = {0};
         std::string messages = "";
-        for (; recv(_modules[0]->getSocket(), buffer, 1024, 0) > 0;) {
-            messages += buffer;
+        if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
+            for (; recv(_modules[0]->getSocket(), buffer, 1024, 0) > 0;) {
+                messages += buffer;
+            }
         }
         for (std::string message = "";
              messages.find(THREAD_END_MESSAGE) != std::string::npos;
@@ -96,19 +120,19 @@ void Server::run() {
             } else if (isClient(ip, port)) {
                 // send the message to the game engine
                 std::string messageToSend = createMessage(ip, port, message);
-                send(_modules[1]->getSocket(), messageToSend.c_str(),
-                     std::any_cast<int>(messageToSend.size()), 0);
+                _modules[1]->addMessage(messageToSend);
             } else {
                 // send the message to the client
                 std::string messageToSend = ip + ":" + std::to_string(port) +
                                             "/" + "" + THREAD_END_MESSAGE;
-                send(_modules[0]->getSocket(), messageToSend.c_str(),
-                     std::any_cast<int>(messageToSend.size()), 0);
+                _modules[1]->addMessage(messageToSend);
             }
         }
         messages.clear();
-        for (; recv(_modules[1]->getSocket(), buffer, 1024, 0) > 0;) {
-            messages += buffer;
+        if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
+            for (; recv(_modules[1]->getSocket(), buffer, 1024, 0) > 0;) {
+                messages += buffer;
+            }
         }
         for (std::string message = "";
              messages.find(THREAD_END_MESSAGE) != std::string::npos;
@@ -124,8 +148,16 @@ void Server::run() {
             std::string messageToSend = client.getIp() + ":" +
                                         std::to_string(client.getPort()) + "/" +
                                         message + THREAD_END_MESSAGE;
-            send(_modules[0]->getSocket(), messageToSend.c_str(),
-                 std::any_cast<int>(messageToSend.size()), 0);
+            _modules[0]->addMessage(messageToSend);
+        }
+        for (auto& module : _modules) {
+            if (module->getMessages().empty() ||
+                !FD_ISSET(module->getSocket(), &writefds))
+                continue;
+            for (auto& message : module->getMessages()) {
+                send(module->getSocket(), message.c_str(),
+                     std::any_cast<int>(message.size()), 0);
+            }
         }
     }
 }
@@ -149,12 +181,12 @@ void Server::stop() {
     std::cout << "Server stopped" << std::endl;
 }
 
-std::string Server::decodeInterCommunication(std::string message) {
+std::string Server::decodeInterCommunication(const std::string message) {
     return "";
     // decode the message
 }
 
-std::string Server::encodeInterCommunication(std::string message) {
+std::string Server::encodeInterCommunication(const std::string message) {
     return "";
     // encode the message
 }

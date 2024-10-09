@@ -15,7 +15,7 @@
 #include "IEntity.hpp"
 #include "Point.hpp"
 #include "Rect.hpp"
-#include "lib/UUID.hpp"
+#include "UUID.hpp"
 #include "Type.hpp"
 
 /**
@@ -33,7 +33,7 @@ public:
      * 
      * This constructor initializes the entity's ID and type.
      */
-    AEntity();
+    AEntity(const uuid &id);
 
     /**
      * @brief Default virtual destructor for AEntity.
@@ -115,7 +115,7 @@ public:
      * 
      * @return int The current ID of the entity.
      */
-    const std::string& AEntity::get_id() const;
+    const uuid& get_id() const override;
 
     /**
      * @brief Get the type of the entity.
@@ -127,6 +127,6 @@ public:
 protected:
     Point _origin; ///< The origin point (position) of the entity.
     Rect _dimension; ///< The dimensions (length and height) of the entity.
-    UUID _id; ///< The unique identifier of the entity.
+    uuid _id; ///< The unique identifier of the entity.
     Type _type; ///< The type of the entity.
 };

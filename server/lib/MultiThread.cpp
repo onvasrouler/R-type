@@ -56,7 +56,3 @@ std::any MultiThreadData::getData() const {
 void MultiThreadData::setData(const std::any data) {
     _data = data;
 }
-
-void MultiThreadData::setData(std::any &data) {
-    _data = data;
-}

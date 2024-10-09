@@ -15,18 +15,30 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Bullet.hpp"
-#include "UUID.hpp"
+#include "UUID.hpp" // Ensure this path is correct and the uuid class is defined in this header
 
 #include <vector>
 #include <string>
 #include <ctime>
 #include <iostream>
 #include <mutex>
+#include <thread>
+
+class gameMessage {
+    public :
+        gameMessage(const uuid &id, const std::string message);
+        ~gameMessage() = default;
+        const uuid &getId();
+        const std::string getMessage();
+    private:
+        const uuid _id;
+        const std::string _message;
+};
 
 /**
  * @class Game
  * @brief Manages the game state, including players, enemies, and bullets.
- * 
+ *
  * The Game class handles the creation, destruction, and updating of game entities,
  * as well as checking for collisions and running the main game loop.
  */
@@ -35,7 +47,7 @@ class Game
 public:
     /**
      * @brief Construct a new Game object.
-     * 
+     *
      * This constructor initializes the game state.
      */
     Game();
@@ -47,7 +59,7 @@ public:
 
     /**
      * @brief Check for collisions between entities.
-     * 
+     *
      * This method checks for collisions between players and enemies, and between bullets and enemies.
      * It destroys the entities involved in collisions.
      */
@@ -83,7 +95,7 @@ public:
      * 
      * This method adds a new player to the game if the number of players is less than 4.
      */
-    bool create_player(const UUID id);
+    bool create_player(const uuid id);
 
     /**
      * @brief Create a new bullet for a given player.
@@ -108,7 +120,7 @@ public:
      * 
      * This method removes a player from the game based on their ID.
      */
-    void destroy_player(const UUID id);
+    void destroy_player(const uuid id);
 
     /**
      * @brief Destroy a bullet by its ID.
@@ -117,7 +129,7 @@ public:
      * 
      * This method removes a bullet from the game based on its ID.
      */
-    void destroy_bullet(const UUID bullet_id);
+    void destroy_bullet(const uuid bullet_id);
 
     /**
      * @brief Destroy an enemy by their ID.
@@ -126,7 +138,7 @@ public:
      * 
      * This method removes an enemy from the game based on their ID.
      */
-    void destroy_enemy(const UUID enemy_id);
+    void destroy_enemy(const uuid enemy_id);
 
     /**
      * @brief Update the game world.
@@ -146,13 +158,22 @@ public:
      */
     bool is_in_collision(AEntity& entity1, AEntity& entity2);
 
+    void handleMessages();
+    void addSendMessage();
+    std::vector<gameMessage> &getSendMessages();
+    std::vector<gameMessage> &getReadMessages();
+    std::mutex &getSendMutex();
+    std::mutex &getReadMutex();
+
 private:
     std::vector<Player> _player; ///< List of players in the game.
     std::vector<Enemy> _enemy; ///< List of enemies in the game.
     std::vector<Bullet> _bullet; ///< List of bullets in the game.
     bool _running; ///< Flag indicating if the game is running.
 
-    std::mutex _player_mutex; ///< Mutex for protecting the player vector.
-    std::mutex _enemy_mutex; ///< Mutex for protecting the enemy vector.
-    std::mutex _bullet_mutex; ///< Mutex for protecting the bullet vector.
+    std::mutex _sendMutex;
+    std::vector<gameMessage> _sendMessages;
+    std::mutex _readMutex;
+    std::vector<gameMessage> _readMessages;
+    std::thread _thread; ///< Thread for running the game loop.
 };

@@ -13,6 +13,7 @@
 #pragma once
 
 #include <memory>
+#include "UUID.hpp"
 
 /**
  * @class IEntity
@@ -106,7 +107,7 @@ public:
     * 
     * @return int The current ID of the entity.
     */
-   virtual const std::string& get_id(void) const = 0;
+   virtual const uuid& get_id(void) const = 0;
 
    /**
     * @brief Get the type of the entity.

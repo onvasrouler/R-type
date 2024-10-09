@@ -48,7 +48,7 @@ public:
      * 
      * This constructor initializes the player's position, dimensions, shot status, direction, and clock.
      */
-    Player(const int y);
+    Player(const int y, const uuid &id);
 
     /**
      * @brief Default destructor for Player.

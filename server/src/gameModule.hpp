@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "../core/AbstractModule.hpp"
+#include "AbstractModule.hpp"
+#include "Game.hpp"
 
 /** @class GameModule
  *  @brief The GameModule class is the class for the game module.
@@ -26,7 +27,7 @@ class GameModule : public AbstractModule {
         * @brief Constructor of GameModule.
         * @param name The name of the module.
         */
-        GameModule(std::string name);
+        GameModule(const std::string name);
         /**
         * @brief Destructor of GameModule.
         * if the module is running, it will stop it.
@@ -36,16 +37,21 @@ class GameModule : public AbstractModule {
         * @brief The main loop of the module
         */
         void run() override;
+        /*
+        * @brief Stop the module.
+        */
+        void stop() override;
     private:
         /**
         * @brief Encode the message to send to the server.
         * @param message The message to encode.
         */
-        std::string encodeInterCommunication(std::string message) override;
+        std::string encodeInterCommunication(const std::string message) override;
         /**
         * @brief Decode the message received from the server.
         * @param message The message to decode.
         */
-        std::string decodeInterCommunication(std::string message) override;
+        std::string decodeInterCommunication(const std::string message) override;
         //Need to be implemented with the game engine
+        Game _game; //The game engine
 };

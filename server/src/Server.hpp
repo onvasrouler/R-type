@@ -58,12 +58,12 @@ class Server : MultiThreadElement {
         * @brief Decode the message received from the server.
         * @param message The message to decode.
         */
-        std::string decodeInterCommunication(std::string message) override;
+        std::string decodeInterCommunication(const std::string message) override;
         /*
         * @brief Encode the message to send to the server.
         * @param message The message to encode.
         */
-        std::string encodeInterCommunication(std::string message) override;
+        std::string encodeInterCommunication(const std::string message) override;
         /*
         * @brief The function that create a new module
         * This function will create a new module and add it to the vector _modules
@@ -72,9 +72,38 @@ class Server : MultiThreadElement {
         * @param module The module to create
         */
         void createModule(AbstractModule *module);
+        /**
+        * @brief This function check if the client is already connected
+        *
+        * @param ip The ip of the client
+        * @param port The port of the client
+        * @return true if the client is already connected
+        * @return false if the client is not connected
+        */
         bool isClient(const std::string ip, const short port);
+        /**
+         * @brief This function create a message to send to the client
+         *
+         * @param ip The ip of the client
+         * @param port The port of the client
+         * @param message The message to send
+         * @return std::string The message to send
+         */
         std::string createMessage(const std::string ip, const short port, const std::string message);
+        /**
+         * @brief This function find a client by its ip and port
+         *
+         * @param ip The ip of the client
+         * @param port The port of the client
+         * @return Client The client found
+         */
         Client findClient(const std::string ip, const short port);
+        /**
+         * @brief This function find a client by its uuid
+         *
+         * @param uuid The uuid of the client
+         * @return Client The client found
+         */
         Client findClient(const uuid uuid);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */

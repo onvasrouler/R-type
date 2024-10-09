@@ -8,7 +8,7 @@
 
 #include "networkModule.hpp"
 
-NetworkModule::NetworkModule(std::string name) : AbstractModule(name) {
+NetworkModule::NetworkModule(const std::string name) : AbstractModule(name) {
     try {
         _udpServer = std::make_unique<UDPServer>(_io_context, PORT);
     } catch (std::exception& e) {
@@ -16,6 +16,7 @@ NetworkModule::NetworkModule(std::string name) : AbstractModule(name) {
             std::runtime_error("Error while creating the UDP server"));
     }
     _Running = true;
+    std::cout << "Module: " << _ModuleName << " created" << std::endl;
 }
 
 NetworkModule::~NetworkModule() {
@@ -176,10 +177,10 @@ void NetworkModule::stop() {
     std::cout << "Module: " << _ModuleName << " is stopped" << std::endl;
 }
 
-std::string NetworkModule::decodeInterCommunication(std::string message) {
+std::string NetworkModule::decodeInterCommunication(const std::string message) {
     return message;
 }
 
-std::string NetworkModule::encodeInterCommunication(std::string message) {
+std::string NetworkModule::encodeInterCommunication(const std::string message) {
     return message;
 }

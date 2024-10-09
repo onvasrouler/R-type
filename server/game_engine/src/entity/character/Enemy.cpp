@@ -19,7 +19,7 @@
  * 
  * This constructor initializes the enemy's position and dimensions.
  */
-Enemy::Enemy(const int y) : ACharacter()
+Enemy::Enemy(const int y) : ACharacter(uuid())
 {
     this->_origin = Point(X_POSITION, y);
     this->_dimension = Rect(ENEMY_SIZE, ENEMY_SIZE);

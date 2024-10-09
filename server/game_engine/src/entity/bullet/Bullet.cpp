@@ -18,7 +18,7 @@
  * @param x The initial x-coordinate of the bullet.
  * @param y The initial y-coordinate of the bullet.
  */
-Bullet::Bullet(const int x, const int y) : AEntity()
+Bullet::Bullet(const int x, const int y) : AEntity(uuid())
 {
     this->_origin = Point(x, y);
     this->_dimension = Rect(BULLET_SIZE, BULLET_SIZE);

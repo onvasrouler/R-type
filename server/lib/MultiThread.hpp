@@ -57,7 +57,6 @@ class MultiThreadData {
          * @brief Set the data stored.
          * @param data The data to store.
          */
-        void setData(std::any &data);
     protected:
         std::any _data; /*!< The data stored. */
 };

@@ -42,3 +42,9 @@ SOCKET serverModule::getSocket() { return _serverInterSocket; }
 #else
 int serverModule::getSocket() { return _serverInterSocket; }
 #endif
+
+void serverModule::addMessage(const std::string& message) {
+    _messages.push_back(message);
+}
+
+std::vector<std::string> serverModule::getMessages() { return _messages; }

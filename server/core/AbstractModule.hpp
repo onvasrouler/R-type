@@ -30,7 +30,7 @@ class AbstractModule : public MultiThreadElement {
         * @brief Constructor of AbstractModule.
         * @param name The name of the module.
         */
-        AbstractModule(std::string name);
+        AbstractModule(const std::string name);
         /** @brief Destructor of AbstractModule.
          */
         ~AbstractModule();
@@ -51,12 +51,12 @@ class AbstractModule : public MultiThreadElement {
          * @brief Decode the message received from the server.
          * @param message The message to decode.
          */
-        virtual std::string decodeInterCommunication(std::string message) override;
+        virtual std::string decodeInterCommunication(const std::string message) override;
         /**
          * @brief Encode the message to send to the server.
          * @param message The message to encode.
          */
-        virtual std::string encodeInterCommunication(std::string message) override;
+        virtual std::string encodeInterCommunication(const std::string message) override;
         bool _Running; /*!< The state of the module. */
         std::string _ModuleName; /*!< The name of the module. */
 };

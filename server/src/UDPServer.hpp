@@ -43,14 +43,43 @@ class UDPServer {
      * @param io_context The I/O context used for asynchronous operations.
      * @param port The port number on which the server will listen for incoming messages.
      */
-    UDPServer(boost::asio::io_context& io_context, short port);
+    UDPServer(boost::asio::io_context& io_context, const short port);
 
     void stop();
 
+    /**
+     * @brief Returns the mutex use for the send message vector.
+     *
+     * @return The mutex used for the send message vector.
+     */
     std::mutex& getSendMutex();
+
+    /**
+     * @brief Returns the mutex use for the receive message vector.
+     *
+     * @return The mutex used for the receive message vector.
+     */
     std::mutex& getReceiveMutex();
+
+    /**
+     * @brief Returns the mutex use for stop the server when stopping the server.
+     *
+     * @return The mutex used for stop.
+     */
     std::mutex& getStopMutex();
+
+    /**
+     * @brief Returns the vector of received messages.
+     *
+     * @return The vector of received messages.
+     */
     std::vector<packageData>& getReceivedData();
+
+    /**
+     * @brief Returns the vector of messages to sent.
+     *
+     * @return The vector of messages to sent.
+     */
     std::vector<packageData>& getSentData();
 
   private:
@@ -79,11 +108,11 @@ class UDPServer {
     udp::endpoint _remote_endpoint;
 
     /// A buffer to store the received data.
-    std::array<char, 1024> _recv_buffer;
-    std::vector<packageData> _receivedData;
-    std::vector<packageData> _sentData;
-    std::mutex _sendMutex;
-    std::mutex _receiveMutex;
-    std::mutex _stopMutex;
-    bool _running;
+    std::array<char, 1024> _recv_buffer; // The buffer to store the received data
+    std::vector<packageData> _receivedData; // The messages received
+    std::vector<packageData> _sentData; // The messages to send
+    std::mutex _sendMutex; // The mutex for the send message vector
+    std::mutex _receiveMutex; // The mutex for the receive message vector
+    std::mutex _stopMutex; // The mutex for stop the server
+    bool _running; // The server is running
 };
