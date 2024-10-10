@@ -133,7 +133,7 @@ void Server::run() {
                 // send the message to the client
                 std::string messageToSend = ip + ":" + std::to_string(port) +
                                             "/" + "" + THREAD_END_MESSAGE;
-                _modules[1]->addMessage(messageToSend); //the problem is here
+                _modules[0]->addMessage(messageToSend); //the problem is here
             }
         }
         continue;
