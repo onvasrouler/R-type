@@ -275,8 +275,10 @@ void Game::run()
 void Game::handleMessages() {
     _readMutex.lock();
     for (auto &gameMessage : _readMessages) {
+        std::cout << "Game handle Message Received message: " << gameMessage.getMessage() << std::endl;
         //implement whith the protocol
     }
+    _readMessages.clear();
     _readMutex.unlock();
 }
 
