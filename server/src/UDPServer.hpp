@@ -17,14 +17,14 @@ using boost::asio::ip::udp;
 
 class packageData {
     public:
-      packageData(const std::string data, const std::string ip, const short port);
+      packageData(const std::string data, const std::string ip, const std::size_t port);
       std::string getData();
       std::string getIp();
-      short getPort();
+      std::size_t getPort();
     private:
       const std::string _data;
       const std::string _ip;
-      const short _port;
+      const std::size_t _port;
 };
 
 /**

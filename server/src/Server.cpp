@@ -117,7 +117,7 @@ void Server::run() {
             std::cout << "message: " << message << std::endl;
             std::cout << "message: " << message.substr(0, message.find("/"))
                       << std::endl;
-            short port = std::stoi(message.substr(0, message.find("/")));
+            std::size_t port = std::stoi(message.substr(0, message.find("/")));
             std::cout << "port: " << port << std::endl;
             message = message.substr(message.find("/") + 1);
             std::cout << "Message received: " << message << std::endl;
@@ -133,8 +133,9 @@ void Server::run() {
             } else {
                 // send the message to the client
                 std::string messageToSend = ip + ":" + std::to_string(port) +
-                                            "/" + "" + THREAD_END_MESSAGE;
-                _modules[1]->addMessage(messageToSend);
+                                            "/" + BAD_CONNECTION_MESSAGE +
+                                            THREAD_END_MESSAGE;
+                _modules[0]->addMessage(messageToSend);
             }
         }
         messages.clear();
@@ -165,6 +166,7 @@ void Server::run() {
                 !FD_ISSET(module->getSocket(), &writefds))
                 continue;
             for (auto& message : module->getMessages()) {
+                std::cout << "Sending message: " << message << std::endl;
                 send(module->getSocket(), message.c_str(), message.size(), 0);
             }
             module->clearMessages();
@@ -237,7 +239,7 @@ void Server::createModule(AbstractModule* module) {
     }
 }
 
-bool Server::isClient(const std::string ip, const short port) {
+bool Server::isClient(const std::string ip, const std::size_t port) {
     for (auto& client : _clients) {
         if (client.getIp() == ip && client.getPort() == port)
             return true;
@@ -245,7 +247,7 @@ bool Server::isClient(const std::string ip, const short port) {
     return false;
 }
 
-std::string Server::createMessage(const std::string ip, const short port,
+std::string Server::createMessage(const std::string ip, const std::size_t port,
                                   const std::string message) {
     Client client = findClient(ip, port);
     std::string messageToSend =
@@ -253,7 +255,7 @@ std::string Server::createMessage(const std::string ip, const short port,
     return messageToSend;
 }
 
-Client Server::findClient(const std::string ip, const short port) {
+Client Server::findClient(const std::string ip, const std::size_t port) {
     Client client;
     for (auto& c : _clients) {
         if (c.getIp() == ip && c.getPort() == port)

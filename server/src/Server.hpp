@@ -14,6 +14,7 @@
 
 #define SHUTDOWN_MESSAGE "500"
 #define NEW_CONNECTION_MESSAGE "201"
+#define BAD_CONNECTION_MESSAGE "500"
 
 /**
  * @brief The Server class is the main class of the server.
@@ -80,7 +81,7 @@ class Server : MultiThreadElement {
         * @return true if the client is already connected
         * @return false if the client is not connected
         */
-        bool isClient(const std::string ip, const short port);
+        bool isClient(const std::string ip, const std::size_t port);
         /**
          * @brief This function create a message to send to the client
          *
@@ -89,7 +90,7 @@ class Server : MultiThreadElement {
          * @param message The message to send
          * @return std::string The message to send
          */
-        std::string createMessage(const std::string ip, const short port, const std::string message);
+        std::string createMessage(const std::string ip, const std::size_t port, const std::string message);
         /**
          * @brief This function find a client by its ip and port
          *
@@ -97,7 +98,7 @@ class Server : MultiThreadElement {
          * @param port The port of the client
          * @return Client The client found
          */
-        Client findClient(const std::string ip, const short port);
+        Client findClient(const std::string ip, const std::size_t port);
         /**
          * @brief This function find a client by its uuid
          *

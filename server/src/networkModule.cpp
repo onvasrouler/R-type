@@ -84,7 +84,6 @@ void NetworkModule::run() {
     tv.tv_sec = 0;
     tv.tv_usec = 100;
     while (_Running) {
-        std::cout << "ok" << std::endl;
         FD_ZERO(&readfds);
         FD_ZERO(&writefds);
         FD_SET(_socket, &readfds);
@@ -126,7 +125,8 @@ void NetworkModule::run() {
             messages += buffer;
         }
         _udpServer->getSendMutex().lock();
-        for (std::string message = "";
+        for (std::string message =
+                 messages.substr(0, messages.find(THREAD_END_MESSAGE));
              messages.find(THREAD_END_MESSAGE) != std::string::npos;
              message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
                          messages = messages.substr(
@@ -134,8 +134,7 @@ void NetworkModule::run() {
             // encode message and send to the clients
             std::string ip = message.substr(0, message.find(":"));
             message = message.substr(message.find(":") + 1);
-            short port = std::any_cast<short>(
-                std::stoi(message.substr(0, message.find("/"))));
+            std::size_t port = std::stoi(message.substr(0, message.find("/")));
             message = message.substr(message.find("/") + 1);
             packageData data = packageData(message, ip, port);
             _udpServer->getSentData().push_back(data);

@@ -49,7 +49,6 @@ void GameModule::run() {
     tv.tv_sec = 0;
     tv.tv_usec = 100;
     while (_Running) {
-        std::cout << "test" << std::endl;
         FD_ZERO(&readfds);
         FD_ZERO(&writefds);
         FD_SET(_socket, &readfds);
@@ -90,15 +89,17 @@ void GameModule::run() {
             messages += buffer;
         }
         _game.getReadMutex().lock();
-        for (std::string message = "";
-             messages.find(THREAD_END_MESSAGE) != std::string::npos;
+        std::string message =
+            messages.substr(0, messages.find(THREAD_END_MESSAGE));
+        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
              message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-                         messages = messages.substr(
-                             messages.find(THREAD_END_MESSAGE) + 2)) {
+             messages =
+                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
             // encode message and send to the clients
             std::string id = message.substr(0, message.find(":"));
             uuid uuid(id);
             message = message.substr(message.find(":") + 1);
+            std::cout << "Received message: " << message << std::endl;
             gameMessage gameMessage(uuid, message);
             _game.getReadMessages().push_back(gameMessage);
         }
