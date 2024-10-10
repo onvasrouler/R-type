@@ -72,7 +72,7 @@ class serverModule {
          *
          * @param The message that need to be sent
          */
-        void addMessage(const std::string &message);
+        void addMessage(const std::string message);
 
         /**
          * @brief This function return the list of message that need to be sent to other modules

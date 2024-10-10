@@ -43,7 +43,7 @@ SOCKET serverModule::getSocket() { return _serverInterSocket; }
 int serverModule::getSocket() { return _serverInterSocket; }
 #endif
 
-void serverModule::addMessage(const std::string& message) {
+void serverModule::addMessage(const std::string message) {
     _messages.push_back(message);
 }
 
