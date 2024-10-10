@@ -9,14 +9,14 @@
 #include "UDPError.hpp"
 
 packageData::packageData(const std::string data, const std::string ip,
-                         const short port)
+                         const std::size_t port)
     : _data(data), _ip(ip), _port(port) {};
 
 std::string packageData::getData() { return _data; }
 
 std::string packageData::getIp() { return _ip; }
 
-short packageData::getPort() { return _port; }
+std::size_t packageData::getPort() { return _port; }
 
 UDPServer::UDPServer(boost::asio::io_context& io_context, const short port)
     : _socket(io_context, udp::endpoint(udp::v4(), port)) {
@@ -41,7 +41,7 @@ void UDPServer::start_receive() {
     _socket.async_receive_from(
         boost::asio::buffer(_recv_buffer), _remote_endpoint,
         [this](std::error_code ec, std::size_t bytes_recvd) {
-            if (!ec && bytes_recvd > 0) {
+            if (!ec) {
                 handle_receive(bytes_recvd);
             } else {
                 _stopMutex.lock();
@@ -64,44 +64,35 @@ void UDPServer::handle_receive(std::size_t length) {
         return;
     }
     try {
-        std::cout << "Received binary data: ";
-        for (std::size_t i = 0; i < length; ++i) {
-            std::cout << std::bitset<8>(_recv_buffer[i]) << " ";
-        }
+        if (length > 0) {
+            std::string decoded_message(_recv_buffer.data(), length);
+            std::cout << "Decoded message: " << decoded_message << std::endl;
 
-        std::string decoded_message(_recv_buffer.data(), length);
-        std::cout << "Decoded message: " << decoded_message << std::endl;
-        packageData data =
-            packageData(decoded_message, _remote_endpoint.address().to_string(),
-                        _remote_endpoint.port());
+            packageData data = packageData(
+                decoded_message, _remote_endpoint.address().to_string(),
+                _remote_endpoint.port());
 
-        _receiveMutex.lock();
-        _receivedData.push_back(data);
-        _receiveMutex.unlock();
-        _sendMutex.lock();
-        std::cout << "size:" << _sentData.size() << std::endl;
-        for (auto& sendData : _sentData) {
-            if (sendData.getIp() != _remote_endpoint.address().to_string() ||
-                sendData.getPort() != _remote_endpoint.port()) {
-                continue;
-            }
+            std::string confirmation = "Message received: " + decoded_message;
             _socket.async_send_to(
-                boost::asio::buffer(sendData.getData()), _remote_endpoint,
+                boost::asio::buffer(confirmation), _remote_endpoint,
                 [this](std::error_code ec, std::size_t) {
-                    _stopMutex.lock();
-                    if (ec && _running) {
-                        throw UDPError("Error sending response: " +
-                                       ec.message());
+                    if (!ec) {
+                        std::cout << "Confirmation sent to client."
+                                  << std::endl;
+                    } else {
+                        std::cerr
+                            << "Error sending confirmation: " << ec.message()
+                            << std::endl;
                     }
-                    _stopMutex.unlock();
-                    start_receive();
                 });
+            _receiveMutex.lock();
+            _receivedData.push_back(data);
+            _receiveMutex.unlock();
         }
-        _sendMutex.unlock();
+        start_receive();
     } catch (const UDPError& e) {
         std::cerr << "UDP Server Error: " << e.what() << std::endl;
     }
-    start_receive();
 }
 
 std::mutex& UDPServer::getSendMutex() { return _sendMutex; }
