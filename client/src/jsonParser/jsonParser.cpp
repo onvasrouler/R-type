@@ -27,8 +27,8 @@ nlohmann::json JsonParser::parseFile(const std::string &filename)
 
 void JsonParser::eraseCache(const std::string &filename)
 {
-    if (_jsons.find(filename) != _jsons.end())
-        _jsons.erase(filename);
+    if (this->_jsons.find(filename) != this->_jsons.end())
+        this->_jsons.erase(filename);
 }
 
 bool JsonParser::fileHasChanged(const std::string &filename)
@@ -44,7 +44,7 @@ bool JsonParser::fileHasChanged(const std::string &filename)
     if (_jsons.find(filename) == _jsons.end())
         return true;
 
-    return _jsons[filename] != currentJson;
+    return this->_jsons[filename] != currentJson;
 }
 
 void JsonParser::writeFile(const std::string &filename, nlohmann::json &json)
@@ -54,7 +54,7 @@ void JsonParser::writeFile(const std::string &filename, nlohmann::json &json)
     if (!file.is_open())
         throw std::runtime_error("Could not open file: " + filename);
     file << json;
-    _jsons[filename] = json;
+    this->_jsons[filename] = json;
     file.close();
 }
 
@@ -65,7 +65,7 @@ void JsonParser::writePrettyFile(const std::string &filename, nlohmann::json &js
     if (!file.is_open())
         throw std::runtime_error("Could not open file: " + filename);
     file << std::setw(4) << json;
-    _jsons[filename] = json;
+    this->_jsons[filename] = json;
     file.close();
 }
 
@@ -76,7 +76,6 @@ void JsonParser::writePrettyFile(const std::string &filename, nlohmann::json &js
     if (!file.is_open())
         throw std::runtime_error("Could not open file: " + filename);
     file << std::setw(indent) << json;
-    _jsons[filename] = json;
+    this->_jsons[filename] = json;
     file.close();
 }
-
