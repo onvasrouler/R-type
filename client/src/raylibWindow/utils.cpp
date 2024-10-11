@@ -7,7 +7,7 @@
 
 #include "../include.hpp"
 
-void CustomLog(int msgType, const char *text, va_list args)
+void CustomLog(int msgType, std::string text, va_list args)
 {
     char timeStr[64] = { 0 };
     time_t now = time(NULL);
@@ -25,6 +25,6 @@ void CustomLog(int msgType, const char *text, va_list args)
         default: break;
     }
 
-    vprintf(text, args);
+    vprintf(text.c_str(), args);
     printf("\n");
 }
