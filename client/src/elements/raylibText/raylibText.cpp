@@ -12,7 +12,7 @@ RaylibText::RaylibText()
     this->_Position = {0, 0};
     this->_FontSize = 10;
     this->_Text = "Hello, World!";
-    this-> _Color = BLACK;
+    this->_Color = BLACK;
 }
 
 RaylibText::RaylibText(std::string text, Vector2 pos, int fontSize, Color color)
@@ -58,31 +58,30 @@ void RaylibText::setText(std::string text)
 
 int RaylibText::getPosX() const
 {
-    return _Position.x;
+    return this->_Position.x;
 }
 
 int RaylibText::getPosY() const
 {
-    return _Position.y;
+    return this->_Position.y;
 }
 
 Vector2 RaylibText::getPos() const
 {
-    return _Position;
+    return this->_Position;
 }
 
 int RaylibText::getFontSize() const
 {
-    return _FontSize;
+    return this->_FontSize;
 }
 
 std::string RaylibText::getText() const
 {
-    return _Text;
+    return this->_Text;
 }
 
 void RaylibText::DrawRlibText() const
 {
-    DrawText(_Text.c_str(), _Position.x, _Position.y, _FontSize, BLACK);
+    DrawText(_Text.c_str(), _Position.x, _Position.y, _FontSize, _Color);
 }
-
