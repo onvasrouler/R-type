@@ -11,40 +11,29 @@ guiFunction::guiFunction()
 {
 }
 
-guiFunction::guiFunction(std::shared_ptr<MenuManager> menu)
-{
-    this->_Menu = menu;
-}
-
-void guiFunction::setMenu(std::shared_ptr<MenuManager> menu)
-{
-    this->_Menu = menu;
-}
-
-void guiFunction::helloFunction()
-{
-    std::cout << "Hello from guiFunction" << std::endl;
-}
-
 void guiFunction::mapFunctions()
 {
-    functionMap["hello"] = std::bind(&guiFunction::helloFunction, this);
+    custom_func(printMessage, std::cout << "Hello from a dynamically created function!" << std::endl);
+    custom_func(showGoodbye, std::cout << "Goodbye from a custom function!" << std::endl);
+    custom_func(defaultFunct, std::cout << "Default function" << std::endl);
+    custom_func(ExitButton, std::cout << "Exiting ..." << std::endl);
 }
 
 void guiFunction::clearCache()
 {
-    functionMap.clear();
+    _FunctionList.clear();
 }
 
-std::unordered_map<std::string, std::function<void(const std::string&)>> guiFunction::getFunctionMap()
+std::unordered_map<std::string, std::function<void()>> guiFunction::getFunctionMap()
 {
-    return functionMap;
+    return _FunctionList;
 }
 
-std::function<void(const std::string&)> guiFunction::getFunction(const std::string functionName)
+std::function<void()> guiFunction::getFunction(const std::string functionName)
 {
-    if (functionMap.find(functionName) != functionMap.end()) {
-        return functionMap[functionName];
+    std::cout << "functionName : " << functionName << std::endl;
+    if (_FunctionList.find(functionName) != _FunctionList.end()) {
+        return _FunctionList[functionName];
     } else {
         return nullptr;
     }

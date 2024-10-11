@@ -8,26 +8,24 @@
 #pragma once
 
 #include "../../include.hpp"
-#include "../../menu/menuManager.hpp"
 
 class guiFunction {
 public:
+    #define custom_func(name, body) \
+    { \
+        auto fn = [this]() { body; }; \
+        _FunctionList[#name] = fn; \
+    }
+
     guiFunction();
-    guiFunction(std::shared_ptr<MenuManager> menu);
     ~guiFunction() = default;
-
-    void setMenu(std::shared_ptr<MenuManager> menu);
-
-    void helloFunction();
 
     void mapFunctions();
     void clearCache();
 
-    std::unordered_map<std::string, std::function<void(const std::string&)>> getFunctionMap();
-    std::function<void(const std::string&)> getFunction(const std::string functionName);
+    std::unordered_map<std::string, std::function<void()>> getFunctionMap();
+    std::function<void()> getFunction(const std::string functionName);
 
 private:
-    std::shared_ptr<MenuManager> _Menu;
-    std::unordered_map<std::string, std::function<void(const std::string&)>> functionMap;
-
+    std::unordered_map<std::string, std::function<void()>> _FunctionList;
 };
