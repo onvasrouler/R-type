@@ -9,97 +9,114 @@
 
 FpsCounter::FpsCounter(Vector2 pos, int fontSize, Color color)
 {
-    _Position = pos;
-    _fps = 0;
-    _frameCount = 0;
-    _elapsedTime = 0;
-    _fpsText = std::make_unique<RaylibText>("FPS: 0", pos, fontSize, color);
+    this-> _Position = pos;
+    this->_Fps = 0;
+    this->_FrameCount = 0;
+    this->_ElapsedTime = 0;
+    this->_FpsText = std::make_unique<RaylibText>("FPS: 0", pos, fontSize, color);
+    this->_Active = true;
 }
 
 void FpsCounter::setPosX(int posX)
 {
-    _fpsText->setPosX(posX);
+    this->_FpsText->setPosX(posX);
 }
 
 void FpsCounter::setPosY(int posY)
 {
-    _fpsText->setPosY(posY);
+    this->_FpsText->setPosY(posY);
 }
 
 void FpsCounter::setPos(Vector2 pos)
 {
-    _fpsText->setPos(pos);
+    this->_FpsText->setPos(pos);
 }
 
 void FpsCounter::setFontSize(int fontSize)
 {
-    _fpsText->setFontSize(fontSize);
+    this->_FpsText->setFontSize(fontSize);
 }
 
 void FpsCounter::setFps(float fps)
 {
-    _fps = fps;
-    _fpsText->setText("FPS: " + std::to_string(_fps));
+    this->_Fps = fps;
+    this->_FpsText->setText("FPS: " + std::to_string(_Fps));
 }
 
 void FpsCounter::setFpsText(std::unique_ptr<RaylibText> fpsText)
 {
-    _fpsText = std::move(fpsText);
+    this->_FpsText = std::move(fpsText);
 }
 
 int FpsCounter::getPosX() const
 {
-    return _fpsText->getPosX();
+    return this->_FpsText->getPosX();
 }
 
 int FpsCounter::getPosY() const
 {
-    return _fpsText->getPosY();
+    return this->_FpsText->getPosY();
 }
 
 Vector2 FpsCounter::getPos() const
 {
-    return _fpsText->getPos();
+    return this->_FpsText->getPos();
 }
 
 int FpsCounter::getFontSize() const
 {
-    return _fpsText->getFontSize();
+    return this->_FpsText->getFontSize();
 }
 
 float FpsCounter::getFps() const
 {
-    return _fps;
+    return this->_Fps;
 }
 
 const std::unique_ptr<RaylibText>& FpsCounter::getFpsText() const
 {
-    return _fpsText;
+    return this->_FpsText;
 }
 
 void FpsCounter::draw() const
 {
-    _fpsText->DrawRlibText();
+    if (this->_Active)
+        this->_FpsText->DrawRlibText();
 }
 
 void FpsCounter::reset()
 {
-    _fps = 0;
-    _frameCount = 0;
-    _elapsedTime = 0;
+    this->_Fps = 0;
+    this->_FrameCount = 0;
+    this->_ElapsedTime = 0;
 }
 
 void FpsCounter::update()
 {
     int roundedFps;
 
-    _frameCount++;
-    _elapsedTime += GetFrameTime();
-    if (_elapsedTime >= 1) {
-        _fps = _frameCount;
-        _frameCount = 0;
-        _elapsedTime = 0;
-        roundedFps = static_cast<int>(_fps);
-        _fpsText->setText("FPS: " + std::to_string(roundedFps));
+    this->_FrameCount++;
+    this->_ElapsedTime += GetFrameTime();
+    if (_ElapsedTime >= 1) {
+        this->_Fps = _FrameCount;
+        this->_FrameCount = 0;
+        this->_ElapsedTime = 0;
+        roundedFps = static_cast<int>(_Fps);
+        this->_FpsText->setText("FPS: " + std::to_string(roundedFps));
     }
+}
+
+void FpsCounter::setActive(bool active)
+{
+    this->_Active = active;
+}
+
+void FpsCounter::toggleActive()
+{
+    this->_Active = !_Active;
+}
+
+bool FpsCounter::isActive() const
+{
+    return this->_Active;
 }

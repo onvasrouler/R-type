@@ -35,13 +35,18 @@ public:
     void reset();
     void update();
 
+    void setActive(bool active);
+    void toggleActive();
+
+    bool isActive() const;
+
 private:
     Vector2 _Position;
 
-    float _fps;
-    float _frameCount;
-    float _elapsedTime;
+    float _Fps;
+    float _FrameCount;
+    float _ElapsedTime;
+    bool _Active;
 
-    std::unique_ptr<RaylibText> _fpsText;
-    
+    std::unique_ptr<RaylibText> _FpsText;
 };
