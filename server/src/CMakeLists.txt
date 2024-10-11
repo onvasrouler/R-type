@@ -6,6 +6,8 @@ target_sources(rtype_server_lib
   ${CMAKE_CURRENT_SOURCE_DIR}/networkModule.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Server.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Server.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/Client.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/Client.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serverModule.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serverModule.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/UDPError.hpp
