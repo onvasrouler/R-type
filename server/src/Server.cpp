@@ -104,6 +104,19 @@ void Server::run() {
                 messages += buffer;
             }
         }
+        for (auto& module : _modules) {
+            if (!module->getMessages().empty() &&
+                FD_ISSET(module->getSocket(), &writefds)) {
+                std::cout << "Socket is ready to send messages to module: "
+                          << module->getSocket() << std::endl;
+                for (auto& message : module->getMessages()) {
+                    std::cout << "Sending message: " << message << std::endl;
+                    send(module->getSocket(), message.c_str(), message.size(),
+                         0);
+                }
+                module->clearMessages();
+            }
+        }
         std::string message =
             messages.substr(0, messages.find(THREAD_END_MESSAGE));
         for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
@@ -122,20 +135,16 @@ void Server::run() {
             std::cout << "port: " << port << std::endl;
             message = message.substr(message.find("/") + 1);
             std::cout << "Message received: " << message << std::endl;
-            if (message == NEW_CONNECTION_MESSAGE) {
+            if (isClient(ip, port)) {
+                std::string messageToSend = createMessage(ip, port, message);
+                _modules[1]->addMessage(messageToSend);
+            } else {
                 uuid userUUID;
                 std::string userID = userUUID.toString();
                 Client newClient(ip, port, userUUID);
                 _clients.push_back(newClient);
-            } else if (isClient(ip, port)) {
-                // send the message to the game engine
                 std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend); // the problem is here
-            } else {
-                // send the message to the client
-                std::string messageToSend = ip + ":" + std::to_string(port) +
-                                            "/" + "" + THREAD_END_MESSAGE;
-                _modules[0]->addMessage(messageToSend); // the problem is here
+                _modules[1]->addMessage(messageToSend);
             }
         }
         continue;
