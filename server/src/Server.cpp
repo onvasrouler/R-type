@@ -107,8 +107,6 @@ void Server::run() {
         for (auto& module : _modules) {
             if (!module->getMessages().empty() &&
                 FD_ISSET(module->getSocket(), &writefds)) {
-                std::cout << "Socket is ready to send messages to module: "
-                          << module->getSocket() << std::endl;
                 for (auto& message : module->getMessages()) {
                     std::cout << "Sending message: " << message << std::endl;
                     send(module->getSocket(), message.c_str(), message.size(),
@@ -127,14 +125,8 @@ void Server::run() {
             std::cout << "message: " << message << std::endl;
             std::string ip = message.substr(0, message.find(":"));
             message = message.substr(message.find(":") + 1);
-            std::cout << "ip: " << ip << std::endl;
-            std::cout << "message: " << message << std::endl;
-            std::cout << "message: " << message.substr(0, message.find("/"))
-                      << std::endl;
             std::size_t port = std::stoi(message.substr(0, message.find("/")));
-            std::cout << "port: " << port << std::endl;
             message = message.substr(message.find("/") + 1);
-            std::cout << "Message received: " << message << std::endl;
             if (isClient(ip, port)) {
                 std::string messageToSend = createMessage(ip, port, message);
                 _modules[1]->addMessage(messageToSend);
@@ -177,7 +169,6 @@ void Server::run() {
                 !FD_ISSET(module->getSocket(), &writefds))
                 continue;
             for (auto& message : module->getMessages()) {
-                std::cout << "Sending message: " << message << std::endl;
                 send(module->getSocket(), message.c_str(), message.size(), 0);
             }
             module->clearMessages();

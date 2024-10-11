@@ -276,7 +276,8 @@ void Game::handleMessages() {
     _readMutex.lock();
     for (auto &gameMessage : _readMessages) {
         std::cout << "Game handle Message Received message: " << gameMessage.getMessage() << std::endl;
-        //implement whith the protocol
+        std::cout << "Game handle Message Received id: " << gameMessage.getId().toString() << std::endl;
+        create_player(gameMessage.getId());
     }
     _readMessages.clear();
     _readMutex.unlock();
