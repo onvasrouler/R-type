@@ -16,6 +16,7 @@
 #include <winsock2.h>              // For Windows socket functions
 #pragma comment(lib, "Ws2_32.lib") // Link with Ws2_32.lib for Winsock
 #else
+#include "../lib/UUID.hpp"
 #include "sys/socket.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -121,19 +122,20 @@ void Server::run() {
             std::cout << "port: " << port << std::endl;
             message = message.substr(message.find("/") + 1);
             std::cout << "Message received: " << message << std::endl;
-            if (!isClient(ip, port) && message == NEW_CONNECTION_MESSAGE) {
-                // create new player in the game engine if their is less than 4
-                // players
-                // _clients.push_back(Client(ip, port));
+            if (message == NEW_CONNECTION_MESSAGE) {
+                uuid userUUID;
+                std::string userID = userUUID.toString();
+                Client newClient(ip, port, userUUID);
+                _clients.push_back(newClient);
             } else if (isClient(ip, port)) {
                 // send the message to the game engine
                 std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend); //the problem is here
+                _modules[1]->addMessage(messageToSend); // the problem is here
             } else {
                 // send the message to the client
                 std::string messageToSend = ip + ":" + std::to_string(port) +
                                             "/" + "" + THREAD_END_MESSAGE;
-                _modules[0]->addMessage(messageToSend); //the problem is here
+                _modules[0]->addMessage(messageToSend); // the problem is here
             }
         }
         continue;
