@@ -2,7 +2,7 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -std=c++14
+CXXFLAGS = -Wall -std=c++17
 
 # Include directories
 INCLUDES = -I./
