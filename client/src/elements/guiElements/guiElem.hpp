@@ -9,10 +9,6 @@
 
 #include "../../include.hpp"
 
-struct Vector2 {
-    float x;
-    float y;
-};
 class GUIElement {
     public:
     GUIElement(Vector2 pos = {0, 0}, Vector2 size = {100, 50}, std::string text = "default")
@@ -90,9 +86,9 @@ public:
     float getMinValue() const;
 
 private:
-    float _value;
-    float _maxValue;
-    float _minValue;
+    float _Value;
+    float _MaxValue;
+    float _MinValue;
 };
 
 
@@ -130,7 +126,7 @@ public:
     int getActive() const;
     std::vector<std::string> getList() const;
 private:
-    std::vector<std::string> _list;
+    std::vector<std::string> _List;
     int _active;
     int _ScrollIndex;
     int _Active;
