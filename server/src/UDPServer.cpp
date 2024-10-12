@@ -21,7 +21,7 @@
 
 packageData::packageData(const std::string data, const std::string ip,
                          const std::size_t port)
-    : _data(data), _ip(ip), _port(port){};
+    : _data(data), _ip(ip), _port(port) {};
 
 std::string packageData::getData() { return _data; }
 

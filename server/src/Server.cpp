@@ -105,9 +105,11 @@ void Server::run() {
         std::string messages = "";
         if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
 #ifdef _WIN32
-            for (int valread = recv(_socket, buffer, 1024, 0);
+            for (int valread = recv(_modules[0]->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
-                 valread = recv(_socket, buffer, 1024, 0)) {
+                 valread = recv(_modules[0]->getSocket(), buffer, 1024, 0)) {
+                std::cout << "Read: " << buffer << " from network module"
+                          << std::endl;
                 messages += buffer;
             }
 #else
@@ -118,17 +120,18 @@ void Server::run() {
             }
 #endif
         }
-        for (auto& module : _modules) {
-            if (!module->getMessages().empty() &&
-                FD_ISSET(module->getSocket(), &writefds)) {
-                for (auto& message : module->getMessages()) {
-                    std::cout << "Sending message: " << message << std::endl;
-                    send(module->getSocket(), message.c_str(), message.size(),
-                         0);
-                }
-                module->clearMessages();
-            }
-        }
+        // for (auto& module : _modules) {
+        //     if (!module->getMessages().empty() &&
+        //         FD_ISSET(module->getSocket(), &writefds)) {
+        //         for (auto& message : module->getMessages()) {
+        //             // std::cout << "Sending message: " << message <<
+        //             std::endl; send(module->getSocket(), message.c_str(),
+        //             message.size(),
+        //                  0);
+        //         }
+        //         module->clearMessages();
+        //     }
+        // }
         std::string message =
             messages.substr(0, messages.find(THREAD_END_MESSAGE));
         for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
@@ -136,7 +139,6 @@ void Server::run() {
              messages =
                  messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
             // get ip and port
-            std::cout << "message: " << message << std::endl;
             std::string ip = message.substr(0, message.find(":"));
             message = message.substr(message.find(":") + 1);
             std::size_t port = std::stoi(message.substr(0, message.find("/")));
@@ -153,13 +155,14 @@ void Server::run() {
                 _modules[1]->addMessage(messageToSend);
             }
         }
-        continue;
         messages.clear();
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
 #ifdef _WIN32
-            for (int valread = recv(_socket, buffer, 1024, 0);
+            for (int valread = recv(_modules[1]->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
-                 valread = recv(_socket, buffer, 1024, 0)) {
+                 valread = recv(_modules[1]->getSocket(), buffer, 1024, 0)) {
+                std::cout << "Read: " << buffer << " from game module"
+                          << std::endl;
                 messages += buffer;
             }
 #else
@@ -187,11 +190,18 @@ void Server::run() {
                     THREAD_END_MESSAGE;
                 _modules[0]->addMessage(messageToSend);
             }
+            std::cout << "test" << std::endl;
             for (auto& module : _modules) {
+                std::cout << "Module: " << module->getModuleName()
+                          << " have nb message to be send"
+                          << module->getMessages().size() << std::endl;
                 if (module->getMessages().empty() ||
                     !FD_ISSET(module->getSocket(), &writefds))
                     continue;
                 for (auto& message : module->getMessages()) {
+                    std::cout << "Sending message: " << message
+                              << "to module: " << module->getModuleName()
+                              << std::endl;
                     send(module->getSocket(), message.c_str(), message.size(),
                          0);
                 }

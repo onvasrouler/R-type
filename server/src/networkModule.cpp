@@ -104,18 +104,18 @@ void NetworkModule::run() {
             continue;
         }
         // check received messages
-        // if (FD_ISSET(_socket, &writefds)) {
-        _udpServer->getReceiveMutex().lock();
-        for (auto& data : _udpServer->getReceivedData()) {
-            std::string message = data.getIp() + ":" +
-                                  std::to_string(data.getPort()) + "/" +
-                                  data.getData() + THREAD_END_MESSAGE;
-            std::cout << "Sending message: " << message << std::endl;
-            send(_socket, message.c_str(), message.size(), 0);
+        if (FD_ISSET(_socket, &writefds)) {
+            _udpServer->getReceiveMutex().lock();
+            for (auto& data : _udpServer->getReceivedData()) {
+                std::string message = data.getIp() + ":" +
+                                      std::to_string(data.getPort()) + "/" +
+                                      data.getData() + THREAD_END_MESSAGE;
+                std::cout << "Message send to core: " << message << std::endl;
+                send(_socket, message.c_str(), message.size(), 0);
+            }
+            _udpServer->getReceivedData().clear();
+            _udpServer->getReceiveMutex().unlock();
         }
-        _udpServer->getReceivedData().clear();
-        _udpServer->getReceiveMutex().unlock();
-        // }
 
         if (!FD_ISSET(_socket, &readfds)) {
             continue;
@@ -148,7 +148,7 @@ void NetworkModule::run() {
             message = message.substr(message.find(":") + 1);
             std::size_t port = std::stoi(message.substr(0, message.find("/")));
             message = message.substr(message.find("/") + 1);
-            std::cout << "Message to send: " << message << std::endl;
+            std::cout << "Message received from core: " << message << std::endl;
             packageData data = packageData(message, ip, port);
             _udpServer->getSentData().push_back(data);
         }

@@ -46,6 +46,12 @@ class AbstractModule : public MultiThreadElement {
          * @brief Stop the module.
          */
         virtual void stop();
+        /**
+         * @brief Return the name of the module
+         *
+         * @return The name of the module
+         */
+        std::string getName() const;
     protected:
         /**
          * @brief Decode the message received from the server.

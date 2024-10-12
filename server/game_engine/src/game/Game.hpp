@@ -29,9 +29,9 @@
 #define END_MESSAGE_CODE "\r\n"
 
 //new Player:
-    #define NEW_PLAYER_REQUEST_CODE "000"
-    #define NEW_PLAYER_ACCEPTED_CODE "001"
-    #define NEW_PLAYER_REJECTED_CODE "002"
+    #define NEW_PLAYER_REQUEST_CODE "00"
+    #define NEW_PLAYER_ACCEPTED_CODE "01"
+    #define NEW_PLAYER_REJECTED_CODE "02"
 //data 2:
     //player 0:
         #define PLAYER_SPAWN_CODE "200"

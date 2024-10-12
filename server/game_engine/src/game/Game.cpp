@@ -85,7 +85,7 @@ void Game::create_bullet(const Player player)
  */
 void Game::create_enemy()
 {
-    this->_enemy.push_back(Enemy(500));
+    this->_enemy.push_back(Enemy(std::rand() % 1080));
     std::string message = ENEMY_SPAWN_CODE + std::string("/") + this->_enemy.back().get_id().toString() + std::string("/") + std::to_string(this->_enemy.back().get_type()) + std::string("/") + std::to_string(this->_enemy.back().get_level()) + std::string("/") + std::to_string(this->_enemy.back().get_hp()) + std::string("/") + std::to_string(this->_enemy.back().get_x()) + std::string("/") + std::to_string(this->_enemy.back().get_y()) + END_MESSAGE_CODE;
     _sendMutex.lock();
     for (auto &player : _player) {
@@ -356,8 +356,9 @@ void Game::run()
 void Game::handleMessages() {
     _readMutex.lock();
     for (auto &receivedMessage : _readMessages) {
-        std::cout << "Game handle Message Received message: " << receivedMessage.getMessage() << std::endl;
-        std::cout << "Game handle Message Received id: " << receivedMessage.getId().toString() << std::endl;
+        //get message between / and END_MESSAGE_CODE
+        std::string message = receivedMessage.getMessage().substr(receivedMessage.getMessage().find("/") + 1, receivedMessage.getMessage().find(END_MESSAGE_CODE) - receivedMessage.getMessage().find("/") - 1);
+        std::cout <<"Get message: " + message + " from: " + receivedMessage.getId().toString() << std::endl;
         if (receivedMessage.getMessage() == NEW_PLAYER_REQUEST_CODE && _player.size() < MAX_PLAYERS) {
             create_player(receivedMessage.getId());
             std::string message = NEW_PLAYER_ACCEPTED_CODE + std::string("/") + receivedMessage.getId().toString() + std::string("/") + std::to_string(_player.back().get_type()) + std::string("/") + std::to_string(_player.back().get_level()) + std::string("/") + std::to_string(_player.back().get_hp()) + std::string("/") + std::to_string(_player.back().get_x()) + std::string("/") + std::to_string(_player.back().get_y()) + END_MESSAGE_CODE;

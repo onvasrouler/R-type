@@ -101,6 +101,11 @@ void AbstractModule::stop()
     std::cout << "Module: " << _ModuleName << " is stopped" << std::endl;
 }
 
+std::string AbstractModule::getName() const
+{
+    return _ModuleName;
+}
+
 std::string AbstractModule::decodeInterCommunication(const std::string message)
 {
     std::cout << "Decoding message: " << message << std::endl;

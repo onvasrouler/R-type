@@ -85,6 +85,13 @@ class serverModule {
          * @brief This function clear the list of message that need to be sent to other modules
          */
         void clearMessages();
+
+        /**
+         * @brief This function return the module name
+         *
+         * @return The module name
+         */
+        std::string getModuleName() { return _module->getName(); }
     private:
         std::shared_ptr<AbstractModule> _module; // The module to store.
         #ifdef _WIN32
