@@ -63,9 +63,9 @@ void Server::start() {
     }
     // create all the modules
     std::cout << "Creating modules" << std::endl;
+    // NetworkModule* networkModule = new NetworkModule("NetworkModule");
+    // createModule(networkModule);
     GameModule* gameModule = new GameModule("GameModule");
-    NetworkModule* networkModule = new NetworkModule("NetworkModule");
-    createModule(networkModule);
     createModule(gameModule);
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
@@ -84,7 +84,7 @@ void Server::run() {
     tv.tv_sec = 0;
     tv.tv_usec = 100;
     while (_Running) {
-        FD_ZERO(&readfds);
+        /*FD_ZERO(&readfds);
         FD_ZERO(&writefds);
         for (auto& module : _modules) {
             FD_SET(module->getSocket(), &readfds);
@@ -197,7 +197,7 @@ void Server::run() {
                 }
                 module->clearMessages();
             }
-        }
+        }*/
     }
 }
 

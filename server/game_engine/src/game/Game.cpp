@@ -26,8 +26,10 @@ Game::Game()
 
 Game::~Game()
 {
+    std::cout << "Destroying game engine" << std::endl;
     if (_running)
         this->stop();
+    std::cout << "Game engine destroyed" << std::endl;
 }
 
 /**
@@ -42,7 +44,7 @@ bool Game::create_player(const uuid id)
     if (this->_player.size() < 4) {
         Player player(500, id);
         this->_player.push_back(player);
-        std::string message = PLAYER_SPAWN_CODE + "/" + player.get_id().toString() + "/" + std::to_string(player.get_type()) + "/" + std::to_string(player.get_level()) + "/" + std::to_string(player.get_hp()) + "/" + std::to_string(player.get_x()) + "/" + std::to_string(player.get_y()) + END_MESSAGE_CODE;
+        std::string message = PLAYER_SPAWN_CODE + std::string("/") + player.get_id().toString() + std::string("/") + std::to_string(player.get_type()) + std::string("/") + std::to_string(player.get_level()) + std::string("/") + std::to_string(player.get_hp()) + std::string("/") + std::to_string(player.get_x()) + std::string("/") + std::to_string(player.get_y()) + END_MESSAGE_CODE;
         _sendMutex.lock();
         for (auto &player : _player) {
             if (player.get_id() == id) {
@@ -68,7 +70,7 @@ bool Game::create_player(const uuid id)
 void Game::create_bullet(const Player player)
 {
     this->_bullet.push_back(Bullet(player.get_x() + player.get_l(), player.get_y()));
-    std::string message = BULLET_SPAWN_CODE + "/" + this->_bullet.back().get_id().toString() + "/" + std::to_string(this->_bullet.back().get_x()) + "/" + std::to_string(this->_bullet.back().get_y()) + END_MESSAGE_CODE;
+    std::string message = BULLET_SPAWN_CODE + std::string("/") + this->_bullet.back().get_id().toString() + std::string("/") + std::to_string(this->_bullet.back().get_x()) + std::string("/") + std::to_string(this->_bullet.back().get_y()) + END_MESSAGE_CODE;
     _sendMutex.lock();
     for (auto &player : _player) {
         _sendMessages.push_back(gameMessage(player.get_id(), message));
@@ -84,7 +86,7 @@ void Game::create_bullet(const Player player)
 void Game::create_enemy()
 {
     this->_enemy.push_back(Enemy(500));
-    std::string message = ENEMY_SPAWN_CODE + "/" + this->_enemy.back().get_id().toString() + "/" + std::to_string(this->_enemy.back().get_type()) + "/" + std::to_string(this->_enemy.back().get_level()) + "/" + std::to_string(this->_enemy.back().get_hp()) + "/" + std::to_string(this->_enemy.back().get_x()) + "/" + std::to_string(this->_enemy.back().get_y()) + END_MESSAGE_CODE;
+    std::string message = ENEMY_SPAWN_CODE + std::string("/") + this->_enemy.back().get_id().toString() + std::string("/") + std::to_string(this->_enemy.back().get_type()) + std::string("/") + std::to_string(this->_enemy.back().get_level()) + std::string("/") + std::to_string(this->_enemy.back().get_hp()) + std::string("/") + std::to_string(this->_enemy.back().get_x()) + std::string("/") + std::to_string(this->_enemy.back().get_y()) + END_MESSAGE_CODE;
     _sendMutex.lock();
     for (auto &player : _player) {
         _sendMessages.push_back(gameMessage(player.get_id(), message));
@@ -104,7 +106,7 @@ void Game::destroy_player(const uuid id)
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
         if (player->get_id() == id) {
             this->_player.erase(player);
-            std::string message = PLAYER_DEATH_CODE + "/" + player->get_id().toString() + END_MESSAGE_CODE;
+            std::string message = PLAYER_DEATH_CODE + std::string("/") + player->get_id().toString() + END_MESSAGE_CODE;
             _sendMutex.lock();
             for (auto &player : _player) {
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
@@ -126,7 +128,7 @@ void Game::destroy_bullet(const uuid bullet_id)
 {
     for (auto it = this->_bullet.begin(); it != this->_bullet.end(); ++it) {
         if (it->get_id() == bullet_id) {
-            std::string message = BULLET_DEATH_CODE + "/" + it->get_id().toString() + END_MESSAGE_CODE;
+            std::string message = BULLET_DEATH_CODE + std::string("/") + it->get_id().toString() + END_MESSAGE_CODE;
             _sendMutex.lock();
             for (auto &player : _player) {
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
@@ -149,7 +151,7 @@ void Game::destroy_enemy(const uuid enemy_id)
 {
     for (auto it = this->_enemy.begin(); it != this->_enemy.end(); ++it) {
         if (it->get_id() == enemy_id) {
-            std::string message = ENEMY_DEATH_CODE + "/" + it->get_id().toString() + END_MESSAGE_CODE;
+            std::string message = ENEMY_DEATH_CODE + std::string("/") + it->get_id().toString() + END_MESSAGE_CODE;
             _sendMutex.lock();
             for (auto &player : _player) {
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
@@ -168,31 +170,44 @@ void Game::destroy_enemy(const uuid enemy_id)
  */
 void Game::update_world()
 {
+    int i = 0;
+    std::vector<uuid> to_destroy;
     for (auto& enemy : this->_enemy) {
         enemy.move();
-        std::string message = ENEMY_POSITION_CODE + "/" + enemy.get_id().toString() + "/" + std::to_string(enemy.get_x()) + "/" + std::to_string(enemy.get_y()) + END_MESSAGE_CODE;
+        std::string message = ENEMY_POSITION_CODE + std::string("/") + enemy.get_id().toString() + std::string("/") + std::to_string(enemy.get_x()) + std::string("/") + std::to_string(enemy.get_y()) + END_MESSAGE_CODE;
         _sendMutex.lock();
         for (auto &player : _player) {
             _sendMessages.push_back(gameMessage(player.get_id(), message));
         }
         _sendMutex.unlock();
+        if (enemy.get_x() < 0) {
+            to_destroy.push_back(enemy.get_id());
+        }
+        i++;
     }
+    for (auto id : to_destroy) {
+        this->destroy_enemy(id);
+    }
+    to_destroy.clear();
     for (auto& bullet : this->_bullet) {
         bullet.move();
-        std::string message = BULLET_POSITION_CODE + "/" + bullet.get_id().toString() + "/" + std::to_string(bullet.get_x()) + "/" + std::to_string(bullet.get_y()) + END_MESSAGE_CODE;
+        std::string message = BULLET_POSITION_CODE + std::string("/") + bullet.get_id().toString() + std::string("/") + std::to_string(bullet.get_x()) + std::string("/") + std::to_string(bullet.get_y()) + END_MESSAGE_CODE;
         _sendMutex.lock();
         for (auto &player : _player) {
             _sendMessages.push_back(gameMessage(player.get_id(), message));
         }
         _sendMutex.unlock();
         if (bullet.get_x() > 1920) {
-            this->destroy_bullet(bullet.get_id());
+            to_destroy.push_back(bullet.get_id());
         }
+    }
+    for (auto id : to_destroy) {
+        this->destroy_bullet(id);
     }
     for (auto& player : this->_player) {
         if (player.get_dir() != NONE) {
             player.move();
-            std::string message = PLAYER_POSITION_CODE + "/" + player.get_id().toString() + "/" + std::to_string(player.get_x()) + "/" + std::to_string(player.get_y()) + END_MESSAGE_CODE;
+            std::string message = PLAYER_POSITION_CODE + std::string("/") + player.get_id().toString() + std::string("/") + std::to_string(player.get_x()) + std::string("/") + std::to_string(player.get_y()) + END_MESSAGE_CODE;
             _sendMutex.lock();
             for (auto &player : _player) {
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
@@ -249,7 +264,7 @@ void Game::check_collisions()
     for (auto& player : this->_player) {
         for (auto& enemy : this->_enemy) {
             if (this->is_in_collision(player, enemy)) {
-                std::string message = PLAYER_DAMAGE_CODE + "/" + player.get_id().toString() + "/" + "1" + END_MESSAGE_CODE;
+                std::string message = PLAYER_DAMAGE_CODE + std::string("/") + player.get_id().toString() + std::string("/") + "1" + END_MESSAGE_CODE;
                 to_destroy.push_back(player.get_id());
             }
         }
@@ -321,6 +336,7 @@ void Game::stop()
 void Game::run()
 {
     std::clock_t cl = clock();
+    std::clock_t cl2 = clock();
 
     std::cout << "Running game engine" << std::endl;
     while (_running) {
@@ -329,16 +345,31 @@ void Game::run()
             cl = clock();
             this->update_world();
         }
-        this->check_collisions();
+        if (clock() - cl2 > 2000000 && this->_enemy.size() < MAX_ENEMIES) { // 2000000 = 2 sec
+            cl2 = clock();
+            this->create_enemy();
+        }
+        // this->check_collisions();
     }
 }
 
 void Game::handleMessages() {
     _readMutex.lock();
-    for (auto &gameMessage : _readMessages) {
-        std::cout << "Game handle Message Received message: " << gameMessage.getMessage() << std::endl;
-        std::cout << "Game handle Message Received id: " << gameMessage.getId().toString() << std::endl;
-        create_player(gameMessage.getId());
+    for (auto &receivedMessage : _readMessages) {
+        std::cout << "Game handle Message Received message: " << receivedMessage.getMessage() << std::endl;
+        std::cout << "Game handle Message Received id: " << receivedMessage.getId().toString() << std::endl;
+        if (receivedMessage.getMessage() == NEW_PLAYER_REQUEST_CODE && _player.size() < MAX_PLAYERS) {
+            create_player(receivedMessage.getId());
+            std::string message = NEW_PLAYER_ACCEPTED_CODE + std::string("/") + receivedMessage.getId().toString() + std::string("/") + std::to_string(_player.back().get_type()) + std::string("/") + std::to_string(_player.back().get_level()) + std::string("/") + std::to_string(_player.back().get_hp()) + std::string("/") + std::to_string(_player.back().get_x()) + std::string("/") + std::to_string(_player.back().get_y()) + END_MESSAGE_CODE;
+            _sendMutex.lock();
+            _sendMessages.push_back(gameMessage(receivedMessage.getId(), message));
+            _sendMutex.unlock();
+        } else {
+            std::string message = NEW_PLAYER_REJECTED_CODE + std::string("/") + receivedMessage.getId().toString() + END_MESSAGE_CODE;
+            _sendMutex.lock();
+            _sendMessages.push_back(gameMessage(receivedMessage.getId(), message));
+            _sendMutex.unlock();
+        }
     }
     _readMessages.clear();
     _readMutex.unlock();

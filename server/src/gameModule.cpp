@@ -20,7 +20,6 @@ GameModule::~GameModule() {
         stop();
     }
     // destroy game engine
-    _game.~Game();
     std::cout << "Module: " << _ModuleName << " destroyed" << std::endl;
 }
 
