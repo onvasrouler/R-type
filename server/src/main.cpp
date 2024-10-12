@@ -7,6 +7,7 @@
 #include "Server.hpp"
 #include <csignal> // For signal handling
 #include <iostream>
+#include <thread>
 
 #ifdef _WIN32
 int setupWinsock() {
@@ -21,6 +22,8 @@ int setupWinsock() {
 };
 int tmp = setupWinsock();
 #endif
+
+volatile bool keepRunning = true;
 
 Server server;
 
