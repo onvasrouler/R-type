@@ -15,7 +15,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Bullet.hpp"
-#include "UUID.hpp" // Ensure this path is correct and the uuid class is defined in this header
+#include "UUID.hpp"
 
 #include <vector>
 #include <string>
@@ -23,6 +23,25 @@
 #include <iostream>
 #include <mutex>
 #include <thread>
+
+#define MAX_PLAYERS 4 ///< The maximum number of players in the game.
+#define MAX_ENEMIES 20 ///< The maximum number of enemies in the game.
+#define END_MESSAGE_CODE "\r\n"
+//data 2:
+    //player 0:
+        #define PLAYER_SPAWN_CODE 0
+        #define PLAYER_DAMAGE_CODE 1
+        #define PLAYER_POSITION_CODE 2
+        #define PLAYER_DEATH_CODE 3
+    //Enemy 1:
+        #define ENEMY_SPAWN_CODE 0
+        #define ENEMY_DAMAGE_CODE 1
+        #define ENEMY_POSITION_CODE 2
+        #define ENEMY_DEATH_CODE 3
+    //Bullet 2:
+        #define BULLET_SPAWN_CODE 0
+        #define BULLET_POSITION_CODE 1
+        #define BULLET_DEATH_CODE 2
 
 class gameMessage {
     public :
