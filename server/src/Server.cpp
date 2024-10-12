@@ -67,6 +67,9 @@ void Server::start() {
     NetworkModule* networkModule = new NetworkModule("NetworkModule");
     createModule(networkModule);
     createModule(gameModule);
+    u_long mode = 1; // 1 to enable non-blocking mode
+    ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);
+    ioctlsocket(_modules[1]->getSocket(), FIONBIO, &mode);
     std::cout << "Modules created" << std::endl;
 }
 
@@ -99,8 +102,7 @@ void Server::run() {
         char buffer[1024] = {0};
         std::string messages = "";
         if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
-            for (; recv(_modules[0]->getSocket(), buffer, 1024, MSG_DONTWAIT) >
-                   0;) {
+            for (; recv(_modules[0]->getSocket(), buffer, 1024, 0) > 0;) {
                 messages += buffer;
             }
         }
@@ -142,8 +144,7 @@ void Server::run() {
         continue;
         messages.clear();
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
-            for (; recv(_modules[1]->getSocket(), buffer, 1024, MSG_DONTWAIT) >
-                   0;) {
+            for (; recv(_modules[1]->getSocket(), buffer, 1024, 0) > 0;) {
                 messages += buffer;
             }
         }

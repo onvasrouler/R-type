@@ -70,6 +70,8 @@ void NetworkModule::start() {
                 _io_context.run();
                 return nullptr;
             });
+            u_long mode = 1; // 1 to enable non-blocking mode
+            ioctlsocket(_socket, FIONBIO, &mode);
             run();
             return nullptr;
         },
@@ -119,9 +121,9 @@ void NetworkModule::run() {
         // read core messages while their is nothing
         char buffer[1024] = {0};
         std::string messages = "";
-        for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
+        for (int valread = recv(_socket, buffer, 1024, 0);
              valread != -1 && valread != 0;
-             valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+             valread = recv(_socket, buffer, 1024, 0)) {
             messages += buffer;
         }
         _udpServer->getSendMutex().lock();
