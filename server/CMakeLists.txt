@@ -7,10 +7,12 @@ find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(/usr/include/uuid)
 find_library(UUID_LIB uuid)
+find_package(CURL REQUIRED)
+
 
 if (MACOS)
-    include_directories(/opt/homebrew/include)
-    link_directories(/opt/homebrew/lib)
+include_directories(/opt/homebrew/include)
+link_directories(/opt/homebrew/lib)
 endif()
 
 # find_package(Boost REQUIRED)
@@ -20,22 +22,27 @@ add_library(rtype_server_lib STATIC)
 target_include_directories(rtype_server_lib PUBLIC include)
 
 if(UUID_LIB)
-    target_link_libraries(rtype_server_lib ${UUID_LIB})
+target_link_libraries(rtype_server_lib ${UUID_LIB})
 endif()
 
 add_executable(r-type_server
-    src/main.cpp
+src/main.cpp
 )
 target_include_directories(r-type_server
-   PRIVATE
-   ${CMAKE_SOURCE_DIR}/server/client
-   ${CMAKE_SOURCE_DIR}/server/core
-    ${CMAKE_SOURCE_DIR}/server/game_engine
-   ${CMAKE_SOURCE_DIR}/server/lib
-   ${CMAKE_SOURCE_DIR}/server/network
-   ${CMAKE_SOURCE_DIR}/server/room
-   ${CMAKE_SOURCE_DIR}/server/src
+PRIVATE
+${CMAKE_SOURCE_DIR}/server/client
+${CMAKE_SOURCE_DIR}/server/core
+${CMAKE_SOURCE_DIR}/server/game_engine
+${CMAKE_SOURCE_DIR}/server/lib
+${CMAKE_SOURCE_DIR}/server/network
+${CMAKE_SOURCE_DIR}/server/room
+${CMAKE_SOURCE_DIR}/server/src
 )
+if (CURL_FOUND)
+    include_directories(${CURL_INCLUDE_DIRS})
+    target_link_libraries(rtype_server_lib ${CURL_LIBRARIES})
+endif()
+
 target_link_libraries(r-type_server Boost::boost rtype_server_lib)
 
 add_subdirectory(client)
