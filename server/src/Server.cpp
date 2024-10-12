@@ -102,9 +102,19 @@ void Server::run() {
         char buffer[1024] = {0};
         std::string messages = "";
         if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
-            for (; recv(_modules[0]->getSocket(), buffer, 1024, 0) > 0;) {
+#ifdef _WIN32
+            for (int valread = recv(_socket, buffer, 1024, 0);
+                valread != -1 && valread != 0;
+                valread = recv(_socket, buffer, 1024, 0)) {
                 messages += buffer;
             }
+#else
+            for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
+                valread != -1 && valread != 0;
+                valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+                messages += buffer;
+            }
+#endif
         }
         for (auto& module : _modules) {
             if (!module->getMessages().empty() &&
@@ -144,10 +154,19 @@ void Server::run() {
         continue;
         messages.clear();
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
-            for (; recv(_modules[1]->getSocket(), buffer, 1024, 0) > 0;) {
+#ifdef _WIN32
+            for (int valread = recv(_socket, buffer, 1024, 0);
+                valread != -1 && valread != 0;
+                valread = recv(_socket, buffer, 1024, 0)) {
                 messages += buffer;
             }
-        }
+#else
+            for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
+                valread != -1 && valread != 0;
+                valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+                messages += buffer;
+            }
+#endif
         message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
         for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
              message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),

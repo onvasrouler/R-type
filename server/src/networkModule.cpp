@@ -121,11 +121,19 @@ void NetworkModule::run() {
         // read core messages while their is nothing
         char buffer[1024] = {0};
         std::string messages = "";
-        for (int valread = recv(_socket, buffer, 1024, 0);
-             valread != -1 && valread != 0;
-             valread = recv(_socket, buffer, 1024, 0)) {
-            messages += buffer;
-        }
+#ifdef _WIN32
+            for (int valread = recv(_socket, buffer, 1024, 0);
+                valread != -1 && valread != 0;
+                valread = recv(_socket, buffer, 1024, 0)) {
+                messages += buffer;
+            }
+#else
+            for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
+                valread != -1 && valread != 0;
+                valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+                messages += buffer;
+            }
+#endif
         _udpServer->getSendMutex().lock();
         for (std::string message =
                  messages.substr(0, messages.find(THREAD_END_MESSAGE));
