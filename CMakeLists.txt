@@ -9,6 +9,8 @@ if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 endif()
 
+find_package(Boost REQUIRED COMPONENTS system filesystem)
+
 option(SERVER "Build the server" ON)
 option(CLIENT "Build the client" ON)
 option(TESTS "Build the tests" ON)
