@@ -69,7 +69,7 @@ void GameModule::run() {
             for (auto& data : _game.getSendMessages()) {
                 std::string message = data.getId().toString() + ":" +
                                       data.getMessage() + THREAD_END_MESSAGE;
-                std::cout << "send to core: " << message << std::endl;
+                // std::cout << "send to core: " << message << std::endl;
                 send(_socket, message.c_str(), message.size(), 0);
             }
             _game.getSendMessages().clear();

@@ -21,7 +21,7 @@
 
 packageData::packageData(const std::string data, const std::string ip,
                          const std::size_t port)
-    : _data(data), _ip(ip), _port(port) {};
+    : _data(data), _ip(ip), _port(port){};
 
 std::string packageData::getData() { return _data; }
 
@@ -149,6 +149,7 @@ UDPServer::UDPServer(boost::asio::io_context& io_context, const short port)
     : _socket(io_context, udp::endpoint(boost::asio::ip::make_address(
                                             getIPv4AddressFromIpconfig()),
                                         port)) {
+    std::cout << "Create UDP Server" << std::endl;
     _running = true;
     start_receive();
 }
@@ -173,6 +174,7 @@ void UDPServer::start_receive() {
             if (!ec) {
                 handle_receive(bytes_recvd);
             } else {
+                std::cout << "test" << std::endl;
                 _stopMutex.lock();
                 if (ec && _running) {
 #ifdef _WIN32
@@ -189,9 +191,11 @@ void UDPServer::start_receive() {
 }
 
 void UDPServer::handle_receive(std::size_t length) {
+    std::cout << "ok" << std::endl;
     if (!_running) {
         return;
     }
+    std::cout << "test" << std::endl;
     try {
         if (length > 0) {
             std::string decoded_message(_recv_buffer.data(), length);
@@ -200,7 +204,9 @@ void UDPServer::handle_receive(std::size_t length) {
             packageData data = packageData(
                 decoded_message, _remote_endpoint.address().to_string(),
                 _remote_endpoint.port());
-
+            std::cout << "Message received" << data.getData()
+                      << " from: " << data.getIp() << ":" << data.getPort()
+                      << std::endl;
             std::string confirmation = "Message received: " + decoded_message;
             _socket.async_send_to(
                 boost::asio::buffer(confirmation), _remote_endpoint,

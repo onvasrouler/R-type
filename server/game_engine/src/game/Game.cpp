@@ -358,7 +358,7 @@ void Game::handleMessages() {
     for (auto &receivedMessage : _readMessages) {
         //get message between / and END_MESSAGE_CODE
         std::string message = receivedMessage.getMessage().substr(receivedMessage.getMessage().find("/") + 1, receivedMessage.getMessage().find(END_MESSAGE_CODE) - receivedMessage.getMessage().find("/") - 1);
-        std::cout <<"Get message: " + message + " from: " + receivedMessage.getId().toString() << std::endl;
+        // std::cout <<"Get message: " + message + " from: " + receivedMessage.getId().toString() << std::endl;
         if (receivedMessage.getMessage() == NEW_PLAYER_REQUEST_CODE && _player.size() < MAX_PLAYERS) {
             create_player(receivedMessage.getId());
             std::string message = NEW_PLAYER_ACCEPTED_CODE + std::string("/") + receivedMessage.getId().toString() + std::string("/") + std::to_string(_player.back().get_type()) + std::string("/") + std::to_string(_player.back().get_level()) + std::string("/") + std::to_string(_player.back().get_hp()) + std::string("/") + std::to_string(_player.back().get_x()) + std::string("/") + std::to_string(_player.back().get_y()) + END_MESSAGE_CODE;

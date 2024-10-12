@@ -110,7 +110,8 @@ void NetworkModule::run() {
                 std::string message = data.getIp() + ":" +
                                       std::to_string(data.getPort()) + "/" +
                                       data.getData() + THREAD_END_MESSAGE;
-                std::cout << "Message send to core: " << message << std::endl;
+                // std::cout << "Message send to core: " << message <<
+                // std::endl;
                 send(_socket, message.c_str(), message.size(), 0);
             }
             _udpServer->getReceivedData().clear();
@@ -148,7 +149,8 @@ void NetworkModule::run() {
             message = message.substr(message.find(":") + 1);
             std::size_t port = std::stoi(message.substr(0, message.find("/")));
             message = message.substr(message.find("/") + 1);
-            std::cout << "Message received from core: " << message << std::endl;
+            // std::cout << "Message received from core: " << message <<
+            // std::endl;
             packageData data = packageData(message, ip, port);
             _udpServer->getSentData().push_back(data);
         }
