@@ -41,7 +41,7 @@ void Server::start() {
     std::cout << "Starting the server" << std::endl;
     struct sockaddr_in serv_addr;
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+    serv_addr.sin_port = htons(MODULE_PORT);
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     int binded = bind(_socket, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
     _maxSocket = _socket;
