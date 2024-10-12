@@ -8,13 +8,6 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(/usr/include/uuid)
 find_library(UUID_LIB uuid)
 
-if (MACOS)
-    include_directories(/opt/homebrew/include)
-    link_directories(/opt/homebrew/lib)
-endif()
-
-# find_package(Boost REQUIRED)
-
 add_library(rtype_server_lib STATIC)
 
 target_include_directories(rtype_server_lib PUBLIC include)
