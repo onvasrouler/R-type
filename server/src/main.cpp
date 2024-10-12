@@ -40,6 +40,7 @@ int main() {
     try {
         server.start();
     } catch (std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
         return 84;
     }
     server.run();

@@ -20,7 +20,6 @@ GameModule::~GameModule() {
         stop();
     }
     // destroy game engine
-    _game.~Game();
     std::cout << "Module: " << _ModuleName << " destroyed" << std::endl;
 }
 
@@ -83,11 +82,19 @@ void GameModule::run() {
         // read core messages while their is nothing
         char buffer[1024] = {0};
         std::string messages = "";
+#ifdef _WIN32
+        for (int valread = recv(_socket, buffer, 1024, 0);
+             valread != -1 && valread != 0;
+             valread = recv(_socket, buffer, 1024, 0)) {
+            messages += buffer;
+        }
+#else
         for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
              valread != -1 && valread != 0;
              valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
             messages += buffer;
         }
+#endif
         _game.getReadMutex().lock();
         std::string message =
             messages.substr(0, messages.find(THREAD_END_MESSAGE));

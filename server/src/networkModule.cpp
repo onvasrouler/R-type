@@ -70,6 +70,10 @@ void NetworkModule::start() {
                 _io_context.run();
                 return nullptr;
             });
+#ifdef _WIN32
+            u_long mode = 1; // 1 to enable non-blocking mode
+            ioctlsocket(_socket, FIONBIO, &mode);
+#endif
             run();
             return nullptr;
         },
@@ -119,11 +123,19 @@ void NetworkModule::run() {
         // read core messages while their is nothing
         char buffer[1024] = {0};
         std::string messages = "";
+#ifdef _WIN32
+        for (int valread = recv(_socket, buffer, 1024, 0);
+             valread != -1 && valread != 0;
+             valread = recv(_socket, buffer, 1024, 0)) {
+            messages += buffer;
+        }
+#else
         for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
              valread != -1 && valread != 0;
              valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
             messages += buffer;
         }
+#endif
         _udpServer->getSendMutex().lock();
         for (std::string message =
                  messages.substr(0, messages.find(THREAD_END_MESSAGE));
@@ -136,6 +148,7 @@ void NetworkModule::run() {
             message = message.substr(message.find(":") + 1);
             std::size_t port = std::stoi(message.substr(0, message.find("/")));
             message = message.substr(message.find("/") + 1);
+            std::cout << "Message to send: " << message << std::endl;
             packageData data = packageData(message, ip, port);
             _udpServer->getSentData().push_back(data);
         }
