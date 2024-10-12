@@ -104,14 +104,14 @@ void Server::run() {
         if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
 #ifdef _WIN32
             for (int valread = recv(_socket, buffer, 1024, 0);
-                valread != -1 && valread != 0;
-                valread = recv(_socket, buffer, 1024, 0)) {
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, 0)) {
                 messages += buffer;
             }
 #else
             for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
-                valread != -1 && valread != 0;
-                valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
                 messages += buffer;
             }
 #endif
@@ -156,42 +156,45 @@ void Server::run() {
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
 #ifdef _WIN32
             for (int valread = recv(_socket, buffer, 1024, 0);
-                valread != -1 && valread != 0;
-                valread = recv(_socket, buffer, 1024, 0)) {
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, 0)) {
                 messages += buffer;
             }
 #else
             for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
-                valread != -1 && valread != 0;
-                valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
                 messages += buffer;
             }
 #endif
-        message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
-             message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-             messages =
-                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
-            // get uuid and message
-            std::string uuidString = message.substr(0, message.find("/"));
-            message = message.substr(message.find("/") + 1);
-            // send the message to the client
-            uuid uuid(uuidString);
-            // Client client = findClient(uuid);
-            std::string messageToSend =
-                findClient(uuid).getIp() + ":" +
-                std::to_string(findClient(uuid).getPort()) + "/" + message +
-                THREAD_END_MESSAGE;
-            _modules[0]->addMessage(messageToSend);
-        }
-        for (auto& module : _modules) {
-            if (module->getMessages().empty() ||
-                !FD_ISSET(module->getSocket(), &writefds))
-                continue;
-            for (auto& message : module->getMessages()) {
-                send(module->getSocket(), message.c_str(), message.size(), 0);
+            message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
+            for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
+                 message =
+                     messages.substr(0, messages.find(THREAD_END_MESSAGE)),
+                 messages =
+                     messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
+                // get uuid and message
+                std::string uuidString = message.substr(0, message.find("/"));
+                message = message.substr(message.find("/") + 1);
+                // send the message to the client
+                uuid uuid(uuidString);
+                // Client client = findClient(uuid);
+                std::string messageToSend =
+                    findClient(uuid).getIp() + ":" +
+                    std::to_string(findClient(uuid).getPort()) + "/" + message +
+                    THREAD_END_MESSAGE;
+                _modules[0]->addMessage(messageToSend);
             }
-            module->clearMessages();
+            for (auto& module : _modules) {
+                if (module->getMessages().empty() ||
+                    !FD_ISSET(module->getSocket(), &writefds))
+                    continue;
+                for (auto& message : module->getMessages()) {
+                    send(module->getSocket(), message.c_str(), message.size(),
+                         0);
+                }
+                module->clearMessages();
+            }
         }
     }
 }
