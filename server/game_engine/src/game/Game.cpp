@@ -349,7 +349,7 @@ void Game::run()
             cl2 = clock();
             this->create_enemy();
         }
-        // this->check_collisions();
+        this->check_collisions();
     }
 }
 
