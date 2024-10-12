@@ -99,13 +99,16 @@ echo "Project build completed."
 
 REM Start the server
 echo "Starting the server..."
-cd server
-./r-type_server
+cd server\Debug
+cd
+dir
+.\r-type_server
 if %ERRORLEVEL% neq 0 (
     echo "Error starting the server."
     pause
     exit /b 1
 )
+cd ..\..\..
 echo "Server started successfully."
 
 pause
