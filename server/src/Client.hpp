@@ -9,36 +9,98 @@
 #pragma once
 
 #ifdef _WIN32
-     #include <winsock2.h>
-    #include <ws2tcpip.h>
-    #pragma comment(lib, "ws2_32.lib") // Lien avec la bibliothèque WS2_32.lib
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib") // Lien avec la bibliothèque WS2_32.lib
 #else
-    #include "sys/socket.h"
+#include "sys/socket.h"
 #endif
-#include <string>
 #include "../lib/UUID.hpp"
+#include <string>
 
+/**
+ * @class Client
+ * @brief Represents a client with an IP address, port, and UUID.
+ *
+ * The Client class encapsulates the details of a client, including its IP
+ * address, port number, and universally unique identifier (UUID). It provides
+ * methods to retrieve these details and supports comparison operations.
+ */
 class Client {
-    public:
-        Client() : _ip(""), _port(0) {};
-        Client(const std::string ip, const short port) : _ip(ip), _port(port), _uuid() {};
-        Client(const Client& client) : _ip(client.getIp()), _port(client.getPort()), _uuid(client.getUuid()) {};
-        ~Client() = default;
-        const std::string getIp() const { return _ip; }
-        const short getPort() const { return _port; }
-        const uuid getUuid() const { return _uuid; }
-        bool operator==(const Client& client) const {
-            return _uuid == client.getUuid();
-        }
-        bool operator!=(const Client& client) const {
-            return _uuid != client.getUuid();
-        }
-        //operator equal
-        Client operator=(const Client& client) {
-            return Client(client);
-        }
-    protected:
-        const std::string _ip;
-        const short _port;
-        const uuid _uuid;
+  public:
+    /**
+     * @brief Default constructor for the Client class.
+     */
+    Client();
+
+    /**
+     * @brief Parameterized constructor for the Client class.
+     *
+     * @param ip The IP address of the client.
+     * @param port The port number of the client.
+     * @param uuid The universally unique identifier (UUID) of the client.
+     */
+    Client(const std::string ip, const std::size_t port, const uuid uuid);
+
+    /**
+     * @brief Copy constructor for the Client class.
+     *
+     * @param client The Client object to copy from.
+     */
+    Client(const Client& client);
+
+    /**
+     * @brief Destructor for the Client class.
+     */
+    ~Client() = default;
+
+    /**
+     * @brief Retrieves the IP address of the client.
+     *
+     * @return The IP address as a std::string.
+     */
+    const std::string getIp() const;
+
+    /**
+     * @brief Retrieves the port number of the client.
+     *
+     * @return The port number as a std::size_t.
+     */
+    const std::size_t getPort() const;
+
+    /**
+     * @brief Retrieves the UUID of the client.
+     *
+     * @return The UUID as a uuid.
+     */
+    const uuid getUuid() const;
+
+    /**
+     * @brief Equality operator for comparing two Client objects.
+     *
+     * @param client The Client object to compare with.
+     * @return True if the clients are equal, false otherwise.
+     */
+    bool operator==(const Client& client) const;
+
+    /**
+     * @brief Inequality operator for comparing two Client objects.
+     *
+     * @param client The Client object to compare with.
+     * @return True if the clients are not equal, false otherwise.
+     */
+    bool operator!=(const Client& client) const;
+
+    /**
+     * @brief Assignment operator for the Client class.
+     *
+     * @param client The Client object to assign from.
+     * @return A reference to the assigned Client object.
+     */
+    Client operator=(const Client& client);
+
+  protected:
+    const std::string _ip;
+    const std::size_t _port;
+    const uuid _uuid;
 };

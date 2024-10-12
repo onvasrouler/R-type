@@ -16,6 +16,7 @@
 #include <winsock2.h>              // For Windows socket functions
 #pragma comment(lib, "Ws2_32.lib") // Link with Ws2_32.lib for Winsock
 #else
+#include "../lib/UUID.hpp"
 #include "sys/socket.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -62,10 +63,15 @@ void Server::start() {
     }
     // create all the modules
     std::cout << "Creating modules" << std::endl;
-    GameModule* gameModule = new GameModule("GameModule");
     NetworkModule* networkModule = new NetworkModule("NetworkModule");
     createModule(networkModule);
+    GameModule* gameModule = new GameModule("GameModule");
     createModule(gameModule);
+#ifdef _WIN32
+    u_long mode = 1; // 1 to enable non-blocking mode
+    ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);
+    ioctlsocket(_modules[1]->getSocket(), FIONBIO, &mode);
+#endif
     std::cout << "Modules created" << std::endl;
 }
 
@@ -98,9 +104,29 @@ void Server::run() {
         char buffer[1024] = {0};
         std::string messages = "";
         if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
-            for (; recv(_modules[0]->getSocket(), buffer, 1024, MSG_DONTWAIT) >
-                   0;) {
+#ifdef _WIN32
+            for (int valread = recv(_socket, buffer, 1024, 0);
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, 0)) {
                 messages += buffer;
+            }
+#else
+            for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+                messages += buffer;
+            }
+#endif
+        }
+        for (auto& module : _modules) {
+            if (!module->getMessages().empty() &&
+                FD_ISSET(module->getSocket(), &writefds)) {
+                for (auto& message : module->getMessages()) {
+                    std::cout << "Sending message: " << message << std::endl;
+                    send(module->getSocket(), message.c_str(), message.size(),
+                         0);
+                }
+                module->clearMessages();
             }
         }
         std::string message =
@@ -113,63 +139,64 @@ void Server::run() {
             std::cout << "message: " << message << std::endl;
             std::string ip = message.substr(0, message.find(":"));
             message = message.substr(message.find(":") + 1);
-            std::cout << "ip: " << ip << std::endl;
-            std::cout << "message: " << message << std::endl;
-            std::cout << "message: " << message.substr(0, message.find("/"))
-                      << std::endl;
             std::size_t port = std::stoi(message.substr(0, message.find("/")));
-            std::cout << "port: " << port << std::endl;
             message = message.substr(message.find("/") + 1);
-            std::cout << "Message received: " << message << std::endl;
-            if (!isClient(ip, port) && message == NEW_CONNECTION_MESSAGE) {
-                // create new player in the game engine if their is less than 4
-                // players
-                // _clients.push_back(Client(ip, port));
-            } else if (isClient(ip, port)) {
-                // send the message to the game engine
+            if (isClient(ip, port)) {
                 std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend); //the problem is here
+                _modules[1]->addMessage(messageToSend);
             } else {
-                // send the message to the client
-                std::string messageToSend = ip + ":" + std::to_string(port) +
-                                            "/" + "" + THREAD_END_MESSAGE;
-                _modules[0]->addMessage(messageToSend); //the problem is here
+                uuid userUUID;
+                std::string userID = userUUID.toString();
+                Client newClient(ip, port, userUUID);
+                _clients.push_back(newClient);
+                std::string messageToSend = createMessage(ip, port, message);
+                _modules[1]->addMessage(messageToSend);
             }
         }
         continue;
         messages.clear();
         if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
-            for (; recv(_modules[1]->getSocket(), buffer, 1024, MSG_DONTWAIT) >
-                   0;) {
+#ifdef _WIN32
+            for (int valread = recv(_socket, buffer, 1024, 0);
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, 0)) {
                 messages += buffer;
             }
-        }
-        message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
-             message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-             messages =
-                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
-            // get uuid and message
-            std::string uuidString = message.substr(0, message.find("/"));
-            message = message.substr(message.find("/") + 1);
-            // send the message to the client
-            uuid uuid(uuidString);
-            // Client client = findClient(uuid);
-            std::string messageToSend =
-                findClient(uuid).getIp() + ":" +
-                std::to_string(findClient(uuid).getPort()) + "/" + message +
-                THREAD_END_MESSAGE;
-            _modules[0]->addMessage(messageToSend);
-        }
-        for (auto& module : _modules) {
-            if (module->getMessages().empty() ||
-                !FD_ISSET(module->getSocket(), &writefds))
-                continue;
-            for (auto& message : module->getMessages()) {
-                std::cout << "Sending message: " << message << std::endl;
-                send(module->getSocket(), message.c_str(), message.size(), 0);
+#else
+            for (int valread = recv(_socket, buffer, 1024, MSG_DONTWAIT);
+                 valread != -1 && valread != 0;
+                 valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
+                messages += buffer;
             }
-            module->clearMessages();
+#endif
+            message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
+            for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
+                 message =
+                     messages.substr(0, messages.find(THREAD_END_MESSAGE)),
+                 messages =
+                     messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
+                // get uuid and message
+                std::string uuidString = message.substr(0, message.find("/"));
+                message = message.substr(message.find("/") + 1);
+                // send the message to the client
+                uuid uuid(uuidString);
+                // Client client = findClient(uuid);
+                std::string messageToSend =
+                    findClient(uuid).getIp() + ":" +
+                    std::to_string(findClient(uuid).getPort()) + "/" + message +
+                    THREAD_END_MESSAGE;
+                _modules[0]->addMessage(messageToSend);
+            }
+            for (auto& module : _modules) {
+                if (module->getMessages().empty() ||
+                    !FD_ISSET(module->getSocket(), &writefds))
+                    continue;
+                for (auto& message : module->getMessages()) {
+                    send(module->getSocket(), message.c_str(), message.size(),
+                         0);
+                }
+                module->clearMessages();
+            }
         }
     }
 }

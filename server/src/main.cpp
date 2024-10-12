@@ -29,7 +29,6 @@ void signalHandler(int signum) {
         // server.stop();  // Stop the server
         exit(0); // Exit the program
     } catch (std::exception& e) {
-        std::cerr << e.what() << std::endl;
         exit(1); // Exit the program with error
     }
 }
@@ -38,7 +37,12 @@ int main() {
     // Register signal handler for SIGINT (Ctrl+C)
     signal(SIGINT, signalHandler);
 
-    server.start();
+    try {
+        server.start();
+    } catch (std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 84;
+    }
     server.run();
     return 0;
 }

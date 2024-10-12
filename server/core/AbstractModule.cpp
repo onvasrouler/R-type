@@ -67,6 +67,10 @@ void AbstractModule::start()
         #endif
         send(_socket, "200\n\t", 5, 0);
         std::cout << "Module: " << _ModuleName << " started" << std::endl;
+        #ifdef _WIN32
+            u_long mode = 1; // 1 to enable non-blocking mode
+            ioctlsocket(_socket, FIONBIO, &mode);
+        #endif
         _Running = true;
         run();
         return nullptr;

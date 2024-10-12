@@ -11,6 +11,7 @@
  */
 
 #include "Enemy.hpp"
+#include <iostream>
 
 /**
  * @brief Construct a new Enemy object.
