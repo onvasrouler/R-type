@@ -55,7 +55,21 @@ if %ERRORLEVEL% neq 0 (
 echo "Required packages installed."
 
 REM Clone the project repository
-
+if not exist "%REPO_DIR%" (
+    echo "Cloning project repository..."
+    git clone %REPO_URL% %REPO_DIR%
+    cd %REPO_DIR%
+    git checkout %BRANCH%
+    if %ERRORLEVEL% neq 0 (
+        echo "Error: Could not checkout branch %BRANCH%."
+        pause
+        exit /b 1
+    )
+    echo "Project repository cloned and branch %BRANCH% checked out."
+) else (
+    echo "Project repository already exists at %REPO_DIR%"
+    cd %REPO_DIR%
+)
 
 REM Remove the existing build directory if it exists
 if exist build (
