@@ -7,7 +7,6 @@ find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(/usr/include/uuid)
 find_library(UUID_LIB uuid)
-find_package(CURL REQUIRED)
 
 
 if (MACOS)
@@ -38,10 +37,6 @@ ${CMAKE_SOURCE_DIR}/server/network
 ${CMAKE_SOURCE_DIR}/server/room
 ${CMAKE_SOURCE_DIR}/server/src
 )
-if (CURL_FOUND)
-    include_directories(${CURL_INCLUDE_DIRS})
-    target_link_libraries(rtype_server_lib ${CURL_LIBRARIES})
-endif()
 
 target_link_libraries(r-type_server Boost::boost rtype_server_lib)
 

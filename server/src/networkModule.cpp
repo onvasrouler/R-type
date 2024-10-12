@@ -70,8 +70,10 @@ void NetworkModule::start() {
                 _io_context.run();
                 return nullptr;
             });
+#ifdef _WIN32
             u_long mode = 1; // 1 to enable non-blocking mode
             ioctlsocket(_socket, FIONBIO, &mode);
+#endif
             run();
             return nullptr;
         },

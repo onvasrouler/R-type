@@ -67,9 +67,11 @@ void Server::start() {
     NetworkModule* networkModule = new NetworkModule("NetworkModule");
     createModule(networkModule);
     createModule(gameModule);
+#ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
     ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);
     ioctlsocket(_modules[1]->getSocket(), FIONBIO, &mode);
+#endif
     std::cout << "Modules created" << std::endl;
 }
 
