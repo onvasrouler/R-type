@@ -10,7 +10,7 @@
 
 #include "../lib/MultiThread.hpp"
 
-#define MODULE_PORT 8080
+#define MODULE_PORT 8082
 
 /** @class AbstractModule
  *  @brief The AbstractModule class is the base class for all modules.
