@@ -53,7 +53,7 @@ bool Game::create_player(const std::string id)
             }
             _sendMessages.push_back(gameMessage(player.get_id(), message));
         }
-        std::cout << "Player created" << std::endl;
+        // std::cout << "Player created" << std::endl;
         _sendMutex.unlock();
     } else {
         return false;
@@ -77,7 +77,7 @@ void Game::create_bullet(const Player player)
     for (auto &player : _player) {
         _sendMessages.push_back(gameMessage(player.get_id(), message));
     }
-    std::cout << "Bullet created" << std::endl;
+    // std::cout << "Bullet created" << std::endl;
     _sendMutex.unlock();
 }
 
@@ -94,7 +94,7 @@ void Game::create_enemy()
     for (auto &player : _player) {
         _sendMessages.push_back(gameMessage(player.get_id(), message));
     }
-    std::cout << "Enemy created" << std::endl;
+    // std::cout << "Enemy created" << std::endl;
     _sendMutex.unlock();
 }
 
@@ -109,14 +109,14 @@ void Game::destroy_player(const std::string id)
 {
     for (auto player = this->_player.begin(); player != this->_player.end(); ++player) {
         if (player->get_id() == id) {
-            this->_player.erase(player);
             std::string message = PLAYER_DEATH_CODE + std::string("/") + player->get_id() + END_MESSAGE_CODE;
             _sendMutex.lock();
             for (auto &player : _player) {
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
-            std::cout << "Destroying player" << std::endl;
+            this->_player.erase(player);
+            // std::cout << "Destroying player" << std::endl;
             return;
         }
     }
@@ -140,7 +140,7 @@ void Game::destroy_bullet(const std::string bullet_id)
             }
             _sendMutex.unlock();
             this->_bullet.erase(it);
-            std::cout << "Destroying bullet" << std::endl;
+            // std::cout << "Destroying bullet" << std::endl;
             return;
         }
     }
@@ -163,7 +163,7 @@ void Game::destroy_enemy(const std::string enemy_id)
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
-            std::cout << "Destroying enemy" << std::endl;
+            // std::cout << "Destroying enemy" << std::endl;
             this->_enemy.erase(it);
             return;
         }
