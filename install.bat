@@ -90,16 +90,5 @@ if %ERRORLEVEL% neq 0 (
 )
 echo "Project build completed."
 
-echo "Starting the client..."
-cd client2\Debug
-.\r-type_client.exe
-if %ERRORLEVEL% neq 0 (
-    echo "Error starting the client."
-    pause
-    exit /b 1
-)
-cd ..\..\..
-echo "Client started successfully."
-
 pause
 exit /b 0

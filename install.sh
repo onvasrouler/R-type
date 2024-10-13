@@ -56,9 +56,8 @@ else
     cd $REPO_DIR
 fi
 
-echo "Configuring build with CMake..."
+rm -rf build
+
 make
 
-echo "Starting the client..."
-cd build/client2
-./r-type_client
+
