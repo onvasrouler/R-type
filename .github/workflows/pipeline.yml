@@ -12,7 +12,6 @@ permissions:
 
 env:
   MIRROR_URL: "git@github.com:EpitechPromo2027/B-CPP-500-NAN-5-1-rtype-aimeric.rouyer.git"
-
 jobs:
   push_to_mirror:
     runs-on: ubuntu-latest
@@ -30,7 +29,6 @@ jobs:
     needs: push_to_mirror
     steps:
       - uses: actions/checkout@v3
-      
       - name: Zip Linux Installer
         run: |
           zip linux_installer.zip installer.sh
@@ -41,7 +39,7 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -50,9 +48,9 @@ jobs:
           body: "Release created after merge to main"
           draft: false
           prerelease: false
-      
+
       - name: Upload Linux Installer
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -62,7 +60,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload Windows Installer
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
