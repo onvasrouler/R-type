@@ -1,0 +1,318 @@
+{
+    "menus": {
+        "MAIN_MENU": {
+            "isSimple": true,
+            "id": 0,
+            "title": "settings"
+        },
+        "START_MENU": {
+            "isSimple": true,
+            "id": 1,
+            "title": "settings",
+            "buttons": [
+                {
+                    "id": 0,
+                    "text": "Start",
+                    "position": {
+                        "x": 15,
+                        "y": 15
+                    },
+                    "size": {
+                        "width": 100,
+                        "height": 20
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "type": 0,
+                    "functionName": "defaultFunct"
+
+                }
+            ]
+        },
+        "SETTINGS_GENERAL": {
+            "isSimple": true,
+            "id": 2,
+            "templates" : ["PARAM_NAVBAR"],
+            "texts": [
+                {
+                    "id": 0,
+                    "text": "Settings",
+                    "position": {
+                        "x": 300,
+                        "y": 10
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "functionName": "defaultFunct"
+                }
+            ]
+        },
+        "SETTINGS_VIDEO": {
+            "isSimple": true,
+            "templates" : ["PARAM_NAVBAR"],
+            "id": 3,
+            "texts": [
+                {
+                    "id": 0,
+                    "text": "video",
+                    "position": {
+                        "x": 300,
+                        "y": 10
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "colorPickers" : [
+                {
+                    "position": {
+                        "x": 600,
+                        "y": 140
+                    },
+                    "size": {
+                        "width": 120,
+                        "height": 120
+                    },
+                    "text": "Background color",
+                    "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "groups": [
+                {
+                    "position": {
+                        "x": 580,
+                        "y": 120
+                    },
+                    "size": {
+                        "width": 180,
+                        "height": 170
+                    },
+                    "text": "background color",
+                    "active": 0,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "position": {
+                        "x": 60,
+                        "y": 120
+                    },
+                    "size": {
+                        "width": 150,
+                        "height": 150
+                    },
+                    "text": "framerate rate",
+                    "active": 0,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "position": {
+                        "x": 230,
+                        "y": 120
+                    },
+                    "size": {
+                        "width": 160,
+                        "height": 150
+                    },
+                    "text": "Resolution",
+                    "active": 0,
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "dropDowns" : [
+                {
+                    "position": {
+                        "x": 75,
+                        "y": 140
+                    },
+                    "size": {
+                        "width": 120,
+                        "height": 20
+                    },
+                    "text": "30;60;90;120",
+                    "active": 1,
+                    "editMode": true,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "position": {
+                        "x": 250,
+                        "y": 140
+                    },
+                    "size": {
+                        "width": 120,
+                        "height": 20
+                    },
+                    "text": "1920x1080",
+                    "active": 1,
+                    "editMode": true,
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "buttons": [],
+            "toggleGroups": []
+        },
+        "SETTINGS_AUDIO": {
+            "isSimple": true,
+            "id": 4,
+            "texts": [],
+            "buttons": [],
+            "toggleGroups": []
+        },
+        "SETTINGS_CONTROLS": {
+            "isSimple": true,
+            "id": 5,
+            "texts": [],
+            "buttons": [],
+            "toggleGroups": []
+        },
+        
+        "GAME_MENU": {
+            "isSimple": false,
+            "id": 6,
+            "title": "Game Menu"
+        },
+        "PAUSE_MENU": {
+            "isSimple": true,
+            "id": 7,
+            "title": "Pause Menu"
+        },
+        "GAME_OVER_MENU": {
+            "isSimple": true,
+            "id": 8,
+            "title": "Game Over Menu"
+        }
+    },
+    "templates": {
+        "PARAM_NAVBAR": {
+            "buttons": [
+                {
+                    "id": 0,
+                    "text": "Exit",
+                    "position": {
+                        "x": 15,
+                        "y": 15
+                    },
+                    "size": {
+                        "width": 100,
+                        "height": 20
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "type": 0,
+                    "functionName": "ExitButton"
+
+                },
+                {
+                    "id": 1,
+                    "text": "General",
+                    "position": {
+                        "x": 20,
+                        "y": 60
+                    },
+                    "size": {
+                        "width": 150,
+                        "height": 70
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "type": 0,
+                    "functionName": "GeneralSettingsButton"
+
+                },
+                {
+                    "id": 2,
+                    "text": "Video",
+                    "position": {
+                        "x": 220,
+                        "y": 60
+                    },
+                    "size": {
+                        "width": 150,
+                        "height": 70
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "type": 0,
+                    "functionName": "VideoSettingsButton"
+
+                },
+                {
+                    "id": 3,
+                    "text": "Audio",
+                    "position": {
+                        "x": 420,
+                        "y": 60
+                    },
+                    "size": {
+                        "width": 150,
+                        "height": 70
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "type": 0,
+                    "functionName": "AudioSettingsButton"
+
+                },
+                {
+                    "id": 0,
+                    "text": "Controls",
+                    "position": {
+                        "x": 620,
+                        "y": 60
+                    },
+                    "size": {
+                        "width": 150,
+                        "height": 70
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "type": 0,
+                    "functionName": "ControlsSettingsButton"
+
+                }
+
+            ]
+        }
+    }
+}
