@@ -46,15 +46,15 @@ else
     $VCPKG_DIR/vcpkg install boost gtest uuid sfml
 fi
 
-# if [ ! -d "$REPO_DIR" ]; then
-#     echo "Cloning project repository..."
-#     git clone $REPO_URL $REPO_DIR
-#     cd $REPO_DIR
-#     git checkout $BRANCH
-# else
-#     echo "Project repository already exists at $REPO_DIR"
-#     cd $REPO_DIR
-# fi
+if [ ! -d "$REPO_DIR" ]; then
+    echo "Cloning project repository..."
+    git clone $REPO_URL $REPO_DIR
+    cd $REPO_DIR
+    git checkout $BRANCH
+else
+    echo "Project repository already exists at $REPO_DIR"
+    cd $REPO_DIR
+fi
 
 echo "Configuring build with CMake..."
 make
