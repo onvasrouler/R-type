@@ -20,9 +20,12 @@
  * 
  * This constructor initializes the enemy's position and dimensions.
  */
-Enemy::Enemy(const int y) : ACharacter(uuid())
+Enemy::Enemy(const int y) : ACharacter(uuid().toString())
 {
-    this->_origin = Point(X_POSITION, y);
+    int spawnY = y;
+    if (spawnY - ENEMY_SIZE >= 1080)
+        spawnY = 1080 - ENEMY_SIZE;
+    this->_origin = Point(X_POSITION, spawnY);
     this->_dimension = Rect(ENEMY_SIZE, ENEMY_SIZE);
 }
 

@@ -40,5 +40,9 @@ private:
     std::vector<std::string> messages;
     sf::Font font;
     std::vector<sf::Text> textMessages;
+    std::string id;
+    sf::Texture enemyTexture;
+    sf::Texture playerTexture;
+    sf::Texture bulletTexture;
 };
 

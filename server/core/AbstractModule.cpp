@@ -42,7 +42,7 @@ void AbstractModule::start()
         std::cout << "Starting module: " << _ModuleName << std::endl;
         struct sockaddr_in server_addr;
         server_addr.sin_family = AF_INET;
-        server_addr.sin_port = htons(PORT);  // Utilisez le même port que celui défini dans le serveur
+        server_addr.sin_port = htons(MODULE_PORT);  // Utilisez le même port que celui défini dans le serveur
         server_addr.sin_addr.s_addr = INADDR_ANY;  // Adresse IP locale
         inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
         int serverSocket = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
@@ -99,6 +99,11 @@ void AbstractModule::stop()
     std::cout << "Stopping module: " << _ModuleName << std::endl;
     _thread.join();
     std::cout << "Module: " << _ModuleName << " is stopped" << std::endl;
+}
+
+std::string AbstractModule::getName() const
+{
+    return _ModuleName;
 }
 
 std::string AbstractModule::decodeInterCommunication(const std::string message)

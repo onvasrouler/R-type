@@ -17,7 +17,7 @@
  * 
  * This constructor initializes the character's health points (HP) and level.
  */
-ACharacter::ACharacter(const uuid &id) : AEntity(id)
+ACharacter::ACharacter(const std::string &id) : AEntity(id)
 {
     this->_hp = Hp(BASIC_LIFE_VALUE);
     this->_level = Level(BASIC_LEVEL_VALUE);

@@ -67,8 +67,9 @@ void GameModule::run() {
         if (FD_ISSET(_socket, &writefds)) {
             _game.getSendMutex().lock();
             for (auto& data : _game.getSendMessages()) {
-                std::string message = data.getId().toString() + ":" +
-                                      data.getMessage() + THREAD_END_MESSAGE;
+                std::string message =
+                    data.getId() + ":" + data.getMessage() + THREAD_END_MESSAGE;
+                std::cout << "send to core: " << message << std::endl;
                 send(_socket, message.c_str(), message.size(), 0);
             }
             _game.getSendMessages().clear();
@@ -78,7 +79,6 @@ void GameModule::run() {
         if (!FD_ISSET(_socket, &readfds)) {
             continue;
         }
-        std::cout << "Reading socket" << std::endl;
         // read core messages while their is nothing
         char buffer[1024] = {0};
         std::string messages = "";
@@ -105,9 +105,13 @@ void GameModule::run() {
             // encode message and send to the clients
             std::string id = message.substr(0, message.find(":"));
             uuid uuid(id);
-            message = message.substr(message.find(":") + 1);
-            std::cout << "Received message: " << message << std::endl;
-            gameMessage gameMessage(uuid, message);
+            message = message.substr(
+                message.find(":") + 1,
+                message.size() - std::string(THREAD_END_MESSAGE).size());
+            gameMessage gameMessage(id, message);
+            std::cout << "Message received: " << gameMessage.getMessage()
+                      << std::endl;
+            std::cout << "From: " << gameMessage.getId() << std::endl;
             _game.getReadMessages().push_back(gameMessage);
         }
         _game.getReadMutex().unlock();

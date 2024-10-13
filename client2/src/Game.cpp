@@ -6,26 +6,163 @@
 */
 
 #include "Game.hpp"
+#include <array>
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <regex>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 
 Game::Game() : _socket(nullptr)
 {
     gameIsRunning = false;
+
+    
+    enemyTexture.loadFromFile("chipset/enemy.png");
+    playerTexture.loadFromFile("chipset/player.png");
+    bulletTexture.loadFromFile("chipset/bullet.png");
 }
 
 Game::~Game()
 {
 }
 
+#ifdef _WIN32
+std::string exec(const char* cmd) {
+    HANDLE hRead, hWrite;
+    SECURITY_ATTRIBUTES sa = {sizeof(SECURITY_ATTRIBUTES), NULL, TRUE};
+
+    if (!CreatePipe(&hRead, &hWrite, &sa, 0)) {
+        throw std::runtime_error("CreatePipe failed!");
+    }
+
+    SetHandleInformation(hRead, HANDLE_FLAG_INHERIT, 0);
+
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
+
+    STARTUPINFO si;
+    ZeroMemory(&si, sizeof(STARTUPINFO));
+    si.cb = sizeof(STARTUPINFO);
+    si.hStdOutput = hWrite;
+    si.hStdError = hWrite;
+    si.dwFlags |= STARTF_USESTDHANDLES;
+
+    // Convert cmd from char* to wchar_t*
+    int size_needed = MultiByteToWideChar(CP_UTF8, 0, cmd, -1, NULL, 0);
+    std::wstring wcmd(size_needed, 0);
+    MultiByteToWideChar(CP_UTF8, 0, cmd, -1, &wcmd[0], size_needed);
+
+    // Use CreateProcessW for wide character string
+    if (!CreateProcessW(NULL, &wcmd[0], NULL, NULL, TRUE, 0, NULL, NULL,
+                        (LPSTARTUPINFOW)&si, &pi)) {
+        CloseHandle(hWrite);
+        CloseHandle(hRead);
+        throw std::runtime_error("CreateProcess failed!");
+    }
+
+    CloseHandle(hWrite);
+
+    std::string result;
+    char buffer[128];
+    DWORD bytesRead;
+    while (ReadFile(hRead, buffer, sizeof(buffer) - 1, &bytesRead, NULL) &&
+           bytesRead > 0) {
+        buffer[bytesRead] = '\0';
+        result += buffer;
+    }
+
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
+    CloseHandle(hRead);
+
+    return result;
+}
+
+std::string getIPv4AddressFromIpconfig() {
+    std::string output = exec("ipconfig");
+    std::string ipv4Address;
+
+    // Search for lines containing "IPv4 Address"
+    std::istringstream stream(output);
+    std::string line;
+    while (std::getline(stream, line)) {
+        // Check for "IPv4 Address" line
+        if (line.find("IPv4 Address") != std::string::npos) {
+            // Extract the IP address from the line
+            std::string::size_type start =
+                line.find(":") + 2; // Find position after the colon and space
+            std::string::size_type end =
+                line.find('\r', start); // Find end of the line
+            ipv4Address =
+                line.substr(start, end - start); // Extract the address
+            break; // Break after finding the first IPv4 address
+        }
+    }
+    std::cout << "Public IPV4 Address: " << ipv4Address << std::endl;
+    return ipv4Address;
+}
+#else
+static std::string exec(const char* cmd) {
+    // Open a pipe to the command
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+
+    // Read the output from the command
+    char buffer[128];
+    std::string result;
+    while (fgets(buffer, sizeof(buffer), pipe.get()) != nullptr) {
+        result += buffer;
+    }
+
+    return result;
+}
+
+std::string getIPv4AddressFromIpconfig() {
+    // Regex patterns to match IPv4 and IPv6 addresses
+    std::regex ipv4_regex(R"((\d{1,3}\.){3}\d{1,3})");
+    std::string ipv4 = "";
+
+    std::smatch match;
+
+    // Split the output into lines
+    std::string output = exec("ip a");
+    std::istringstream stream(output);
+    std::string line;
+
+    // Iterate through each line and find IP addresses
+    while (std::getline(stream, line)) {
+        if (std::regex_search(line, match, ipv4_regex)) {
+            ipv4 = match.str();
+        }
+    }
+    std::cout << "Public IPV4 Address: " << ipv4 << std::endl;
+    return ipv4;
+}
+#endif
+
 void Game::run(sf::RenderWindow &window, boost::asio::io_context &io_context, boost::asio::ip::basic_resolver_results<boost::asio::ip::udp> &endpoints)
 {
     gameIsRunning = true;
     backgroundTexture.loadFromFile("chipset/background.jpg");
     backgroundSprite.setTexture(backgroundTexture);
-     _socket = std::make_unique<boost::asio::ip::udp::socket>(io_context, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 8081));
+    _socket = std::make_unique<boost::asio::ip::udp::socket>(io_context, boost::asio::ip::udp::endpoint(boost::asio::ip::make_address(getIPv4AddressFromIpconfig()), 8081));
+    std::cout << "Socket: " << _socket->local_endpoint().address().to_string() << ": " << _socket->local_endpoint().port() << std::endl;
+    
     startRecieve();
 
     std::string message = "00\r\n";
     std::vector<char> binary_message(message.begin(), message.end());
+
+    std::cout << "Send: ";
+    for (auto &c : binary_message)
+        std::cout << c;
+    std::cout << " to: " << endpoints->endpoint().address().to_string() << ":" << endpoints->endpoint().port() << std::endl;
+
     _socket->send_to(boost::asio::buffer(binary_message), *endpoints.begin());
 
     while (gameIsRunning) {
@@ -46,51 +183,63 @@ void Game::startRecieve()
     });
 }
 
-std::vector<std::string> split(const std::string& str, char delimiter) {
-    std::vector<std::string> tokens;
+std::vector<std::string> split(const std::string& str, char delimiter, std::vector<std::string> &tokens) {
     std::stringstream ss(str);
     std::string token;
 
     while (std::getline(ss, token, delimiter)) {
         tokens.push_back(token);
     }
-
-    return tokens;
+    if (!tokens.empty() && tokens.back().size() >= 2) {
+        tokens.back().erase(tokens.back().size() - 2, 2);
+    }
+    return(tokens);
 }
 
 void Game::update(std::string message)
 {
-    std::vector<std::string> instruction = split(message, '/');
     try {
-        if (instruction[0] == "01") {
-            if (instruction.size() == 7)
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER);
+        std::vector<std::string> instruction;
+        split(message, '/', instruction);
+        
+        if (instruction[0].compare("01") == 0) {
+            objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER, playerTexture);
+            id = instruction[1];
         }
-        if (instruction[0] == "200") {
-            if (instruction.size() == 7)
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER);
+        if (instruction[0].compare("200") == 0) {
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER, playerTexture);
         }
-        if (instruction[0] == "210") {
-            if (instruction.size() == 7)
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), ENEMY);
+        if (instruction[0].compare("210") == 0) {
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), ENEMY, enemyTexture);
         }
-        if (instruction[0] == "220") {
-            if (instruction.size() == 5)
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[3]), std::stoi(instruction[4]), BULLET);
+        if (instruction[0].compare("220") == 0) {
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET, bulletTexture);
         }
-        if (instruction[0] == "203" || instruction[0] == "213" || instruction[0] == "222") {
-            if (instruction.size() == 2)
+        if (instruction[0].compare("203") == 0 || instruction[0].compare("213") == 0 || instruction[0].compare("222") == 0) {
+            if (objects.find(instruction[1]) != objects.end()) {
+                if(instruction[1].compare(id) == 0) {
+                    gameIsRunning = false;
+                }
                 objects.erase(instruction[1]);
+            }
         }
-        if (instruction[0] == "202" || instruction[0] == "212" || instruction[0] == "221") {
-            if (instruction.size() == 4)
+        if (instruction[0].compare("202") == 0 || instruction[0].compare("212") == 0 || instruction[0].compare("221") == 0) {
+            if (objects.find(instruction[1]) != objects.end()) {
                 objects[instruction[1]]->setPosition(std::stoi(instruction[2]), std::stoi(instruction[3]));
+            } else {
+                if (instruction[0].compare("202") == 0) {
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), PLAYER, playerTexture);
+                } else if (instruction[0].compare("212") == 0) {
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), ENEMY, enemyTexture);
+                } else if (instruction[0].compare("212") == 0) {
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET, bulletTexture);
+                }
+            }
         }
     }
     catch (const std::invalid_argument& e) {
-        std::cout << "error"<< std::endl;
+        std::cout << "non\n";
     }
-
 }
 
 void Game::handle_receive(const boost::system::error_code& error, std::size_t bytes_recvd)
@@ -99,12 +248,8 @@ void Game::handle_receive(const boost::system::error_code& error, std::size_t by
         std::string message(recv_buffer.data(), bytes_recvd);
 
         std::cout << message << std::endl;
-        size_t pos = message.find("Message received: ");
-            if (pos != std::string::npos) {
-                message.erase(pos, 18);
-            }
+        
         update(message);
-
 
         startRecieve();
     } else {
@@ -149,9 +294,9 @@ void Game::processEvents(sf::RenderWindow &window, boost::asio::ip::basic_resolv
                 message = "1/right\r\n";
                 action = true;
             } else if(event.key.code == sf::Keyboard::Space) {
-                message = "1/space\r\n";
+                message = "1/shoot\r\n";
                 action = true;
-            } else if(event.key.code == sf::Keyboard::Num0)
+            } else if(event.key.code == sf::Keyboard::Escape)
                 gameIsRunning = false;
         }
     }

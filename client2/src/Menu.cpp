@@ -109,7 +109,7 @@ void Menu::processEvents() {
         }
         if (event.type == sf::Event::KeyPressed && isTypingIp == true) {
             
-            if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::Semicolon || event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Up) {
+            if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::Semicolon || event.key.code == sf::Keyboard::BackSpace) {
                 if (ip.compare("Enter Ip") == 0) {
                     ip.clear();
                 }
@@ -124,7 +124,7 @@ void Menu::processEvents() {
                         ip = ip + "2";
                     if (event.key.code == sf::Keyboard::Num3)
                         ip = ip + "3";
-                    if (event.key.code == sf::Keyboard::Up)
+                    if (event.key.code == sf::Keyboard::Num4)
                         ip = ip + "4";
                     if (event.key.code == sf::Keyboard::Num5)
                         ip = ip + "5";
@@ -144,7 +144,7 @@ void Menu::processEvents() {
 
         if (event.type == sf::Event::KeyPressed && isTypingPort == true) {
             
-            if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Up) {
+            if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::BackSpace) {
                 if (port.compare("Port") == 0) {
                     port.clear();
                 }
@@ -159,7 +159,7 @@ void Menu::processEvents() {
                         port = port + "2";
                     if (event.key.code == sf::Keyboard::Num3)
                         port = port + "3";
-                    if (event.key.code == sf::Keyboard::Up)
+                    if (event.key.code == sf::Keyboard::Num4)
                         port = port + "4";
                     if (event.key.code == sf::Keyboard::Num5)
                         port = port + "5";
@@ -210,11 +210,6 @@ void Menu::tryToConnect() {
 
         udp::resolver resolver(io_context);
         udp::resolver::results_type endpoints = resolver.resolve(udp::v4(), ip, port);
-
-        //std::string message = "Hello from client!";
-        //std::vector<char> binary_message(message.begin(), message.end());
-
-        //socket.send_to(boost::asio::buffer(binary_message), *endpoints.begin());
 
         game.run(window, io_context, endpoints);
 

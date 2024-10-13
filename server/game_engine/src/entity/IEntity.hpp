@@ -107,7 +107,7 @@ public:
     * 
     * @return int The current ID of the entity.
     */
-   virtual const uuid& get_id(void) const = 0;
+   virtual const std::string& get_id(void) const = 0;
 
    /**
     * @brief Get the type of the entity.

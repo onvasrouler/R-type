@@ -11,7 +11,7 @@
 Client::Client() : _ip(""), _port(0) {}
 
 Client::Client(const std::string ip, const std::size_t port, const uuid userId)
-    : _ip(ip), _port(port), _uuid(userId) {}
+    : _ip(ip), _port(port), _uuid(userId.toString()) {}
 
 Client::Client(const Client& client)
     : _ip(client.getIp()), _port(client.getPort()), _uuid(client.getUuid()) {}
@@ -20,7 +20,7 @@ const std::string Client::getIp() const { return _ip; }
 
 const std::size_t Client::getPort() const { return _port; }
 
-const uuid Client::getUuid() const { return _uuid; }
+const std::string Client::getUuid() const { return _uuid; }
 
 bool Client::operator==(const Client& client) const {
     return _uuid == client.getUuid();

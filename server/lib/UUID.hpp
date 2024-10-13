@@ -27,6 +27,8 @@ class uuid {
         * @brief Default constructor of uuid
         */
        uuid();
+
+       uuid(const uuid &id);
         /*
         *
         * @brief Constructor of uuid
@@ -54,6 +56,7 @@ class uuid {
         *
         * @brief Return the uuid as a string
         */
+       uuid &operator=(const uuid &id);
         std::string toString() const;
         /*
         *

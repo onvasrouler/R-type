@@ -28,15 +28,48 @@ NetworkModule::~NetworkModule() {
     _udpServer.reset();
 }
 
+#ifdef _WIN32
+#else
+static std::string exec(const char* cmd) {
+    // Open a pipe to the command
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+
+    // Read the output from the command
+    char buffer[128];
+    std::string result;
+    while (fgets(buffer, sizeof(buffer), pipe.get()) != nullptr) {
+        result += buffer;
+    }
+
+    return result;
+}
+#endif
+
 void NetworkModule::start() {
+    // open port 8081
+    std::string firewallOpen =
+        exec("sudo firewall-cmd --zone=public --add-port=8081/udp --permanent");
+    std::string firewallReload = exec("sudo firewall-cmd --reload");
+    std::cout << "Firewall open: " << firewallOpen << std::endl;
+    std::cout << "Firewall reload: " << firewallReload << std::endl;
+    // if find succes in the 2 strings
+    if (firewallOpen.find("success") == std::string::npos ||
+        firewallReload.find("success") == std::string::npos) {
+        std::throw_with_nested(
+            std::runtime_error("Error: firewall open failed"));
+    }
     _Running = true;
     _thread = std::thread(
         [this](void* _) -> void* {
             std::cout << "Starting module: " << _ModuleName << std::endl;
             struct sockaddr_in server_addr;
             server_addr.sin_family = AF_INET;
-            server_addr.sin_port = htons(
-                PORT); // Utilisez le même port que celui défini dans le serveur
+            server_addr.sin_port =
+                htons(MODULE_PORT); // Utilisez le même port que celui défini
+                                    // dans le serveur
             server_addr.sin_addr.s_addr = INADDR_ANY; // Adresse IP locale
             inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
             int serverSocket = connect(_socket, (struct sockaddr*)&server_addr,
@@ -104,18 +137,19 @@ void NetworkModule::run() {
             continue;
         }
         // check received messages
-        // if (FD_ISSET(_socket, &writefds)) {
-        _udpServer->getReceiveMutex().lock();
-        for (auto& data : _udpServer->getReceivedData()) {
-            std::string message = data.getIp() + ":" +
-                                  std::to_string(data.getPort()) + "/" +
-                                  data.getData() + THREAD_END_MESSAGE;
-            std::cout << "Sending message: " << message << std::endl;
-            send(_socket, message.c_str(), message.size(), 0);
+        if (FD_ISSET(_socket, &writefds)) {
+            _udpServer->getReceiveMutex().lock();
+            for (auto& data : _udpServer->getReceivedData()) {
+                std::string message = data.getIp() + ":" +
+                                      std::to_string(data.getPort()) + "/" +
+                                      data.getData() + THREAD_END_MESSAGE;
+                // std::cout << "Message send to core: " << message <<
+                // std::endl;
+                send(_socket, message.c_str(), message.size(), 0);
+            }
+            _udpServer->getReceivedData().clear();
+            _udpServer->getReceiveMutex().unlock();
         }
-        _udpServer->getReceivedData().clear();
-        _udpServer->getReceiveMutex().unlock();
-        // }
 
         if (!FD_ISSET(_socket, &readfds)) {
             continue;
@@ -143,16 +177,24 @@ void NetworkModule::run() {
              message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
                          messages = messages.substr(
                              messages.find(THREAD_END_MESSAGE) + 2)) {
-            // encode message and send to the clients
-            std::string ip = message.substr(0, message.find(":"));
-            message = message.substr(message.find(":") + 1);
-            std::size_t port = std::stoi(message.substr(0, message.find("/")));
-            message = message.substr(message.find("/") + 1);
-            std::cout << "Message to send: " << message << std::endl;
-            packageData data = packageData(message, ip, port);
-            _udpServer->getSentData().push_back(data);
+            try {
+                // encode message and send to the clients
+                std::string ip = message.substr(0, message.find(":"));
+                message = message.substr(message.find(":") + 1);
+                std::size_t port =
+                    std::stoi(message.substr(0, message.find("/")));
+                message = message.substr(message.find("/") + 1);
+                // std::cout << "Message received from core: " << message <<
+                // std::endl;
+                packageData data = packageData(message, ip, port);
+                _udpServer->getSentData().push_back(data);
+            } catch (std::exception& e) {
+                std::cerr << "Error: " << e.what() << std::endl;
+                continue;
+            }
         }
         _udpServer->getSendMutex().unlock();
+        _udpServer->sendMessages();
     }
     std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
 }

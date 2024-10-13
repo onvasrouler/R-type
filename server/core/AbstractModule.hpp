@@ -10,6 +10,8 @@
 
 #include "../lib/MultiThread.hpp"
 
+#define MODULE_PORT 8082
+
 /** @class AbstractModule
  *  @brief The AbstractModule class is the base class for all modules.
  * It inherits from MultiThreadElement.
@@ -46,6 +48,12 @@ class AbstractModule : public MultiThreadElement {
          * @brief Stop the module.
          */
         virtual void stop();
+        /**
+         * @brief Return the name of the module
+         *
+         * @return The name of the module
+         */
+        std::string getName() const;
     protected:
         /**
          * @brief Decode the message received from the server.

@@ -7,6 +7,7 @@
 */
 
 #include "UUID.hpp"
+#include <iostream>
 
 uuid::uuid()
 {
@@ -14,6 +15,15 @@ uuid::uuid()
     UuidCreate(&_id);
     #else
     uuid_generate(_id);
+    #endif
+}
+
+uuid::uuid(const uuid &id)
+{
+    #ifdef _WIN32
+    _id = id.getId();
+    #else
+    uuid_copy(_id, id.getId());
     #endif
 }
 
@@ -48,6 +58,16 @@ bool uuid::operator!=(const uuid &other) const
     #else
     return uuid_compare(_id, other.getId()) != 0;
     #endif
+}
+
+uuid &uuid::operator=(const uuid &id)
+{
+    #ifdef _WIN32
+    _id = id.getId();
+    #else
+    uuid_copy(_id, id.getId());
+    #endif
+    return *this;
 }
 
 std::string uuid::toString() const

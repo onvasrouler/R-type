@@ -33,7 +33,7 @@ public:
      * 
      * This constructor initializes the entity's ID and type.
      */
-    AEntity(const uuid &id);
+    AEntity(const std::string &id);
 
     /**
      * @brief Default virtual destructor for AEntity.
@@ -115,7 +115,7 @@ public:
      * 
      * @return int The current ID of the entity.
      */
-    const uuid& get_id() const override;
+    const std::string& get_id() const override;
 
     /**
      * @brief Get the type of the entity.
@@ -127,6 +127,6 @@ public:
 protected:
     Point _origin; ///< The origin point (position) of the entity.
     Rect _dimension; ///< The dimensions (length and height) of the entity.
-    uuid _id; ///< The unique identifier of the entity.
+    std::string _id; ///< The unique identifier of the entity.
     Type _type; ///< The type of the entity.
 };
