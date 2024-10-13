@@ -25,7 +25,7 @@
 #include <thread>
 
 #define MAX_PLAYERS 4 ///< The maximum number of players in the game.
-#define MAX_ENEMIES 20 ///< The maximum number of enemies in the game.
+#define MAX_ENEMIES 2 ///< The maximum number of enemies in the game.
 #define END_MESSAGE_CODE "\r\n"
 
 //new Player 0:
@@ -37,6 +37,7 @@
     #define MOVE_DOWN "down"
     #define MOVE_LEFT "left"
     #define MOVE_RIGHT "right"
+    #define SHOOT "shoot"
 //data 2:
     //player 0:
         #define PLAYER_SPAWN_CODE "200"

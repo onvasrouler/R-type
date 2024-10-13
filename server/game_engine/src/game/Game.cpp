@@ -240,19 +240,23 @@ void Game::update_world()
  */
 bool Game::is_in_collision(AEntity& entity1, AEntity& entity2)
 {
-    int x1 = entity1.get_x();
-    int y1 = entity1.get_y();
-    int l1 = entity1.get_l();
-    int h1 = entity1.get_h();
-    int x2 = entity2.get_x();
-    int y2 = entity2.get_y();
-    int l2 = entity2.get_l();
-    int h2 = entity2.get_h();
+    try {
+        int x1 = entity1.get_x();
+        int y1 = entity1.get_y();
+        int l1 = entity1.get_l();
+        int h1 = entity1.get_h();
+        int x2 = entity2.get_x();
+        int y2 = entity2.get_y();
+        int l2 = entity2.get_l();
+        int h2 = entity2.get_h();
 
-    if ((x1 <= x2 && x1 + l1 >= x2) || (x2 <= x1 && x2 + l2 >= x1)) {
-        if ((y1 <= y2 && y1 + h1 >= y2) || (y2 <= y1 && y2 + h2 >= y1)) {
-            return true;
+        if ((x1 <= x2 && x1 + l1 >= x2) || (x2 <= x1 && x2 + l2 >= x1)) {
+            if ((y1 <= y2 && y1 + h1 >= y2) || (y2 <= y1 && y2 + h2 >= y1)) {
+                return true;
+            }
         }
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
     }
 
     return false;
@@ -282,18 +286,22 @@ void Game::check_collisions()
     }
 
     to_destroy.clear();
+    std::vector<std::string> to_destroy_bullet;
 
     for (auto& enemy : this->_enemy) {
         for (auto& bullet : this->_bullet) {
             if (this->is_in_collision(enemy, bullet)) {
                 to_destroy.push_back(enemy.get_id());
-                this->destroy_bullet(bullet.get_id());
+                to_destroy_bullet.push_back(bullet.get_id());
             }
         }
     }
 
     for (auto id : to_destroy) {
         this->destroy_enemy(id);
+    }
+    for (auto id : to_destroy_bullet) {
+        this->destroy_bullet(id);
     }
 }
 
@@ -365,11 +373,7 @@ void Game::handleMessages() {
     _readMutex.lock();
     for (auto &receivedMessage : _readMessages) {
         std::string message = receivedMessage.getMessage().substr(receivedMessage.getMessage().find("/") + 1);
-        std::cout << "Get message: " + message + " from: " + receivedMessage.getId() << std::endl;
         message = message.substr(0, message.find(END_MESSAGE_CODE));
-        std::cout <<"Get message: " + message + " from: " + receivedMessage.getId() << std::endl;
-        std::cout << "|" << message << "|" << std::endl;
-        std::cout << "|" << NEW_PLAYER_REQUEST_CODE << "|" << std::endl;
         if ((message == NEW_PLAYER_REQUEST_CODE && _player.size() < MAX_PLAYERS)) {
             create_player(receivedMessage.getId());
             std::string message = NEW_PLAYER_ACCEPTED_CODE + std::string("/") + receivedMessage.getId() + std::string("/") + std::to_string(_player.back().get_type()) + std::string("/") + std::to_string(_player.back().get_level()) + std::string("/") + std::to_string(_player.back().get_hp()) + std::string("/") + std::to_string(_player.back().get_x()) + std::string("/") + std::to_string(_player.back().get_y()) + END_MESSAGE_CODE;
@@ -417,6 +421,16 @@ void Game::handleMessages() {
             for (auto &player : _player) {
                 if (player.get_id() == receivedMessage.getId()) {
                     player.set_dir(RIGHT);
+                    break;
+                }
+            }
+            continue;
+        }
+        if (message == SHOOT) {
+            for (auto &player : _player) {
+                if (player.get_id() == receivedMessage.getId()) {
+                    std::cout << "shoot" << std::endl;
+                    player.set_has_shot(true);
                     break;
                 }
             }
