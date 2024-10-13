@@ -43,7 +43,7 @@ if [[ "$PLATFORM" == "Darwin" ]]; then
     $VCPKG_DIR/vcpkg install boost gtest sfml
 else
     echo "Detected $PLATFORM, installing Boost, gtest, and uuid."
-    $VCPKG_DIR/vcpkg install boost gtest uuid sfml
+    $VCPKG_DIR/vcpkg install boost gtest sfml
 fi
 
 if [ ! -d "$REPO_DIR" ]; then
