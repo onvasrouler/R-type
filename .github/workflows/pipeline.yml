@@ -33,11 +33,11 @@ jobs:
 
       - name: Zip Linux Installer
         run: |
-          zip linux_installer.zip installer.sh
+          zip linux_installer.zip install.sh
 
       - name: Zip Windows Installer
         run: |
-          zip windows_installer.zip installer.bat
+          zip windows_installer.zip install.bat
 
       - name: Create Release
         id: create_release

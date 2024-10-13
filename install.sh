@@ -59,5 +59,3 @@ fi
 rm -rf build
 
 make
-
-
