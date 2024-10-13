@@ -42,7 +42,7 @@ if not exist "%VCPKG_DIR%" (
 )
 
 echo "Installing required packages (boost and gtest)..."
-%VCPKG_DIR%\vcpkg install boost gtest
+%VCPKG_DIR%\vcpkg install boost gtest sfml
 if %ERRORLEVEL% neq 0 (
     echo "Error installing packages with vcpkg."
     pause
