@@ -50,17 +50,19 @@ static std::string exec(const char* cmd) {
 
 void NetworkModule::start() {
     // open port 8081
-    std::string firewallOpen =
-        exec("sudo firewall-cmd --zone=public --add-port=8081/udp --permanent");
-    std::string firewallReload = exec("sudo firewall-cmd --reload");
-    std::cout << "Firewall open: " << firewallOpen << std::endl;
-    std::cout << "Firewall reload: " << firewallReload << std::endl;
-    // if find succes in the 2 strings
-    if (firewallOpen.find("success") == std::string::npos ||
-        firewallReload.find("success") == std::string::npos) {
-        std::throw_with_nested(
-            std::runtime_error("Error: firewall open failed"));
-    }
+    #ifndef _WIN32
+        std::string firewallOpen =
+            exec("sudo firewall-cmd --zone=public --add-port=8081/udp --permanent");
+        std::string firewallReload = exec("sudo firewall-cmd --reload");
+        std::cout << "Firewall open: " << firewallOpen << std::endl;
+        std::cout << "Firewall reload: " << firewallReload << std::endl;
+        // if find succes in the 2 strings
+        if (firewallOpen.find("success") == std::string::npos ||
+            firewallReload.find("success") == std::string::npos) {
+            std::throw_with_nested(
+                std::runtime_error("Error: firewall open failed"));
+        }
+    #endif
     _Running = true;
     _thread = std::thread(
         [this](void* _) -> void* {
