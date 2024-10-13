@@ -11,11 +11,11 @@
 GameObject::GameObject(int x, int y, enum Type type)
 {
     if (type == ENEMY) {
-        Texture.loadFromFile("chipset/player.png");
+        Texture.loadFromFile("chipset/enemy.png");
     } else if (type == PLAYER) {
         Texture.loadFromFile("chipset/player.png");
     } else {
-        Texture.loadFromFile("chipset/player.png");
+        Texture.loadFromFile("chipset/bullet.png");
     }
 
     Sprite.setTexture(Texture);
