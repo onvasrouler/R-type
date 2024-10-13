@@ -40,5 +40,6 @@ private:
     std::vector<std::string> messages;
     sf::Font font;
     std::vector<sf::Text> textMessages;
+    std::string id;
 };
 
