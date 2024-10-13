@@ -1,0 +1,7 @@
+add the fps counter in the window settings
+complete the windows settings 
+create a bunch of function and link them
+look and maybe integrate property list
+mousePosition = GetMousePosition();
+DrawText(TextFormat("Mouse Position: [ %.0f, %.0f ]", mousePosition.x, mousePosition.y), 10, 40, 10, DARKGRAY);
+handle when button doesn't have a param by doing: typevar namevar = json.contains["value"] ? json["value"]: null
