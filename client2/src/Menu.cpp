@@ -109,7 +109,6 @@ void Menu::processEvents() {
         }
         if (event.type == sf::Event::KeyPressed && isTypingIp == true) {
             
-            std::cout << event.key.code << std::endl;
             if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::Semicolon || event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Up) {
                 if (ip.compare("Enter Ip") == 0) {
                     ip.clear();
@@ -145,7 +144,6 @@ void Menu::processEvents() {
 
         if (event.type == sf::Event::KeyPressed && isTypingPort == true) {
             
-            std::cout << event.key.code << std::endl;
             if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Up) {
                 if (port.compare("Port") == 0) {
                     port.clear();
@@ -213,10 +211,10 @@ void Menu::tryToConnect() {
         udp::resolver resolver(io_context);
         udp::resolver::results_type endpoints = resolver.resolve(udp::v4(), ip, port);
 
-        std::string message = "Hello from client!";
-        std::vector<char> binary_message(message.begin(), message.end());
+        //std::string message = "Hello from client!";
+        //std::vector<char> binary_message(message.begin(), message.end());
 
-        socket.send_to(boost::asio::buffer(binary_message), *endpoints.begin());
+        //socket.send_to(boost::asio::buffer(binary_message), *endpoints.begin());
 
         game.run(window, io_context, endpoints);
 
