@@ -16,11 +16,10 @@ enum Type {
 class GameObject
 {
 public:
-    GameObject(int x, int y, enum Type type);
+    GameObject(int x, int y, enum Type type, sf::Texture &text);
     ~GameObject();
 
     void setPosition(int x, int y);
 
-    sf::Texture Texture;
     sf::Sprite Sprite;
 };

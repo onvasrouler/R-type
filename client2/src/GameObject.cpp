@@ -8,17 +8,9 @@
 #include "GameObject.hpp"
 #include <iostream>
 
-GameObject::GameObject(int x, int y, enum Type type)
+GameObject::GameObject(int x, int y, enum Type type, sf::Texture &text)
 {
-    if (type == ENEMY) {
-        Texture.loadFromFile("chipset/enemy.png");
-    } else if (type == PLAYER) {
-        Texture.loadFromFile("chipset/player.png");
-    } else {
-        Texture.loadFromFile("chipset/bullet.png");
-    }
-
-    Sprite.setTexture(Texture);
+    Sprite.setTexture(text);
 
     Sprite.setPosition(sf::Vector2f(x, y));
 }

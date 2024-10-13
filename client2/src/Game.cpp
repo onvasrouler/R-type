@@ -18,6 +18,11 @@
 Game::Game() : _socket(nullptr)
 {
     gameIsRunning = false;
+
+    
+    enemyTexture.loadFromFile("chipset/enemy.png");
+    playerTexture.loadFromFile("chipset/player.png");
+    bulletTexture.loadFromFile("chipset/bullet.png");
 }
 
 Game::~Game()
@@ -198,17 +203,17 @@ void Game::update(std::string message)
         split(message, '/', instruction);
         
         if (instruction[0].compare("01") == 0) {
-            objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER);
+            objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER, playerTexture);
             id = instruction[1];
         }
         if (instruction[0].compare("200") == 0) {
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER);
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER, playerTexture);
         }
         if (instruction[0].compare("210") == 0) {
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), ENEMY);
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), ENEMY, enemyTexture);
         }
         if (instruction[0].compare("220") == 0) {
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET);
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET, bulletTexture);
         }
         if (instruction[0].compare("203") == 0 || instruction[0].compare("213") == 0 || instruction[0].compare("222") == 0) {
             if (objects.find(instruction[1]) != objects.end()) {
@@ -223,11 +228,11 @@ void Game::update(std::string message)
                 objects[instruction[1]]->setPosition(std::stoi(instruction[2]), std::stoi(instruction[3]));
             } else {
                 if (instruction[0].compare("202") == 0) {
-                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), PLAYER);
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), PLAYER, playerTexture);
                 } else if (instruction[0].compare("212") == 0) {
-                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), ENEMY);
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), ENEMY, enemyTexture);
                 } else if (instruction[0].compare("212") == 0) {
-                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET);
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET, bulletTexture);
                 }
             }
         }
