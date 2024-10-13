@@ -4,7 +4,7 @@ set VCPKG_REPO=https://github.com/microsoft/vcpkg.git
 set VCPKG_DIR=%USERPROFILE%\vcpkg
 set REPO_URL=git@github.com:onvasrouler/R-type.git
 set REPO_DIR=r-types
-set BRANCH=dev
+set BRANCH=main
 set VCPKG_ROOT=%VCPKG_DIR%
 
 echo "Checking for Git installation..."

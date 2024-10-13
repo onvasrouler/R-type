@@ -5,7 +5,7 @@ VCPKG_REPO="https://github.com/microsoft/vcpkg.git"
 VCPKG_DIR="$HOME/vcpkg"
 REPO_URL="git@github.com:onvasrouler/R-type.git"
 REPO_DIR="r-types"
-BRANCH="dev"
+BRANCH="main"
 PLATFORM=$(uname)
 
 rm -rf build
