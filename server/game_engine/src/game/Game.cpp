@@ -11,6 +11,7 @@
  */
 
 #include "Game.hpp"
+#include <chrono>
 
 /**
  * @brief Construct a new Game object.
@@ -341,20 +342,19 @@ void Game::stop()
  */
 void Game::run()
 {
-    std::clock_t cl = clock();
-    std::clock_t cl2 = clock();
+    auto cl = std::chrono::high_resolution_clock::now();
+    auto cl2 = std::chrono::high_resolution_clock::now();
 
     std::cout << "Running game engine" << std::endl;
     while (_running) {
+        auto now = std::chrono::high_resolution_clock::now();
         handleMessages();
-        if (clock() - cl > 100) { // 1000 = 1 sec
-            cl = clock();
+        if (std::chrono::duration<double>(now - cl).count() > 0.1) {
+            cl = std::chrono::high_resolution_clock::now();
             this->update_world();
         }
-        std::cout << clock() - cl2 << std::endl;
-        std::cout << this->_enemy.size() << std::endl;
-        if (clock() - cl2 > 2000 && this->_enemy.size() < MAX_ENEMIES) { // 2000 = 2 sec
-            cl2 = clock();
+        if (std::chrono::duration<double>(now - cl2).count() >= 2.0 && this->_enemy.size() < MAX_ENEMIES) {
+            cl2 = std::chrono::high_resolution_clock::now();
             this->create_enemy();
         }
         this->check_collisions();
