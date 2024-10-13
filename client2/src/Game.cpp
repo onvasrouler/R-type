@@ -21,11 +21,19 @@ void Game::run(sf::RenderWindow &window, boost::asio::io_context &io_context, bo
     gameIsRunning = true;
     backgroundTexture.loadFromFile("chipset/background.jpg");
     backgroundSprite.setTexture(backgroundTexture);
-     _socket = std::make_unique<boost::asio::ip::udp::socket>(io_context, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 8081));
+    _socket = std::make_unique<boost::asio::ip::udp::socket>(io_context, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 8081));
+    std::cout << "Socket: " << _socket->local_endpoint().address().to_string() << ": " << _socket->local_endpoint().port() << std::endl;
+    
     startRecieve();
 
     std::string message = "00\r\n";
     std::vector<char> binary_message(message.begin(), message.end());
+
+    std::cout << "Send: ";
+    for (auto &c : binary_message)
+        std::cout << c;
+    std::cout << " to: " << endpoints->endpoint().address().to_string() << ":" << endpoints->endpoint().port() << std::endl;
+
     _socket->send_to(boost::asio::buffer(binary_message), *endpoints.begin());
 
     while (gameIsRunning) {
@@ -46,51 +54,63 @@ void Game::startRecieve()
     });
 }
 
-std::vector<std::string> split(const std::string& str, char delimiter) {
-    std::vector<std::string> tokens;
+std::vector<std::string> split(const std::string& str, char delimiter, std::vector<std::string> &tokens) {
     std::stringstream ss(str);
     std::string token;
 
     while (std::getline(ss, token, delimiter)) {
         tokens.push_back(token);
     }
-
-    return tokens;
+    if (!tokens.empty() && tokens.back().size() >= 2) {
+        tokens.back().erase(tokens.back().size() - 2, 2);
+    }
+    return(tokens);
 }
 
 void Game::update(std::string message)
 {
-    std::vector<std::string> instruction = split(message, '/');
     try {
-        if (instruction[0] == "01") {
-            if (instruction.size() == 7)
+        std::vector<std::string> instruction;
+        split(message, '/', instruction);
+        
+        if (instruction[0].compare("01") == 0) {
+            objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER);
+            id = instruction[1];
+        }
+        if (instruction[0].compare("200") == 0) {
                 objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER);
         }
-        if (instruction[0] == "200") {
-            if (instruction.size() == 7)
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), PLAYER);
-        }
-        if (instruction[0] == "210") {
-            if (instruction.size() == 7)
+        if (instruction[0].compare("210") == 0) {
                 objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[5]), std::stoi(instruction[6]), ENEMY);
         }
-        if (instruction[0] == "220") {
-            if (instruction.size() == 5)
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[3]), std::stoi(instruction[4]), BULLET);
+        if (instruction[0].compare("220") == 0) {
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET);
         }
-        if (instruction[0] == "203" || instruction[0] == "213" || instruction[0] == "222") {
-            if (instruction.size() == 2)
+        if (instruction[0].compare("203") == 0 || instruction[0].compare("213") == 0 || instruction[0].compare("222") == 0) {
+            if (objects.find(instruction[1]) != objects.end()) {
+                if(instruction[1].compare(id) == 0) {
+                    gameIsRunning = false;
+                }
                 objects.erase(instruction[1]);
+            }
         }
-        if (instruction[0] == "202" || instruction[0] == "212" || instruction[0] == "221") {
-            if (instruction.size() == 4)
+        if (instruction[0].compare("202") == 0 || instruction[0].compare("212") == 0 || instruction[0].compare("221") == 0) {
+            if (objects.find(instruction[1]) != objects.end()) {
                 objects[instruction[1]]->setPosition(std::stoi(instruction[2]), std::stoi(instruction[3]));
+            } else {
+                if (instruction[0].compare("202") == 0) {
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), PLAYER);
+                } else if (instruction[0].compare("212") == 0) {
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), ENEMY);
+                } else if (instruction[0].compare("212") == 0) {
+                    objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[2]), std::stoi(instruction[3]), BULLET);
+                }
+            }
         }
     }
     catch (const std::invalid_argument& e) {
-        std::cout << "error"<< std::endl;
+        std::cout << "non\n";
     }
-
 }
 
 void Game::handle_receive(const boost::system::error_code& error, std::size_t bytes_recvd)
@@ -99,12 +119,8 @@ void Game::handle_receive(const boost::system::error_code& error, std::size_t by
         std::string message(recv_buffer.data(), bytes_recvd);
 
         std::cout << message << std::endl;
-        size_t pos = message.find("Message received: ");
-            if (pos != std::string::npos) {
-                message.erase(pos, 18);
-            }
+        
         update(message);
-
 
         startRecieve();
     } else {
@@ -149,9 +165,9 @@ void Game::processEvents(sf::RenderWindow &window, boost::asio::ip::basic_resolv
                 message = "1/right\r\n";
                 action = true;
             } else if(event.key.code == sf::Keyboard::Space) {
-                message = "1/space\r\n";
+                message = "1/shoot\r\n";
                 action = true;
-            } else if(event.key.code == sf::Keyboard::Num0)
+            } else if(event.key.code == sf::Keyboard::Escape)
                 gameIsRunning = false;
         }
     }
