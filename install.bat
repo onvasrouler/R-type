@@ -99,10 +99,8 @@ echo "Project build completed."
 
 REM Start the server
 echo "Starting the server..."
-cd server\Debug
-cd
-dir
-.\r-type_server
+cd client2\Debug
+.\r-type_client.exe
 if %ERRORLEVEL% neq 0 (
     echo "Error starting the server."
     pause
