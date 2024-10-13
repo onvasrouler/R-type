@@ -1,0 +1,15 @@
+{
+    "windowWidth": 800,
+    "windowHeight": 600,
+    "windowX": 500,
+    "windowY": 500,
+    "windowMaximized": false,
+    "windowTitle": "R-Type",
+    "backgroundColor" : {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 255
+    },
+    "frameRateLimit": 60
+}
