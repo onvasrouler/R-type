@@ -82,6 +82,7 @@ class UDPServer {
      */
     std::vector<packageData>& getSentData();
 
+  void sendMessages();
   private:
     /**
      * @brief Starts an asynchronous receive operation.
@@ -100,6 +101,9 @@ class UDPServer {
      * @param length The length of the received message in bytes.
      */
     void handle_receive(std::size_t length);
+
+
+    // void handle_send(std::error_code ec, std::size_t length);
 
     /// The socket used to communicate over UDP.
     udp::socket _socket;

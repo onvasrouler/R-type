@@ -19,7 +19,7 @@
  * 
  * This constructor initializes the player's position, dimensions, shot status, direction, and clock.
  */
-Player::Player(const int y, const uuid &id) : ACharacter(id)
+Player::Player(const int y, const std::string &id) : ACharacter(id)
 {
     this->_origin = Point(INITIAL_X, y);
     this->_dimension = Rect(INITIAL_DIMENSION, INITIAL_DIMENSION);

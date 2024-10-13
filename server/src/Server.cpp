@@ -108,8 +108,8 @@ void Server::run() {
             for (int valread = recv(_modules[0]->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
                  valread = recv(_modules[0]->getSocket(), buffer, 1024, 0)) {
-                // std::cout << "Read: " << buffer << " from network module"
-                //           << std::endl;
+                std::cout << "Read: " << buffer << " from network module"
+                          << std::endl;
                 messages += buffer;
             }
 #else
@@ -137,19 +137,21 @@ void Server::run() {
             message = message.substr(message.find("/") + 1);
             if (isClient(ip, port)) {
                 std::string messageToSend = createMessage(ip, port, message);
-                // std::cout << "Message to send to game module: " <<
-                // messageToSend
-                //           << std::endl;
+                std::cout << "Message to send to game module: " << messageToSend
+                          << std::endl;
                 _modules[1]->addMessage(messageToSend);
             } else {
                 uuid userUUID;
                 std::string userID = userUUID.toString();
-                Client newClient(ip, port, userUUID);
+                Client newClient(ip, port, userID);
+                std::cout << "New client connected: " << newClient.getIp()
+                          << ":" << newClient.getPort() << std::endl;
+                std::cout << "CLient UUID: " << newClient.getUuid()
+                          << std::endl;
                 _clients.push_back(newClient);
                 std::string messageToSend = createMessage(ip, port, message);
-                // std::cout << "Message to send to game module: " <<
-                // messageToSend
-                //           << std::endl;
+                std::cout << "Message to send to game module: " << messageToSend
+                          << std::endl;
                 _modules[1]->addMessage(messageToSend);
             }
         }
@@ -159,8 +161,8 @@ void Server::run() {
             for (int valread = recv(_modules[1]->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
                  valread = recv(_modules[1]->getSocket(), buffer, 1024, 0)) {
-                // std::cout << "Read: " << buffer << " from game module"
-                //           << std::endl;
+                std::cout << "Read: " << buffer << " from game module"
+                          << std::endl;
                 messages += buffer;
             }
 #else
@@ -181,15 +183,13 @@ void Server::run() {
                  messages =
                      messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
                 // get uuid and message
-                std::string uuidString = message.substr(0, message.find("/"));
-                message = message.substr(message.find("/") + 1);
+                std::string uuidString = message.substr(0, message.find(":"));
+                message = message.substr(message.find(":") + 1);
                 // send the message to the client
-                uuid uuid(uuidString);
-                // Client client = findClient(uuid);
-                std::string messageToSend =
-                    findClient(uuid).getIp() + ":" +
-                    std::to_string(findClient(uuid).getPort()) + "/" + message +
-                    THREAD_END_MESSAGE;
+                std::string ip = findClient(uuidString).getIp();
+                std::size_t port = findClient(uuidString).getPort();
+                std::string messageToSend = ip + ":" + std::to_string(port) +
+                                            "/" + message + THREAD_END_MESSAGE;
                 _modules[0]->addMessage(messageToSend);
             }
         }
@@ -198,9 +198,9 @@ void Server::run() {
                 !FD_ISSET(module->getSocket(), &writefds))
                 continue;
             for (auto& message : module->getMessages()) {
-                // std::cout << "Sending message: " << message
-                //           << "to module: " << module->getModuleName()
-                //           << std::endl;
+                std::cout << "Sending message: " << message
+                          << "to module: " << module->getModuleName()
+                          << std::endl;
                 send(module->getSocket(), message.c_str(), message.size(), 0);
             }
             module->clearMessages();
@@ -284,25 +284,37 @@ bool Server::isClient(const std::string ip, const std::size_t port) {
 std::string Server::createMessage(const std::string ip, const std::size_t port,
                                   const std::string message) {
     Client client = findClient(ip, port);
+    std::cout << client.getIp() << ":" << client.getPort() << std::endl;
+    std::cout << client.getUuid() << std::endl;
     std::string messageToSend =
-        client.getUuid().toString() + ":" + message + THREAD_END_MESSAGE;
+        client.getUuid() + ":" + message + THREAD_END_MESSAGE;
     return messageToSend;
 }
 
 Client Server::findClient(const std::string ip, const std::size_t port) {
     Client client;
     for (auto& c : _clients) {
-        if (c.getIp() == ip && c.getPort() == port)
-            client = c;
+        std::cout << "search: " << ip << ":" << port << std::endl;
+        std::cout << "compare to: " << c.getIp() << ":" << c.getPort()
+                  << std::endl;
+        if (c.getIp() == ip && c.getPort() == port) {
+            std::cout << "find client" << std::endl;
+            return c;
+        }
     }
+    std::cout << "Client found: " << client.getIp() << ":" << client.getPort()
+              << std::endl;
     return client;
 }
 
-Client Server::findClient(const uuid uuid) {
+Client Server::findClient(const std::string uuid) {
     Client client;
     for (auto& c : _clients) {
-        if (c.getUuid() == uuid)
-            client = c;
+        std::cout << "search: " << uuid << std::endl;
+        std::cout << "compare to: " << c.getUuid() << std::endl;
+        if (c.getUuid() == uuid) {
+            return c;
+        }
     }
     return client;
 }

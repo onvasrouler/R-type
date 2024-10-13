@@ -34,7 +34,7 @@ public:
      * 
      * This constructor initializes the character's health points (HP) and level.
      */
-    ACharacter(const uuid &id);
+    ACharacter(const std::string &id);
 
     /**
      * @brief Default virtual destructor for ACharacter.

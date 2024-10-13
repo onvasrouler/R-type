@@ -191,11 +191,9 @@ void UDPServer::start_receive() {
 }
 
 void UDPServer::handle_receive(std::size_t length) {
-    std::cout << "ok" << std::endl;
     if (!_running) {
         return;
     }
-    std::cout << "test" << std::endl;
     try {
         if (length > 0) {
             std::string decoded_message(_recv_buffer.data(), length);
@@ -208,18 +206,20 @@ void UDPServer::handle_receive(std::size_t length) {
                       << " from: " << data.getIp() << ":" << data.getPort()
                       << std::endl;
             std::string confirmation = "Message received: " + decoded_message;
-            _socket.async_send_to(
-                boost::asio::buffer(confirmation), _remote_endpoint,
-                [this](std::error_code ec, std::size_t) {
-                    if (!ec) {
-                        std::cout << "Confirmation sent to client."
-                                  << std::endl;
-                    } else {
-                        std::cerr
-                            << "Error sending confirmation: " << ec.message()
-                            << std::endl;
-                    }
-                });
+            // _socket.async_send_to(
+            //     boost::asio::buffer(confirmation), _remote_endpoint,
+            //     [this](std::error_code ec, std::size_t) {
+            //         _stopMutex.lock();
+            //         if (!ec && _running) {
+            //             std::cout << "Confirmation sent to client."
+            //                       << std::endl;
+            //         } else {
+            //             std::cerr
+            //                 << "Error sending confirmation: " << ec.message()
+            //                 << std::endl;
+            //         }
+            //         _stopMutex.unlock();
+            //     });
             _receiveMutex.lock();
             _receivedData.push_back(data);
             _receiveMutex.unlock();
@@ -228,6 +228,54 @@ void UDPServer::handle_receive(std::size_t length) {
     } catch (const UDPError& e) {
         std::cerr << "UDP Server Error: " << e.what() << std::endl;
     }
+}
+
+// void UDPServer::start_send() {
+//     if (!_running) {
+//         return;
+//     }
+//     std::cout << "start_send" << std::endl;
+//     // while (_running) {
+//     _sendMutex.lock();
+//     for (auto& data : _sentData) {
+//         std::cout << "Send message: " << data.getData()
+//                   << " to: " << data.getIp() << ":" << data.getPort()
+//                   << std::endl;
+//         _socket.async_send_to(
+//             boost::asio::buffer(data.getData()),
+//             udp::endpoint(boost::asio::ip::make_address(data.getIp()),
+//                           data.getPort()),
+//             [this](std::error_code ec, std::size_t) {
+//                 _stopMutex.lock();
+//                 if (!ec && _running) {
+//                     std::cout << "Message sent to client." << std::endl;
+//                 } else {
+//                     std::cerr << "Error sending message: " << ec.message()
+//                               << std::endl;
+//                 }
+//                 _stopMutex.unlock();
+//                 // start_send();
+//             });
+//     }
+//     _sendMutex.unlock();
+//     // }
+// }
+
+void UDPServer::sendMessages() {
+    if (!_running) {
+        return;
+    }
+    _sendMutex.lock();
+    for (auto& data : _sentData) {
+        std::cout << "Send message: " << data.getData() << std::endl;
+        std::cout << "Send ip: " << data.getIp() << std::endl;
+        std::cout << "Send port: " << data.getPort() << std::endl;
+        _remote_endpoint.address(boost::asio::ip::make_address(data.getIp()));
+        _remote_endpoint.port(data.getPort());
+        _socket.send_to(boost::asio::buffer(data.getData()), _remote_endpoint);
+    }
+    _sentData.clear();
+    _sendMutex.unlock();
 }
 
 std::mutex& UDPServer::getSendMutex() { return _sendMutex; }

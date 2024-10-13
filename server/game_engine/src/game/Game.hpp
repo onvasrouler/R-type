@@ -28,7 +28,7 @@
 #define MAX_ENEMIES 20 ///< The maximum number of enemies in the game.
 #define END_MESSAGE_CODE "\r\n"
 
-//new Player:
+//new Player 0:
     #define NEW_PLAYER_REQUEST_CODE "00"
     #define NEW_PLAYER_ACCEPTED_CODE "01"
     #define NEW_PLAYER_REJECTED_CODE "02"
@@ -50,12 +50,12 @@
 
 class gameMessage {
     public :
-        gameMessage(const uuid &id, const std::string message);
+        gameMessage(const std::string &id, const std::string message);
         ~gameMessage() = default;
-        const uuid &getId();
+        std::string &getId();
         const std::string getMessage();
     private:
-        const uuid _id;
+        std::string _id;
         const std::string _message;
 };
 
@@ -119,7 +119,7 @@ public:
      * 
      * This method adds a new player to the game if the number of players is less than 4.
      */
-    bool create_player(const uuid id);
+    bool create_player(const std::string id);
 
     /**
      * @brief Create a new bullet for a given player.
@@ -144,7 +144,7 @@ public:
      * 
      * This method removes a player from the game based on their ID.
      */
-    void destroy_player(const uuid id);
+    void destroy_player(const std::string id);
 
     /**
      * @brief Destroy a bullet by its ID.
@@ -153,7 +153,7 @@ public:
      * 
      * This method removes a bullet from the game based on its ID.
      */
-    void destroy_bullet(const uuid bullet_id);
+    void destroy_bullet(const std::string bullet_id);
 
     /**
      * @brief Destroy an enemy by their ID.
@@ -162,7 +162,7 @@ public:
      * 
      * This method removes an enemy from the game based on their ID.
      */
-    void destroy_enemy(const uuid enemy_id);
+    void destroy_enemy(const std::string enemy_id);
 
     /**
      * @brief Update the game world.

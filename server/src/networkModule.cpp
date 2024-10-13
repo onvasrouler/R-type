@@ -156,6 +156,7 @@ void NetworkModule::run() {
             _udpServer->getSentData().push_back(data);
         }
         _udpServer->getSendMutex().unlock();
+        _udpServer->sendMessages();
     }
     std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
 }

@@ -18,7 +18,7 @@
  * 
  * This constructor initializes the entity's ID and type.
  */
-AEntity::AEntity(const uuid &id)
+AEntity::AEntity(const std::string &id)
 {
     this->_id = id;
     this->_type = Type(0);
@@ -79,7 +79,7 @@ int AEntity::get_type()
  * 
  * @return int The current ID of the entity.
  */
-const uuid &AEntity::get_id() const
+const std::string &AEntity::get_id() const
 {
     return this->_id;
 }

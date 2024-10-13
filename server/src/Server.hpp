@@ -105,7 +105,7 @@ class Server : MultiThreadElement {
          * @param uuid The uuid of the client
          * @return Client The client found
          */
-        Client findClient(const uuid uuid);
+        Client findClient(const std::string uuid);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
         std::vector<Client> _clients; /*!< The clients of the server. */

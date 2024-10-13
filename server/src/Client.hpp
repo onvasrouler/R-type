@@ -73,7 +73,7 @@ class Client {
      *
      * @return The UUID as a uuid.
      */
-    const uuid getUuid() const;
+    const std::string getUuid() const;
 
     /**
      * @brief Equality operator for comparing two Client objects.
@@ -102,5 +102,5 @@ class Client {
   protected:
     const std::string _ip;
     const std::size_t _port;
-    const uuid _uuid;
+    const std::string _uuid;
 };
