@@ -53,10 +53,13 @@ endif ()
 
 file(GLOB_RECURSE SERVER_CPP_FILES "src/*.cpp")
 
-add_custom_target(
-    clang-format-server
-    COMMAND clang-format -i ${SERVER_CPP_FILES}
-    COMMENT "Running clang-format on server source files"
-)
-
-add_dependencies(r-type_server clang-format-server)
+if(CLANG_FORMAT_EXECUTABLE)
+    add_custom_target(
+        clang-format-server
+        COMMAND clang-format -i ${SERVER_CPP_FILES}
+        COMMENT "Running clang-format on server source files"
+    )
+    add_dependencies(r-type_server clang-format-server)
+else()
+    message(WARNING "clang-format not found, skipping clang-format step.")
+endif()
