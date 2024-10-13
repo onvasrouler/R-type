@@ -221,7 +221,9 @@ void Game::update_world()
             }
             _sendMutex.unlock();
         }
-        if (player.get_has_shot() == true && clock() - player.get_cl() > 1000000) {
+        auto cl = std::chrono::high_resolution_clock::now();
+        if (player.get_has_shot() == true && std::chrono::duration<double>(cl - player.get_cl()).count() >= 1.0) {
+            std::cout << "fire" << std::endl;
             this->create_bullet(player);
             player.set_has_shot(false);
             player.restart_cl();
@@ -429,7 +431,7 @@ void Game::handleMessages() {
         if (message == SHOOT) {
             for (auto &player : _player) {
                 if (player.get_id() == receivedMessage.getId()) {
-                    std::cout << "shoot" << std::endl;
+                    std::cout << "tire" << std::endl;
                     player.set_has_shot(true);
                     break;
                 }

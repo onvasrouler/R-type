@@ -13,6 +13,7 @@
 #pragma once
 
 #include <ctime>
+#include <chrono>
 #include "ACharacter.hpp"
 
 #define INITIAL_X 100 ///< The initial x-coordinate of the player in pixels.
@@ -95,7 +96,7 @@ public:
      * 
      * @return std::clock_t The clock value of the player.
      */
-    std::clock_t get_cl();
+    std::chrono::high_resolution_clock::time_point get_cl();
 
     /**
      * @brief Restart the clock of the player.
@@ -105,5 +106,5 @@ public:
 private:
     bool _has_shot;
     enum Direction _dir;
-    std::clock_t _cl;
+    std::chrono::high_resolution_clock::time_point _cl;
 };

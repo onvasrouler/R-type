@@ -25,7 +25,7 @@ Player::Player(const int y, const std::string &id) : ACharacter(id)
     this->_dimension = Rect(INITIAL_DIMENSION, INITIAL_DIMENSION);
     this->_has_shot = false;
     this->_dir = NONE;
-    this->_cl = clock();
+    this->_cl = std::chrono::high_resolution_clock::now();
 }
 
 /**
@@ -94,7 +94,7 @@ void Player::set_dir(const enum Direction dir)
  * 
  * @return std::clock_t The clock value of the player.
  */
-std::clock_t Player::get_cl()
+std::chrono::high_resolution_clock::time_point Player::get_cl()
 {
     return this->_cl;
 }
@@ -104,5 +104,5 @@ std::clock_t Player::get_cl()
  */
 void Player::restart_cl()
 {
-    this->_cl = clock();
+    this->_cl = std::chrono::high_resolution_clock::now();
 }
