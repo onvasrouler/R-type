@@ -1,0 +1,72 @@
+name: Chocolatine
+
+on:
+  push:
+    branches-ignore:
+      - "ga-ignore-*"
+  pull_request:
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  MIRROR_URL: "git@github.com:EpitechPromo2027/B-CPP-500-NAN-5-1-rtype-aimeric.rouyer.git"
+
+jobs:
+  push_to_mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ env.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+
+  create_release:
+    runs-on: ubuntu-latest
+    needs: push_to_mirror
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Zip Linux Installer
+        run: |
+          zip linux_installer.zip install.sh
+
+      - name: Zip Windows Installer
+        run: |
+          zip windows_installer.zip install.bat
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: "Release ${{ github.run_number }}"
+          body: "Release created after merge to main"
+          draft: false
+          prerelease: false
+
+      - name: Upload Linux Installer
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./linux_installer.zip
+          asset_name: linux_installer.zip
+          asset_content_type: application/zip
+
+      - name: Upload Windows Installer
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./windows_installer.zip
+          asset_name: windows_installer.zip
+          asset_content_type: application/zip
