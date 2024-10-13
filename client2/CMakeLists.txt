@@ -12,7 +12,12 @@ target_link_libraries(r-type_client sfml-graphics sfml-window sfml-system)
 target_link_libraries(r-type_client -pthread)
 
 set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/client2/chipset")
-set(DEBUG_OUTPUT_DIR "${CMAKE_BINARY_DIR}/client2/Debug")
+
+if (UNIX)
+    set(DEBUG_OUTPUT_DIR "${CMAKE_BINARY_DIR}/client2")
+else()
+    set(DEBUG_OUTPUT_DIR "${CMAKE_BINARY_DIR}/client2/Debug")
+endif()
 
 add_custom_command(TARGET r-type_client POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
