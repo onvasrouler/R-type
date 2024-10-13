@@ -22,17 +22,19 @@ GameObject::GameObject(int x, int y, enum Type type)
     sf::Image resizedImage;
     resizedImage.create(100, 100);
 
-    for (unsigned int y = 0; y < 100; ++y) {
-        for (unsigned int x = 0; x < 100; ++x) {
-            unsigned int originalX = x * originalImage.getSize().x / 100;
-            unsigned int originalY = y * originalImage.getSize().y / 100;
+    for (unsigned int i = 0; i < 100; ++i) {
+        for (unsigned int u = 0; u < 100; +u) {
+            unsigned int originalX = u * originalImage.getSize().x / 100;
+            unsigned int originalY = i * originalImage.getSize().y / 100;
 
-            resizedImage.setPixel(x, y, originalImage.getPixel(originalX, originalY));
+            resizedImage.setPixel(u, i, originalImage.getPixel(originalX, originalY));
         }
     }
 
     Texture.loadFromImage(resizedImage);
     Sprite.setTexture(Texture);
+
+    Sprite.setPosition(sf::Vector2f(x, y));
 }
 
 GameObject::~GameObject()

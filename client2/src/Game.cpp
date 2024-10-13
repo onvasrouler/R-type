@@ -76,7 +76,7 @@ void Game::update(std::string message)
         }
         if (instruction[0] == "220") {
             if (instruction.size() == 5)
-                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[3]), std::stoi(instruction[4]), PLAYER);
+                objects[instruction[1]] = std::make_shared<GameObject>(std::stoi(instruction[3]), std::stoi(instruction[4]), BULLET);
         }
         if (instruction[0] == "203" || instruction[0] == "213" || instruction[0] == "222") {
             if (instruction.size() == 2)
