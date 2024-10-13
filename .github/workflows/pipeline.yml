@@ -2,8 +2,6 @@ name: Chocolatine
 
 on:
   push:
-    branches:
-      - main
     branches-ignore:
       - "ga-ignore-*"
   pull_request:
