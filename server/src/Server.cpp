@@ -108,8 +108,6 @@ void Server::run() {
             for (int valread = recv(_modules[0]->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
                  valread = recv(_modules[0]->getSocket(), buffer, 1024, 0)) {
-                std::cout << "Read: " << buffer << " from network module"
-                          << std::endl;
                 messages += buffer;
             }
 #else
@@ -118,8 +116,6 @@ void Server::run() {
                  valread != -1 && valread != 0;
                  valread = recv(_modules[0]->getSocket(), buffer, 1024,
                                 MSG_DONTWAIT)) {
-                // std::cout << "Read: " << buffer << " from network module"
-                //           << std::endl;
                 messages += buffer;
             }
 #endif
@@ -137,21 +133,13 @@ void Server::run() {
             message = message.substr(message.find("/") + 1);
             if (isClient(ip, port)) {
                 std::string messageToSend = createMessage(ip, port, message);
-                std::cout << "Message to send to game module: " << messageToSend
-                          << std::endl;
                 _modules[1]->addMessage(messageToSend);
             } else {
                 uuid userUUID;
                 std::string userID = userUUID.toString();
                 Client newClient(ip, port, userID);
-                std::cout << "New client connected: " << newClient.getIp()
-                          << ":" << newClient.getPort() << std::endl;
-                std::cout << "CLient UUID: " << newClient.getUuid()
-                          << std::endl;
                 _clients.push_back(newClient);
                 std::string messageToSend = createMessage(ip, port, message);
-                std::cout << "Message to send to game module: " << messageToSend
-                          << std::endl;
                 _modules[1]->addMessage(messageToSend);
             }
         }
@@ -171,8 +159,6 @@ void Server::run() {
                  valread != -1 && valread != 0;
                  valread = recv(_modules[1]->getSocket(), buffer, 1024,
                                 MSG_DONTWAIT)) {
-                // std::cout << "Read: " << buffer << " from game module"
-                //           << std::endl;
                 messages += buffer;
             }
 #endif
@@ -184,7 +170,9 @@ void Server::run() {
                      messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
                 // get uuid and message
                 std::string uuidString = message.substr(0, message.find(":"));
-                message = message.substr(message.find(":") + 1);
+                message = message.substr(
+                    message.find(":") + 1,
+                    message.size() - std::string(THREAD_END_MESSAGE).size());
                 // send the message to the client
                 std::string ip = findClient(uuidString).getIp();
                 std::size_t port = findClient(uuidString).getPort();
@@ -284,8 +272,6 @@ bool Server::isClient(const std::string ip, const std::size_t port) {
 std::string Server::createMessage(const std::string ip, const std::size_t port,
                                   const std::string message) {
     Client client = findClient(ip, port);
-    std::cout << client.getIp() << ":" << client.getPort() << std::endl;
-    std::cout << client.getUuid() << std::endl;
     std::string messageToSend =
         client.getUuid() + ":" + message + THREAD_END_MESSAGE;
     return messageToSend;
@@ -294,24 +280,16 @@ std::string Server::createMessage(const std::string ip, const std::size_t port,
 Client Server::findClient(const std::string ip, const std::size_t port) {
     Client client;
     for (auto& c : _clients) {
-        std::cout << "search: " << ip << ":" << port << std::endl;
-        std::cout << "compare to: " << c.getIp() << ":" << c.getPort()
-                  << std::endl;
         if (c.getIp() == ip && c.getPort() == port) {
-            std::cout << "find client" << std::endl;
             return c;
         }
     }
-    std::cout << "Client found: " << client.getIp() << ":" << client.getPort()
-              << std::endl;
     return client;
 }
 
 Client Server::findClient(const std::string uuid) {
     Client client;
     for (auto& c : _clients) {
-        std::cout << "search: " << uuid << std::endl;
-        std::cout << "compare to: " << c.getUuid() << std::endl;
         if (c.getUuid() == uuid) {
             return c;
         }

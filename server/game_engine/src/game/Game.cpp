@@ -52,6 +52,7 @@ bool Game::create_player(const std::string id)
             }
             _sendMessages.push_back(gameMessage(player.get_id(), message));
         }
+        std::cout << "Player created" << std::endl;
         _sendMutex.unlock();
     } else {
         return false;
@@ -75,6 +76,7 @@ void Game::create_bullet(const Player player)
     for (auto &player : _player) {
         _sendMessages.push_back(gameMessage(player.get_id(), message));
     }
+    std::cout << "Bullet created" << std::endl;
     _sendMutex.unlock();
 }
 
@@ -91,6 +93,7 @@ void Game::create_enemy()
     for (auto &player : _player) {
         _sendMessages.push_back(gameMessage(player.get_id(), message));
     }
+    std::cout << "Enemy created" << std::endl;
     _sendMutex.unlock();
 }
 
@@ -112,6 +115,7 @@ void Game::destroy_player(const std::string id)
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
+            std::cout << "Destroying player" << std::endl;
             return;
         }
     }
@@ -135,6 +139,7 @@ void Game::destroy_bullet(const std::string bullet_id)
             }
             _sendMutex.unlock();
             this->_bullet.erase(it);
+            std::cout << "Destroying bullet" << std::endl;
             return;
         }
     }
@@ -157,6 +162,7 @@ void Game::destroy_enemy(const std::string enemy_id)
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
+            std::cout << "Destroying enemy" << std::endl;
             this->_enemy.erase(it);
             return;
         }
@@ -341,11 +347,13 @@ void Game::run()
     std::cout << "Running game engine" << std::endl;
     while (_running) {
         handleMessages();
-        if (clock() - cl > 100000) { // 1000000 = 1 sec
+        if (clock() - cl > 100) { // 1000 = 1 sec
             cl = clock();
             this->update_world();
         }
-        if (clock() - cl2 > 2000000 && this->_enemy.size() < MAX_ENEMIES) { // 2000000 = 2 sec
+        std::cout << clock() - cl2 << std::endl;
+        std::cout << this->_enemy.size() << std::endl;
+        if (clock() - cl2 > 2000 && this->_enemy.size() < MAX_ENEMIES) { // 2000 = 2 sec
             cl2 = clock();
             this->create_enemy();
         }
@@ -356,24 +364,63 @@ void Game::run()
 void Game::handleMessages() {
     _readMutex.lock();
     for (auto &receivedMessage : _readMessages) {
-        //get message between / and END_MESSAGE_CODE
-        std::string message = receivedMessage.getMessage().substr(receivedMessage.getMessage().find("/") + 1, receivedMessage.getMessage().find(END_MESSAGE_CODE) - receivedMessage.getMessage().find("/") - 2);
+        std::string message = receivedMessage.getMessage().substr(receivedMessage.getMessage().find("/") + 1);
+        std::cout << "Get message: " + message + " from: " + receivedMessage.getId() << std::endl;
+        message = message.substr(0, message.find(END_MESSAGE_CODE));
         std::cout <<"Get message: " + message + " from: " + receivedMessage.getId() << std::endl;
-        std::cout << "|" << receivedMessage.getMessage() << "|" << std::endl;
+        std::cout << "|" << message << "|" << std::endl;
         std::cout << "|" << NEW_PLAYER_REQUEST_CODE << "|" << std::endl;
-        if (receivedMessage.getMessage() == NEW_PLAYER_REQUEST_CODE)
-            std::cout << "good code" << std::endl;
-        if (receivedMessage.getMessage() == NEW_PLAYER_REQUEST_CODE && _player.size() < MAX_PLAYERS) {
+        if ((message == NEW_PLAYER_REQUEST_CODE && _player.size() < MAX_PLAYERS)) {
             create_player(receivedMessage.getId());
             std::string message = NEW_PLAYER_ACCEPTED_CODE + std::string("/") + receivedMessage.getId() + std::string("/") + std::to_string(_player.back().get_type()) + std::string("/") + std::to_string(_player.back().get_level()) + std::string("/") + std::to_string(_player.back().get_hp()) + std::string("/") + std::to_string(_player.back().get_x()) + std::string("/") + std::to_string(_player.back().get_y()) + END_MESSAGE_CODE;
             _sendMutex.lock();
             _sendMessages.push_back(gameMessage(receivedMessage.getId(), message));
             _sendMutex.unlock();
-        } else {
+            continue;
+        }
+        if ((message == NEW_PLAYER_REQUEST_CODE && _player.size() >= MAX_PLAYERS)
+            || (message == NEW_PLAYER_REQUEST_CODE && isPlayer(receivedMessage.getId()))) {
             std::string message = NEW_PLAYER_REJECTED_CODE + std::string("/") + receivedMessage.getId() + END_MESSAGE_CODE;
             _sendMutex.lock();
             _sendMessages.push_back(gameMessage(receivedMessage.getId(), message));
             _sendMutex.unlock();
+            continue;
+        }
+        if (message == MOVE_UP) {
+            for (auto &player : _player) {
+                if (player.get_id() == receivedMessage.getId()) {
+                    player.set_dir(UP);
+                    break;
+                }
+            }
+            continue;
+        }
+        if (message == MOVE_DOWN) {
+            for (auto &player : _player) {
+                if (player.get_id() == receivedMessage.getId()) {
+                    player.set_dir(DOWN);
+                    break;
+                }
+            }
+            continue;
+        }
+        if (message == MOVE_LEFT) {
+            for (auto &player : _player) {
+                if (player.get_id() == receivedMessage.getId()) {
+                    player.set_dir(LEFT);
+                    break;
+                }
+            }
+            continue;
+        }
+        if (message == MOVE_RIGHT) {
+            for (auto &player : _player) {
+                if (player.get_id() == receivedMessage.getId()) {
+                    player.set_dir(RIGHT);
+                    break;
+                }
+            }
+            continue;
         }
     }
     _readMessages.clear();
@@ -402,6 +449,15 @@ std::mutex &Game::getSendMutex() {
 
 std::mutex &Game::getReadMutex() {
     return _readMutex;
+}
+
+bool Game::isPlayer(const std::string id) {
+    for (auto &player : _player) {
+        if (player.get_id() == id) {
+            return true;
+        }
+    }
+    return false;
 }
 
 gameMessage::gameMessage(const std::string &id, const std::string message) : _message(message) {

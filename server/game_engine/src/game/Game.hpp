@@ -32,6 +32,11 @@
     #define NEW_PLAYER_REQUEST_CODE "00"
     #define NEW_PLAYER_ACCEPTED_CODE "01"
     #define NEW_PLAYER_REJECTED_CODE "02"
+// input 1:
+    #define MOVE_UP "up"
+    #define MOVE_DOWN "down"
+    #define MOVE_LEFT "left"
+    #define MOVE_RIGHT "right"
 //data 2:
     //player 0:
         #define PLAYER_SPAWN_CODE "200"
@@ -181,6 +186,8 @@ public:
      * This method checks if two entities are colliding based on their positions and dimensions.
      */
     bool is_in_collision(AEntity& entity1, AEntity& entity2);
+
+    bool isPlayer(const std::string id);
 
     void handleMessages();
     void addSendMessage();

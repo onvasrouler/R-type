@@ -105,7 +105,9 @@ void GameModule::run() {
             // encode message and send to the clients
             std::string id = message.substr(0, message.find(":"));
             uuid uuid(id);
-            message = message.substr(message.find(":") + 1);
+            message = message.substr(
+                message.find(":") + 1,
+                message.size() - std::string(THREAD_END_MESSAGE).size());
             gameMessage gameMessage(id, message);
             std::cout << "Message received: " << gameMessage.getMessage()
                       << std::endl;
