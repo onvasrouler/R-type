@@ -117,3 +117,18 @@ std::string AbstractModule::encodeInterCommunication(const std::string message)
     std::cout << "Encoding message: " << message << std::endl;
     return message;
 }
+
+void AbstractModule::addCommunicateModule(const std::string module)
+{
+    _communicatesModules.push_back(module);
+}
+
+std::vector<std::string> AbstractModule::getCommunicatesModules() const
+{
+    return _communicatesModules;
+}
+
+std::string AbstractModule::getId() const
+{
+    return _id;
+}

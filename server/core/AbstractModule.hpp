@@ -54,6 +54,26 @@ class AbstractModule : public MultiThreadElement {
          * @return The name of the module
          */
         std::string getName() const;
+        /**
+         *@brief Add a communicate module
+         *
+         * @param module The module to communicate with
+         */
+        void addCommunicateModule(const std::string module);
+
+        /**
+         * @brief Get the communicates modules
+         *
+         * @return std::vector<std::string> The communicates modules
+         */
+        std::vector<std::string> getCommunicatesModules() const;
+
+        /**
+         * @brief Get the id of the MultithreadElement
+         *
+         * @return std::string The id of the MultithreadElement
+         */
+        std::string getId() const;
     protected:
         /**
          * @brief Decode the message received from the server.

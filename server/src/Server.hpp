@@ -106,6 +106,7 @@ class Server : MultiThreadElement {
          * @return Client The client found
          */
         Client findClient(const std::string uuid);
+        bool canCommunicateWith(std::string moduleId, std::string communicateModuleId);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
         std::vector<Client> _clients; /*!< The clients of the server. */
