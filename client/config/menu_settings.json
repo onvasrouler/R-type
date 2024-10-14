@@ -11,25 +11,153 @@
             "title": "settings",
             "buttons": [
                 {
-                    "id": 0,
-                    "text": "Start",
+                    "id": "startButton",
+                    "text": "",
                     "position": {
-                        "x": 15,
-                        "y": 15
+                        "x": "10%",
+                        "y": 400
                     },
                     "size": {
-                        "width": 100,
-                        "height": 20
+                        "width": "80%",
+                        "height": 100
                     },
+                    "display": true,
+                    "functionName": "StartFunct"
+
+                }
+            ],
+            "texts": [
+                {
+                    "id": "0",
+                    "text": "R-Type",
+                    "position": {
+                        "x": "43%",
+                        "y": 10
+                    },
+                    "fontSize": 30,
                     "color": {
                         "r": 0,
                         "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "1",
+                    "text": "START",
+                    "position": {
+                        "x": "45%",
+                        "y": 430
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 0,
                         "b": 0,
                         "a": 255
                     },
-                    "type": 0,
+                    "display": true,
                     "functionName": "defaultFunct"
-
+                },
+                {
+                    "id": "InvalidAdressText",
+                    "text": "Invalid Adress",
+                    "position": {
+                        "x": "35%",
+                        "y": 100
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 255,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": false,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "InvalidPortText",
+                    "text": "Invalid Port",
+                    "position": {
+                        "x": "36%",
+                        "y": 225
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 255,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": false,
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "inputTexts": [
+                {
+                    "id": "adressInput",
+                    "position": {
+                        "x": "30%",
+                        "y": 150
+                    },
+                    "size": {
+                        "width": "40%",
+                        "height": 50
+                    },
+                    "text": "",
+                    "textMaxSize": 16,
+                    "editMode": false,
+                    "display": true,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "portInput",
+                    "position": {
+                        "x": "30%",
+                        "y": 275
+                    },
+                    "size": {
+                        "width": "40%",
+                        "height": 50
+                    },
+                    "text": "",
+                    "textMaxSize": 16,
+                    "editMode": false,
+                    "display": true,
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "groups": [
+                {
+                    "id": "adressGroup",
+                    "position": {
+                        "x": "28%",
+                        "y": 130
+                    },
+                    "size": {
+                        "width": "44%",
+                        "height": 90
+                    },
+                    "text": "IP",
+                    "display": true,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "portGroup",
+                    "position": {
+                        "x": "28%",
+                        "y": 255
+                    },
+                    "size": {
+                        "width": "44%",
+                        "height": 90
+                    },
+                    "text": "Port",
+                    "display": true,
+                    "functionName": "defaultFunct"
                 }
             ]
         },
@@ -52,6 +180,7 @@
                         "b": 255,
                         "a": 255
                     },
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
             ]
@@ -75,11 +204,13 @@
                         "b": 255,
                         "a": 255
                     },
-                    "functionName": "defaultFunct"
+                    "display": true,
+                    "functionName": "defaultFunct"     
                 }
             ],
             "colorPickers" : [
                 {
+                    "id": 0,
                     "position": {
                         "x": 600,
                         "y": 140
@@ -100,6 +231,7 @@
             ],
             "groups": [
                 {
+                    "id": "0",
                     "position": {
                         "x": 580,
                         "y": 120
@@ -109,38 +241,13 @@
                         "height": 170
                     },
                     "text": "background color",
-                    "active": 0,
-                    "functionName": "defaultFunct"
-                },
-                {
-                    "position": {
-                        "x": 60,
-                        "y": 120
-                    },
-                    "size": {
-                        "width": 150,
-                        "height": 150
-                    },
-                    "text": "framerate rate",
-                    "active": 0,
-                    "functionName": "defaultFunct"
-                },
-                {
-                    "position": {
-                        "x": 230,
-                        "y": 120
-                    },
-                    "size": {
-                        "width": 160,
-                        "height": 150
-                    },
-                    "text": "Resolution",
-                    "active": 0,
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
             ],
             "dropDowns" : [
                 {
+                    "id": 0,
                     "position": {
                         "x": 75,
                         "y": 140
@@ -152,9 +259,11 @@
                     "text": "30;60;90;120",
                     "active": 1,
                     "editMode": true,
+                    "display": true,
                     "functionName": "defaultFunct"
                 },
                 {
+                    "id": 1,
                     "position": {
                         "x": 250,
                         "y": 140
@@ -163,9 +272,10 @@
                         "width": 120,
                         "height": 20
                     },
-                    "text": "1920x1080",
+                    "text": "1920x1080;1920x1080;1920x1080",
                     "active": 1,
                     "editMode": true,
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
             ],
@@ -174,17 +284,51 @@
         },
         "SETTINGS_AUDIO": {
             "isSimple": true,
+            "templates" : ["PARAM_NAVBAR"],
             "id": 4,
-            "texts": [],
-            "buttons": [],
-            "toggleGroups": []
+            "texts": [
+                {
+                    "id": "0",
+                    "text": "Audio",
+                    "position": {
+                        "x": 300,
+                        "y": 10
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "defaultFunct"
+                }
+            ]
         },
         "SETTINGS_CONTROLS": {
             "isSimple": true,
+            "templates" : ["PARAM_NAVBAR"],
             "id": 5,
-            "texts": [],
-            "buttons": [],
-            "toggleGroups": []
+            "texts": [
+                {
+                    "id": "0",
+                    "text": "Controls",
+                    "position": {
+                        "x": "40%",
+                        "y": 10
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "defaultFunct"
+                }
+            ]
         },
         
         "GAME_MENU": {
@@ -223,7 +367,7 @@
                         "b": 0,
                         "a": 255
                     },
-                    "type": 0,
+                    "display": true,
                     "functionName": "ExitButton"
 
                 },
@@ -238,13 +382,7 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "GeneralSettingsButton"
 
                 },
@@ -259,13 +397,7 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "VideoSettingsButton"
 
                 },
@@ -280,13 +412,7 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "AudioSettingsButton"
 
                 },
@@ -301,13 +427,7 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "ControlsSettingsButton"
 
                 }
