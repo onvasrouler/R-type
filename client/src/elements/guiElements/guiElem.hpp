@@ -11,31 +11,38 @@
 
 class GUIElement {
     public:
-    GUIElement(Vector2 pos = {0, 0}, Vector2 size = {100, 50}, std::string text = "default")
-        : _Text(text), _Pos(pos), _Size(size) {}
+    GUIElement(Vector2 pos = {0, 0}, Vector2 size = {100, 50}, std::string text = "default", std::string id = "default", bool display = false)
+        : _Text(text), _Pos(pos), _Size(size), _Id(id), _Display(display) {}
     void setText(std::string text);
     void setPos(Vector2 pos);
     void setSize(Vector2 size);
+    void setValue(std::string value);
+    void setId(std::string id = "default");
+    void setDisplay(bool state);
 
     std::string getText() const;
     Vector2 getPos() const;
     Vector2 getSize() const;
+    std::string getValue() const;
+    std::string getId() const;
+    bool getDisplay() const;
     protected:
         std::string _Text;
         Vector2 _Pos;
         Vector2 _Size;
+        std::string _Value;
+        std::string _Id;
+        bool _Display;
 };
 
 class GWindBox : public GUIElement {
 public:
-    GWindBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default window box text", bool isOpened = false);
+    GWindBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default window box text", std::string id = "default", bool isOpened = false, bool display = false);
     ~GWindBox() = default;
 
     void DrawRlibWindBox() const;
 
     void setIsOpened(bool isOpened);
-
-    bool getState() const;
 private:
     bool _isOpened;
 
@@ -43,28 +50,24 @@ private:
 
 class GButton : public GUIElement {
 public:
-    GButton(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default button text");
+    GButton(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default button text", std::string id = "default", bool display = false);
     ~GButton() = default;
 
     void DrawRlibButton() const;
 
-    void setState(bool state);
-
-    bool getState() const;
+    void setClicked(bool state);
 private:
     bool _isClicked = false;
 };
 
 class GCheckBox : public GUIElement {
 public:
-    GCheckBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default checkbox text", bool checked = false);
+    GCheckBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default checkbox text", std::string id = "default", bool checked = false, bool display = false);
     ~GCheckBox() = default;
 
     void DrawRlibCheckBox() const;
 
-    void setState(bool state);
-
-    bool getState() const;
+    void setChecked(bool state);
 private:
     bool _isChecked;
     
@@ -72,16 +75,15 @@ private:
 
 class GSlider : public GUIElement {
 public:
-    GSlider(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default slider text", float value = 0.0F, float minvalue = 0.0F, float maxvalue = 100.0F);
+    GSlider(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default slider text", std::string id = "default", float value = 0.0F, float minvalue = 0.0F, float maxvalue = 100.0F, bool display = false);
     ~GSlider() = default;
 
     void DrawRlibSlider() const;
 
-    void setValue(float value);
+    void setSliderValue(float value);
     void setMaxValue(float value);
     void setMinValue(float value);
 
-    float getValue() const;
     float getMaxValue() const;
     float getMinValue() const;
 
@@ -94,7 +96,7 @@ private:
 
 class GList : public GUIElement {
 public:
-    GList(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;list;text");
+    GList(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;list;text", std::string id = "default", bool display = false);
     ~GList() = default;
 
     void DrawRlibList() const;
@@ -103,7 +105,6 @@ public:
     void setVal(int value);
 
     int getScrollIndex() const;
-    int getValue() const;
 private:
     int _ScrollIndex;
     int _Value;
@@ -111,7 +112,7 @@ private:
 
 class GListEx : public GUIElement {
 public:
-    GListEx(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::vector<std::string> list = {"default", "list", "text"}, int active = 0);
+    GListEx(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string id = "default", std::vector<std::string> list = {"default", "list", "text"}, int active = 0, bool display = false);
     ~GListEx() = default;
 
     void DrawRlibListEx() const;
@@ -135,7 +136,7 @@ private:
 
 class GTextInput : public GUIElement {
 public:
-    GTextInput(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default text", int textMaxSize = 100, bool editMode = false);
+    GTextInput(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default text", std::string id = "default", int textMaxSize = 100, bool editMode = false, bool display = false);
     ~GTextInput() = default;
 
     void DrawRlibTextInput() const;
@@ -152,7 +153,7 @@ private:
 
 class GTextInputBox : public GUIElement {
 public:
-    GTextInputBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string title = "default title", std::string message = "default message", std::string buttons = "default;buttons", std::string text = "default text", int textMaxSize = 100, bool secretViewActive = NULL);
+    GTextInputBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string id = "default", std::string title = "default title", std::string message = "default message", std::string buttons = "default;buttons", std::string text = "default text", int textMaxSize = 100, bool secretViewActive = NULL, bool display = false);
     ~GTextInputBox() = default;
 
     void DrawRlibTextInputBox() const;
@@ -182,17 +183,16 @@ private:
 
 class GSpinner : public GUIElement {
 public:
-    GSpinner(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default spinner text", int value = 0, int minValue = 0, int maxValue = 100, bool editMode = false);
+    GSpinner(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default spinner text", std::string id = "default", int value = 0, int minValue = 0, int maxValue = 100, bool editMode = false, bool display = false);
     ~GSpinner() = default;
 
     void DrawRlibSpinner() const;
 
-    void setValue(int value);
+    void setSpin(int value);
     void setMaxValue(int value);
     void setMinValue(int value);
     void setEditMode(bool editMode);
 
-    int getValue() const;
     int getMaxValue() const;
     int getMinValue() const;
     bool getEditMode() const;
@@ -205,17 +205,16 @@ private:
 
 class GValueBox : public GUIElement {
 public:
-    GValueBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default value box text", int value = 0, int minValue = 0, int maxValue = 100, bool editMode = false);
+    GValueBox(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default value box text", std::string id = "default", int value = 0, int minValue = 0, int maxValue = 100, bool editMode = false, bool display = false);
     ~GValueBox() = default;
 
     void DrawRlibValueBox() const;
 
-    void setValue(int value);
+    void setBoxValue(int value);
     void setMaxValue(int value);
     void setMinValue(int value);
     void setEditMode(bool editMode);
 
-    int getValue() const;
     int getMaxValue() const;
     int getMinValue() const;
     bool getEditMode() const;
@@ -228,7 +227,7 @@ private:
 
 class GGroup : public GUIElement {
 public:
-    GGroup(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default group text");
+    GGroup(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default group text", std::string id = "default", bool display = false);
     ~GGroup() = default;
 
     void DrawRlibGroup() const;
@@ -236,7 +235,7 @@ public:
 
 class GToggleGroup : public GUIElement {
 public:
-    GToggleGroup(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;toggle;group", int active = 0);
+    GToggleGroup(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;toggle;group", std::string id = "default", int active = 0, bool display = false);
     ~GToggleGroup() = default;
 
     void DrawRlibToggleGroup() const;
@@ -251,7 +250,7 @@ private:
 
 class GToggleSlider : public GUIElement {
 public:
-    GToggleSlider(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;toggle", int active = 0);
+    GToggleSlider(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;toggle", std::string id = "default", int active = 0, bool display = false);
     ~GToggleSlider() = default;
 
     void DrawRlibToggleSlider() const;
@@ -265,7 +264,7 @@ private:
 
 class GPannel : public GUIElement {
 public:
-    GPannel(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default pannel text");
+    GPannel(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default pannel text", std::string id = "default", bool display = false);
     ~GPannel() = default;
 
     void DrawRlibPannel() const;
@@ -273,7 +272,7 @@ public:
 
 class GColorPicker : public GUIElement {
 public:
-    GColorPicker(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default color picker text", Color color = WHITE);
+    GColorPicker(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default color picker text", std::string id = "default", Color color = WHITE, bool display = false);
     ~GColorPicker() = default;
 
     void DrawRlibColorPicker() const;
@@ -288,12 +287,12 @@ private:
 
 class GProgressBar : public GUIElement {
 public:
-    GProgressBar(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string textLeft = "default progress bar left text", std::string textRight = "default progress bar right text", float value = 0.0F, float minvalue = 0.0F, float maxvalue = 100.0F);
+    GProgressBar(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string id = "default", std::string textLeft = "default progress bar left text", std::string textRight = "default progress bar right text", float value = 0.0F, float minvalue = 0.0F, float maxvalue = 100.0F, bool display = false);
     ~GProgressBar() = default;
 
     void DrawRlibProgressBar() const;
 
-    void setValue(float value);
+    void setProgress(float value);
     void setMaxValue(float value);
     void setMinValue(float value);
     void setTextLeft(std::string text);
@@ -301,7 +300,6 @@ public:
 
     std::string getTextLeft() const;
     std::string getTextRight() const;
-    float getValue() const;
     float getMaxValue() const;
     float getMinValue() const;
 private:
@@ -314,7 +312,7 @@ private:
 
 class GDropDown : public GUIElement {
 public:
-    GDropDown(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;drop;down;val", int active = 0, bool editMode = false);
+    GDropDown(Vector2 pos = {0, 0}, Vector2 size = {100, 100}, std::string text = "default;drop;down;val", std::string id = "default", int active = 0, bool editMode = false, bool display = false);
     ~GDropDown() = default;
 
     void DrawRlibDropDown() const;
