@@ -10,6 +10,8 @@
 #include "src/include.hpp"
 
 int main() {
+    if (!HealthCheck())
+        return 84;
     // Create a Raylib window
     RlibWindow window("./config/window_settings.json");
     window.InitRlib();
