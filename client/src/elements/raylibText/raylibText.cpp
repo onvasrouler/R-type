@@ -13,22 +13,28 @@ RaylibText::RaylibText()
     this->_FontSize = 10;
     this->_Text = "Hello, World!";
     this->_Color = BLACK;
+    this->_Display = true;
+    this->_Id = "default";
 }
 
-RaylibText::RaylibText(std::string text, Vector2 pos, int fontSize, Color color)
+RaylibText::RaylibText(std::string text, Vector2 pos, int fontSize, Color color, std::string id, bool display)
 {
     this->_Position = pos;
     this->_FontSize = fontSize;
     this->_Text = text;
     this->_Color = color;
+    this->_Display = display;
+    this->_Id = id;
 }
 
-RaylibText::RaylibText(std::string text, Vector2 pos, int fontSize, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+RaylibText::RaylibText(std::string text, Vector2 pos, int fontSize, unsigned char r, unsigned char g, unsigned char b, unsigned char a, std::string id, bool display)
 {
     this->_Position = pos;
     this->_FontSize = fontSize;
     this->_Text = text;
     this->_Color = {r, g, b, a};
+    this->_Display = display;
+    this->_Id = id;
 }
 
 void RaylibText::setPosX(int posX)
@@ -56,6 +62,21 @@ void RaylibText::setText(std::string text)
     this->_Text = text;
 }
 
+void RaylibText::setColor(Color color)
+{
+    this->_Color = color;
+}
+
+void RaylibText::setDisplay(bool display)
+{
+    this->_Display = display;
+}
+
+void RaylibText::setId(std::string id)
+{
+    this->_Id = id;
+}
+
 int RaylibText::getPosX() const
 {
     return this->_Position.x;
@@ -81,7 +102,24 @@ std::string RaylibText::getText() const
     return this->_Text;
 }
 
+Color RaylibText::getColor() const
+{
+    return this->_Color;
+}
+
+bool RaylibText::getDisplay() const
+{
+    return this->_Display;
+}
+
+std::string RaylibText::getId() const
+{
+    return this->_Id;
+}
+
 void RaylibText::DrawRlibText() const
 {
+    if (!this->_Display)
+        return;
     DrawText(_Text.c_str(), _Position.x, _Position.y, _FontSize, _Color);
 }
