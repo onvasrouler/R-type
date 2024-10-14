@@ -30,69 +30,295 @@
 // }
 
 
+RGui::~RGui()
+{
+    this->_Buttons.clear();
+    this->_WindBoxes.clear();
+    this->_Texts.clear();
+    this->_CheckBoxes.clear();
+    this->_Sliders.clear();
+    this->_Lists.clear();
+    this->_ListExs.clear();
+    this->_InputTexts.clear();
+    this->_InputTextBoxs.clear();
+    this->_Spinners.clear();
+    this->_ValueBoxes.clear();
+    this->_Groups.clear();
+    this->_ToggleGroups.clear();
+    this->_ToggleSliders.clear();
+    this->_Pannels.clear();
+    this->_ColorPickers.clear();
+    this->_ProgressBars.clear();
+    this->_DropDowns.clear();
+}
+
 // ----------------------- DRAW GUI -----------------------
 void RGui::DrawGui() const
 {
-    if (!this->_Buttons.empty())
+    if (this->_Buttons.size() > 0)
         for (const auto &button : this->_Buttons)
-            button.DrawRlibButton();
-    if (!this->_WindBoxes.empty())
+            button->DrawRlibButton();
+    if (this->_WindBoxes.size() > 0)
         for (const auto &windBox : this->_WindBoxes)
-            windBox.DrawRlibWindBox();
-    if (!this->_Texts.empty())
+            windBox->DrawRlibWindBox();
+    if (this->_Texts.size() > 0)
         for (const auto &text : this->_Texts)
-            text.DrawRlibText();
-    if (!this->_CheckBoxes.empty())
+            text->DrawRlibText();
+    if (this->_CheckBoxes.size() > 0)
         for (const auto &checkBox : this->_CheckBoxes)
-            checkBox.DrawRlibCheckBox();
-    if (!this->_Sliders.empty())
+            checkBox->DrawRlibCheckBox();
+    if (this->_Sliders.size() > 0)
         for (const auto &slider : this->_Sliders)
-            slider.DrawRlibSlider();
-    if (!this->_Lists.empty())
+            slider->DrawRlibSlider();
+    if (this->_Lists.size() > 0)
         for (const auto &list : this->_Lists)
-            list.DrawRlibList();
-    if (!this->_ListExs.empty())
+            list->DrawRlibList();
+    if (this->_ListExs.size() > 0)
         for (const auto &listEx : this->_ListExs)
-            listEx.DrawRlibListEx();
-    if (!this->_InputTexts.empty())
+            listEx->DrawRlibListEx();
+    if (this->_InputTexts.size() > 0)
         for (const auto &inputText : this->_InputTexts)
-            inputText.DrawRlibTextInput();
-    if (!this->_InputTextsBoxs.empty())
-        for (const auto &inputText : this->_InputTextsBoxs)
-            inputText.DrawRlibTextInputBox();
-    if (!this->_Spinners.empty())
+            inputText->DrawRlibTextInput();
+    if (this->_InputTextBoxs.size() > 0)
+        for (const auto &inputTextBox : this->_InputTextBoxs)
+            inputTextBox->DrawRlibTextInputBox();
+    if (this->_Spinners.size() > 0)
         for (const auto &spinner : this->_Spinners)
-            spinner.DrawRlibSpinner();
-    if (!this->_ValueBoxes.empty())
+            spinner->DrawRlibSpinner();
+    if (this->_ValueBoxes.size() > 0)
         for (const auto &valueBox : this->_ValueBoxes)
-            valueBox.DrawRlibValueBox();
-    if (!this->_Groups.empty())
+            valueBox->DrawRlibValueBox();
+    if (this->_Groups.size() > 0)
         for (const auto &group : this->_Groups)
-            group.DrawRlibGroup();
-    if (!this->_ToggleGroups.empty())
+            group->DrawRlibGroup();
+    if (this->_ToggleGroups.size() > 0)
         for (const auto &toggleGroup : this->_ToggleGroups)
-            toggleGroup.DrawRlibToggleGroup();
-    if (!this->_ToggleSliders.empty())
+            toggleGroup->DrawRlibToggleGroup();
+    if (this->_ToggleSliders.size() > 0)
         for (const auto &toggleSlider : this->_ToggleSliders)
-            toggleSlider.DrawRlibToggleSlider();
-    if (!this->_Pannels.empty())
+            toggleSlider->DrawRlibToggleSlider();
+    if (this->_Pannels.size() > 0)
         for (const auto &pannel : this->_Pannels)
-            pannel.DrawRlibPannel();
-    if (!this->_ColorPickers.empty())
+            pannel->DrawRlibPannel();
+    if (this->_ColorPickers.size() > 0)
         for (const auto &colorPicker : this->_ColorPickers)
-            colorPicker.DrawRlibColorPicker();
-    if (!this->_ProgressBars.empty())
+            colorPicker->DrawRlibColorPicker();
+    if (this->_ProgressBars.size() > 0)
         for (const auto &progressBar : this->_ProgressBars)
-            progressBar.DrawRlibProgressBar();
-    if (!this->_DropDowns.empty())
+            progressBar->DrawRlibProgressBar();
+    if (this->_DropDowns.size() > 0)
         for (const auto &dropDown : this->_DropDowns)
-            dropDown.DrawRlibDropDown();
+            dropDown->DrawRlibDropDown();
+}
+
+
+std::string RGui::GetValueById(std::string id)
+{
+    for (const auto &button : this->_Buttons)
+        if (button->getId() == id)
+            return button->getValue();
+    for (const auto &windBox : this->_WindBoxes)
+        if (windBox->getId() == id)
+            return windBox->getValue();
+    for (const auto &text : this->_Texts)
+        if (text->getId() == id)
+            return text->getText();
+    for (const auto &checkBox : this->_CheckBoxes)
+        if (checkBox->getId() == id)
+            return checkBox->getValue();
+    for (const auto &slider : this->_Sliders)
+        if (slider->getId() == id)
+            return slider->getValue();
+    for (const auto &list : this->_Lists)
+        if (list->getId() == id)
+            return list->getValue();
+    for (const auto &listEx : this->_ListExs)
+        if (listEx->getId() == id)
+            return listEx->getValue();
+    for (const auto &inputText : this->_InputTexts)
+        if (inputText->getId() == id)
+            return inputText->getValue();
+    for (const auto &inputTextBox : this->_InputTextBoxs)
+        if (inputTextBox->getId() == id)
+            return inputTextBox->getValue();
+    for (const auto &spinner : this->_Spinners)
+        if (spinner->getId() == id)
+            return spinner->getValue();
+    for (const auto &valueBox : this->_ValueBoxes)
+        if (valueBox->getId() == id)
+            return valueBox->getValue();
+    for (const auto &group : this->_Groups)
+        if (group->getId() == id)
+            return group->getValue();
+    for (const auto &toggleGroup : this->_ToggleGroups)
+        if (toggleGroup->getId() == id)
+            return toggleGroup->getValue();
+    for (const auto &toggleSlider : this->_ToggleSliders)
+        if (toggleSlider->getId() == id)
+            return toggleSlider->getValue();
+    for (const auto &pannel : this->_Pannels)
+        if (pannel->getId() == id)
+            return pannel->getValue();
+    for (const auto &colorPicker : this->_ColorPickers)
+        if (colorPicker->getId() == id)
+            return colorPicker->getValue();
+    for (const auto &progressBar : this->_ProgressBars)
+        if (progressBar->getId() == id)
+            return progressBar->getValue();
+    for (const auto &dropDown : this->_DropDowns)
+        if (dropDown->getId() == id)
+            return dropDown->getValue();
+    return "";
 }
 
 
 
 
+// ----------------------- GETTERS BY ID -----------------------
 
+std::shared_ptr<GButton> RGui::GetButtonsById(std::string id)
+{
+    for (const auto &button : this->_Buttons)
+        if (button->getId() == id)
+            return button;
+    return nullptr;
+}
+
+std::shared_ptr<GWindBox> RGui::GetWindBoxesById(std::string id)
+{
+    for (const auto &windBox : this->_WindBoxes)
+        if (windBox->getId() == id)
+            return windBox;
+    return nullptr;
+}
+
+std::shared_ptr<RaylibText> RGui::GetTextsById(std::string id)
+{
+    for (const auto &text : this->_Texts)
+        if (text->getId() == id)
+            return text;
+    return nullptr;
+}
+
+std::shared_ptr<GCheckBox> RGui::GetCheckBoxesById(std::string id)
+{
+    for (const auto &checkBox : this->_CheckBoxes)
+        if (checkBox->getId() == id)
+            return checkBox;
+    return nullptr;
+}
+
+std::shared_ptr<GSlider> RGui::GetSlidersById(std::string id)
+{
+    for (const auto &slider : this->_Sliders)
+        if (slider->getId() == id)
+            return slider;
+    return nullptr;
+}
+
+std::shared_ptr<GList> RGui::GetListsById(std::string id)
+{
+    for (const auto &list : this->_Lists)
+        if (list->getId() == id)
+            return list;
+    return nullptr;
+}
+
+std::shared_ptr<GListEx> RGui::GetListExsById(std::string id)
+{
+    for (const auto &listEx : this->_ListExs)
+        if (listEx->getId() == id)
+            return listEx;
+    return nullptr;
+}
+
+std::shared_ptr<GTextInput> RGui::GetInputTextsById(std::string id)
+{
+    for (const auto &inputText : this->_InputTexts)
+        if (inputText->getId() == id)
+            return inputText;
+    return nullptr;
+}
+
+std::shared_ptr<GTextInputBox> RGui::GetInputTextBoxsById(std::string id)
+{
+    for (const auto &inputTextBox : this->_InputTextBoxs)
+        if (inputTextBox->getId() == id)
+            return inputTextBox;
+    return nullptr;
+}
+
+std::shared_ptr<GSpinner> RGui::GetSpinnersById(std::string id)
+{
+    for (const auto &spinner : this->_Spinners)
+        if (spinner->getId() == id)
+            return spinner;
+    return nullptr;
+}
+
+std::shared_ptr<GValueBox> RGui::GetValueBoxesById(std::string id)
+{
+    for (const auto &valueBox : this->_ValueBoxes)
+        if (valueBox->getId() == id)
+            return valueBox;
+    return nullptr;
+}
+
+std::shared_ptr<GGroup> RGui::GetGroupsById(std::string id)
+{
+    for (const auto &group : this->_Groups)
+        if (group->getId() == id)
+            return group;
+    return nullptr;
+}
+
+std::shared_ptr<GToggleGroup> RGui::GetToggleGroupsById(std::string id)
+{
+    for (const auto &toggleGroup : this->_ToggleGroups)
+        if (toggleGroup->getId() == id)
+            return toggleGroup;
+    return nullptr;
+}
+
+std::shared_ptr<GToggleSlider> RGui::GetToggleSlidersById(std::string id)
+{
+    for (const auto &toggleSlider : this->_ToggleSliders)
+        if (toggleSlider->getId() == id)
+            return toggleSlider;
+    return nullptr;
+}
+
+std::shared_ptr<GPannel> RGui::GetPannelsById(std::string id)
+{
+    for (const auto &pannel : this->_Pannels)
+        if (pannel->getId() == id)
+            return pannel;
+    return nullptr;
+}
+
+std::shared_ptr<GColorPicker> RGui::GetColorPickersById(std::string id)
+{
+    for (const auto &colorPicker : this->_ColorPickers)
+        if (colorPicker->getId() == id)
+            return colorPicker;
+    return nullptr;
+}
+
+std::shared_ptr<GProgressBar> RGui::GetProgressBarsById(std::string id)
+{
+    for (const auto &progressBar : this->_ProgressBars)
+        if (progressBar->getId() == id)
+            return progressBar;
+    return nullptr;
+}
+
+std::shared_ptr<GDropDown> RGui::GetDropDownsById(std::string id)
+{
+    for (const auto &dropDown : this->_DropDowns)
+        if (dropDown->getId() == id)
+            return dropDown;
+    return nullptr;
+}
 
 
 
@@ -111,92 +337,91 @@ void RGui::DrawGui() const
 
 // ----------------------- ADDERS -----------------------
 
-void RGui::AddButton(GButton button)
+void RGui::AddButton(std::shared_ptr<GButton> button)
 {
     this->_Buttons.push_back(button);
 }
-
-void RGui::AddWindBox(GWindBox windBox)
+void RGui::AddWindBox(std::shared_ptr<GWindBox> windBox)
 {
     this->_WindBoxes.push_back(windBox);
 }
 
-void RGui::AddText(RaylibText text)
+void RGui::AddText(std::shared_ptr<RaylibText> text)
 {
     this->_Texts.push_back(text);
 }
 
-void RGui::AddCheckBox(GCheckBox checkBox)
+void RGui::AddCheckBox(std::shared_ptr<GCheckBox> checkBox)
 {
     this->_CheckBoxes.push_back(checkBox);
 }
 
-void RGui::AddSlider(GSlider slider)
+void RGui::AddSlider(std::shared_ptr<GSlider> slider)
 {
     this->_Sliders.push_back(slider);
 }
 
-void RGui::AddList(GList list)
+void RGui::AddList(std::shared_ptr<GList> list)
 {
     this->_Lists.push_back(list);
 }
 
-void RGui::AddListEx(GListEx listEx)
+void RGui::AddListEx(std::shared_ptr<GListEx> listEx)
 {
     this->_ListExs.push_back(listEx);
 }
 
-void RGui::addInputText(GTextInput inputText)
+void RGui::AddInputText(std::shared_ptr<GTextInput> inputText)
 {
     this->_InputTexts.push_back(inputText);
 }
 
-void RGui::addInputTextBox(GTextInputBox inputText)
+void RGui::AddInputTextBox(std::shared_ptr<GTextInputBox> inputTextBox)
 {
-    this->_InputTextsBoxs.push_back(inputText);
+    this->_InputTextBoxs.push_back(inputTextBox);
 }
 
-void RGui::addSpinner(GSpinner spinner)
+void RGui::AddSpinner(std::shared_ptr<GSpinner> spinner)
 {
     this->_Spinners.push_back(spinner);
 }
 
-void RGui::AddValueBox(GValueBox valueBox)
+void RGui::AddValueBox(std::shared_ptr<GValueBox> valueBox)
 {
     this->_ValueBoxes.push_back(valueBox);
 }
 
-void RGui::AddGroup(GGroup group)
+void RGui::AddGroup(std::shared_ptr<GGroup> group)
 {
     this->_Groups.push_back(group);
 }
 
-void RGui::AddToggleGroup(GToggleGroup toggleGroup)
+void RGui::AddToggleGroup(std::shared_ptr<GToggleGroup> toggleGroup)
 {
     this->_ToggleGroups.push_back(toggleGroup);
 }
 
-void RGui::AddToggleSlider(GToggleSlider toggleSlider)
+void RGui::AddToggleSlider(std::shared_ptr<GToggleSlider> toggleSlider)
 {
     this->_ToggleSliders.push_back(toggleSlider);
 }
 
-void RGui::AddPannel(GPannel pannel)
+void RGui::AddPannel(std::shared_ptr<GPannel> pannel)
 {
     this->_Pannels.push_back(pannel);
 }
 
-void RGui::AddColorPicker(GColorPicker colorPicker)
+void RGui::AddColorPicker(std::shared_ptr<GColorPicker> colorPicker)
 {
     this->_ColorPickers.push_back(colorPicker);
 }
 
-void RGui::AddProgressBar(GProgressBar progressBar)
+void RGui::AddProgressBar(std::shared_ptr<GProgressBar> progressBar)
 {
     this->_ProgressBars.push_back(progressBar);
 }
 
-void RGui::AddDropDown(GDropDown dropDown)
+void RGui::AddDropDown(std::shared_ptr<GDropDown> dropDown)
 {
     this->_DropDowns.push_back(dropDown);
 }
@@ -219,92 +444,92 @@ void RGui::AddDropDown(GDropDown dropDown)
 
 // ----------------------- SETTERS -----------------------
 
-void RGui::SetButtons(std::vector<GButton> buttons)
+void RGui::SetButtons(std::vector<std::shared_ptr<GButton>> buttons)
 {
     this->_Buttons = buttons;
 }
 
-void RGui::SetWindBoxes(std::vector<GWindBox> windBoxes)
+void RGui::SetWindBoxes(std::vector<std::shared_ptr<GWindBox>> windBoxes)
 {
     this->_WindBoxes = windBoxes;
 }
 
-void RGui::setTexts(std::vector<RaylibText> texts)
+void RGui::SetTexts(std::vector<std::shared_ptr<RaylibText>> texts)
 {
     this->_Texts = texts;
 }
 
-void RGui::setCheckBoxes(std::vector<GCheckBox> checkBoxes)
+void RGui::SetCheckBoxes(std::vector<std::shared_ptr<GCheckBox>> checkBoxes)
 {
     this->_CheckBoxes = checkBoxes;
 }
 
-void RGui::setSliders(std::vector<GSlider> sliders)
+void RGui::SetSliders(std::vector<std::shared_ptr<GSlider>> sliders)
 {
     this->_Sliders = sliders;
 }
 
-void RGui::setLists(std::vector<GList> lists)
+void RGui::SetLists(std::vector<std::shared_ptr<GList>> lists)
 {
     this->_Lists = lists;
 }
 
-void RGui::setListExs(std::vector<GListEx> listExs)
+void RGui::SetListExs(std::vector<std::shared_ptr<GListEx>> listExs)
 {
     this->_ListExs = listExs;
 }
 
-void RGui::setInputTexts(std::vector<GTextInput> inputTexts)
+void RGui::SetInputTexts(std::vector<std::shared_ptr<GTextInput>> inputTexts)
 {
     this->_InputTexts = inputTexts;
 }
 
-void RGui::setInputTextsBoxs(std::vector<GTextInputBox> inputTexts)
+void RGui::SetInputTextBoxs(std::vector<std::shared_ptr<GTextInputBox>> inputTextBoxs)
 {
-    this->_InputTextsBoxs = inputTexts;
+    this->_InputTextBoxs = inputTextBoxs;
 }
 
-void RGui::setSpinners(std::vector<GSpinner> spinners)
+void RGui::SetSpinners(std::vector<std::shared_ptr<GSpinner>> spinners)
 {
     this->_Spinners = spinners;
 }
 
-void RGui::setValueBoxes(std::vector<GValueBox> valueBoxes)
+void RGui::SetValueBoxes(std::vector<std::shared_ptr<GValueBox>> valueBoxes)
 {
     this->_ValueBoxes = valueBoxes;
 }
 
-void RGui::setGroups(std::vector<GGroup> groups)
+void RGui::SetGroups(std::vector<std::shared_ptr<GGroup>> groups)
 {
     this->_Groups = groups;
 }
 
-void RGui::setToggleGroups(std::vector<GToggleGroup> toggleGroups)
+void RGui::SetToggleGroups(std::vector<std::shared_ptr<GToggleGroup>> toggleGroups)
 {
     this->_ToggleGroups = toggleGroups;
 }
 
-void RGui::setToggleSliders(std::vector<GToggleSlider> toggleSliders)
+void RGui::SetToggleSliders(std::vector<std::shared_ptr<GToggleSlider>> toggleSliders)
 {
     this->_ToggleSliders = toggleSliders;
 }
 
-void RGui::setPannels(std::vector<GPannel> pannels)
+void RGui::SetPannels(std::vector<std::shared_ptr<GPannel>> pannels)
 {
     this->_Pannels = pannels;
 }
 
-void RGui::setColorPickers(std::vector<GColorPicker> colorPickers)
+void RGui::SetColorPickers(std::vector<std::shared_ptr<GColorPicker>> colorPickers)
 {
     this->_ColorPickers = colorPickers;
 }
 
-void RGui::setProgressBars(std::vector<GProgressBar> progressBars)
+void RGui::SetProgressBars(std::vector<std::shared_ptr<GProgressBar>> progressBars)
 {
     this->_ProgressBars = progressBars;
 }
 
-void RGui::setDropDowns(std::vector<GDropDown> dropDowns)
+void RGui::SetDropDowns(std::vector<std::shared_ptr<GDropDown>> dropDowns)
 {
     this->_DropDowns = dropDowns;
 }
@@ -327,110 +552,92 @@ void RGui::setDropDowns(std::vector<GDropDown> dropDowns)
 
 // ----------------------- LIST ADDER -----------------------
 
-void RGui::addListButton(std::vector<GButton> buttons)
+void RGui::addListButton(std::vector<std::shared_ptr<GButton>> buttons)
 {
-    for (const auto &button : buttons)
-        this->_Buttons.push_back(button);
+    this->_Buttons.insert(this->_Buttons.end(), buttons.begin(), buttons.end());
 }
 
-void RGui::addListWindBox(std::vector<GWindBox> windBoxes)
+void RGui::addListWindBox(std::vector<std::shared_ptr<GWindBox>> windBoxes)
 {
-    for (const auto &windBox : windBoxes)
-        this->_WindBoxes.push_back(windBox);
+    this->_WindBoxes.insert(this->_WindBoxes.end(), windBoxes.begin(), windBoxes.end());
 }
 
-void RGui::addListText(std::vector<RaylibText> texts)
+void RGui::addListText(std::vector<std::shared_ptr<RaylibText>> texts)
 {
-    for (const auto &text : texts)
-        this->_Texts.push_back(text);
+    this->_Texts.insert(this->_Texts.end(), texts.begin(), texts.end());
 }
 
-void RGui::addListCheckBox(std::vector<GCheckBox> checkBoxes)
+void RGui::addListCheckBox(std::vector<std::shared_ptr<GCheckBox>> checkBoxes)
 {
-    for (const auto &checkBox : checkBoxes)
-        this->_CheckBoxes.push_back(checkBox);
+    this->_CheckBoxes.insert(this->_CheckBoxes.end(), checkBoxes.begin(), checkBoxes.end());
 }
 
-void RGui::addListSlider(std::vector<GSlider> sliders)
+void RGui::addListSlider(std::vector<std::shared_ptr<GSlider>> sliders)
 {
-    for (const auto &slider : sliders)
-        this->_Sliders.push_back(slider);
+    this->_Sliders.insert(this->_Sliders.end(), sliders.begin(), sliders.end());
 }
 
-void RGui::addListList(std::vector<GList> lists)
+void RGui::addListList(std::vector<std::shared_ptr<GList>> lists)
 {
-    for (const auto &list : lists)
-        this->_Lists.push_back(list);
+    this->_Lists.insert(this->_Lists.end(), lists.begin(), lists.end());
 }
 
-void RGui::addListListEx(std::vector<GListEx> listExs)
+void RGui::addListListEx(std::vector<std::shared_ptr<GListEx>> listExs)
 {
-    for (const auto &listEx : listExs)
-        this->_ListExs.push_back(listEx);
+    this->_ListExs.insert(this->_ListExs.end(), listExs.begin(), listExs.end());
 }
 
-void RGui::addListInputText(std::vector<GTextInput> inputTexts)
+void RGui::addListInputText(std::vector<std::shared_ptr<GTextInput>> inputTexts)
 {
-    for (const auto &inputText : inputTexts)
-        this->_InputTexts.push_back(inputText);
+    this->_InputTexts.insert(this->_InputTexts.end(), inputTexts.begin(), inputTexts.end());
 }
 
-void RGui::addListInputTextBox(std::vector<GTextInputBox> inputTexts)
+void RGui::addListInputTextBox(std::vector<std::shared_ptr<GTextInputBox>> inputTextBoxs)
 {
-    for (const auto &inputText : inputTexts)
-        this->_InputTextsBoxs.push_back(inputText);
+    this->_InputTextBoxs.insert(this->_InputTextBoxs.end(), inputTextBoxs.begin(), inputTextBoxs.end());
 }
 
-void RGui::addListSpinner(std::vector<GSpinner> spinners)
+void RGui::addListSpinner(std::vector<std::shared_ptr<GSpinner>> spinners)
 {
-    for (const auto &spinner : spinners)
-        this->_Spinners.push_back(spinner);
+    this->_Spinners.insert(this->_Spinners.end(), spinners.begin(), spinners.end());
 }
 
-void RGui::addListValueBox(std::vector<GValueBox> valueBoxes)
+void RGui::addListValueBox(std::vector<std::shared_ptr<GValueBox>> valueBoxes)
 {
-    for (const auto &valueBox : valueBoxes)
-        this->_ValueBoxes.push_back(valueBox);
+    this->_ValueBoxes.insert(this->_ValueBoxes.end(), valueBoxes.begin(), valueBoxes.end());
 }
 
-void RGui::addListGroup(std::vector<GGroup> groups)
+void RGui::addListGroup(std::vector<std::shared_ptr<GGroup>> groups)
 {
-    for (const auto &group : groups)
-        this->_Groups.push_back(group);
+    this->_Groups.insert(this->_Groups.end(), groups.begin(), groups.end());
 }
 
-void RGui::addListToggleGroup(std::vector<GToggleGroup> toggleGroups)
+void RGui::addListToggleGroup(std::vector<std::shared_ptr<GToggleGroup>> toggleGroups)
 {
-    for (const auto &toggleGroup : toggleGroups)
-        this->_ToggleGroups.push_back(toggleGroup);
+    this->_ToggleGroups.insert(this->_ToggleGroups.end(), toggleGroups.begin(), toggleGroups.end());
 }
 
-void RGui::addListToggleSlider(std::vector<GToggleSlider> toggleSliders)
+void RGui::addListToggleSlider(std::vector<std::shared_ptr<GToggleSlider>> toggleSliders)
 {
-    for (const auto &toggleSlider : toggleSliders)
-        this->_ToggleSliders.push_back(toggleSlider);
+    this->_ToggleSliders.insert(this->_ToggleSliders.end(), toggleSliders.begin(), toggleSliders.end());
 }
 
-void RGui::addListPannel(std::vector<GPannel> pannels)
+void RGui::addListPannel(std::vector<std::shared_ptr<GPannel>> pannels)
 {
-    for (const auto &pannel : pannels)
-        this->_Pannels.push_back(pannel);
+    this->_Pannels.insert(this->_Pannels.end(), pannels.begin(), pannels.end());
 }
 
-void RGui::addListColorPicker(std::vector<GColorPicker> colorPickers)
+void RGui::addListColorPicker(std::vector<std::shared_ptr<GColorPicker>> colorPickers)
 {
-    for (const auto &colorPicker : colorPickers)
-        this->_ColorPickers.push_back(colorPicker);
+    this->_ColorPickers.insert(this->_ColorPickers.end(), colorPickers.begin(), colorPickers.end());
 }
 
-void RGui::addListProgressBar(std::vector<GProgressBar> progressBars)
+void RGui::addListProgressBar(std::vector<std::shared_ptr<GProgressBar>> progressBars)
 {
-    for (const auto &progressBar : progressBars)
-        this->_ProgressBars.push_back(progressBar);
+    this->_ProgressBars.insert(this->_ProgressBars.end(), progressBars.begin(), progressBars.end());
 }
 
-void RGui::addListDropDown(std::vector<GDropDown> dropDowns)
+void RGui::addListDropDown(std::vector<std::shared_ptr<GDropDown>> dropDowns)
 {
-    for (const auto &dropDown : dropDowns)
-        this->_DropDowns.push_back(dropDown);
+    this->_DropDowns.insert(this->_DropDowns.end(), dropDowns.begin(), dropDowns.end());
 }
