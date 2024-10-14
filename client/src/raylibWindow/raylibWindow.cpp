@@ -13,8 +13,9 @@ RlibWindow::RlibWindow()
     this->_WindowHeight = 450;
     this->_Title = "R-type";
     this->_BackgroundColor = WHITE;
-    this->_FrameRateLimit = 60;   
-    this->setDefaultVal(); 
+    this->_FrameRateLimit = 60;
+    this->setDefaultVal();
+
 }
 
 RlibWindow::RlibWindow(int windowWidth, int windowHeight, std::string title, Color backgroundColor, int frameRateLimit)
@@ -37,6 +38,14 @@ void RlibWindow::setDefaultVal()
     this->_RightPressed = false;
     this->_SpacePressed = false;
     this->_EscapePressed = false;
+    this->_OldMenuType = START_MENU;
+    this->_guiFunction = std::make_shared<guiFunction>();
+    this->_Menus = std::make_shared<MenuManager>(_jsonParser);
+    this->_Menus->setGuiFunction(_guiFunction);
+    this->_guiFunction->setMenuManager(_Menus);
+    this->_guiFunction->mapFunctions();
+    this->_Menus->setWindowSize(_WindowWidth, _WindowHeight);
+    this->_Menus->loadMenu();
 }
 
 RlibWindow::RlibWindow(std::string filename)
@@ -57,6 +66,7 @@ RlibWindow::RlibWindow(std::string filename)
     this->_IsFullscreen = json["windowMaximized"];
     this->_windowX = json["windowX"];
     this->_windowY = json["windowY"];
+    this->setDefaultVal();
 }
 
 RlibWindow::~RlibWindow()
@@ -99,6 +109,17 @@ void RlibWindow::setWindowPosY(int windowY)
 void RlibWindow::setTitle(std::string title)
 {
     this->_Title = title;
+}
+
+void RlibWindow::swapSettings()
+{
+    this->_MenuOpened = !_MenuOpened;
+    if (_MenuOpened) {
+        this->_OldMenuType = this->_Menus->getMenuType();
+       this->_Menus->setMenuType(SETTINGS_GENERAL);
+    } else {
+        this->_Menus->setMenuType(this->_OldMenuType);
+    }
 }
 
 void RlibWindow::setBackgroundColor(Color backgroundColor)
@@ -165,13 +186,14 @@ const std::shared_ptr<JsonParser>& RlibWindow::getJsonParser() const
 void RlibWindow::InitRlib()
 {
     SetTraceLogCallback(CustomLog);
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(_WindowWidth, _WindowHeight, _Title.c_str());
     SetTargetFPS(_FrameRateLimit);
+    SetExitKey(KeyboardKey::KEY_NULL);
     if (_IsFullscreen)
         ToggleFullscreen();
     SetWindowPosition(_windowX, _windowY);
     GuiLoadStyleDefault();
-    this->_Menus = std::make_shared<MenuManager>(_jsonParser);
 }
 
 void RlibWindow::CloseRlibWindow() const
@@ -189,6 +211,11 @@ void RlibWindow::update()
     this->ClearRlibBackground();
     this->BeginRlibDraw();
     this->ClearRlibBackground();
+    if (IsWindowResized()) {
+        this->setSize(GetScreenWidth(), GetScreenHeight());
+        this->_Menus->setWindowSize(_WindowWidth, _WindowHeight);
+        this->_Menus->reloadMenu();
+    }
     this->_Menus->drawMenu();
     this->_fpsCounter->draw();
     this->updateKeyboadInputs();
@@ -199,37 +226,15 @@ void RlibWindow::update()
 
 void RlibWindow::updateKeyboadInputs()
 {
-    for (const auto& [key, action] : keyDownActions) {
-        if (IsKeyPressed(key)) {
+    for (const auto& [key, action] : keyDownActions)
+        if (IsKeyPressed(key))
             action();
-        }
-    }
-    for (const auto& [key, action] : keyUpActions) {
-        if (IsKeyReleased(key)) {
+    for (const auto& [key, action] : keyUpActions)
+        if (IsKeyReleased(key))
             action();
-        }
-    }
-    // std::cout << "debugMode: " << (_DebugMode? "on": "off") << std::endl;
-    // if (_DebugMode) {
-    //     DrawText("Debug Mode", 10, 10, 20, RED);
-        
-    //     std::cout << "up: " << _UpPressed << std::endl;
-    //     std::cout << "down: " << _DownPressed << std::endl;
-    //     std::cout << "left: " << _LeftPressed << std::endl;
-    //     std::cout << "right: " << _RightPressed << std::endl;
-    //     std::cout << "space: " << _SpacePressed << std::endl;
-    //     std::cout << "escape: " << _EscapePressed << std::endl;
-    //     std::cout << "------------------------------------------------" << std::endl;
-    //     std::cout << "autoReloadMenus: " << _AutoReloadMenus << std::endl;
-    //     std::cout << "debugMode: " << (_DebugMode? "on": "off") << std::endl;
-    //     std::cout << "fps active" << _fpsCounter->isActive() << std::endl;
-    // } 
-    // std::cout << "debugMode: " << (_DebugMode? "on": "off") << std::endl;
-    for (int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key) {
-        if (IsKeyPressed(key)) {
-            std::cout << "Key pressed: " << GetKeyPressed() << std::endl;
-        }
-    }
+    // for (int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key)
+    //     if (IsKeyPressed(key))
+    //         std::cout << "Key pressed: " << GetKeyPressed() << std::endl;
 
 }
 

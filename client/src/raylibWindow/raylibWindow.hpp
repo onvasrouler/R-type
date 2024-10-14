@@ -12,7 +12,6 @@
 #include "../menu/menuManager.hpp"
 #include "../elements/guiElements/gui.hpp"
 #include "../include.hpp"
-#include "utils.hpp"
 
 class RlibWindow {
 public:
@@ -25,6 +24,7 @@ public:
     void setWidth(int WindowWidth);
     void setHeight(int WindowHeight);
     void setSize(int WindowWidth, int WindowHeight);
+    void swapSettings();
 
     //window position related
     void setWindowPosition(int windowX, int windowY);
@@ -97,7 +97,7 @@ private:
         {KEY_D, [this]() { _RightPressed = true; }},
         {KEY_RIGHT, [this]() { _RightPressed = true; }},
         {KEY_SPACE, [this]() { _SpacePressed = true; }},
-        {KEY_ESCAPE, [this]() { _EscapePressed = true; }}
+        {KEY_ESCAPE, [this]() { swapSettings(); }}
     };
 
     std::vector<std::pair<int, std::function<void()>>> keyUpActions = {
@@ -119,4 +119,7 @@ private:
     bool _RightPressed;
     bool _SpacePressed;
     bool _EscapePressed;
+    bool _MenuOpened;
+
+    menuType _OldMenuType;
 };
