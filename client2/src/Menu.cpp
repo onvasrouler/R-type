@@ -10,14 +10,12 @@
 
 Menu::Menu() : window(sf::VideoMode::getDesktopMode(), "RTYPE", sf::Style::Fullscreen)
 {
-    if (!backgroundTexture.loadFromFile("chipset/background.jpg")) {
+    if (!backgroundTexture.loadFromFile("chipset/background.jpg"))
         throw std::runtime_error("Impossible de charger l'image de fond.");
-    }
     backgroundSprite.setTexture(backgroundTexture);
 
-    if (!font.loadFromFile("chipset/arial.ttf")) {
+    if (!font.loadFromFile("chipset/arial.ttf"))
         throw std::runtime_error("Impossible de charger la police.");
-    }
 
     sf::RectangleShape startOption(sf::Vector2f(200, 50));
     startOption.setFillColor(sf::Color::White);
@@ -76,102 +74,56 @@ void Menu::run() {
     }
 }
 
+bool Menu::isClicked(sf::RectangleShape &shape, sf::Vector2i mousePos) {
+    sf::FloatRect rect = shape.getGlobalBounds();
+    if (rect.contains(mousePos.x, mousePos.y))
+        return true;
+    return false;
+}
+
 void Menu::processEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
+        if (event.type == sf::Event::Closed)
             window.close();
-        }
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-
-                if (menuOptions[QUIT].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                if (isClicked(menuOptions[QUIT], mousePos))
                     window.close();
-                }
 
-                if (menuOptions[START].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                if (isClicked(menuOptions[START], mousePos))
                    tryToConnect();
-                }
 
-                if (menuOptions[IP].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    isTypingIp = true;
-                } else {
-                    isTypingIp = false;
-                }
-
-                if (menuOptions[PORT].getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-                    isTypingPort = true;
-                } else {
-                    isTypingPort = false;
-                }
+                isTypingIp = isClicked(menuOptions[IP], mousePos);
+                isTypingPort = isClicked(menuOptions[PORT], mousePos);
             }
         }
+
         if (event.type == sf::Event::KeyPressed && isTypingIp == true) {
-            
-            if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::Semicolon || event.key.code == sf::Keyboard::BackSpace) {
-                if (ip.compare("Enter Ip") == 0) {
+            if ((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::Semicolon || event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Apostrophe) {
+                if (ip.compare("Enter Ip") == 0)
                     ip.clear();
-                }
-                if (event.key.code == sf::Keyboard::BackSpace && ip.length() != 0) {
+                if (event.key.code == sf::Keyboard::BackSpace && ip.length() != 0)
                     ip.pop_back();
-                } else if (ip.length() < 15) {
-                    if (event.key.code == sf::Keyboard::Num0)
-                        ip = ip + "0";
-                    if (event.key.code == sf::Keyboard::Num1)
-                        ip = ip + "1";
-                    if (event.key.code == sf::Keyboard::Num2)
-                        ip = ip + "2";
-                    if (event.key.code == sf::Keyboard::Num3)
-                        ip = ip + "3";
-                    if (event.key.code == sf::Keyboard::Num4)
-                        ip = ip + "4";
-                    if (event.key.code == sf::Keyboard::Num5)
-                        ip = ip + "5";
-                    if (event.key.code == sf::Keyboard::Num6)
-                        ip = ip + "6";
-                    if (event.key.code == sf::Keyboard::Num7)
-                        ip = ip + "7";
-                    if (event.key.code == sf::Keyboard::Num8)
-                        ip = ip + "8";
-                    if (event.key.code == sf::Keyboard::Num9)
-                        ip = ip + "9";
-                    if (event.key.code == sf::Keyboard::Semicolon)
-                        ip = ip + ".";
-                }
+                else if (ip.length() < 15){
+                    std::cout << "event key code is " << event.key.code << std::endl;
+                    if (keyMap.find(event.key.code) != keyMap.end())
+                        ip += keyMap[event.key.code];
+                        }
             }
         }
 
         if (event.type == sf::Event::KeyPressed && isTypingPort == true) {
-            
-            if((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::BackSpace) {
-                if (port.compare("Port") == 0) {
+            std::cout << "event key code is " << event.key.code << std::endl;
+            if ((event.key.code >= sf::Keyboard::Num0 && event.key.code <= sf::Keyboard::Num9) || event.key.code == sf::Keyboard::BackSpace || event.key.code == sf::Keyboard::Semicolon || event.key.code == sf::Keyboard::Apostrophe) {
+                if (port.compare("Port") == 0)
                     port.clear();
-                }
-                if (event.key.code == sf::Keyboard::BackSpace && port.length() != 0) {
+                if (event.key.code == sf::Keyboard::BackSpace && port.length() != 0)
                     port.pop_back();
-                } else if (port.length() < 5) {
-                    if (event.key.code == sf::Keyboard::Num0)
-                        port = port + "0";
-                    if (event.key.code == sf::Keyboard::Num1)
-                        port = port + "1";
-                    if (event.key.code == sf::Keyboard::Num2)
-                        port = port + "2";
-                    if (event.key.code == sf::Keyboard::Num3)
-                        port = port + "3";
-                    if (event.key.code == sf::Keyboard::Num4)
-                        port = port + "4";
-                    if (event.key.code == sf::Keyboard::Num5)
-                        port = port + "5";
-                    if (event.key.code == sf::Keyboard::Num6)
-                        port = port + "6";
-                    if (event.key.code == sf::Keyboard::Num7)
-                        port = port + "7";
-                    if (event.key.code == sf::Keyboard::Num8)
-                        port = port + "8";
-                    if (event.key.code == sf::Keyboard::Num9)
-                        port = port + "9";
-                }
+                else if (port.length() < 5)
+                    if (keyMap.find(event.key.code) != keyMap.end())
+                        port += keyMap[event.key.code];
             }
         }
     }
