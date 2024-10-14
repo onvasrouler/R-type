@@ -9,6 +9,8 @@
 
 #include "../../include.hpp"
 
+class MenuManager;
+
 class guiFunction {
 public:
     #define custom_func(name, body) \
@@ -17,8 +19,10 @@ public:
         _FunctionList[#name] = fn; \
     }
 
-    guiFunction();
+    guiFunction() = default;
     ~guiFunction() = default;
+
+    void setMenuManager(std::shared_ptr<MenuManager> menumanager);
 
     void mapFunctions();
     void clearCache();
@@ -28,4 +32,5 @@ public:
 
 private:
     std::unordered_map<std::string, std::function<void()>> _FunctionList;
+    std::shared_ptr<MenuManager> _MenuManager;
 };
