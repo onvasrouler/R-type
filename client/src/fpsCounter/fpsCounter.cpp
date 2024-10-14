@@ -13,7 +13,7 @@ FpsCounter::FpsCounter(Vector2 pos, int fontSize, Color color)
     this->_Fps = 0;
     this->_FrameCount = 0;
     this->_ElapsedTime = 0;
-    this->_FpsText = std::make_unique<RaylibText>("FPS: 0", pos, fontSize, color);
+    this->_FpsText = std::make_unique<RaylibText>("FPS: 0", pos, fontSize, color, "FpsTextCounter", true);
     this->_Active = true;
 }
 
