@@ -7,7 +7,7 @@
 
 #include "../include.hpp"
 
-void CustomLog(int msgType, std::string text, va_list args)
+void CustomLog(int msgType, const char *text, va_list args)
 {
     char timeStr[64] = { 0 };
     time_t now = time(NULL);
@@ -25,6 +25,29 @@ void CustomLog(int msgType, std::string text, va_list args)
         default: break;
     }
 
-    vprintf(text.c_str(), args);
+    vprintf(text, args);
     printf("\n");
+}
+
+bool HealthCheck()
+{
+    bool settingsFile = std::filesystem::exists("./config/window_settings.json");
+    bool menuFile = std::filesystem::exists("./config/menu_settings.json");
+    if (!settingsFile)
+        std::cerr << "settings.json not found" << std::endl;
+    if (!menuFile)
+        std::cerr << "menu_settings.json not found" << std::endl;
+    return settingsFile && menuFile;
+}
+
+bool isIpValid(std::string ip)
+{
+    std::regex ipPattern("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
+    return std::regex_match(ip, ipPattern);
+}
+
+bool isPortValid(std::string port)
+{
+    std::regex portPattern("^[0-9]{1,5}$");
+    return std::regex_match(port, portPattern);
 }

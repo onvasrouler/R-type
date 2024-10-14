@@ -7,4 +7,7 @@
 
 #pragma once
 
-void CustomLog(int msgType, std::string text, va_list args);
+void CustomLog(int msgType, const char *text, va_list args);
+bool HealthCheck();
+bool isIpValid(std::string ip);
+bool isPortValid(std::string port);
