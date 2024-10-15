@@ -23,13 +23,11 @@ MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
 void MenuManager::setMenuType(menuType type)
 {
     this->_type = type;
-    this->reloadMenu();
 }
 
 void MenuManager::setMenuType(const int typeId)
 {
     this->_type = static_cast<menuType>(typeId);
-    this->reloadMenu();
 }
 
 
@@ -511,10 +509,8 @@ void MenuManager::drawMenu() const
         for (auto &item : this->_MenuItems.at(_type)) {
             if (CheckCollisionPointRec(mousePosition, Rectangle{static_cast<float>(item.x), static_cast<float>(item.y), static_cast<float>(item.width), static_cast<float>(item.length)})) {
                 std::function<void()> func = _guiFunction->getFunction(item.functionName);
-                if (func != nullptr) {
+                if (func != nullptr)
                     func();
-                    return;
-                }
             }
         }
     }
