@@ -106,84 +106,6 @@ void Server::run() {
         }
         char buffer[1024] = {0};
         std::string messages = "";
-        /*if (FD_ISSET(_modules[0]->getSocket(), &readfds)) {
-#ifdef _WIN32
-            for (int valread = recv(_modules[0]->getSocket(), buffer, 1024, 0);
-                 valread != -1 && valread != 0;
-                 valread = recv(_modules[0]->getSocket(), buffer, 1024, 0)) {
-                messages += buffer;
-            }
-#else
-            for (int valread =
-                     recv(_modules[0]->getSocket(), buffer, 1024, MSG_DONTWAIT);
-                 valread != -1 && valread != 0;
-                 valread = recv(_modules[0]->getSocket(), buffer, 1024,
-                                MSG_DONTWAIT)) {
-                messages += buffer;
-            }
-#endif
-        }
-        std::string message =
-            messages.substr(0, messages.find(THREAD_END_MESSAGE));
-        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
-             message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-             messages =
-                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
-            // get ip and port
-            std::string ip = message.substr(0, message.find(":"));
-            message = message.substr(message.find(":") + 1);
-            std::size_t port = std::stoi(message.substr(0, message.find("/")));
-            message = message.substr(message.find("/") + 1);
-            if (isClient(ip, port)) {
-                std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend);
-            } else {
-                uuid userUUID;
-                std::string userID = userUUID.toString();
-                Client newClient(ip, port, userID);
-                _clients.push_back(newClient);
-                std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend);
-            }
-        }
-        messages.clear();
-        if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
-#ifdef _WIN32
-            for (int valread = recv(_modules[1]->getSocket(), buffer, 1024, 0);
-                 valread != -1 && valread != 0;
-                 valread = recv(_modules[1]->getSocket(), buffer, 1024, 0)) {
-                std::cout << "Read: " << buffer << " from game module"
-                          << std::endl;
-                messages += buffer;
-            }
-#else
-            for (int valread =
-                     recv(_modules[1]->getSocket(), buffer, 1024, MSG_DONTWAIT);
-                 valread != -1 && valread != 0;
-                 valread = recv(_modules[1]->getSocket(), buffer, 1024,
-                                MSG_DONTWAIT)) {
-                messages += buffer;
-            }
-#endif
-            message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-            for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
-                 message =
-                     messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-                 messages =
-                     messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
-                // get uuid and message
-                std::string uuidString = message.substr(0, message.find(":"));
-                message = message.substr(
-                    message.find(":") + 1,
-                    message.size() - std::string(THREAD_END_MESSAGE).size());
-                // send the message to the client
-                std::string ip = findClient(uuidString).getIp();
-                std::size_t port = findClient(uuidString).getPort();
-                std::string messageToSend = ip + ":" + std::to_string(port) +
-                                            "/" + message + THREAD_END_MESSAGE;
-                _modules[0]->addMessage(messageToSend);
-            }
-        }*/
         for (auto& module: _modules) {
             messages.clear();
             if (!FD_ISSET(module->getSocket(), &readfds))
@@ -204,24 +126,14 @@ void Server::run() {
                                 MSG_DONTWAIT)) {
                 messages += buffer;
             }
-            std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-            for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
-                 message =
-                     messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-                 messages =
-                     messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
-                // get uuid and message
-                std::string uuidString = message.substr(0, message.find(":"));
-                message = message.substr(
-                    message.find(":") + 1,
-                    message.size() - std::string(THREAD_END_MESSAGE).size());
-                // send the message to the client
-                std::string ip = findClient(uuidString).getIp();
-                std::size_t port = findClient(uuidString).getPort();
-                std::string messageToSend = ip + ":" + std::to_string(port) +
-                                            "/" + message + THREAD_END_MESSAGE;
+            // std::cout << "Message received: " << messages << " from: " << module->getModuleName() << std::endl;
+            for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
+                    messages.find(THREAD_END_MESSAGE) != std::string::npos;
+                    messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
+                    message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
+                    message += THREAD_END_MESSAGE;
                 for (auto &writeToModule : _modules) {
-                    if (canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId())) {
+                    if (FD_ISSET(module->getSocket(), &writefds) && canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId())) {
                         writeToModule->addMessage(message);
                     }
                 }
@@ -233,9 +145,9 @@ void Server::run() {
                 !FD_ISSET(module->getSocket(), &writefds))
                 continue;
             for (auto& message : module->getMessages()) {
-                std::cout << "Sending message: " << message
-                          << "to module: " << module->getModuleName()
-                          << std::endl;
+                // std::cout << "Sending message: " << message
+                //           << "to module: " << module->getModuleName()
+                //           << std::endl;
                 send(module->getSocket(), message.c_str(), message.size(), 0);
             }
             module->clearMessages();
@@ -248,12 +160,6 @@ void Server::stop() {
         return;
     std::cout << "Stopping the server" << std::endl;
     std::cout << "Send shutdown server message to all clients" << std::endl;
-    for (auto& client : _clients) {
-        std::string message = client.getIp() + ":" +
-                              std::to_string(client.getPort()) + "/" +
-                              SHUTDOWN_MESSAGE + THREAD_END_MESSAGE;
-        send(_modules[0]->getSocket(), message.c_str(), message.size(), 0);
-    }
     for (auto& module : _modules) {
         module->stop();
     }
@@ -308,38 +214,17 @@ void Server::createModule(AbstractModule* module) {
     }
 }
 
-bool Server::isClient(const std::string ip, const std::size_t port) {
-    for (auto& client : _clients) {
-        if (client.getIp() == ip && client.getPort() == port)
-            return true;
+bool Server::canCommunicateWith(std::string moduleId,
+                                std::string communicateModuleId) {
+    if (moduleId == communicateModuleId)
+        return false;
+    for (auto& module : _modules) {
+        if (module->getModule()->getId() == moduleId) {
+            for (auto& communicateModule : module->getModule()->getCommunicatesModules()) {
+                if (communicateModule == communicateModuleId)
+                    return true;
+            }
+        }
     }
     return false;
-}
-
-std::string Server::createMessage(const std::string ip, const std::size_t port,
-                                  const std::string message) {
-    Client client = findClient(ip, port);
-    std::string messageToSend =
-        client.getUuid() + ":" + message + THREAD_END_MESSAGE;
-    return messageToSend;
-}
-
-Client Server::findClient(const std::string ip, const std::size_t port) {
-    Client client;
-    for (auto& c : _clients) {
-        if (c.getIp() == ip && c.getPort() == port) {
-            return c;
-        }
-    }
-    return client;
-}
-
-Client Server::findClient(const std::string uuid) {
-    Client client;
-    for (auto& c : _clients) {
-        if (c.getUuid() == uuid) {
-            return c;
-        }
-    }
-    return client;
 }
