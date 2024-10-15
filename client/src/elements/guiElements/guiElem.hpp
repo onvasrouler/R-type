@@ -20,12 +20,12 @@ class GUIElement {
     void setId(const std::string id = "default");
     void setDisplay(const bool state);
 
-    const std::string getText() const;
-    const Vector2 getPos() const;
-    const Vector2 getSize() const;
-    const std::string getValue() const;
-    const std::string getId() const;
-    const bool getDisplay() const;
+    std::string getText() const;
+    Vector2 getPos() const;
+    Vector2 getSize() const;
+    std::string getValue() const;
+    std::string getId() const;
+    bool getDisplay() const;
     protected:
         std::string _Text;
         Vector2 _Pos;
@@ -84,8 +84,8 @@ public:
     void setMaxValue(const float value);
     void setMinValue(const float value);
 
-    const float getMaxValue() const;
-    const float getMinValue() const;
+    float getMaxValue() const;
+    float getMinValue() const;
 
 private:
     float _Value;
@@ -104,7 +104,7 @@ public:
     void setScrollIndex(const int index);
     void setVal(const int value);
 
-    const int getScrollIndex() const;
+    int getScrollIndex() const;
 private:
     int _ScrollIndex;
     int _Value;
@@ -122,10 +122,10 @@ public:
     void setFocus(const int focus);
     void setScrollIndex(const int index);
 
-    const int getScrollIndex() const;
-    const int getFocus() const;
-    const int getActive() const;
-    const std::vector<std::string> getList() const;
+    int getScrollIndex() const;
+    int getFocus() const;
+    int getActive() const;
+    std::vector<std::string> getList() const;
 private:
     std::vector<std::string> _List;
     int _active;
@@ -144,8 +144,8 @@ public:
     void setTextMaxSize(const int textmaxSize);
     void setEditMode(const bool editMode);
 
-    const int getTextMaxSize() const;
-    const bool getEditMode() const;
+    int getTextMaxSize() const;
+    bool getEditMode() const;
 private:
     int _TextMaxSize;
     bool _EditMode;
@@ -165,12 +165,12 @@ public:
     void setButtons(const std::string buttons);
     void setResults(const int result);
 
-    const int getMaxCharacters() const;
-    const bool getSecretView() const;
-    const std::string getTitle() const;
-    const std::string getMessage() const;
-    const std::string getButtons() const;
-    const int getResults() const;
+    int getMaxCharacters() const;
+    bool getSecretView() const;
+    std::string getTitle() const;
+    std::string getMessage() const;
+    std::string getButtons() const;
+    int getResults() const;
 private:
     std::string _Title;
     std::string _Message;
@@ -193,9 +193,9 @@ public:
     void setMinValue(const int value);
     void setEditMode(const bool editMode);
 
-    const int getMaxValue() const;
-    const int getMinValue() const;
-    const bool getEditMode() const;
+    int getMaxValue() const;
+    int getMinValue() const;
+    bool getEditMode() const;
 private:
     int _Value;
     int _MaxValue;
@@ -215,9 +215,9 @@ public:
     void setMinValue(const int value);
     void setEditMode(const bool editMode);
 
-    const int getMaxValue() const;
-    const int getMinValue() const;
-    const bool getEditMode() const;
+    int getMaxValue() const;
+    int getMinValue() const;
+    bool getEditMode() const;
 private:
     int _Value;
     int _MaxValue;
@@ -243,7 +243,7 @@ public:
     void setActive(const int active);
 
 
-    const int getActive() const;
+    int getActive() const;
 private:
     int _Active;
 };
@@ -257,7 +257,7 @@ public:
 
     void setActive(const int active);
 
-    const int getActive() const;
+    int getActive() const;
 private:
     int _Active;
 };
@@ -279,7 +279,7 @@ public:
 
     void setColor(const Color color);
 
-    const Color getColor() const;
+    Color getColor() const;
 private:
     Color _Color;
 };
@@ -298,10 +298,10 @@ public:
     void setTextLeft(const std::string text);
     void setTextRight(const std::string text);
 
-    const std::string getTextLeft() const;
-    const std::string getTextRight() const;
-    const float getMaxValue() const;
-    const float getMinValue() const;
+    std::string getTextLeft() const;
+    std::string getTextRight() const;
+    float getMaxValue() const;
+    float getMinValue() const;
 private:
     std::string _TextLeft;
     std::string _TextRight;
@@ -320,8 +320,8 @@ public:
     void setActive(const int active);
     void setEditMode(const bool editMode);
 
-    const int getActive() const;
-    const bool getEditMode() const;
+    int getActive() const;
+    bool getEditMode() const;
 private:
     int _Active;
     bool _EditMode;

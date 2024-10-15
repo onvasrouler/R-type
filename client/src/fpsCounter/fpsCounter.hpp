@@ -24,13 +24,13 @@ public:
     void setColor(const Color color) const;
     void setColor(const unsigned char r, const unsigned char g, const unsigned char b, const unsigned char a) const;
 
-    const int getPosX() const;
-    const int getPosY() const;
-    const Vector2 getPos() const;
-    const int getFontSize() const;
-    const float getFps() const;
+    int getPosX() const;
+    int getPosY() const;
+    Vector2 getPos() const;
+    int getFontSize() const;
+    float getFps() const;
     const std::unique_ptr<RaylibText>& getFpsText() const;
-    const Color getColor() const;
+    Color getColor() const;
 
     void draw() const;
 
@@ -40,7 +40,7 @@ public:
     void setActive(const bool active);
     void toggleActive();
 
-    const bool isActive() const;
+    bool isActive() const;
 
 private:
     Vector2 _Position;

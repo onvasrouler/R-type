@@ -22,8 +22,8 @@ class DebugLogger {
     void SetActive(const bool active);
     void SetLogDepth(const int depth);
 
-    const bool GetActive() const;
-    const int GetLogDepth() const;
+    bool GetActive() const;
+    int GetLogDepth() const;
     private:
     bool _Active;
     int _LogDepth;

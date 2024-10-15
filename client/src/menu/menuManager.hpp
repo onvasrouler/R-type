@@ -47,8 +47,8 @@ public:
     void setWindowWidth(const int windowWidth);
     void setWindowSize(const int windowWidth, const int windowHeight);
 
-    const int getWindowHeight() const;
-    const int getWindowWidth() const;
+    int getWindowHeight() const;
+    int getWindowWidth() const;
 
     void setGuiFunction(std::shared_ptr<guiFunction> guiFunction);
     void setJsonParser(std::shared_ptr<JsonParser> jsonParser);
@@ -64,13 +64,13 @@ public:
 
     std::shared_ptr<MenuManager> getThis();
 
-    const Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y) const;
-    const Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const int width, const nlohmann::json_abi_v3_11_3::json &y, const int height) const;
+    Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y) const;
+    Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const int width, const nlohmann::json_abi_v3_11_3::json &y, const int height) const;
 
-    const int convertToRelativePosX(const std::string pos, const int windowWidth) const;
-    const int convertToRelativePosY(const std::string pos, const int windowHeight) const;
-    const int convertToRelativePosX(const std::string pos, const int width, const int windowWidth) const;
-    const int convertToRelativePosY(const std::string pos, const int height, const int windowHeight) const;
+    int convertToRelativePosX(const std::string pos, const int windowWidth) const;
+    int convertToRelativePosY(const std::string pos, const int windowHeight) const;
+    int convertToRelativePosX(const std::string pos, const int width, const int windowWidth) const;
+    int convertToRelativePosY(const std::string pos, const int height, const int windowHeight) const;
 
     std::shared_ptr<RGui> getCurrentGui() const;
 
@@ -82,43 +82,43 @@ public:
     void integrateTemplate(const nlohmann::json &menu, const int menuID = 0);
     void eraseMenu();
 
-    const std::shared_ptr<RaylibText> createTexts(const nlohmann::json &text, menuType type);
-    const std::shared_ptr<GButton> createButtons(const nlohmann::json &button, menuType type);
-    const std::shared_ptr<GWindBox> createWindBox(const nlohmann::json &windBox, menuType type);
-    const std::shared_ptr<GCheckBox> createCheckBoxes(const nlohmann::json &checkBox, menuType type);
-    const std::shared_ptr<GSlider> createSliders(const nlohmann::json &slider, menuType type);
-    const std::shared_ptr<GList> createLists(const nlohmann::json &list, menuType type);
-    const std::shared_ptr<GListEx> createListExs(const nlohmann::json &listEx, menuType type);
-    const std::shared_ptr<GTextInput> createInputTexts(const nlohmann::json &inputText, menuType type);
-    const std::shared_ptr<GTextInputBox> createInputTextsBoxs(const nlohmann::json &inputTextBox, menuType type);
-    const std::shared_ptr<GSpinner> createSpinners(const nlohmann::json &spinner, menuType type);
-    const std::shared_ptr<GValueBox> createValueBoxes(const nlohmann::json &valueBox, menuType type);
-    const std::shared_ptr<GGroup> createGroups(const nlohmann::json &group, menuType type);
-    const std::shared_ptr<GToggleGroup> createToggleGroups(const nlohmann::json &toggleGroup, menuType type);
-    const std::shared_ptr<GToggleSlider> createToggleSliders(const nlohmann::json &toggleSlider, menuType type);
-    const std::shared_ptr<GPannel> createPannels(const nlohmann::json &pannel, menuType type);
-    const std::shared_ptr<GColorPicker> createColorPickers(const nlohmann::json &colorPicker, menuType type);
-    const std::shared_ptr<GProgressBar> createProgressBars(const nlohmann::json &progressBar, menuType type);
-    const std::shared_ptr<GDropDown> createDropDowns(const nlohmann::json &dropDown, menuType type);
+    std::shared_ptr<RaylibText> createTexts(const nlohmann::json &text, menuType type);
+    std::shared_ptr<GButton> createButtons(const nlohmann::json &button, menuType type);
+    std::shared_ptr<GWindBox> createWindBox(const nlohmann::json &windBox, menuType type);
+    std::shared_ptr<GCheckBox> createCheckBoxes(const nlohmann::json &checkBox, menuType type);
+    std::shared_ptr<GSlider> createSliders(const nlohmann::json &slider, menuType type);
+    std::shared_ptr<GList> createLists(const nlohmann::json &list, menuType type);
+    std::shared_ptr<GListEx> createListExs(const nlohmann::json &listEx, menuType type);
+    std::shared_ptr<GTextInput> createInputTexts(const nlohmann::json &inputText, menuType type);
+    std::shared_ptr<GTextInputBox> createInputTextsBoxs(const nlohmann::json &inputTextBox, menuType type);
+    std::shared_ptr<GSpinner> createSpinners(const nlohmann::json &spinner, menuType type);
+    std::shared_ptr<GValueBox> createValueBoxes(const nlohmann::json &valueBox, menuType type);
+    std::shared_ptr<GGroup> createGroups(const nlohmann::json &group, menuType type);
+    std::shared_ptr<GToggleGroup> createToggleGroups(const nlohmann::json &toggleGroup, menuType type);
+    std::shared_ptr<GToggleSlider> createToggleSliders(const nlohmann::json &toggleSlider, menuType type);
+    std::shared_ptr<GPannel> createPannels(const nlohmann::json &pannel, menuType type);
+    std::shared_ptr<GColorPicker> createColorPickers(const nlohmann::json &colorPicker, menuType type);
+    std::shared_ptr<GProgressBar> createProgressBars(const nlohmann::json &progressBar, menuType type);
+    std::shared_ptr<GDropDown> createDropDowns(const nlohmann::json &dropDown, menuType type);
 
-    const std::vector<std::shared_ptr<GButton>> loadsButtons(const nlohmann::json &buttons, menuType type);
-    const std::vector<std::shared_ptr<GWindBox>> loadsWindBoxes(const nlohmann::json &windBoxes, menuType type);
-    const std::vector<std::shared_ptr<RaylibText>> loadsTexts(const nlohmann::json &texts, menuType type);
-    const std::vector<std::shared_ptr<GCheckBox>> loadsCheckBoxes(const nlohmann::json &checkBoxes, menuType type);
-    const std::vector<std::shared_ptr<GSlider>> loadsSliders(const nlohmann::json &sliders, menuType type);
-    const std::vector<std::shared_ptr<GList>> loadsLists(const nlohmann::json &lists, menuType type);
-    const std::vector<std::shared_ptr<GListEx>> loadsListExs(const nlohmann::json &listExs, menuType type);
-    const std::vector<std::shared_ptr<GTextInput>> loadsInputTexts(const nlohmann::json &inputTexts, menuType type);
-    const std::vector<std::shared_ptr<GTextInputBox>> loadsInputTextsBoxs(const nlohmann::json &inputTextsBoxs, menuType type);
-    const std::vector<std::shared_ptr<GSpinner>> loadsSpinners(const nlohmann::json &spinners, menuType type);
-    const std::vector<std::shared_ptr<GValueBox>> loadsValueBoxes(const nlohmann::json &valueBoxes, menuType type);
-    const std::vector<std::shared_ptr<GGroup>> loadsGroups(const nlohmann::json &groups, menuType type);
-    const std::vector<std::shared_ptr<GToggleGroup>> loadsToggleGroups(const nlohmann::json &toggleGroups, menuType type);
-    const std::vector<std::shared_ptr<GToggleSlider>> loadsToggleSliders(const nlohmann::json &toggleSliders, menuType type);
-    const std::vector<std::shared_ptr<GPannel>> loadsPannels(const nlohmann::json &pannels, menuType type);
-    const std::vector<std::shared_ptr<GColorPicker>> loadsColorPickers(const nlohmann::json &colorPickers, menuType type);
-    const std::vector<std::shared_ptr<GProgressBar>> loadsProgressBars(const nlohmann::json &progressBars, menuType type);
-    const std::vector<std::shared_ptr<GDropDown>> loadsDropDowns(const nlohmann::json &dropDowns, menuType type);
+    std::vector<std::shared_ptr<GButton>> loadsButtons(const nlohmann::json &buttons, menuType type);
+    std::vector<std::shared_ptr<GWindBox>> loadsWindBoxes(const nlohmann::json &windBoxes, menuType type);
+    std::vector<std::shared_ptr<RaylibText>> loadsTexts(const nlohmann::json &texts, menuType type);
+    std::vector<std::shared_ptr<GCheckBox>> loadsCheckBoxes(const nlohmann::json &checkBoxes, menuType type);
+    std::vector<std::shared_ptr<GSlider>> loadsSliders(const nlohmann::json &sliders, menuType type);
+    std::vector<std::shared_ptr<GList>> loadsLists(const nlohmann::json &lists, menuType type);
+    std::vector<std::shared_ptr<GListEx>> loadsListExs(const nlohmann::json &listExs, menuType type);
+    std::vector<std::shared_ptr<GTextInput>> loadsInputTexts(const nlohmann::json &inputTexts, menuType type);
+    std::vector<std::shared_ptr<GTextInputBox>> loadsInputTextsBoxs(const nlohmann::json &inputTextsBoxs, menuType type);
+    std::vector<std::shared_ptr<GSpinner>> loadsSpinners(const nlohmann::json &spinners, menuType type);
+    std::vector<std::shared_ptr<GValueBox>> loadsValueBoxes(const nlohmann::json &valueBoxes, menuType type);
+    std::vector<std::shared_ptr<GGroup>> loadsGroups(const nlohmann::json &groups, menuType type);
+    std::vector<std::shared_ptr<GToggleGroup>> loadsToggleGroups(const nlohmann::json &toggleGroups, menuType type);
+    std::vector<std::shared_ptr<GToggleSlider>> loadsToggleSliders(const nlohmann::json &toggleSliders, menuType type);
+    std::vector<std::shared_ptr<GPannel>> loadsPannels(const nlohmann::json &pannels, menuType type);
+    std::vector<std::shared_ptr<GColorPicker>> loadsColorPickers(const nlohmann::json &colorPickers, menuType type);
+    std::vector<std::shared_ptr<GProgressBar>> loadsProgressBars(const nlohmann::json &progressBars, menuType type);
+    std::vector<std::shared_ptr<GDropDown>> loadsDropDowns(const nlohmann::json &dropDowns, menuType type);
 
     void newMenuItems(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y, const nlohmann::json_abi_v3_11_3::json &width, const nlohmann::json_abi_v3_11_3::json &length, std::string functionName, menuType type);
 

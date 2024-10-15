@@ -54,12 +54,12 @@ void MenuManager::setWindowSize(const int windowWidth, const int windowHeight)
     this->_WindowHeight = windowHeight;
 }
 
-const int MenuManager::getWindowHeight() const
+int MenuManager::getWindowHeight() const
 {
     return this->_WindowHeight;
 }
 
-const int MenuManager::getWindowWidth() const
+int MenuManager::getWindowWidth() const
 {
     return this->_WindowWidth;
 }
@@ -185,7 +185,7 @@ void MenuManager::createMenu(const nlohmann::json &menu, const int menuID)
     }
 }
 
-const int MenuManager::convertToRelativePosX(std::string pos, const int windowWidth) const
+int MenuManager::convertToRelativePosX(std::string pos, const int windowWidth) const
 {
     this->_DebugLogger->Log("Converting to relative pos X", 3);
     if (pos == "center")
@@ -198,7 +198,7 @@ const int MenuManager::convertToRelativePosX(std::string pos, const int windowWi
     return std::stoi(pos);
 }
 
-const int MenuManager::convertToRelativePosX(std::string pos, const int width, const int windowWidth) const
+int MenuManager::convertToRelativePosX(std::string pos, const int width, const int windowWidth) const
 {
     this->_DebugLogger->Log("Converting to relative pos X and takin in account the width of the elem", 3);
     if (pos == "center")
@@ -211,7 +211,7 @@ const int MenuManager::convertToRelativePosX(std::string pos, const int width, c
     return std::stoi(pos);
 }
 
-const int MenuManager::convertToRelativePosY(std::string pos, const int windowHeight) const
+int MenuManager::convertToRelativePosY(std::string pos, const int windowHeight) const
 {
     this->_DebugLogger->Log("Converting to relative pos Y", 3);
     if (pos == "center")
@@ -224,7 +224,7 @@ const int MenuManager::convertToRelativePosY(std::string pos, const int windowHe
     return std::stoi(pos);
 }
 
-const int MenuManager::convertToRelativePosY(std::string pos, const int height, const int windowHeight) const
+int MenuManager::convertToRelativePosY(std::string pos, const int height, const int windowHeight) const
 {
     this->_DebugLogger->Log("Converting to relative pos Y and taking in account the height of the eleme", 3);
     if (pos == "center")
@@ -237,7 +237,7 @@ const int MenuManager::convertToRelativePosY(std::string pos, const int height, 
     return std::stoi(pos);
 }
 
-const Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const nlohmann::json &y) const
+Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const nlohmann::json &y) const
 {
     this->_DebugLogger->Log("Converting to relative pos", 3);
     Vector2 pos;
@@ -255,7 +255,7 @@ const Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const nlohman
     return pos;
 }
 
-const Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const int width, const nlohmann::json &y, const int height) const
+Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const int width, const nlohmann::json &y, const int height) const
 {
     this->_DebugLogger->Log("Converting to relative pos and taking in account the size of the elem", 3);
     Vector2 pos;
@@ -273,7 +273,7 @@ const Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const int wid
     return pos;
 }
 
-const std::vector<std::shared_ptr<GButton>> MenuManager::loadsButtons(const nlohmann::json &jsonbuttons, menuType type)
+std::vector<std::shared_ptr<GButton>> MenuManager::loadsButtons(const nlohmann::json &jsonbuttons, menuType type)
 {
     std::vector<std::shared_ptr<GButton>> buttons;
 
@@ -284,7 +284,7 @@ const std::vector<std::shared_ptr<GButton>> MenuManager::loadsButtons(const nloh
     return buttons;
 }
 
-const std::vector<std::shared_ptr<GWindBox>> MenuManager::loadsWindBoxes(const nlohmann::json &jsonWindBoxes, menuType type)
+std::vector<std::shared_ptr<GWindBox>> MenuManager::loadsWindBoxes(const nlohmann::json &jsonWindBoxes, menuType type)
 {
     std::vector<std::shared_ptr<GWindBox>> windBoxes;
 
@@ -295,7 +295,7 @@ const std::vector<std::shared_ptr<GWindBox>> MenuManager::loadsWindBoxes(const n
     return windBoxes;
 }
 
-const std::vector<std::shared_ptr<RaylibText>> MenuManager::loadsTexts(const nlohmann::json &jsonTexts, menuType type)
+std::vector<std::shared_ptr<RaylibText>> MenuManager::loadsTexts(const nlohmann::json &jsonTexts, menuType type)
 {
     std::vector<std::shared_ptr<RaylibText>> texts;
 
@@ -306,7 +306,7 @@ const std::vector<std::shared_ptr<RaylibText>> MenuManager::loadsTexts(const nlo
     return texts;
 }
 
-const std::vector<std::shared_ptr<GCheckBox>> MenuManager::loadsCheckBoxes(const nlohmann::json &jsonCheckBoxes, menuType type)
+std::vector<std::shared_ptr<GCheckBox>> MenuManager::loadsCheckBoxes(const nlohmann::json &jsonCheckBoxes, menuType type)
 {
     std::vector<std::shared_ptr<GCheckBox>> checkBoxes;
 
@@ -317,7 +317,7 @@ const std::vector<std::shared_ptr<GCheckBox>> MenuManager::loadsCheckBoxes(const
     return checkBoxes;
 }
 
-const std::vector<std::shared_ptr<GSlider>> MenuManager::loadsSliders(const nlohmann::json &jsonSliders, menuType type)
+std::vector<std::shared_ptr<GSlider>> MenuManager::loadsSliders(const nlohmann::json &jsonSliders, menuType type)
 {
     std::vector<std::shared_ptr<GSlider>> sliders;
 
@@ -328,7 +328,7 @@ const std::vector<std::shared_ptr<GSlider>> MenuManager::loadsSliders(const nloh
     return sliders;
 }
 
-const std::vector<std::shared_ptr<GList>> MenuManager::loadsLists(const nlohmann::json &jsonLists, menuType type)
+std::vector<std::shared_ptr<GList>> MenuManager::loadsLists(const nlohmann::json &jsonLists, menuType type)
 {
     std::vector<std::shared_ptr<GList>> lists;
 
@@ -339,7 +339,7 @@ const std::vector<std::shared_ptr<GList>> MenuManager::loadsLists(const nlohmann
     return lists;
 }
 
-const std::vector<std::shared_ptr<GListEx>> MenuManager::loadsListExs(const nlohmann::json &jsonListExs, menuType type)
+std::vector<std::shared_ptr<GListEx>> MenuManager::loadsListExs(const nlohmann::json &jsonListExs, menuType type)
 {
     std::vector<std::shared_ptr<GListEx>> listExs;
 
@@ -350,7 +350,7 @@ const std::vector<std::shared_ptr<GListEx>> MenuManager::loadsListExs(const nloh
     return listExs;
 }
 
-const std::vector<std::shared_ptr<GTextInput>> MenuManager::loadsInputTexts(const nlohmann::json &jsonInputTexts, menuType type)
+std::vector<std::shared_ptr<GTextInput>> MenuManager::loadsInputTexts(const nlohmann::json &jsonInputTexts, menuType type)
 {
     std::vector<std::shared_ptr<GTextInput>> inputTexts;
 
@@ -361,7 +361,7 @@ const std::vector<std::shared_ptr<GTextInput>> MenuManager::loadsInputTexts(cons
     return inputTexts;
 }
 
-const std::vector<std::shared_ptr<GTextInputBox>> MenuManager::loadsInputTextsBoxs(const nlohmann::json &jsonInputTextBoxs, menuType type)
+std::vector<std::shared_ptr<GTextInputBox>> MenuManager::loadsInputTextsBoxs(const nlohmann::json &jsonInputTextBoxs, menuType type)
 {
     std::vector<std::shared_ptr<GTextInputBox>> inputTextBoxs;
 
@@ -372,7 +372,7 @@ const std::vector<std::shared_ptr<GTextInputBox>> MenuManager::loadsInputTextsBo
     return inputTextBoxs;
 }
 
-const std::vector<std::shared_ptr<GSpinner>> MenuManager::loadsSpinners(const nlohmann::json &jsonSpinners, menuType type)
+std::vector<std::shared_ptr<GSpinner>> MenuManager::loadsSpinners(const nlohmann::json &jsonSpinners, menuType type)
 {
     std::vector<std::shared_ptr<GSpinner>> spinners;
 
@@ -383,7 +383,7 @@ const std::vector<std::shared_ptr<GSpinner>> MenuManager::loadsSpinners(const nl
     return spinners;
 }
 
-const std::vector<std::shared_ptr<GValueBox>> MenuManager::loadsValueBoxes(const nlohmann::json &jsonValueBoxes, menuType type)
+std::vector<std::shared_ptr<GValueBox>> MenuManager::loadsValueBoxes(const nlohmann::json &jsonValueBoxes, menuType type)
 {
     std::vector<std::shared_ptr<GValueBox>> valueBoxes;
 
@@ -394,7 +394,7 @@ const std::vector<std::shared_ptr<GValueBox>> MenuManager::loadsValueBoxes(const
     return valueBoxes;
 }
 
-const std::vector<std::shared_ptr<GGroup>> MenuManager::loadsGroups(const nlohmann::json &jsonGroups, menuType type)
+std::vector<std::shared_ptr<GGroup>> MenuManager::loadsGroups(const nlohmann::json &jsonGroups, menuType type)
 {
     std::vector<std::shared_ptr<GGroup>> groups;
 
@@ -405,7 +405,7 @@ const std::vector<std::shared_ptr<GGroup>> MenuManager::loadsGroups(const nlohma
     return groups;
 }
 
-const std::vector<std::shared_ptr<GToggleGroup>> MenuManager::loadsToggleGroups(const nlohmann::json &jsonToggleGroups, menuType type)
+std::vector<std::shared_ptr<GToggleGroup>> MenuManager::loadsToggleGroups(const nlohmann::json &jsonToggleGroups, menuType type)
 {
     std::vector<std::shared_ptr<GToggleGroup>> toggleGroups;
 
@@ -416,7 +416,7 @@ const std::vector<std::shared_ptr<GToggleGroup>> MenuManager::loadsToggleGroups(
     return toggleGroups;
 }
 
-const std::vector<std::shared_ptr<GToggleSlider>> MenuManager::loadsToggleSliders(const nlohmann::json &jsonToggleSliders, menuType type)
+std::vector<std::shared_ptr<GToggleSlider>> MenuManager::loadsToggleSliders(const nlohmann::json &jsonToggleSliders, menuType type)
 {
     std::vector<std::shared_ptr<GToggleSlider>> toggleSliders;
 
@@ -427,7 +427,7 @@ const std::vector<std::shared_ptr<GToggleSlider>> MenuManager::loadsToggleSlider
     return toggleSliders;
 }
 
-const std::vector<std::shared_ptr<GPannel>> MenuManager::loadsPannels(const nlohmann::json &jsonPannels, menuType type)
+std::vector<std::shared_ptr<GPannel>> MenuManager::loadsPannels(const nlohmann::json &jsonPannels, menuType type)
 {
     std::vector<std::shared_ptr<GPannel>> pannels;
 
@@ -438,7 +438,7 @@ const std::vector<std::shared_ptr<GPannel>> MenuManager::loadsPannels(const nloh
     return pannels;
 }
 
-const std::vector<std::shared_ptr<GColorPicker>> MenuManager::loadsColorPickers(const nlohmann::json &jsonColorPickers, menuType type)
+std::vector<std::shared_ptr<GColorPicker>> MenuManager::loadsColorPickers(const nlohmann::json &jsonColorPickers, menuType type)
 {
     std::vector<std::shared_ptr<GColorPicker>> colorPickers;
 
@@ -449,7 +449,7 @@ const std::vector<std::shared_ptr<GColorPicker>> MenuManager::loadsColorPickers(
     return colorPickers;
 }
 
-const std::vector<std::shared_ptr<GProgressBar>> MenuManager::loadsProgressBars(const nlohmann::json &jsonProgressBars, menuType type)
+std::vector<std::shared_ptr<GProgressBar>> MenuManager::loadsProgressBars(const nlohmann::json &jsonProgressBars, menuType type)
 {
     std::vector<std::shared_ptr<GProgressBar>> progressBars;
 
@@ -460,7 +460,7 @@ const std::vector<std::shared_ptr<GProgressBar>> MenuManager::loadsProgressBars(
     return progressBars;
 }
 
-const std::vector<std::shared_ptr<GDropDown>> MenuManager::loadsDropDowns(const nlohmann::json &jsonDropDowns, menuType type)
+std::vector<std::shared_ptr<GDropDown>> MenuManager::loadsDropDowns(const nlohmann::json &jsonDropDowns, menuType type)
 {
     std::vector<std::shared_ptr<GDropDown>> dropDowns;
 
@@ -530,7 +530,7 @@ bool MenuManager::jsonToBool(const nlohmann::json &json) const
     return json.get<bool>();
 }
 
-const std::shared_ptr<RaylibText> MenuManager::createTexts(const nlohmann::json &text, menuType type)
+std::shared_ptr<RaylibText> MenuManager::createTexts(const nlohmann::json &text, menuType type)
 {
     this->_DebugLogger->Log("Creating Text : " + text.dump(), 5);
     try {
@@ -544,12 +544,13 @@ const std::shared_ptr<RaylibText> MenuManager::createTexts(const nlohmann::json 
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<RaylibText>(errorText, getRelativePos(defaultErrorPosX, defaultErrorPosY), 0, Color{255, 0, 0, 255}, "errorId", true);
     }
 }
 
-const std::shared_ptr<GButton> MenuManager::createButtons(const nlohmann::json &button, menuType type)
+std::shared_ptr<GButton> MenuManager::createButtons(const nlohmann::json &button, menuType type)
 {
     this->_DebugLogger->Log("Creating Button : " + button.dump(), 5);
     try {
@@ -563,12 +564,13 @@ const std::shared_ptr<GButton> MenuManager::createButtons(const nlohmann::json &
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GButton>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", true);
     }
 }
 
-const std::shared_ptr<GWindBox> MenuManager::createWindBox(const nlohmann::json &windBox, menuType type)
+std::shared_ptr<GWindBox> MenuManager::createWindBox(const nlohmann::json &windBox, menuType type)
 {
     this->_DebugLogger->Log("Creating WindBox : " + windBox.dump(), 5);
     try {
@@ -583,12 +585,13 @@ const std::shared_ptr<GWindBox> MenuManager::createWindBox(const nlohmann::json 
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GWindBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", false, true);
     }
 }
 
-const std::shared_ptr<GCheckBox> MenuManager::createCheckBoxes(const nlohmann::json &checkBox, menuType type)
+std::shared_ptr<GCheckBox> MenuManager::createCheckBoxes(const nlohmann::json &checkBox, menuType type)
 {
     this->_DebugLogger->Log("Creating CheckBox : " + checkBox.dump(), 5);
     try {
@@ -603,12 +606,13 @@ const std::shared_ptr<GCheckBox> MenuManager::createCheckBoxes(const nlohmann::j
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GCheckBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "defaultId", false, true);
     }
 }
 
-const std::shared_ptr<GSlider> MenuManager::createSliders(const nlohmann::json &slider, menuType type)
+std::shared_ptr<GSlider> MenuManager::createSliders(const nlohmann::json &slider, menuType type)
 {
     this->_DebugLogger->Log("Creating Slider : " + slider.dump(), 5);
     try {
@@ -625,12 +629,13 @@ const std::shared_ptr<GSlider> MenuManager::createSliders(const nlohmann::json &
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0.0F, 0.0F, 0.0F, true);
     }
 }
 
-const std::shared_ptr<GList> MenuManager::createLists(const nlohmann::json &list, menuType type)
+std::shared_ptr<GList> MenuManager::createLists(const nlohmann::json &list, menuType type)
 {
     this->_DebugLogger->Log("Creating List : " + list.dump(), 5);
     try {
@@ -644,12 +649,13 @@ const std::shared_ptr<GList> MenuManager::createLists(const nlohmann::json &list
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GList>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", true);
     }
 }
 
-const std::shared_ptr<GListEx> MenuManager::createListExs(const nlohmann::json &listEx, menuType type)
+std::shared_ptr<GListEx> MenuManager::createListExs(const nlohmann::json &listEx, menuType type)
 {
     this->_DebugLogger->Log("Creating ListEx : " + listEx.dump(), 5);
     try {
@@ -665,12 +671,13 @@ const std::shared_ptr<GListEx> MenuManager::createListExs(const nlohmann::json &
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GListEx>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "defaultId", std::vector<std::string>{errorText}, 0, true);
     }
 }
 
-const std::shared_ptr<GTextInput> MenuManager::createInputTexts(const nlohmann::json &inputText, menuType type)
+std::shared_ptr<GTextInput> MenuManager::createInputTexts(const nlohmann::json &inputText, menuType type)
 {
     this->_DebugLogger->Log("Creating InputText : " + inputText.dump(), 5);
     try {
@@ -686,12 +693,13 @@ const std::shared_ptr<GTextInput> MenuManager::createInputTexts(const nlohmann::
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GTextInput>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "default", 0, false, true);
     }
 }
 
-const std::shared_ptr<GTextInputBox> MenuManager::createInputTextsBoxs(const nlohmann::json &inputTextBox, menuType type)
+std::shared_ptr<GTextInputBox> MenuManager::createInputTextsBoxs(const nlohmann::json &inputTextBox, menuType type)
 {
     this->_DebugLogger->Log("Creating InputTextBox : " + inputTextBox.dump(), 5);
     try {
@@ -710,12 +718,13 @@ const std::shared_ptr<GTextInputBox> MenuManager::createInputTextsBoxs(const nlo
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GTextInputBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "defaultId", "default title", "default message", "default buttons", "default text", 0, false, true);
     }
 }
 
-const std::shared_ptr<GSpinner> MenuManager::createSpinners(const nlohmann::json &spinner, menuType type)
+std::shared_ptr<GSpinner> MenuManager::createSpinners(const nlohmann::json &spinner, menuType type)
 {
     this->_DebugLogger->Log("Creating Spinner : " + spinner.dump(), 5);
     try {
@@ -733,12 +742,13 @@ const std::shared_ptr<GSpinner> MenuManager::createSpinners(const nlohmann::json
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GSpinner>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0, 0, 0, false, true);
     }
 }
 
-const std::shared_ptr<GValueBox> MenuManager::createValueBoxes(const nlohmann::json &valueBox, menuType type)
+std::shared_ptr<GValueBox> MenuManager::createValueBoxes(const nlohmann::json &valueBox, menuType type)
 {
     this->_DebugLogger->Log("Creating ValueBox : " + valueBox.dump(), 5);
     try {
@@ -756,12 +766,13 @@ const std::shared_ptr<GValueBox> MenuManager::createValueBoxes(const nlohmann::j
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GValueBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId",0, 0, 0, false, true);
     }
 }
 
-const std::shared_ptr<GGroup> MenuManager::createGroups(const nlohmann::json &group, menuType type)
+std::shared_ptr<GGroup> MenuManager::createGroups(const nlohmann::json &group, menuType type)
 {
     this->_DebugLogger->Log("Creating Group : " + group.dump(), 5);
     try {
@@ -775,12 +786,13 @@ const std::shared_ptr<GGroup> MenuManager::createGroups(const nlohmann::json &gr
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorID", true);
     }
 }
 
-const std::shared_ptr<GToggleGroup> MenuManager::createToggleGroups(const nlohmann::json &toggleGroup, menuType type)
+std::shared_ptr<GToggleGroup> MenuManager::createToggleGroups(const nlohmann::json &toggleGroup, menuType type)
 {
     this->_DebugLogger->Log("Creating ToggleGroup : " + toggleGroup.dump(), 5);
     try {
@@ -795,12 +807,13 @@ const std::shared_ptr<GToggleGroup> MenuManager::createToggleGroups(const nlohma
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GToggleGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0, true);
     }
 }
 
-const std::shared_ptr<GToggleSlider> MenuManager::createToggleSliders(const nlohmann::json &toggleSlider, menuType type)
+std::shared_ptr<GToggleSlider> MenuManager::createToggleSliders(const nlohmann::json &toggleSlider, menuType type)
 {
     this->_DebugLogger->Log("Creating ToggleSlider : " + toggleSlider.dump(), 5);
     try {
@@ -815,12 +828,13 @@ const std::shared_ptr<GToggleSlider> MenuManager::createToggleSliders(const nloh
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GToggleSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0, true);
     }
 }
 
-const std::shared_ptr<GPannel> MenuManager::createPannels(const nlohmann::json &pannel, menuType type)
+std::shared_ptr<GPannel> MenuManager::createPannels(const nlohmann::json &pannel, menuType type)
 {
     this->_DebugLogger->Log("Creating Pannel : " + pannel.dump(), 5);
     try {
@@ -834,12 +848,13 @@ const std::shared_ptr<GPannel> MenuManager::createPannels(const nlohmann::json &
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GPannel>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", true);
     }
 }
 
-const std::shared_ptr<GColorPicker> MenuManager::createColorPickers(const nlohmann::json &colorPicker, menuType type)
+std::shared_ptr<GColorPicker> MenuManager::createColorPickers(const nlohmann::json &colorPicker, menuType type)
 {
     this->_DebugLogger->Log("Creating ColorPicker : " + colorPicker.dump(), 5);
     try {
@@ -854,12 +869,13 @@ const std::shared_ptr<GColorPicker> MenuManager::createColorPickers(const nlohma
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GColorPicker>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", Color{0, 0, 0, 0}, true);
     }
 }
 
-const std::shared_ptr<GProgressBar> MenuManager::createProgressBars(const nlohmann::json &progressBar, menuType type)
+std::shared_ptr<GProgressBar> MenuManager::createProgressBars(const nlohmann::json &progressBar, menuType type)
 {
     this->_DebugLogger->Log("Creating ProgressBar : " + progressBar.dump(), 5);
     try {
@@ -877,12 +893,13 @@ const std::shared_ptr<GProgressBar> MenuManager::createProgressBars(const nlohma
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GProgressBar>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "errorId", errorText, errorText, 0, 0, 0, true);
     }
 }
 
-const std::shared_ptr<GDropDown> MenuManager::createDropDowns(const nlohmann::json &dropDown, menuType type)
+std::shared_ptr<GDropDown> MenuManager::createDropDowns(const nlohmann::json &dropDown, menuType type)
 {
     this->_DebugLogger->Log("Creating DropDown : " + dropDown.dump(), 5);
     try {
@@ -898,7 +915,8 @@ const std::shared_ptr<GDropDown> MenuManager::createDropDowns(const nlohmann::js
         );
     } catch (std::exception &e) {
         this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-        const std::string errorText = "error occured : " + std::string(e.what());
+    
+std::string errorText = "error occured : " + std::string(e.what());
         return std::make_shared<GDropDown>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "error;occured", "errorId", 0, false, true);
     }
 }

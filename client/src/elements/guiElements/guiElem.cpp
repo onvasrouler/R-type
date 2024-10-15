@@ -37,32 +37,32 @@ void GUIElement::setDisplay(const bool state)
     this->_Display = state;
 }
 
-const Vector2 GUIElement::getPos() const
+Vector2 GUIElement::getPos() const
 {
     return this->_Pos;
 }
 
-const Vector2 GUIElement::getSize() const
+Vector2 GUIElement::getSize() const
 {
     return this->_Size;
 }
 
-const std::string GUIElement::getText() const
+std::string GUIElement::getText() const
 {
     return this->_Text;
 }
 
-const std::string GUIElement::getValue() const
+std::string GUIElement::getValue() const
 {
     return this->_Value;
 }
 
-const std::string GUIElement::getId() const
+std::string GUIElement::getId() const
 {
     return this->_Id;
 }
 
-const bool GUIElement::getDisplay() const
+bool GUIElement::getDisplay() const
 {
     return this->_Display;
 }
@@ -230,12 +230,12 @@ void GSlider::setMinValue(const float value)
     this->_MinValue = value;
 }
 
-const float GSlider::getMaxValue() const
+float GSlider::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-const float GSlider::getMinValue() const
+float GSlider::getMinValue() const
 {
     return this->_MinValue;
 }
@@ -290,7 +290,7 @@ void GList::setVal(const int value)
     this->setValue(std::to_string(value));
 }
 
-const int GList::getScrollIndex() const
+int GList::getScrollIndex() const
 {
     return this->_ScrollIndex;
 }
@@ -360,22 +360,22 @@ void GListEx::setScrollIndex(const int index)
     this->_ScrollIndex = index;
 }
 
-const int GListEx::getScrollIndex() const
+int GListEx::getScrollIndex() const
 {
     return this->_ScrollIndex;
 }
 
-const int GListEx::getFocus() const
+int GListEx::getFocus() const
 {
     return this->_Focus;
 }
 
-const int GListEx::getActive() const
+int GListEx::getActive() const
 {
     return this->_Active;
 }
 
-const std::vector<std::string> GListEx::getList() const
+std::vector<std::string> GListEx::getList() const
 {
     return this->_List;
 }
@@ -431,12 +431,12 @@ void GTextInput::setEditMode(const bool editMode)
 }
 
 
-const int GTextInput::getTextMaxSize() const
+int GTextInput::getTextMaxSize() const
 {
     return this->_TextMaxSize;
 }
 
-const bool GTextInput::getEditMode() const
+bool GTextInput::getEditMode() const
 {
     return this->_EditMode;
 }
@@ -521,32 +521,32 @@ void GTextInputBox::setResults(const int result)
     this->_Result = result;
 }
 
-const int GTextInputBox::getMaxCharacters() const
+int GTextInputBox::getMaxCharacters() const
 {
     return this->_TextMaxSize;
 }
 
-const bool GTextInputBox::getSecretView() const
+bool GTextInputBox::getSecretView() const
 {
     return this->_SecretViewActive;
 }
 
-const std::string GTextInputBox::getTitle() const
+std::string GTextInputBox::getTitle() const
 {
     return this->_Title;
 }
 
-const std::string GTextInputBox::getMessage() const
+std::string GTextInputBox::getMessage() const
 {
     return this->_Message;
 }
 
-const std::string GTextInputBox::getButtons() const
+std::string GTextInputBox::getButtons() const
 {
     return this->_Buttons;
 }
 
-const int GTextInputBox::getResults() const
+int GTextInputBox::getResults() const
 {
     return this->_Result;
 }
@@ -613,17 +613,17 @@ void GSpinner::setEditMode(const bool editMode)
     this->_EditMode = editMode;
 }
 
-const int GSpinner::getMaxValue() const
+int GSpinner::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-const int GSpinner::getMinValue() const
+int GSpinner::getMinValue() const
 {
     return this->_MinValue;
 }
 
-const bool GSpinner::getEditMode() const
+bool GSpinner::getEditMode() const
 {
     return this->_EditMode;
 }
@@ -693,17 +693,17 @@ void GValueBox::setEditMode(const bool editMode)
     this->_EditMode = editMode;
 }
 
-const int GValueBox::getMaxValue() const
+int GValueBox::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-const int GValueBox::getMinValue() const
+int GValueBox::getMinValue() const
 {
     return this->_MinValue;
 }
 
-const bool GValueBox::getEditMode() const
+bool GValueBox::getEditMode() const
 {
     return this->_EditMode;
 }
@@ -787,7 +787,7 @@ void GToggleGroup::setActive(const int active)
     this->setValue(std::to_string(active));
 }
 
-const int GToggleGroup::getActive() const
+int GToggleGroup::getActive() const
 {
     return this->_Active;
 }
@@ -833,7 +833,7 @@ void GToggleSlider::setActive(const int active)
     this->setValue(std::to_string(active));
 }
 
-const int GToggleSlider::getActive() const
+int GToggleSlider::getActive() const
 {
     return this->_Active;
 }
@@ -914,7 +914,7 @@ void GColorPicker::setColor(Color color)
     this->setValue(std::to_string(color.r) + " " + std::to_string(color.g) + " " + std::to_string(color.b) + " " + std::to_string(color.a));
 }
 
-const Color GColorPicker::getColor() const
+Color GColorPicker::getColor() const
 {
     return this->_Color;
 }
@@ -990,22 +990,22 @@ void GProgressBar::setTextRight(std::string text)
     this->_TextRight = text;
 }
 
-const std::string GProgressBar::getTextLeft() const
+std::string GProgressBar::getTextLeft() const
 {
     return this->_TextLeft;
 }
 
-const std::string GProgressBar::getTextRight() const
+std::string GProgressBar::getTextRight() const
 {
     return this->_TextRight;
 }
 
-const float GProgressBar::getMaxValue() const
+float GProgressBar::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-const float GProgressBar::getMinValue() const
+float GProgressBar::getMinValue() const
 {
     return this->_MinValue;
 }
@@ -1061,12 +1061,12 @@ void GDropDown::setEditMode(const bool editMode)
     this->_EditMode = editMode;
 }
 
-const int GDropDown::getActive() const
+int GDropDown::getActive() const
 {
     return this->_Active;
 }
 
-const bool GDropDown::getEditMode() const
+bool GDropDown::getEditMode() const
 {
     return this->_EditMode;
 }

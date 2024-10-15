@@ -76,12 +76,12 @@ void DebugLogger::SetLogDepth(const int depth)
     this->_LogDepth = depth;
 }
 
-const bool DebugLogger::GetActive() const
+bool DebugLogger::GetActive() const
 {
     return this->_Active;
 }
 
-const int DebugLogger::GetLogDepth() const
+int DebugLogger::GetLogDepth() const
 {
     return this->_LogDepth;
 }
