@@ -7,69 +7,69 @@
 
 #include "guiElem.hpp"
 
-void GUIElement::setPos(Vector2 pos)
+void GUIElement::setPos(const Vector2 pos)
 {
     this->_Pos = pos;
 }
 
-void GUIElement::setSize(Vector2 size)
+void GUIElement::setSize(const Vector2 size)
 {
     this->_Size = size;
 }
 
-void GUIElement::setText(std::string text)
+void GUIElement::setText(const std::string text)
 {
     this->_Text = text;
 }
 
-void GUIElement::setValue(std::string value)
+void GUIElement::setValue(const std::string value)
 {
     this->_Value = value;
 }
 
-void GUIElement::setId(std::string id)
+void GUIElement::setId(const std::string id)
 {
     this->_Id = id;
 }
 
-void GUIElement::setDisplay(bool state)
+void GUIElement::setDisplay(const bool state)
 {
     this->_Display = state;
 }
 
-Vector2 GUIElement::getPos() const
+const Vector2 GUIElement::getPos() const
 {
     return this->_Pos;
 }
 
-Vector2 GUIElement::getSize() const
+const Vector2 GUIElement::getSize() const
 {
     return this->_Size;
 }
 
-std::string GUIElement::getText() const
+const std::string GUIElement::getText() const
 {
     return this->_Text;
 }
 
-std::string GUIElement::getValue() const
+const std::string GUIElement::getValue() const
 {
     return this->_Value;
 }
 
-std::string GUIElement::getId() const
+const std::string GUIElement::getId() const
 {
     return this->_Id;
 }
 
-bool GUIElement::getDisplay() const
+const bool GUIElement::getDisplay() const
 {
     return this->_Display;
 }
 
 // ----------------------- GWINDBOW -----------------------
 
-GWindBox::GWindBox(Vector2 pos, Vector2 size, std::string text, std::string id, bool isOpened, bool display) : GUIElement(pos, size, text, id, display)
+GWindBox::GWindBox(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const bool isOpened, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_isOpened = isOpened;
 }
@@ -84,7 +84,7 @@ void GWindBox::DrawRlibWindBox() const
         
 }
 
-void GWindBox::setIsOpened(bool isOpened)
+void GWindBox::setIsOpened(const bool isOpened)
 {
     this->_isOpened = isOpened;
     std::string value = isOpened ? "true" : "false";
@@ -113,7 +113,7 @@ void GWindBox::setIsOpened(bool isOpened)
 // ----------------------- GButton -----------------------
 
 
-GButton::GButton(Vector2 pos, Vector2 size, std::string text, std::string id, bool display) : GUIElement(pos, size, text, id, display)
+GButton::GButton(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_isClicked = false;
 }
@@ -128,7 +128,7 @@ void GButton::DrawRlibButton() const
         const_cast<GButton*>(this)->setClicked(false);
 }
 
-void GButton::setClicked(bool state)
+void GButton::setClicked(const bool state)
 {
     this->_isClicked = state;
     this->setValue(state ? "true" : "false");
@@ -157,7 +157,7 @@ void GButton::setClicked(bool state)
 
 // ----------------------- GCheckBox -----------------------
 
-GCheckBox::GCheckBox(Vector2 pos, Vector2 size, std::string text, std::string id, bool checked, bool display) : GUIElement(pos, size, text, id, display)
+GCheckBox::GCheckBox(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const bool checked, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_isChecked = checked;
 }
@@ -171,7 +171,7 @@ void GCheckBox::DrawRlibCheckBox() const
         const_cast<GCheckBox*>(this)->setChecked(isChecked);
 }
 
-void GCheckBox::setChecked(bool state)
+void GCheckBox::setChecked(const bool state)
 {
     this->_isChecked = state;
     this->setValue(state ? "true" : "false");
@@ -198,7 +198,7 @@ void GCheckBox::setChecked(bool state)
 
 // ----------------------- GSlider -----------------------
 
-GSlider::GSlider(Vector2 pos, Vector2 size, std::string text, std::string id, float value, float minvalue, float maxvalue, bool display) : GUIElement(pos, size, text, id, display)
+GSlider::GSlider(const Vector2 pos, const Vector2 size, const std::string text, const std::string id,const float value,const float minvalue,const float maxvalue, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Value = value;
     this->_MinValue = minvalue;
@@ -214,28 +214,28 @@ void GSlider::DrawRlibSlider() const
         const_cast<GSlider*>(this)->setSliderValue(value);
 }
 
-void GSlider::setSliderValue(float value)
+void GSlider::setSliderValue(const float value)
 {
     this->_Value = value;
     this->setValue(std::to_string(value));
 }
 
-void GSlider::setMaxValue(float value)
+void GSlider::setMaxValue(const float value)
 {
     this->_MaxValue = value;
 }
 
-void GSlider::setMinValue(float value)
+void GSlider::setMinValue(const float value)
 {
     this->_MinValue = value;
 }
 
-float GSlider::getMaxValue() const
+const float GSlider::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-float GSlider::getMinValue() const
+const float GSlider::getMinValue() const
 {
     return this->_MinValue;
 }
@@ -262,7 +262,7 @@ float GSlider::getMinValue() const
 
 // ----------------------- GLIST -----------------------
 
-GList::GList(Vector2 pos, Vector2 size, std::string text, std::string id, bool display) : GUIElement(pos, size, text, id, display)
+GList::GList(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Value = 0;
     this->_ScrollIndex = 0;
@@ -279,18 +279,18 @@ void GList::DrawRlibList() const
     const_cast<GList*>(this)->setVal(value);
 }
 
-void GList::setScrollIndex(int index)
+void GList::setScrollIndex(const int index)
 {
     this->_ScrollIndex = index;
 }
 
-void GList::setVal(int value)
+void GList::setVal(const int value)
 {
     this->_Value = value;
     this->setValue(std::to_string(value));
 }
 
-int GList::getScrollIndex() const
+const int GList::getScrollIndex() const
 {
     return this->_ScrollIndex;
 }
@@ -316,7 +316,7 @@ int GList::getScrollIndex() const
 
 // ----------------------- GLISTEX -----------------------
 
-GListEx::GListEx(Vector2 pos, Vector2 size, std::string id, std::vector<std::string> list, int active, bool display) : GUIElement(pos, size, "default", id, display)
+GListEx::GListEx(const Vector2 pos, const Vector2 size, const std::string id, const std::vector<std::string> list, int active, const bool display) : GUIElement(pos, size, "default", id, display)
 {
     this->_List = list;
     this->_Active = active;
@@ -339,43 +339,43 @@ void GListEx::DrawRlibListEx() const
     const_cast<GListEx*>(this)->setActive(active);
 }
 
-void GListEx::setList(std::vector<std::string> list)
+void GListEx::setList(const std::vector<std::string> list)
 {
     this->_List = list;
 }
 
-void GListEx::setActive(int active)
+void GListEx::setActive(const int active)
 {
     this->_Active = active;
     this->setValue(std::to_string(active));
 }
 
-void GListEx::setFocus(int focus)
+void GListEx::setFocus(const int focus)
 {
     this->_Focus = focus;
 }
 
-void GListEx::setScrollIndex(int index)
+void GListEx::setScrollIndex(const int index)
 {
     this->_ScrollIndex = index;
 }
 
-int GListEx::getScrollIndex() const
+const int GListEx::getScrollIndex() const
 {
     return this->_ScrollIndex;
 }
 
-int GListEx::getFocus() const
+const int GListEx::getFocus() const
 {
     return this->_Focus;
 }
 
-int GListEx::getActive() const
+const int GListEx::getActive() const
 {
     return this->_Active;
 }
 
-std::vector<std::string> GListEx::getList() const
+const std::vector<std::string> GListEx::getList() const
 {
     return this->_List;
 }
@@ -401,7 +401,7 @@ std::vector<std::string> GListEx::getList() const
 
 // ----------------------- GTextInput -----------------------
 
-GTextInput::GTextInput(Vector2 pos, Vector2 size, std::string text, std::string id, int textSize, bool editMode, bool display) : GUIElement(pos, size, text, id, display)
+GTextInput::GTextInput(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int textSize, const bool editMode, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_TextMaxSize = textSize;
     this->_EditMode = editMode;
@@ -420,23 +420,23 @@ void GTextInput::DrawRlibTextInput() const
     }
 }
 
-void GTextInput::setTextMaxSize(int textMaxSize)
+void GTextInput::setTextMaxSize(const int textMaxSize)
 {
     this->_TextMaxSize = textMaxSize;
 }
 
-void GTextInput::setEditMode(bool editMode)
+void GTextInput::setEditMode(const bool editMode)
 {
     this->_EditMode = editMode;
 }
 
 
-int GTextInput::getTextMaxSize() const
+const int GTextInput::getTextMaxSize() const
 {
     return this->_TextMaxSize;
 }
 
-bool GTextInput::getEditMode() const
+const bool GTextInput::getEditMode() const
 {
     return this->_EditMode;
 }
@@ -463,7 +463,7 @@ bool GTextInput::getEditMode() const
 
 
 
-GTextInputBox::GTextInputBox(Vector2 pos, Vector2 size, std::string id, std::string title, std::string message, std::string buttons, std::string text, int textMaxSize, bool secretViewActive, bool display) : GUIElement(pos, size, text, id, display)
+GTextInputBox::GTextInputBox(const Vector2 pos, const Vector2 size, const std::string id, const std::string title, const std::string message, const std::string buttons, const std::string text, int textMaxSize, const bool secretViewActive, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Title = title;
     this->_Message = message;
@@ -491,12 +491,12 @@ void GTextInputBox::DrawRlibTextInputBox() const
     const_cast<GTextInputBox*>(this)->setValue(text);
 }
 
-void GTextInputBox::setMaxCharacters(int maxCharacters)
+void GTextInputBox::setMaxCharacters(const int maxCharacters)
 {
     this->_TextMaxSize = maxCharacters;
 }
 
-void GTextInputBox::setSecretView(bool secretView)
+void GTextInputBox::setSecretView(const bool secretView)
 {
     this->_SecretViewActive = secretView;
 }
@@ -516,37 +516,37 @@ void GTextInputBox::setButtons(std::string buttons)
     this->_Buttons = buttons;
 }
 
-void GTextInputBox::setResults(int result)
+void GTextInputBox::setResults(const int result)
 {
     this->_Result = result;
 }
 
-int GTextInputBox::getMaxCharacters() const
+const int GTextInputBox::getMaxCharacters() const
 {
     return this->_TextMaxSize;
 }
 
-bool GTextInputBox::getSecretView() const
+const bool GTextInputBox::getSecretView() const
 {
     return this->_SecretViewActive;
 }
 
-std::string GTextInputBox::getTitle() const
+const std::string GTextInputBox::getTitle() const
 {
     return this->_Title;
 }
 
-std::string GTextInputBox::getMessage() const
+const std::string GTextInputBox::getMessage() const
 {
     return this->_Message;
 }
 
-std::string GTextInputBox::getButtons() const
+const std::string GTextInputBox::getButtons() const
 {
     return this->_Buttons;
 }
 
-int GTextInputBox::getResults() const
+const int GTextInputBox::getResults() const
 {
     return this->_Result;
 }
@@ -574,7 +574,7 @@ int GTextInputBox::getResults() const
 
 // ----------------------- GSpinner -----------------------
 
-GSpinner::GSpinner(Vector2 pos, Vector2 size, std::string text, std::string id, int value, int minValue, int maxValue, bool editMode, bool display) : GUIElement(pos, size, text, id, display)
+GSpinner::GSpinner(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int value, int minValue, int maxValue, const bool editMode, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Value = value;
     this->_MinValue = minValue;
@@ -592,38 +592,38 @@ void GSpinner::DrawRlibSpinner() const
     const_cast<GSpinner*>(this)->setSpin(value);
 }
 
-void GSpinner::setSpin(int value)
+void GSpinner::setSpin(const int value)
 {
     this->_Value = value;
     this->setValue(std::to_string(value));
 }
 
-void GSpinner::setMaxValue(int value)
+void GSpinner::setMaxValue(const int value)
 {
     this->_MaxValue = value;
 }
 
-void GSpinner::setMinValue(int value)
+void GSpinner::setMinValue(const int value)
 {
     this->_MinValue = value;
 }
 
-void GSpinner::setEditMode(bool editMode)
+void GSpinner::setEditMode(const bool editMode)
 {
     this->_EditMode = editMode;
 }
 
-int GSpinner::getMaxValue() const
+const int GSpinner::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-int GSpinner::getMinValue() const
+const int GSpinner::getMinValue() const
 {
     return this->_MinValue;
 }
 
-bool GSpinner::getEditMode() const
+const bool GSpinner::getEditMode() const
 {
     return this->_EditMode;
 }
@@ -652,7 +652,7 @@ bool GSpinner::getEditMode() const
 // ----------------------- GValueBox -----------------------
 
 
-GValueBox::GValueBox(Vector2 pos, Vector2 size, std::string text, std::string id, int value, int minValue, int maxValue, bool editMode, bool display) : GUIElement(pos, size, text, id, display)
+GValueBox::GValueBox(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int value, int minValue, int maxValue, const bool editMode, const bool display) : GUIElement(pos, size, text, id, display)
 {
 
     this->_Value = value;
@@ -672,38 +672,38 @@ void GValueBox::DrawRlibValueBox() const
     const_cast<GValueBox*>(this)->setBoxValue(value);
 }
 
-void GValueBox::setBoxValue(int value)
+void GValueBox::setBoxValue(const int value)
 {
     this->_Value = value;
     this->setValue(std::to_string(value));
 }
 
-void GValueBox::setMaxValue(int value)
+void GValueBox::setMaxValue(const int value)
 {
     this->_MaxValue = value;
 }
 
-void GValueBox::setMinValue(int value)
+void GValueBox::setMinValue(const int value)
 {
     this->_MinValue = value;
 }
 
-void GValueBox::setEditMode(bool editMode)
+void GValueBox::setEditMode(const bool editMode)
 {
     this->_EditMode = editMode;
 }
 
-int GValueBox::getMaxValue() const
+const int GValueBox::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-int GValueBox::getMinValue() const
+const int GValueBox::getMinValue() const
 {
     return this->_MinValue;
 }
 
-bool GValueBox::getEditMode() const
+const bool GValueBox::getEditMode() const
 {
     return this->_EditMode;
 }
@@ -731,7 +731,7 @@ bool GValueBox::getEditMode() const
 
 // ----------------------- GGroup -----------------------
 
-GGroup::GGroup(Vector2 pos, Vector2 size, std::string text, std::string id, bool display) : GUIElement(pos, size, text, id, display)
+GGroup::GGroup(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Pos = pos;
     this->_Size = size;
@@ -766,7 +766,7 @@ void GGroup::DrawRlibGroup() const
 
 // ----------------------- GToggleGroup -----------------------
 
-GToggleGroup::GToggleGroup(Vector2 pos, Vector2 size, std::string text, std::string id, int active, bool display) : GUIElement(pos, size, text, id, display)
+GToggleGroup::GToggleGroup(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int active, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Active = active;
 }
@@ -781,13 +781,13 @@ void GToggleGroup::DrawRlibToggleGroup() const
     const_cast<GToggleGroup*>(this)->setActive(active);
 }
 
-void GToggleGroup::setActive(int active)
+void GToggleGroup::setActive(const int active)
 {
     this->_Active = active;
     this->setValue(std::to_string(active));
 }
 
-int GToggleGroup::getActive() const
+const int GToggleGroup::getActive() const
 {
     return this->_Active;
 }
@@ -812,7 +812,7 @@ int GToggleGroup::getActive() const
 
 // ----------------------- GToggleSlider -----------------------
 
-GToggleSlider::GToggleSlider(Vector2 pos, Vector2 size, std::string text, std::string id, int active, bool display) : GUIElement(pos, size, text, id, display)
+GToggleSlider::GToggleSlider(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int active, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Active = active;
 }
@@ -827,13 +827,13 @@ void GToggleSlider::DrawRlibToggleSlider() const
     const_cast<GToggleSlider*>(this)->setActive(active);
 }
 
-void GToggleSlider::setActive(int active)
+void GToggleSlider::setActive(const int active)
 {
     this->_Active = active;
     this->setValue(std::to_string(active));
 }
 
-int GToggleSlider::getActive() const
+const int GToggleSlider::getActive() const
 {
     return this->_Active;
 }
@@ -861,7 +861,7 @@ int GToggleSlider::getActive() const
 
 // ----------------------- GPannel -----------------------
 
-GPannel::GPannel(Vector2 pos, Vector2 size, std::string text, std::string id, bool display) : GUIElement(pos, size, text, id, display)
+GPannel::GPannel(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const bool display) : GUIElement(pos, size, text, id, display)
 {
 }
 
@@ -893,7 +893,7 @@ void GPannel::DrawRlibPannel() const
 
 // ----------------------- GColorPicker -----------------------
 
-GColorPicker::GColorPicker(Vector2 pos, Vector2 size, std::string text, std::string id, Color color, bool display) : GUIElement(pos, size, text, id, display)
+GColorPicker::GColorPicker(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const Color color, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Color = color;
 }
@@ -914,7 +914,7 @@ void GColorPicker::setColor(Color color)
     this->setValue(std::to_string(color.r) + " " + std::to_string(color.g) + " " + std::to_string(color.b) + " " + std::to_string(color.a));
 }
 
-Color GColorPicker::getColor() const
+const Color GColorPicker::getColor() const
 {
     return this->_Color;
 }
@@ -945,7 +945,7 @@ Color GColorPicker::getColor() const
 
 
 
-GProgressBar::GProgressBar(Vector2 pos, Vector2 size, std::string id, std::string textLeft, std::string textRight, float value, float minvalue, float maxvalue, bool display) : GUIElement(pos, size, "default", id, display)
+GProgressBar::GProgressBar(const Vector2 pos, const Vector2 size, const std::string id, const std::string textLeft, const std::string textRight,const float value,const float minvalue,const float maxvalue, const bool display) : GUIElement(pos, size, "default", id, display)
 {
     this->_TextLeft = textLeft;
     this->_TextRight = textRight;
@@ -964,18 +964,18 @@ void GProgressBar::DrawRlibProgressBar() const
     const_cast<GProgressBar*>(this)->setProgress(value);
 }
 
-void GProgressBar::setProgress(float value)
+void GProgressBar::setProgress(const float value)
 {
     this->_Value = value;
     this->setValue(std::to_string(value));
 }
 
-void GProgressBar::setMaxValue(float value)
+void GProgressBar::setMaxValue(const float value)
 {
     this->_MaxValue = value;
 }
 
-void GProgressBar::setMinValue(float value)
+void GProgressBar::setMinValue(const float value)
 {
     this->_MinValue = value;
 }
@@ -990,22 +990,22 @@ void GProgressBar::setTextRight(std::string text)
     this->_TextRight = text;
 }
 
-std::string GProgressBar::getTextLeft() const
+const std::string GProgressBar::getTextLeft() const
 {
     return this->_TextLeft;
 }
 
-std::string GProgressBar::getTextRight() const
+const std::string GProgressBar::getTextRight() const
 {
     return this->_TextRight;
 }
 
-float GProgressBar::getMaxValue() const
+const float GProgressBar::getMaxValue() const
 {
     return this->_MaxValue;
 }
 
-float GProgressBar::getMinValue() const
+const float GProgressBar::getMinValue() const
 {
     return this->_MinValue;
 }
@@ -1033,7 +1033,7 @@ float GProgressBar::getMinValue() const
 
 // ----------------------- GDropDown -----------------------
 
-GDropDown::GDropDown(Vector2 pos, Vector2 size, std::string text, std::string id, int active, bool editMode, bool display) : GUIElement(pos, size, text, id, display)
+GDropDown::GDropDown(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int active, const bool editMode, const bool display) : GUIElement(pos, size, text, id, display)
 {
     this->_Active = active;
     this->_EditMode = editMode;
@@ -1050,23 +1050,23 @@ void GDropDown::DrawRlibDropDown() const
     const_cast<GDropDown*>(this)->setActive(active);
 }
 
-void GDropDown::setActive(int active)
+void GDropDown::setActive(const int active)
 {
     this->_Active = active;
     this->setValue(std::to_string(active));
 }
 
-void GDropDown::setEditMode(bool editMode)
+void GDropDown::setEditMode(const bool editMode)
 {
     this->_EditMode = editMode;
 }
 
-int GDropDown::getActive() const
+const int GDropDown::getActive() const
 {
     return this->_Active;
 }
 
-bool GDropDown::getEditMode() const
+const bool GDropDown::getEditMode() const
 {
     return this->_EditMode;
 }
