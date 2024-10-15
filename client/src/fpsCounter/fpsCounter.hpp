@@ -12,33 +12,35 @@
 
 class FpsCounter {
 public:
-    FpsCounter() = default;
-    FpsCounter(Vector2 pos = {0, 0}, int fontSize = 10, Color color = BLACK);
+    FpsCounter(const Vector2 pos = {0, 0}, const int fontSize = 10, const Color color = BLACK);
     ~FpsCounter() = default;
 
-    void setPosX(int posX);
-    void setPosY(int posY);
-    void setPos(Vector2 pos);
-    void setFontSize(int fontSize);
-    void setFps(float fps);
-    void setFpsText(std::unique_ptr<RaylibText> fpsText);
+    void setPosX(const int posX) const;
+    void setPosY(const int posY) const ;
+    void setPos(const Vector2 pos) const ;
+    void setFontSize(const int fontSize) const ;
+    void setFps(const float fps);
+    void setFpsText(const std::unique_ptr<RaylibText> fpsText);
+    void setColor(const Color color) const;
+    void setColor(const unsigned char r, const unsigned char g, const unsigned char b, const unsigned char a) const;
 
-    int getPosX() const;
-    int getPosY() const;
-    Vector2 getPos() const;
-    int getFontSize() const;
-    float getFps() const;
+    const int getPosX() const;
+    const int getPosY() const;
+    const Vector2 getPos() const;
+    const int getFontSize() const;
+    const float getFps() const;
     const std::unique_ptr<RaylibText>& getFpsText() const;
+    const Color getColor() const;
 
     void draw() const;
 
     void reset();
     void update();
 
-    void setActive(bool active);
+    void setActive(const bool active);
     void toggleActive();
 
-    bool isActive() const;
+    const bool isActive() const;
 
 private:
     Vector2 _Position;

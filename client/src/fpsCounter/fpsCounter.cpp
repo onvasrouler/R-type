@@ -7,7 +7,7 @@
 
 #include "fpsCounter.hpp"
 
-FpsCounter::FpsCounter(Vector2 pos, int fontSize, Color color)
+FpsCounter::FpsCounter(const Vector2 pos, const int fontSize, const Color color)
 {
     this-> _Position = pos;
     this->_Fps = 0;
@@ -17,27 +17,27 @@ FpsCounter::FpsCounter(Vector2 pos, int fontSize, Color color)
     this->_Active = true;
 }
 
-void FpsCounter::setPosX(int posX)
+void FpsCounter::setPosX(const int posX) const
 {
     this->_FpsText->setPosX(posX);
 }
 
-void FpsCounter::setPosY(int posY)
+void FpsCounter::setPosY(const int posY) const
 {
     this->_FpsText->setPosY(posY);
 }
 
-void FpsCounter::setPos(Vector2 pos)
+void FpsCounter::setPos(const Vector2 pos) const
 {
     this->_FpsText->setPos(pos);
 }
 
-void FpsCounter::setFontSize(int fontSize)
+void FpsCounter::setFontSize(const int fontSize) const
 {
     this->_FpsText->setFontSize(fontSize);
 }
 
-void FpsCounter::setFps(float fps)
+void FpsCounter::setFps(const float fps)
 {
     this->_Fps = fps;
     this->_FpsText->setText("FPS: " + std::to_string(_Fps));
@@ -48,27 +48,37 @@ void FpsCounter::setFpsText(std::unique_ptr<RaylibText> fpsText)
     this->_FpsText = std::move(fpsText);
 }
 
-int FpsCounter::getPosX() const
+void FpsCounter::setColor(const Color color) const
+{
+    this->_FpsText->setColor(color);
+}
+
+void FpsCounter::setColor(const unsigned char r, const unsigned char g, const unsigned char b, const unsigned char a) const
+{
+    this->_FpsText->setColor(Color{r, g, b, a});
+}
+
+const int FpsCounter::getPosX() const
 {
     return this->_FpsText->getPosX();
 }
 
-int FpsCounter::getPosY() const
+const int FpsCounter::getPosY() const
 {
     return this->_FpsText->getPosY();
 }
 
-Vector2 FpsCounter::getPos() const
+const Vector2 FpsCounter::getPos() const
 {
     return this->_FpsText->getPos();
 }
 
-int FpsCounter::getFontSize() const
+const int FpsCounter::getFontSize() const
 {
     return this->_FpsText->getFontSize();
 }
 
-float FpsCounter::getFps() const
+const float FpsCounter::getFps() const
 {
     return this->_Fps;
 }
@@ -106,7 +116,7 @@ void FpsCounter::update()
     }
 }
 
-void FpsCounter::setActive(bool active)
+void FpsCounter::setActive(const bool active)
 {
     this->_Active = active;
 }
@@ -116,7 +126,7 @@ void FpsCounter::toggleActive()
     this->_Active = !_Active;
 }
 
-bool FpsCounter::isActive() const
+const bool FpsCounter::isActive() const
 {
     return this->_Active;
 }
