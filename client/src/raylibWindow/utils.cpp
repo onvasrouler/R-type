@@ -51,3 +51,37 @@ bool isPortValid(std::string port)
     std::regex portPattern("^[0-9]{1,5}$");
     return std::regex_match(port, portPattern);
 }
+
+DebugLogger::DebugLogger(const bool active, const int depth)
+{
+    this->_Active = active;
+    this->_LogDepth = depth;
+}
+
+void DebugLogger::Log(const std::string &msg, const int depth)
+{
+    if (this->_Active && depth <= this->_LogDepth)
+        std::cout << "Logger : " << msg << std::endl;
+}
+
+void DebugLogger::SetActive(const bool active)
+{
+    std::cout << "Logger : Active set to " << active << std::endl;
+    this->_Active = active;
+}
+
+void DebugLogger::SetLogDepth(const int depth)
+{
+    std::cout << "Logger : Log depth set to " << depth << std::endl;
+    this->_LogDepth = depth;
+}
+
+const bool DebugLogger::GetActive() const
+{
+    return this->_Active;
+}
+
+const int DebugLogger::GetLogDepth() const
+{
+    return this->_LogDepth;
+}
