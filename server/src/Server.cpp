@@ -182,29 +182,35 @@ void Server::createModule(AbstractModule* module) {
         module->start();
 #ifdef _WIN32
         SOCKET moduleSocket = accept(_socket, (struct sockaddr*)NULL, NULL);
-        if (moduleSocket == INVALID_SOCKET)
+        if (moduleSocket == INVALID_SOCKET) {
             throw std::runtime_error(
                 "Error while creating a module: accept failed");
+        }
 #else
         int moduleSocket = accept(_socket, (struct sockaddr*)NULL, NULL);
-        if (moduleSocket < 0)
+        if (moduleSocket < 0) {
             throw std::runtime_error(
                 "Error while creating a module: accept failed");
-        if (moduleSocket > _maxSocket)
+        }
+        if (moduleSocket > _maxSocket) {
             _maxSocket = moduleSocket;
+        }
 #endif
-        if (send(moduleSocket, "200\n\t", 5, 0) < 0)
+        if (send(moduleSocket, "200\n\t", 5, 0) < 0) {
             throw std::runtime_error(
                 "Error while creating a module: send failed");
+        }
         char buffer[1024] = {0};
         int valread = recv(moduleSocket, buffer, 1024, 0);
-        if (valread < 0 || valread != 5)
+        if (valread < 0 || valread != 5) {
             throw std::runtime_error(
                 "Error while creating a module: recv failed");
+        }
         std::string message = buffer;
-        if (message != "200\n\t")
+        if (message != "200\n\t") {
             throw std::runtime_error(
                 "Error while creating a module: wrong message received");
+        }
         _modules.push_back(
             std::make_unique<serverModule>(module, moduleSocket));
     } catch (std::exception& e) {
@@ -216,8 +222,9 @@ void Server::createModule(AbstractModule* module) {
 
 bool Server::canCommunicateWith(std::string moduleId,
                                 std::string communicateModuleId) {
-    if (moduleId == communicateModuleId)
+    if (moduleId == communicateModuleId) {
         return false;
+    }
     for (auto& module : _modules) {
         if (module->getModule()->getId() == moduleId) {
             for (auto& communicateModule : module->getModule()->getCommunicatesModules()) {
