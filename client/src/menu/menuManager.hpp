@@ -27,6 +27,12 @@ enum menuType {
     GAME_OVER_MENU
 };
 
+#define defaultErrorPosX 100
+#define defaultErrorPosY 100
+
+#define defaultErrorWidth 100
+#define defaultErrorHeight 100
+
 class MenuManager : public std::enable_shared_from_this<MenuManager> {
 public:
     MenuManager();
@@ -34,33 +40,37 @@ public:
     ~MenuManager() = default;
 
     void setMenuType(menuType type);
-    void setMenuType(int typeId);
+    void setMenuType(const int typeId);
     menuType getMenuType() const;
 
-    void setWindowHeight(int windowHeight);
-    void setWindowWidth(int windowWidth);
-    void setWindowSize(int windowWidth, int windowHeight);
+    void setWindowHeight(const int windowHeight);
+    void setWindowWidth(const int windowWidth);
+    void setWindowSize(const int windowWidth, const int windowHeight);
 
-    int getWindowHeight() const;
-    int getWindowWidth() const;
+    const int getWindowHeight() const;
+    const int getWindowWidth() const;
 
     void setGuiFunction(std::shared_ptr<guiFunction> guiFunction);
+    void setJsonParser(std::shared_ptr<JsonParser> jsonParser);
+    void setDebugLogger(std::shared_ptr<DebugLogger> debugLogger);
 
     void loadMenu();
     void reloadMenu();
 
     void reloadOnChanges();
 
-    void setJsonParser(std::shared_ptr<JsonParser> jsonParser);
 
     void drawMenu() const;
 
     std::shared_ptr<MenuManager> getThis();
 
     const Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y) const;
+    const Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const int width, const nlohmann::json_abi_v3_11_3::json &y, const int height) const;
 
-    const int convertToRelativePosX(std::string pos, int windowWidth) const;
-    const int convertToRelativePosY(std::string pos, int windowHeight) const;
+    const int convertToRelativePosX(const std::string pos, const int windowWidth) const;
+    const int convertToRelativePosY(const std::string pos, const int windowHeight) const;
+    const int convertToRelativePosX(const std::string pos, const int width, const int windowWidth) const;
+    const int convertToRelativePosY(const std::string pos, const int height, const int windowHeight) const;
 
     std::shared_ptr<RGui> getCurrentGui() const;
 
@@ -68,8 +78,8 @@ public:
 
     private:
 
-    void createMenu(const nlohmann::json &menu, int menuID = 0);
-    void integrateTemplate(const nlohmann::json &menu, int menuID = 0);
+    void createMenu(const nlohmann::json &menu, const int menuID = 0);
+    void integrateTemplate(const nlohmann::json &menu, const int menuID = 0);
     void eraseMenu();
 
     const std::shared_ptr<RaylibText> createTexts(const nlohmann::json &text, menuType type);
@@ -110,14 +120,15 @@ public:
     const std::vector<std::shared_ptr<GProgressBar>> loadsProgressBars(const nlohmann::json &progressBars, menuType type);
     const std::vector<std::shared_ptr<GDropDown>> loadsDropDowns(const nlohmann::json &dropDowns, menuType type);
 
-    const void newMenuItems(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y, const nlohmann::json_abi_v3_11_3::json &width, const nlohmann::json_abi_v3_11_3::json &length, std::string functionName, menuType type);
+    void newMenuItems(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y, const nlohmann::json_abi_v3_11_3::json &width, const nlohmann::json_abi_v3_11_3::json &length, std::string functionName, menuType type);
 
     nlohmann::json _menuJson;
 
     nlohmann::json _menuTemplate;
 
     menuType _type;
-    std::shared_ptr<JsonParser> _jsonParser;
+    std::shared_ptr<JsonParser> _JsonParser;
+    std::shared_ptr<DebugLogger> _DebugLogger;
 
     std::map<menuType, std::shared_ptr<RGui>> _menuList;
     std::map<std::string, std::function<void(std::string)>> functionRegistry;
