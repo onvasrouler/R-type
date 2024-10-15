@@ -534,6 +534,7 @@ std::shared_ptr<RaylibText> MenuManager::createTexts(const nlohmann::json &text,
 {
     this->_DebugLogger->Log("Creating Text : " + text.dump(), 5);
     try {
+        this->newMenuItems(text["position"]["x"], text["position"]["y"], text["text"].get<std::string>().length() * (text["fontSize"].get<int>() / 2), text["fontSize"], text["functionName"], type);
         return std::make_shared<RaylibText>(
             text["text"].get<std::string>(),
             getRelativePos(text["position"]["x"], text["text"].get<std::string>().length() * (text["fontSize"].get<int>() / 2), text["position"]["y"], text["fontSize"]),
