@@ -48,6 +48,7 @@ public:
 
     const std::unique_ptr<FpsCounter>& getFpsCounter() const;
     const std::shared_ptr<JsonParser>& getJsonParser() const;
+    const std::shared_ptr<DebugLogger>& getDebugLogger() const;
 
     void InitRlib();
     void CloseRlibWindow() const;
@@ -74,20 +75,20 @@ private:
     int _FrameRateLimit;
 
     bool _AutoReloadMenus;
-    bool _DebugMode;
 
-    std::unique_ptr<FpsCounter> _fpsCounter;
-    std::shared_ptr<JsonParser> _jsonParser;
+    std::unique_ptr<FpsCounter> _FpsCounter;
+    std::shared_ptr<JsonParser> _JsonParser;
     std::shared_ptr<MenuManager> _Menus;
     std::unique_ptr<RaylibText> _DebugText;
     std::unique_ptr<RGui> _GUI;
-    std::shared_ptr<guiFunction> _guiFunction;
+    std::shared_ptr<guiFunction> _GuiFunction;
+    std::shared_ptr<DebugLogger> _DebugLogger;
 
     std::vector<std::pair<int, std::function<void()>>> keyDownActions = {
         {KEY_F11, [this]() { ToggleFullscreen(); }},
         {KEY_R, [this]() { _AutoReloadMenus = !_AutoReloadMenus; }},
         {KEY_F5, [this]() { _Menus->reloadMenu(); }},
-        {KEY_F1, [this]() { _fpsCounter->toggleActive(); }},
+        {KEY_F1, [this]() { _FpsCounter->toggleActive(); }},
         {KEY_Z, [this]() { _UpPressed = true; }},
         {KEY_UP, [this]() { _UpPressed = true; }},
         {KEY_S, [this]() { _DownPressed = true; }},
@@ -97,7 +98,8 @@ private:
         {KEY_D, [this]() { _RightPressed = true; }},
         {KEY_RIGHT, [this]() { _RightPressed = true; }},
         {KEY_SPACE, [this]() { _SpacePressed = true; }},
-        {KEY_ESCAPE, [this]() { swapSettings(); }}
+        {KEY_ESCAPE, [this]() { swapSettings(); }},
+        {KEY_F3, [this]() { _DebugLogger->SetActive(!_DebugLogger->GetActive()); }},
     };
 
     std::vector<std::pair<int, std::function<void()>>> keyUpActions = {
