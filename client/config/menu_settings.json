@@ -8,7 +8,7 @@
         "START_MENU": {
             "isSimple": true,
             "id": 1,
-            "title": "settings",
+            "title": "Start Menu",
             "buttons": [
                 {
                     "id": "startButton",
@@ -31,7 +31,7 @@
                     "id": "0",
                     "text": "R-Type",
                     "position": {
-                        "x": "43%",
+                        "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
@@ -48,7 +48,7 @@
                     "id": "1",
                     "text": "START",
                     "position": {
-                        "x": "45%",
+                        "x": "center",
                         "y": 430
                     },
                     "fontSize": 30,
@@ -65,7 +65,7 @@
                     "id": "InvalidAdressText",
                     "text": "Invalid Adress",
                     "position": {
-                        "x": "35%",
+                        "x": "center",
                         "y": 100
                     },
                     "fontSize": 30,
@@ -82,7 +82,7 @@
                     "id": "InvalidPortText",
                     "text": "Invalid Port",
                     "position": {
-                        "x": "36%",
+                        "x": "center",
                         "y": 225
                     },
                     "fontSize": 30,
@@ -167,10 +167,10 @@
             "templates" : ["PARAM_NAVBAR"],
             "texts": [
                 {
-                    "id": 0,
+                    "id": "settingText",
                     "text": "Settings",
                     "position": {
-                        "x": 300,
+                        "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
@@ -191,10 +191,10 @@
             "id": 3,
             "texts": [
                 {
-                    "id": 0,
+                    "id": "videoText",
                     "text": "video",
                     "position": {
-                        "x": 300,
+                        "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
@@ -210,10 +210,10 @@
             ],
             "colorPickers" : [
                 {
-                    "id": 0,
+                    "id": "backgroundColor",
                     "position": {
                         "x": 600,
-                        "y": 140
+                        "y": 200
                     },
                     "size": {
                         "width": 120,
@@ -226,6 +226,7 @@
                         "b": 255,
                         "a": 255
                     },
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
             ],
@@ -234,7 +235,7 @@
                     "id": "0",
                     "position": {
                         "x": 580,
-                        "y": 120
+                        "y": 180
                     },
                     "size": {
                         "width": 180,
@@ -243,14 +244,42 @@
                     "text": "background color",
                     "display": true,
                     "functionName": "defaultFunct"
+                },
+                {
+                    "id": "0",
+                    "position": {
+                        "x": 60,
+                        "y": 180
+                    },
+                    "size": {
+                        "width": 150,
+                        "height": 60
+                    },
+                    "text": "frame rate limit",
+                    "display": true,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "0",
+                    "position": {
+                        "x": 240,
+                        "y": 180
+                    },
+                    "size": {
+                        "width": 150,
+                        "height": 60
+                    },
+                    "text": "resolution",
+                    "display": true,
+                    "functionName": "defaultFunct"
                 }
             ],
             "dropDowns" : [
                 {
-                    "id": 0,
+                    "id": "frameRateLimit",
                     "position": {
                         "x": 75,
-                        "y": 140
+                        "y": 200
                     },
                     "size": {
                         "width": 120,
@@ -263,10 +292,10 @@
                     "functionName": "defaultFunct"
                 },
                 {
-                    "id": 1,
+                    "id": "resolutionChoice",
                     "position": {
-                        "x": 250,
-                        "y": 140
+                        "x": 255,
+                        "y": 200
                     },
                     "size": {
                         "width": 120,
@@ -291,7 +320,7 @@
                     "id": "0",
                     "text": "Audio",
                     "position": {
-                        "x": 300,
+                        "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
@@ -315,7 +344,7 @@
                     "id": "0",
                     "text": "Controls",
                     "position": {
-                        "x": "40%",
+                        "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
@@ -351,10 +380,10 @@
         "PARAM_NAVBAR": {
             "buttons": [
                 {
-                    "id": 0,
+                    "id": "exitButton",
                     "text": "Exit",
                     "position": {
-                        "x": 15,
+                        "x": 20,
                         "y": 15
                     },
                     "size": {
@@ -372,7 +401,7 @@
 
                 },
                 {
-                    "id": 1,
+                    "id": "generalButton",
                     "text": "General",
                     "position": {
                         "x": 20,
@@ -387,7 +416,7 @@
 
                 },
                 {
-                    "id": 2,
+                    "id": "videoButton",
                     "text": "Video",
                     "position": {
                         "x": 220,
@@ -402,7 +431,7 @@
 
                 },
                 {
-                    "id": 3,
+                    "id": "audioButton",
                     "text": "Audio",
                     "position": {
                         "x": 420,
@@ -417,7 +446,7 @@
 
                 },
                 {
-                    "id": 0,
+                    "id": "controlsButton",
                     "text": "Controls",
                     "position": {
                         "x": 620,
