@@ -7,29 +7,6 @@
 
 #include "gui.hpp"
 
-// RGui::RGui()
-// {
-//     // this->AddButton(GButton(Vector2{150, 150}, Vector2{100, 50}, "Button"));
-//     // this->AddWindBox(GWindBox(Vector2{300, 300}, Vector2{100, 50}, "WindBox"));
-//     // this->this->_Buttons[0].setAction([this]() { this->this->_WindBoxes[0].setState(true); });
-//     // this->AddText(RaylibText("Hello World", Vector2{400, 400}, 20, WHITE));
-//     // this->AddCheckBox(GCheckBox(Vector2{500, 500}, Vector2{100, 50}, "CheckBox"));
-//     // this->AddSlider(GSlider(Vector2{300, 400}, Vector2{100, 50}, "Slider", 50, 0, 100));
-//     // this->AddList(GList(Vector2{300, 500}, Vector2{100, 50}, "List;elem1;elem2;elem3"));
-//     // this->AddListEx(GListEx(Vector2{500, 0}, Vector2{100, 200}, {"List", "Ex", "with", "many", "element", "to", "test", "that"}, 0));
-//     // this->addInputText(GTextInput(Vector2{500, 300}, Vector2{100, 50}, "enter text"));
-//     // this->addInputTextBox(GTextInputBox(Vector2{500, 400}, Vector2{200, 100}, "InputText", "Enter text:", "OK;Cancel", "default text", 100));
-//     // this->addSpinner(GSpinner(Vector2{400, 400}, Vector2{100, 50}, "Spinner", 0, 0, 100));
-//     // this->AddValueBox(GValueBox(Vector2{400, 500}, Vector2{100, 50}, "ValueBox", 0, 0, 100));
-//     // this->AddGroup(GGroup(Vector2{0, 0}, Vector2{100, 100}, "Group"));
-//     // this->AddToggleGroup(GToggleGroup(Vector2{200, 200}, Vector2{100, 100}, "elem1;elem2;elem3"));
-//     //this->AddToggleSlider(GToggleSlider(Vector2{400, 400}, Vector2{100, 50}, "elem1;elem2", 0));
-//     // this->AddPannel(GPannel(Vector2{400, 400}, Vector2{200, 200}, "Pannel"));
-//     // this->AddColorPicker(GColorPicker(Vector2{450, 450}, Vector2{100, 100}, "ColorPicker", Color{0, 0, 0, 255}));
-//     //this->AddProgressBar(GProgressBar(Vector2{400, 400}, Vector2{100, 50}, "ProgressBar", "pwogwesbaw", 50, 0, 100));
-// }
-
-
 RGui::~RGui()
 {
     this->_Buttons.clear();
@@ -111,8 +88,7 @@ void RGui::DrawGui() const
             dropDown->DrawRlibDropDown();
 }
 
-
-std::string RGui::GetValueById(std::string id)
+std::string RGui::GetValueById(std::string id) const
 {
     for (const auto &button : this->_Buttons)
         if (button->getId() == id)
@@ -176,7 +152,7 @@ std::string RGui::GetValueById(std::string id)
 
 // ----------------------- GETTERS BY ID -----------------------
 
-std::shared_ptr<GButton> RGui::GetButtonsById(std::string id)
+const std::shared_ptr<GButton> RGui::GetButtonsById(std::string id) const
 {
     for (const auto &button : this->_Buttons)
         if (button->getId() == id)
@@ -184,7 +160,7 @@ std::shared_ptr<GButton> RGui::GetButtonsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GWindBox> RGui::GetWindBoxesById(std::string id)
+const std::shared_ptr<GWindBox> RGui::GetWindBoxesById(std::string id) const
 {
     for (const auto &windBox : this->_WindBoxes)
         if (windBox->getId() == id)
@@ -192,7 +168,7 @@ std::shared_ptr<GWindBox> RGui::GetWindBoxesById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<RaylibText> RGui::GetTextsById(std::string id)
+const std::shared_ptr<RaylibText> RGui::GetTextsById(std::string id) const
 {
     for (const auto &text : this->_Texts)
         if (text->getId() == id)
@@ -200,7 +176,7 @@ std::shared_ptr<RaylibText> RGui::GetTextsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GCheckBox> RGui::GetCheckBoxesById(std::string id)
+const std::shared_ptr<GCheckBox> RGui::GetCheckBoxesById(std::string id) const
 {
     for (const auto &checkBox : this->_CheckBoxes)
         if (checkBox->getId() == id)
@@ -208,7 +184,7 @@ std::shared_ptr<GCheckBox> RGui::GetCheckBoxesById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GSlider> RGui::GetSlidersById(std::string id)
+const std::shared_ptr<GSlider> RGui::GetSlidersById(std::string id) const
 {
     for (const auto &slider : this->_Sliders)
         if (slider->getId() == id)
@@ -216,7 +192,7 @@ std::shared_ptr<GSlider> RGui::GetSlidersById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GList> RGui::GetListsById(std::string id)
+const std::shared_ptr<GList> RGui::GetListsById(std::string id) const
 {
     for (const auto &list : this->_Lists)
         if (list->getId() == id)
@@ -224,7 +200,7 @@ std::shared_ptr<GList> RGui::GetListsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GListEx> RGui::GetListExsById(std::string id)
+const std::shared_ptr<GListEx> RGui::GetListExsById(std::string id) const
 {
     for (const auto &listEx : this->_ListExs)
         if (listEx->getId() == id)
@@ -232,7 +208,7 @@ std::shared_ptr<GListEx> RGui::GetListExsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GTextInput> RGui::GetInputTextsById(std::string id)
+const std::shared_ptr<GTextInput> RGui::GetInputTextsById(std::string id) const
 {
     for (const auto &inputText : this->_InputTexts)
         if (inputText->getId() == id)
@@ -240,7 +216,7 @@ std::shared_ptr<GTextInput> RGui::GetInputTextsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GTextInputBox> RGui::GetInputTextBoxsById(std::string id)
+const std::shared_ptr<GTextInputBox> RGui::GetInputTextBoxsById(std::string id) const
 {
     for (const auto &inputTextBox : this->_InputTextBoxs)
         if (inputTextBox->getId() == id)
@@ -248,7 +224,7 @@ std::shared_ptr<GTextInputBox> RGui::GetInputTextBoxsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GSpinner> RGui::GetSpinnersById(std::string id)
+const std::shared_ptr<GSpinner> RGui::GetSpinnersById(std::string id) const
 {
     for (const auto &spinner : this->_Spinners)
         if (spinner->getId() == id)
@@ -256,7 +232,7 @@ std::shared_ptr<GSpinner> RGui::GetSpinnersById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GValueBox> RGui::GetValueBoxesById(std::string id)
+const std::shared_ptr<GValueBox> RGui::GetValueBoxesById(std::string id) const
 {
     for (const auto &valueBox : this->_ValueBoxes)
         if (valueBox->getId() == id)
@@ -264,7 +240,7 @@ std::shared_ptr<GValueBox> RGui::GetValueBoxesById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GGroup> RGui::GetGroupsById(std::string id)
+const std::shared_ptr<GGroup> RGui::GetGroupsById(std::string id) const
 {
     for (const auto &group : this->_Groups)
         if (group->getId() == id)
@@ -272,7 +248,7 @@ std::shared_ptr<GGroup> RGui::GetGroupsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GToggleGroup> RGui::GetToggleGroupsById(std::string id)
+const std::shared_ptr<GToggleGroup> RGui::GetToggleGroupsById(std::string id) const
 {
     for (const auto &toggleGroup : this->_ToggleGroups)
         if (toggleGroup->getId() == id)
@@ -280,7 +256,7 @@ std::shared_ptr<GToggleGroup> RGui::GetToggleGroupsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GToggleSlider> RGui::GetToggleSlidersById(std::string id)
+const std::shared_ptr<GToggleSlider> RGui::GetToggleSlidersById(std::string id) const
 {
     for (const auto &toggleSlider : this->_ToggleSliders)
         if (toggleSlider->getId() == id)
@@ -288,7 +264,7 @@ std::shared_ptr<GToggleSlider> RGui::GetToggleSlidersById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GPannel> RGui::GetPannelsById(std::string id)
+const std::shared_ptr<GPannel> RGui::GetPannelsById(std::string id) const
 {
     for (const auto &pannel : this->_Pannels)
         if (pannel->getId() == id)
@@ -296,7 +272,7 @@ std::shared_ptr<GPannel> RGui::GetPannelsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GColorPicker> RGui::GetColorPickersById(std::string id)
+const std::shared_ptr<GColorPicker> RGui::GetColorPickersById(std::string id) const
 {
     for (const auto &colorPicker : this->_ColorPickers)
         if (colorPicker->getId() == id)
@@ -304,7 +280,7 @@ std::shared_ptr<GColorPicker> RGui::GetColorPickersById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GProgressBar> RGui::GetProgressBarsById(std::string id)
+const std::shared_ptr<GProgressBar> RGui::GetProgressBarsById(std::string id) const
 {
     for (const auto &progressBar : this->_ProgressBars)
         if (progressBar->getId() == id)
@@ -312,7 +288,7 @@ std::shared_ptr<GProgressBar> RGui::GetProgressBarsById(std::string id)
     return nullptr;
 }
 
-std::shared_ptr<GDropDown> RGui::GetDropDownsById(std::string id)
+const std::shared_ptr<GDropDown> RGui::GetDropDownsById(std::string id) const
 {
     for (const auto &dropDown : this->_DropDowns)
         if (dropDown->getId() == id)
@@ -337,91 +313,91 @@ std::shared_ptr<GDropDown> RGui::GetDropDownsById(std::string id)
 
 // ----------------------- ADDERS -----------------------
 
-void RGui::AddButton(std::shared_ptr<GButton> button)
+void RGui::AddButton(const std::shared_ptr<GButton> button)
 {
     this->_Buttons.push_back(button);
 }
-void RGui::AddWindBox(std::shared_ptr<GWindBox> windBox)
+void RGui::AddWindBox(const std::shared_ptr<GWindBox> windBox)
 {
     this->_WindBoxes.push_back(windBox);
 }
 
-void RGui::AddText(std::shared_ptr<RaylibText> text)
+void RGui::AddText(const std::shared_ptr<RaylibText> text)
 {
     this->_Texts.push_back(text);
 }
 
-void RGui::AddCheckBox(std::shared_ptr<GCheckBox> checkBox)
+void RGui::AddCheckBox(const std::shared_ptr<GCheckBox> checkBox)
 {
     this->_CheckBoxes.push_back(checkBox);
 }
 
-void RGui::AddSlider(std::shared_ptr<GSlider> slider)
+void RGui::AddSlider(const std::shared_ptr<GSlider> slider)
 {
     this->_Sliders.push_back(slider);
 }
 
-void RGui::AddList(std::shared_ptr<GList> list)
+void RGui::AddList(const std::shared_ptr<GList> list)
 {
     this->_Lists.push_back(list);
 }
 
-void RGui::AddListEx(std::shared_ptr<GListEx> listEx)
+void RGui::AddListEx(const std::shared_ptr<GListEx> listEx)
 {
     this->_ListExs.push_back(listEx);
 }
 
-void RGui::AddInputText(std::shared_ptr<GTextInput> inputText)
+void RGui::AddInputText(const std::shared_ptr<GTextInput> inputText)
 {
     this->_InputTexts.push_back(inputText);
 }
 
-void RGui::AddInputTextBox(std::shared_ptr<GTextInputBox> inputTextBox)
+void RGui::AddInputTextBox(const std::shared_ptr<GTextInputBox> inputTextBox)
 {
     this->_InputTextBoxs.push_back(inputTextBox);
 }
 
-void RGui::AddSpinner(std::shared_ptr<GSpinner> spinner)
+void RGui::AddSpinner(const std::shared_ptr<GSpinner> spinner)
 {
     this->_Spinners.push_back(spinner);
 }
 
-void RGui::AddValueBox(std::shared_ptr<GValueBox> valueBox)
+void RGui::AddValueBox(const std::shared_ptr<GValueBox> valueBox)
 {
     this->_ValueBoxes.push_back(valueBox);
 }
 
-void RGui::AddGroup(std::shared_ptr<GGroup> group)
+void RGui::AddGroup(const std::shared_ptr<GGroup> group)
 {
     this->_Groups.push_back(group);
 }
 
-void RGui::AddToggleGroup(std::shared_ptr<GToggleGroup> toggleGroup)
+void RGui::AddToggleGroup(const std::shared_ptr<GToggleGroup> toggleGroup)
 {
     this->_ToggleGroups.push_back(toggleGroup);
 }
 
-void RGui::AddToggleSlider(std::shared_ptr<GToggleSlider> toggleSlider)
+void RGui::AddToggleSlider(const std::shared_ptr<GToggleSlider> toggleSlider)
 {
     this->_ToggleSliders.push_back(toggleSlider);
 }
 
-void RGui::AddPannel(std::shared_ptr<GPannel> pannel)
+void RGui::AddPannel(const std::shared_ptr<GPannel> pannel)
 {
     this->_Pannels.push_back(pannel);
 }
 
-void RGui::AddColorPicker(std::shared_ptr<GColorPicker> colorPicker)
+void RGui::AddColorPicker(const std::shared_ptr<GColorPicker> colorPicker)
 {
     this->_ColorPickers.push_back(colorPicker);
 }
 
-void RGui::AddProgressBar(std::shared_ptr<GProgressBar> progressBar)
+void RGui::AddProgressBar(const std::shared_ptr<GProgressBar> progressBar)
 {
     this->_ProgressBars.push_back(progressBar);
 }
 
-void RGui::AddDropDown(std::shared_ptr<GDropDown> dropDown)
+void RGui::AddDropDown(const std::shared_ptr<GDropDown> dropDown)
 {
     this->_DropDowns.push_back(dropDown);
 }
