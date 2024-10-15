@@ -66,14 +66,14 @@ class AbstractModule : public MultiThreadElement {
          *
          * @return std::vector<std::string> The communicates modules
          */
-        std::vector<std::string> getCommunicatesModules() const;
+        const std::vector<std::string> getCommunicatesModules() const;
 
         /**
          * @brief Get the id of the MultithreadElement
          *
          * @return std::string The id of the MultithreadElement
          */
-        std::string getId() const;
+        const std::string getId() const;
     protected:
         /**
          * @brief Decode the message received from the server.
