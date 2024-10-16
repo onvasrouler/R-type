@@ -20,3 +20,6 @@
 #include <fstream>
 #include <regex>
 #include "raylibWindow/utils.hpp"
+#include <boost/asio.hpp>
+
+using boost::asio::ip::udp;
