@@ -14,9 +14,10 @@ GColorPicker::GColorPicker(const Vector2 pos, const Vector2 size, const std::str
 
 void GColorPicker::draw() const
 {
-    if (this->_Display) {
-        Color color = this->_Color;
+    Color color;
 
+    if (this->_Display) {
+        color = this->_Color;
         GuiColorPicker(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &color);
         const_cast<GColorPicker*>(this)->setColor(color);
     }

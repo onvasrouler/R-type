@@ -15,12 +15,12 @@ GTextInput::GTextInput(const Vector2 pos, const Vector2 size, const std::string 
 
 void GTextInput::draw() const
 {
+    char* text;
+
     if (this->_Display) {
-        char* text = const_cast<char*>(this->_Text.c_str());
-        
+        text = const_cast<char*>(this->_Text.c_str());
         if (GuiTextBox(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, text, this->_TextMaxSize, this->_EditMode)) {
             const_cast<GTextInput*>(this)->setEditMode(!this->_EditMode);
-            
             const_cast<GTextInput*>(this)->setText(text);
             const_cast<GTextInput*>(this)->setValue(text);
         }

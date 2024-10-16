@@ -17,8 +17,10 @@ GSpinner::GSpinner(const Vector2 pos, const Vector2 size, const std::string text
 
 void GSpinner::draw() const
 {
+    int value;
+
     if (this->_Display) {
-        int value = this->_Value;
+        value = this->_Value;
         
         if (GuiSpinner(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &value, this->_MinValue, this->_MaxValue, this->_EditMode))
             const_cast<GSpinner*>(this)->setEditMode(!this->_EditMode);

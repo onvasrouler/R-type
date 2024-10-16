@@ -22,7 +22,6 @@ public:
 
     float getMaxValue() const;
     float getMinValue() const;
-
 private:
     float _Value;
     float _MaxValue;

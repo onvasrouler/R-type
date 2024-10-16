@@ -17,17 +17,14 @@ GValueBox::GValueBox(const Vector2 pos, const Vector2 size, const std::string te
 
 void GValueBox::draw() const
 {
-    if (this->_Display) {
-        int value = this->_Value;
+    int value;
 
-        if (GuiValueBox(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &value, this->_MinValue, this->_MaxValue, this->_EditMode)) {
+    if (this->_Display) {
+        value = this->_Value;
+        if (GuiValueBox(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &value, this->_MinValue, this->_MaxValue, this->_EditMode))
             const_cast<GValueBox*>(this)->setEditMode(!this->_EditMode);
-        }
-        
         const_cast<GValueBox*>(this)->setBoxValue(value);
     }
-
-    
 }
 
 void GValueBox::setBoxValue(const int value)

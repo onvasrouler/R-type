@@ -18,18 +18,19 @@ GTextInputBox::GTextInputBox(const Vector2 pos, const Vector2 size, const int zi
 
 void GTextInputBox::draw() const
 {
+    char* text;
+    int result;
+    bool secretviewactive;
     if (this->_Display) {
-        char* text = const_cast<char*>(this->_Text.c_str());
-        int result = this->_Result;
-
+        text = const_cast<char*>(this->_Text.c_str());
+        result = this->_Result;
         if (this->_SecretViewActive) {
-            bool secretviewactive = this->_SecretViewActive;
+            secretviewactive = this->_SecretViewActive;
             result = GuiTextInputBox(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Title.c_str(), this->_Message.c_str(), this->_Buttons.c_str(), text, this->_TextMaxSize, &secretviewactive);
             const_cast<GTextInputBox*>(this)->setSecretView(secretviewactive);
         } else {
             result = GuiTextInputBox(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Title.c_str(), this->_Message.c_str(), this->_Buttons.c_str(), text, this->_TextMaxSize, NULL);
         }
-        
         const_cast<GTextInputBox*>(this)->setResults(result);
         const_cast<GTextInputBox*>(this)->setText(text);
         const_cast<GTextInputBox*>(this)->setValue(text);

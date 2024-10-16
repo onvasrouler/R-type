@@ -42,11 +42,13 @@ void RlibWindow::setDefaultVal()
 
 RlibWindow::RlibWindow(const std::string filename)
 {
+    nlohmann::json json;
+    std::shared_ptr<RLText> fpsTxt;
     this->_JsonParser = std::make_unique<JsonParser>();
     this->_FpsCounter = std::make_unique<FpsCounter>();
     this->_DebugLogger = std::make_shared<DebugLogger>(true);
 
-    nlohmann::json json = _JsonParser->parseFile(filename);
+    json = _JsonParser->parseFile(filename);
 
     this->_WindowWidth = json["windowWidth"];
     this->_WindowHeight = json["windowHeight"];
@@ -62,7 +64,7 @@ RlibWindow::RlibWindow(const std::string filename)
     this->_windowX = json["windowX"];
     this->_windowY = json["windowY"];
 
-    std::shared_ptr<RLText> fpsTxt = this->_FpsCounter->getFpsText();
+    fpsTxt = this->_FpsCounter->getFpsText();
 
     fpsTxt->setPos(
         Vector2{

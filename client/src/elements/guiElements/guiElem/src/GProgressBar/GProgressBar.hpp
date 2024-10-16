@@ -26,7 +26,6 @@ public:
     std::string getTextRight() const;
     float getMaxValue() const;
     float getMinValue() const;
-
 private:
     std::string _TextLeft;
     std::string _TextRight;

@@ -17,8 +17,6 @@ public:
     void draw() const;
 
     void setChecked(const bool state);
-
 private:
-    bool _isChecked;
-    
+    bool _isChecked;  
 };

@@ -13,7 +13,6 @@ GPannel::GPannel(const Vector2 pos, const Vector2 size, const std::string text, 
 
 void GPannel::draw() const
 {
-    if (this->_Display) {
+    if (this->_Display)
         GuiPanel(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str());
-    }
 }

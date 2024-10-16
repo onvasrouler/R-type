@@ -21,7 +21,6 @@ public:
 
     int getActive() const;
     bool getEditMode() const;
-
 private:
     int _Active;
     bool _EditMode;

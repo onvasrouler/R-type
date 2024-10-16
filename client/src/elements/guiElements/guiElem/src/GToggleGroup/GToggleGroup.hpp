@@ -18,9 +18,7 @@ public:
 
     void setActive(const int active);
 
-
     int getActive() const;
-    
 private:
     int _Active;
 };

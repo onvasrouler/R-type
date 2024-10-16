@@ -24,7 +24,6 @@ public:
     int getMaxValue() const;
     int getMinValue() const;
     bool getEditMode() const;
-
 private:
     int _Value;
     int _MaxValue;

@@ -18,9 +18,10 @@ GProgressBar::GProgressBar(const Vector2 pos, const Vector2 size, const int zind
 
 void GProgressBar::draw() const
 {
-    if (this->_Display) {
-        float value = this->_Value;
+    float value;
 
+    if (this->_Display) {
+        value = this->_Value;
         GuiProgressBar(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_TextLeft.c_str(), this->_TextRight.c_str(), &value, this->_MinValue, this->_MaxValue);
         const_cast<GProgressBar*>(this)->setProgress(value);
     }

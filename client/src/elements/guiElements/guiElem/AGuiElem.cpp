@@ -17,7 +17,6 @@ AGuiElem::AGuiElem(const Vector2 pos, const Vector2 size, const std::string text
     this->_ZIndex = zindex;
 }
 
-
 void AGuiElem::setPos(const Vector2 pos)
 {
     this->_Pos = pos;

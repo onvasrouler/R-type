@@ -14,9 +14,10 @@ GToggleSlider::GToggleSlider(const Vector2 pos, const Vector2 size, const std::s
 
 void GToggleSlider::draw() const
 {
-    if (this->_Display) {
-        int active = this->_Active;
+    int active;
 
+    if (this->_Display) {
+        active = this->_Active;
         GuiToggleSlider(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &active);
         const_cast<GToggleSlider*>(this)->setActive(active);
     }

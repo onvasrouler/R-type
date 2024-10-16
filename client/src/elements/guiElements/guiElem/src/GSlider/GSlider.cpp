@@ -16,12 +16,12 @@ GSlider::GSlider(const Vector2 pos, const Vector2 size, const std::string text, 
 
 void GSlider::draw() const
 {
-    if (this->_Display) {
-        float value = this->_Value;
+    float value;
 
-        if (GuiSlider(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), TextFormat("%2.2f", value), &value, this->_MinValue, this->_MaxValue)) {
+    if (this->_Display) {
+        value = this->_Value;
+        if (GuiSlider(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), TextFormat("%2.2f", value), &value, this->_MinValue, this->_MaxValue))
             const_cast<GSlider*>(this)->setSliderValue(value);
-        }
     }
 }
 

@@ -15,9 +15,12 @@ GList::GList(const Vector2 pos, const Vector2 size, const std::string text, cons
 
 void GList::draw() const
 {
+    int value;
+    int scrollIndex;
+
     if (this->_Display) {
-        int value = this->_Value;
-        int scrollIndex = this->_ScrollIndex;
+        value = this->_Value;
+        scrollIndex = this->_ScrollIndex;
         GuiListView(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &scrollIndex, &value);
         const_cast<GList*>(this)->setScrollIndex(scrollIndex);
         const_cast<GList*>(this)->setVal(value);

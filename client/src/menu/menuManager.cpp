@@ -14,6 +14,7 @@ MenuManager::MenuManager()
     this->_WindowHeight = GetScreenHeight();
     this->_WindowWidth = GetScreenWidth();
 }
+
 MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
 {
     this->_type = START_MENU;
@@ -146,9 +147,10 @@ void MenuManager::reloadOnChanges()
 
 void MenuManager::createMenu(const nlohmann::json &menu, const int menuID)
 {
+    menuType type;
+
     try {
-        menuType type = static_cast<menuType>(menuID);
-        
+        type = static_cast<menuType>(menuID);
         this->_DebugLogger->Log("Creating Texts", 4);
         this->_menuList[type]->addListElement(loadsTexts(menu, type));
         this->_DebugLogger->Log("Creating Buttons", 4);
@@ -251,12 +253,10 @@ Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const nlohmann::jso
         pos.x = this->convertToRelativePosX(x.get<std::string>(), this->_WindowWidth);
     else if (x.is_number())
         pos.x = x.get<int>();
-
     if (y.is_string())
         pos.y = this->convertToRelativePosY(y.get<std::string>(), this->_WindowHeight);
     else if (y.is_number())
         pos.y = y.get<int>();
-
     return pos;
 }
 
@@ -269,12 +269,10 @@ Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const int width, co
         pos.x = this->convertToRelativePosX(x.get<std::string>(), width, this->_WindowWidth);
     else if (x.is_number())
         pos.x = x.get<int>();
-
     if (y.is_string())
         pos.y = this->convertToRelativePosY(y.get<std::string>(), height, this->_WindowHeight);
     else if (y.is_number())
         pos.y = y.get<int>();
-
     return pos;
 }
 

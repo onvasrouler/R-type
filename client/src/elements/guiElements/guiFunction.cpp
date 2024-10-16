@@ -59,9 +59,8 @@ std::unordered_map<std::string, std::function<void()>> guiFunction::getFunctionM
 
 std::function<void()> guiFunction::getFunction(const std::string functionName)
 {
-    if (_FunctionList.find(functionName) != _FunctionList.end()) {
+    if (_FunctionList.find(functionName) != _FunctionList.end())
         return _FunctionList[functionName];
-    } else {
+    else
         return nullptr;
-    }
 }

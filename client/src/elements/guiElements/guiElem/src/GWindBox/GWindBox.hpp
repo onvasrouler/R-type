@@ -17,7 +17,6 @@ public:
     void draw() const;
 
     void setIsOpened(const bool isOpened);
-
 private:
     bool _isOpened;
 };

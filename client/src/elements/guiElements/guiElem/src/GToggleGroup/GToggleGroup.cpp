@@ -14,9 +14,10 @@ GToggleGroup::GToggleGroup(const Vector2 pos, const Vector2 size, const std::str
 
 void GToggleGroup::draw() const
 {
+    int active;
+    
     if (this->_Display) {
-        int active = this->_Active;
-
+        active = this->_Active;
         GuiToggleGroup(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &active);
         const_cast<GToggleGroup*>(this)->setActive(active);
     }

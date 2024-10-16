@@ -21,7 +21,6 @@ public:
 
     int getTextMaxSize() const;
     bool getEditMode() const;
-
 private:
     int _TextMaxSize;
     bool _EditMode;

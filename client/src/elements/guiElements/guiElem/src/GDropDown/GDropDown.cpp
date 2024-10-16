@@ -15,13 +15,12 @@ GDropDown::GDropDown(const Vector2 pos, const Vector2 size, const std::string te
 
 void GDropDown::draw() const
 {
+    int active;
+
     if (this->_Display) {
-        int active = this->_Active;
-
-        if (GuiDropdownBox(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &active, this->_EditMode)) {
+        active = this->_Active;
+        if (GuiDropdownBox(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, this->_Text.c_str(), &active, this->_EditMode))
             const_cast<GDropDown*>(this)->setEditMode(!this->_EditMode);
-        }
-
         const_cast<GDropDown*>(this)->setActive(active);
     }
 }

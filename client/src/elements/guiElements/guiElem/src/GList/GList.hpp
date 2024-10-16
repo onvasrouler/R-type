@@ -20,7 +20,6 @@ public:
     void setVal(const int value);
 
     int getScrollIndex() const;
-    
 private:
     int _ScrollIndex;
     int _Value;

@@ -29,7 +29,6 @@ public:
     std::string getMessage() const;
     std::string getButtons() const;
     int getResults() const;
-
 private:
     std::string _Title;
     std::string _Message;

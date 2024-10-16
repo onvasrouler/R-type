@@ -15,16 +15,18 @@ GListEx::GListEx(const Vector2 pos, const Vector2 size, const int zindex, const 
 
 void GListEx::draw() const
 {
+    int active;
+    int scrollIndex;
+    int focus;
+
     if (this->_Display) {
-        int active = this->_Active;
-        int scrollIndex = this->_ScrollIndex;
-        int focus = this->_Focus;
+        active = this->_Active;
+        scrollIndex = this->_ScrollIndex;
+        focus = this->_Focus;
         std::vector<const char*> cstrlist;
         
-        for (const auto& str : this->_List) {
+        for (const auto& str : this->_List)
             cstrlist.push_back(str.c_str());
-        }
-
         GuiListViewEx(Rectangle{this->_Pos.x, this->_Pos.y, this->_Size.x, this->_Size.y}, cstrlist.data(), cstrlist.size(), &active, &scrollIndex, &focus);
         const_cast<GListEx*>(this)->setScrollIndex(scrollIndex);
         const_cast<GListEx*>(this)->setFocus(focus);
