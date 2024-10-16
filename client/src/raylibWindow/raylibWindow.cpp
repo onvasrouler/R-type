@@ -7,23 +7,10 @@
 
 #include "raylibWindow.hpp"
 
-RlibWindow::RlibWindow()
+RlibWindow::RlibWindow(const int windowWidth, const int windowHeight, const std::string title, const Color backgroundColor, const int frameRateLimit)
 {
     this->_FpsCounter = std::make_unique<FpsCounter>();
-    this->_FpsCounter->setActive(false);
-    this->_WindowWidth = 800;
-    this->_WindowHeight = 450;
-    this->_Title = "R-type";
-    this->_BackgroundColor = WHITE;
-    this->_FrameRateLimit = 60;
-    this->setDefaultVal();
-
-}
-
-RlibWindow::RlibWindow(int windowWidth, int windowHeight, std::string title, Color backgroundColor, int frameRateLimit)
-{
-    this->_FpsCounter = std::make_unique<FpsCounter>();
-    this->_FpsCounter->setActive(false);
+    this->_FpsCounter->getFpsText()->setDisplay(false);
     this->_WindowWidth = windowWidth;
     this->_WindowHeight = windowHeight;
     this->_Title = title;
@@ -53,7 +40,7 @@ void RlibWindow::setDefaultVal()
 
 }
 
-RlibWindow::RlibWindow(std::string filename)
+RlibWindow::RlibWindow(const std::string filename)
 {
     this->_JsonParser = std::make_unique<JsonParser>();
     this->_FpsCounter = std::make_unique<FpsCounter>();
@@ -75,14 +62,16 @@ RlibWindow::RlibWindow(std::string filename)
     this->_windowX = json["windowX"];
     this->_windowY = json["windowY"];
 
-    this->_FpsCounter->setPos(
+    std::shared_ptr<RLText> fpsTxt = this->_FpsCounter->getFpsText();
+
+    fpsTxt->setPos(
         Vector2{
             json["fpsText"]["position"]["x"],
             json["fpsText"]["position"]["y"]
             }
         );
-    this->_FpsCounter->setFontSize(json["fpsText"]["fontSize"]);
-    this->_FpsCounter->setColor(
+    fpsTxt->setSize(Vector2{0.0F, json["fpsText"]["fontSize"].get<float>()});
+    fpsTxt->setColor(
         Color{
             json["fpsText"]["color"]["r"],
             json["fpsText"]["color"]["g"],
@@ -90,8 +79,8 @@ RlibWindow::RlibWindow(std::string filename)
             json["fpsText"]["color"]["a"]
             }
         );
-    this->_FpsCounter->setActive(json["fpsText"]["display"]);
-
+    fpsTxt->setDisplay(json["fpsText"]["display"]);
+    fpsTxt->setZIndex(json["fpsText"]["z-index"]);
     this->_DebugLogger->SetActive(json["logger"]["active"]);
     this->_DebugLogger->SetLogDepth(json["logger"]["degree"].get<int>());
     this->setDefaultVal();
@@ -102,34 +91,34 @@ RlibWindow::~RlibWindow()
     CloseWindow();
 }
 
-void RlibWindow::setWidth(int windowWidth)
+void RlibWindow::setWidth(const int windowWidth)
 {
     this->_WindowWidth = windowWidth;
 }
 
-void RlibWindow::setHeight(int windowHeight)
+void RlibWindow::setHeight(const int windowHeight)
 {
     this->_WindowHeight = windowHeight;
 }
 
-void RlibWindow::setSize(int windowWidth, int windowHeight)
+void RlibWindow::setSize(const int windowWidth, const int windowHeight)
 {
     this->_WindowWidth = windowWidth;
     this->_WindowHeight = windowHeight;
 }
 
-void RlibWindow::setWindowPosition(int windowX, int windowY)
+void RlibWindow::setWindowPosition(const int windowX, const int windowY)
 {
     this->_windowX = windowX;
     this->_windowY = windowY;
 }
 
-void RlibWindow::setWindowPosX(int windowX)
+void RlibWindow::setWindowPosX(const int windowX)
 {
     this->_windowX = windowX;
 }
 
-void RlibWindow::setWindowPosY(int windowY)
+void RlibWindow::setWindowPosY(const int windowY)
 {
     this->_windowY = windowY;
 }
@@ -153,12 +142,12 @@ void RlibWindow::swapSettings()
     }
 }
 
-void RlibWindow::setBackgroundColor(Color backgroundColor)
+void RlibWindow::setBackgroundColor(const Color backgroundColor)
 {
     this->_BackgroundColor = backgroundColor;
 }
 
-void RlibWindow::setFrameRateLimit(int frameRateLimit)
+void RlibWindow::setFrameRateLimit(const int frameRateLimit)
 {
     this->_FrameRateLimit = frameRateLimit;
     SetTargetFPS(frameRateLimit);
@@ -231,6 +220,7 @@ void RlibWindow::InitRlib()
         ToggleFullscreen();
     SetWindowPosition(_windowX, _windowY);
     GuiLoadStyleDefault();
+    _Menus->setBackgroundColor(_BackgroundColor);
     _DebugLogger->Log("Raylib Window Initiated");
 }
 
@@ -265,7 +255,7 @@ void RlibWindow::update()
     _DebugLogger->Log("Drawing menu", 3);
     this->_Menus->drawMenu();
     _DebugLogger->Log("Drawing fps counter", 3);
-    this->_FpsCounter->draw();
+    this->_FpsCounter->getFpsText()->draw();
     _DebugLogger->Log("Updating keyboard input", 3);
     this->updateKeyboadInputs();
     if (_AutoReloadMenus)
@@ -300,12 +290,13 @@ void RlibWindow::EndRlibDraw() const
     this->_FpsCounter->update();
 }
 
-void RlibWindow::ClearRlibBackground() const
+void RlibWindow::ClearRlibBackground()
 {
+    _BackgroundColor = this->_Menus->getBackgroundColor();
     ClearBackground(_BackgroundColor);
 }
 
-void RlibWindow::ClearRlibBackground(Color color) const
+void RlibWindow::ClearRlibBackground(const Color color) const
 {
     ClearBackground(color);
 }
