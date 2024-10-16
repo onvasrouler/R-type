@@ -24,6 +24,7 @@
 #include "src/GToggleSlider/GToggleSlider.hpp"
 #include "src/GValueBox/GValueBox.hpp"
 #include "src/GWindBox/GWindBox.hpp"
+#include "src/Text/Text.hpp"
 
 #include "AGuiElem.hpp"
 #include "IGuiElem.hpp"
