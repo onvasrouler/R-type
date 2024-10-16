@@ -40,13 +40,13 @@ bool HealthCheck()
     return settingsFile && menuFile;
 }
 
-bool isIpValid(std::string ip)
+bool isIpValid(const std::string ip)
 {
     std::regex ipPattern("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
     return std::regex_match(ip, ipPattern);
 }
 
-bool isPortValid(std::string port)
+bool isPortValid(const std::string port)
 {
     std::regex portPattern("^[0-9]{1,5}$");
     return std::regex_match(port, portPattern);
