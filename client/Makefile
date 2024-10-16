@@ -37,9 +37,6 @@ LIBS += -lraylib
 # Files
 MAIN = 	main.cpp
 
-
-TRUE_ELEMENTS = $(patsubst %,src/elements/%, $(ELEMENTS))
-
 GUIELEM = 		GButton/GButton.cpp	\
 		GCheckBox/GCheckBox.cpp	\
 		GColorPicker/GColorPicker.cpp	\
@@ -74,7 +71,6 @@ SRCS =	fpsCounter/fpsCounter.cpp	\
 TRUE_SRC 	= 	$(patsubst %,src/%, $(SRCS))
 
 OBJS = $(TRUE_SRC:.cpp=.o)
-ELEMOBJS = $(TRUE_ELEMENTS:.cpp=.o)
 GUIELEMOBJS = $(TRUE_GUIELEM:.cpp=.o)
 
 # Output executable
@@ -83,8 +79,8 @@ TARGET = Rtype
 # Build target
 all: $(TARGET)
 
-$(TARGET): $(LIBGUI) $(ELEMOBJS) $(GUIELEMOBJS) $(OBJS) 
-	$(CXX) $(OBJS) $(GUIELEMOBJS) $(ELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS) $(INCLUDES) $(LIBGUIFLAGS)
+$(TARGET): $(LIBGUI) $(GUIELEMOBJS) $(OBJS) 
+	$(CXX) $(OBJS) $(GUIELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS) $(INCLUDES) $(LIBGUIFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS) $(INCLUDES) -c $< -o $@ 
@@ -96,7 +92,7 @@ $(LIBGUI):
 
 # Clean the build
 clean:
-	rm -f $(OBJS) $(ELEMOBJS) $(GUIELEMOBJS)
+	rm -f $(OBJS) $(GUIELEMOBJS)
 
 fclean: clean
 	rm -f $(TARGET) $(LIBGUI)
