@@ -10,6 +10,7 @@
 #include "src/include.hpp"
 
 int main() {
+    // Check if the config files are present
     if (!HealthCheck())
         return 84;
     // Create a Raylib window
