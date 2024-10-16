@@ -105,6 +105,7 @@ public:
 
     std::vector<std::shared_ptr<RaylibButton>> loadsRLButtons(const nlohmann::json &buttons, menuType type);
     std::vector<std::shared_ptr<AGuiElem>> loadsButtons(const nlohmann::json &buttons, menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsWindBoxes(const nlohmann::json &windBoxes, menuType type);
     std::vector<std::shared_ptr<RaylibText>> loadsTexts(const nlohmann::json &texts, menuType type);
     std::vector<std::shared_ptr<AGuiElem>> loadsCheckBoxes(const nlohmann::json &checkBoxes, menuType type);
     std::vector<std::shared_ptr<AGuiElem>> loadsSliders(const nlohmann::json &sliders, menuType type);

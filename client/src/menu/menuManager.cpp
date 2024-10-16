@@ -293,7 +293,7 @@ std::vector<std::shared_ptr<RaylibButton>> MenuManager::loadsRLButtons(const nlo
     return buttons;
 }
 
-std::vector<std::shared_ptr<GWindBox>> MenuManager::loadsWindBoxes(const nlohmann::json &jsonWindBoxes, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsWindBoxes(const nlohmann::json &jsonWindBoxes, menuType type)
 {
     std::vector<std::shared_ptr<AGuiElem>> windBoxes;
 
