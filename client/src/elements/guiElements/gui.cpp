@@ -15,13 +15,13 @@ RGui::~RGui()
 
 void RGui::DrawGui() const
 {
-    if (this->_Texts.size() > 0)
-        for (const auto &text : this->_Texts)
-            text->DrawRlibText();
-    
     if (this->_elements.size() > 0)
         for (const auto &element : this->_elements)
             element->draw();
+
+    if (this->_Texts.size() > 0)
+        for (const auto &text : this->_Texts)
+            text->DrawRlibText();
 }
 
 std::string RGui::GetValueById(std::string id) const
