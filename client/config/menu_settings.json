@@ -22,6 +22,25 @@
                         "height": 100
                     },
                     "display": true,
+                    "z-index": 0,
+                    "functionName": "StartFunct"
+
+                }
+            ],
+            "RlibButtons": [
+                {
+                    "id": "startButton",
+                    "text": "",
+                    "position": {
+                        "x": "10%",
+                        "y": 400
+                    },
+                    "size": {
+                        "width": "80%",
+                        "height": 100
+                    },
+                    "display": true,
+                    "z-index": 2,
                     "functionName": "StartFunct"
 
                 }
@@ -37,8 +56,8 @@
                     "fontSize": 30,
                     "color": {
                         "r": 0,
-                        "g": 255,
-                        "b": 255,
+                        "g": 0,
+                        "b": 0,
                         "a": 255
                     },
                     "display": true,
@@ -59,6 +78,7 @@
                         "a": 255
                     },
                     "display": true,
+                    "z-index": 1,
                     "functionName": "None"
                 },
                 {
@@ -227,7 +247,7 @@
                         "a": 255
                     },
                     "display": true,
-                    "functionName": "defaultFunct"
+                    "functionName": "changeBgColor"
                 }
             ],
             "groups": [
@@ -243,7 +263,7 @@
                     },
                     "text": "background color",
                     "display": true,
-                    "functionName": "defaultFunct"
+                    "functionName": "none"
                 },
                 {
                     "id": "0",
@@ -257,7 +277,7 @@
                     },
                     "text": "frame rate limit",
                     "display": true,
-                    "functionName": "defaultFunct"
+                    "functionName": "none"
                 },
                 {
                     "id": "0",
@@ -271,7 +291,7 @@
                     },
                     "text": "resolution",
                     "display": true,
-                    "functionName": "defaultFunct"
+                    "functionName": "none"
                 }
             ],
             "dropDowns" : [

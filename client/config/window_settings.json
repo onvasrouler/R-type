@@ -6,9 +6,9 @@
     "windowMaximized": false,
     "windowTitle": "R-Type",
     "backgroundColor" : {
-        "r": 255,
+        "r": 125,
         "g": 255,
-        "b": 255,
+        "b": 125,
         "a": 255
     },
     "frameRateLimit": 60,
@@ -24,7 +24,8 @@
             "g": 0,
             "b": 0,
             "a": 255
-        }
+        },
+        "z-index": 100
     },
     "logger": {
         "active": true,
