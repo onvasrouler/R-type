@@ -11,6 +11,7 @@
 
 #include "../jsonParser/jsonParser.hpp"
 #include "../elements/raylibText/raylibText.hpp"
+#include "../elements/raylibButton/raylibButton.hpp"
 #include "../elements/guiElements/gui.hpp"
 #include "../elements/guiElements/guiElem.hpp"
 #include "../elements/guiElements/guiFunction.hpp"
@@ -83,6 +84,7 @@ public:
     void eraseMenu();
 
     std::shared_ptr<RaylibText> createTexts(const nlohmann::json &text, menuType type);
+    std::shared_ptr<RaylibButton> createRLButtons(const nlohmann::json &button, menuType type);
     std::shared_ptr<GButton> createButtons(const nlohmann::json &button, menuType type);
     std::shared_ptr<GWindBox> createWindBox(const nlohmann::json &windBox, menuType type);
     std::shared_ptr<GCheckBox> createCheckBoxes(const nlohmann::json &checkBox, menuType type);
@@ -102,6 +104,7 @@ public:
     std::shared_ptr<GDropDown> createDropDowns(const nlohmann::json &dropDown, menuType type);
 
     std::vector<std::shared_ptr<GButton>> loadsButtons(const nlohmann::json &buttons, menuType type);
+    std::vector<std::shared_ptr<RaylibButton>> loadsRLButtons(const nlohmann::json &buttons, menuType type);
     std::vector<std::shared_ptr<GWindBox>> loadsWindBoxes(const nlohmann::json &windBoxes, menuType type);
     std::vector<std::shared_ptr<RaylibText>> loadsTexts(const nlohmann::json &texts, menuType type);
     std::vector<std::shared_ptr<GCheckBox>> loadsCheckBoxes(const nlohmann::json &checkBoxes, menuType type);
@@ -147,4 +150,7 @@ public:
 
     int _WindowWidth;
     int _WindowHeight;
+
+    std::string ip;
+    std::string port;
 };

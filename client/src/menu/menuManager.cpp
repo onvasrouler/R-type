@@ -282,6 +282,17 @@ std::vector<std::shared_ptr<GButton>> MenuManager::loadsButtons(const nlohmann::
     return buttons;
 }
 
+std::vector<std::shared_ptr<RaylibButton>> MenuManager::loadsRLButtons(const nlohmann::json &jsonbuttons, menuType type)
+{
+    std::vector<std::shared_ptr<RaylibButton>> buttons;
+
+    this->_DebugLogger->Log("Creating Raylib Buttons", 4);
+    if (jsonbuttons.contains("RlibButtons"))
+        for (auto &button : jsonbuttons["RlibButtons"])
+            buttons.push_back(this->createRLButtons(button, type));
+    return buttons;
+}
+
 std::vector<std::shared_ptr<GWindBox>> MenuManager::loadsWindBoxes(const nlohmann::json &jsonWindBoxes, menuType type)
 {
     std::vector<std::shared_ptr<GWindBox>> windBoxes;
@@ -540,9 +551,8 @@ std::shared_ptr<RaylibText> MenuManager::createTexts(const nlohmann::json &text,
             text["display"]
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<RaylibText>(errorText, getRelativePos(defaultErrorPosX, defaultErrorPosY), 0, Color{255, 0, 0, 255}, "errorId", true);
     }
 }
@@ -560,10 +570,29 @@ std::shared_ptr<GButton> MenuManager::createButtons(const nlohmann::json &button
             jsonToBool(button["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GButton>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", true);
+    }
+}
+
+std::shared_ptr<RaylibButton> MenuManager::createRLButtons(const nlohmann::json &button, menuType type)
+{
+    this->_DebugLogger->Log("Creating RLButton : " + button.dump(), 5);
+    try {
+        this->newMenuItems(button["position"]["x"], button["position"]["y"], button["size"]["width"], button["size"]["height"], button["functionName"], type);
+        return std::make_shared<RaylibButton>(
+            getRelativePos(button["position"]["x"], button["position"]["y"]),
+            getRelativePos(button["size"]["width"], button["size"]["height"]),
+            button["text"].get<std::string>(),
+            Color{button["color"]["r"], button["color"]["g"], button["color"]["b"], button["color"]["a"]},
+            button["id"].get<std::string>(),
+            jsonToBool(button["display"])
+        );
+    } catch (std::exception &e) {
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
+        return std::make_shared<RaylibButton>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, Color{255, 0, 0, 255}, "errorId", true);
     }
 }
 
@@ -581,9 +610,8 @@ std::shared_ptr<GWindBox> MenuManager::createWindBox(const nlohmann::json &windB
             jsonToBool(windBox["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GWindBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", false, true);
     }
 }
@@ -602,9 +630,8 @@ std::shared_ptr<GCheckBox> MenuManager::createCheckBoxes(const nlohmann::json &c
             jsonToBool(checkBox["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GCheckBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "defaultId", false, true);
     }
 }
@@ -625,9 +652,8 @@ std::shared_ptr<GSlider> MenuManager::createSliders(const nlohmann::json &slider
             jsonToBool(slider["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0.0F, 0.0F, 0.0F, true);
     }
 }
@@ -645,9 +671,8 @@ std::shared_ptr<GList> MenuManager::createLists(const nlohmann::json &list, menu
             jsonToBool(list["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GList>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", true);
     }
 }
@@ -667,9 +692,8 @@ std::shared_ptr<GListEx> MenuManager::createListExs(const nlohmann::json &listEx
             jsonToBool(listEx["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GListEx>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "defaultId", std::vector<std::string>{errorText}, 0, true);
     }
 }
@@ -689,9 +713,8 @@ std::shared_ptr<GTextInput> MenuManager::createInputTexts(const nlohmann::json &
             jsonToBool(inputText["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GTextInput>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "default", 0, false, true);
     }
 }
@@ -714,9 +737,8 @@ std::shared_ptr<GTextInputBox> MenuManager::createInputTextsBoxs(const nlohmann:
             jsonToBool(inputTextBox["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GTextInputBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "defaultId", "default title", "default message", "default buttons", "default text", 0, false, true);
     }
 }
@@ -738,9 +760,8 @@ std::shared_ptr<GSpinner> MenuManager::createSpinners(const nlohmann::json &spin
             jsonToBool(spinner["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GSpinner>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0, 0, 0, false, true);
     }
 }
@@ -762,9 +783,8 @@ std::shared_ptr<GValueBox> MenuManager::createValueBoxes(const nlohmann::json &v
             jsonToBool(valueBox["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GValueBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId",0, 0, 0, false, true);
     }
 }
@@ -782,9 +802,8 @@ std::shared_ptr<GGroup> MenuManager::createGroups(const nlohmann::json &group, m
             jsonToBool(group["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorID", true);
     }
 }
@@ -803,9 +822,8 @@ std::shared_ptr<GToggleGroup> MenuManager::createToggleGroups(const nlohmann::js
             jsonToBool(toggleGroup["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GToggleGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0, true);
     }
 }
@@ -824,9 +842,8 @@ std::shared_ptr<GToggleSlider> MenuManager::createToggleSliders(const nlohmann::
             jsonToBool(toggleSlider["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GToggleSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", 0, true);
     }
 }
@@ -844,9 +861,8 @@ std::shared_ptr<GPannel> MenuManager::createPannels(const nlohmann::json &pannel
             jsonToBool(pannel["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GPannel>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", true);
     }
 }
@@ -865,9 +881,8 @@ std::shared_ptr<GColorPicker> MenuManager::createColorPickers(const nlohmann::js
             jsonToBool(colorPicker["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GColorPicker>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, "errorId", Color{0, 0, 0, 0}, true);
     }
 }
@@ -889,9 +904,8 @@ std::shared_ptr<GProgressBar> MenuManager::createProgressBars(const nlohmann::js
             jsonToBool(progressBar["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GProgressBar>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "errorId", errorText, errorText, 0, 0, 0, true);
     }
 }
@@ -911,9 +925,8 @@ std::shared_ptr<GDropDown> MenuManager::createDropDowns(const nlohmann::json &dr
             jsonToBool(dropDown["display"])
         );
     } catch (std::exception &e) {
-        this->_DebugLogger->Log("error occured  : " + std::string(e.what()), 0);
-    
-std::string errorText = "error occured : " + std::string(e.what());
+        std::string errorText = "error occured : " + std::string(e.what());
+        this->_DebugLogger->Log(errorText, 0);
         return std::make_shared<GDropDown>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "error;occured", "errorId", 0, false, true);
     }
 }
