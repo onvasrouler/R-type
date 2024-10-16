@@ -37,31 +37,33 @@ LIBS += -lraylib
 # Files
 MAIN = 	main.cpp
 
-ELEMENTS = raylibText/raylibText.cpp	\
-		   raylibButton/raylibButton.cpp	\
 
 TRUE_ELEMENTS = $(patsubst %,src/elements/%, $(ELEMENTS))
+
+GUIELEM = 		GButton/GButton.cpp	\
+		GCheckBox/GCheckBox.cpp	\
+		GColorPicker/GColorPicker.cpp	\
+		GDropDown/GDropDown.cpp	\
+		GGroup/GGroup.cpp	\
+		GList/GList.cpp	\
+		GListEx/GListEx.cpp	\
+		GPannel/GPannel.cpp	\
+		GProgressBar/GProgressBar.cpp	\
+		GSlider/GSlider.cpp	\
+		GSpinner/GSpinner.cpp	\
+		GTextInput/GTextInput.cpp	\
+		GTextInputBox/GTextInputBox.cpp	\
+		GToggleGroup/GToggleGroup.cpp	\
+		GToggleSlider/GToggleSlider.cpp	\
+		GValueBox/GValueBox.cpp	\
+		GWindBox/GWindBox.cpp	\
+		Text/Text.cpp	\
+
+TRUE_GUIELEM = $(patsubst %,src/elements/guiElements/guiElem/src/%, $(GUIELEM))
 
 SRCS =	fpsCounter/fpsCounter.cpp	\
 		jsonParser/jsonParser.cpp	\
 		elements/guiElements/guiElem/AGuiElem.cpp	\
-		elements/guiElements/guiElem/src/GButton/GButton.cpp	\
-		elements/guiElements/guiElem/src/GCheckBox/GCheckBox.cpp	\
-		elements/guiElements/guiElem/src/GColorPicker/GColorPicker.cpp	\
-		elements/guiElements/guiElem/src/GDropDown/GDropDown.cpp	\
-		elements/guiElements/guiElem/src/GGroup/GGroup.cpp	\
-		elements/guiElements/guiElem/src/GList/GList.cpp	\
-		elements/guiElements/guiElem/src/GListEx/GListEx.cpp	\
-		elements/guiElements/guiElem/src/GPannel/GPannel.cpp	\
-		elements/guiElements/guiElem/src/GProgressBar/GProgressBar.cpp	\
-		elements/guiElements/guiElem/src/GSlider/GSlider.cpp	\
-		elements/guiElements/guiElem/src/GSpinner/GSpinner.cpp	\
-		elements/guiElements/guiElem/src/GTextInput/GTextInput.cpp	\
-		elements/guiElements/guiElem/src/GTextInputBox/GTextInputBox.cpp	\
-		elements/guiElements/guiElem/src/GToggleGroup/GToggleGroup.cpp	\
-		elements/guiElements/guiElem/src/GToggleSlider/GToggleSlider.cpp	\
-		elements/guiElements/guiElem/src/GValueBox/GValueBox.cpp	\
-		elements/guiElements/guiElem/src/GWindBox/GWindBox.cpp	\
 		elements/guiElements/gui.cpp	\
 		elements/guiElements/guiFunction.cpp	\
 		menu/menuManager.cpp		\
@@ -73,6 +75,7 @@ TRUE_SRC 	= 	$(patsubst %,src/%, $(SRCS))
 
 OBJS = $(TRUE_SRC:.cpp=.o)
 ELEMOBJS = $(TRUE_ELEMENTS:.cpp=.o)
+GUIELEMOBJS = $(TRUE_GUIELEM:.cpp=.o)
 
 # Output executable
 TARGET = Rtype
@@ -80,8 +83,8 @@ TARGET = Rtype
 # Build target
 all: $(TARGET)
 
-$(TARGET): $(LIBGUI) $(ELEMOBJS) $(OBJS)
-	$(CXX) $(OBJS) $(ELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS) $(INCLUDES) $(LIBGUIFLAGS)
+$(TARGET): $(LIBGUI) $(ELEMOBJS) $(GUIELEMOBJS) $(OBJS) 
+	$(CXX) $(OBJS) $(GUIELEMOBJS) $(ELEMOBJS) $(MAIN) -o $(TARGET) $(LIBS) $(INCLUDES) $(LIBGUIFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS) $(INCLUDES) -c $< -o $@ 
@@ -93,7 +96,7 @@ $(LIBGUI):
 
 # Clean the build
 clean:
-	rm -f $(OBJS) $(ELEMOBJS)
+	rm -f $(OBJS) $(ELEMOBJS) $(GUIELEMOBJS)
 
 fclean: clean
 	rm -f $(TARGET) $(LIBGUI)
