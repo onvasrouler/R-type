@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "guiElem.hpp"
+#include "guiElem/Elem.hpp"
 #include "../raylibText/raylibText.hpp"
 
 class RGui {
@@ -19,98 +19,18 @@ public:
 
     std::string GetValueById(std::string id) const;
 
-    const std::shared_ptr<GButton> GetButtonsById(std::string id) const;
-    const std::shared_ptr<GWindBox> GetWindBoxesById(std::string id) const;
+    const std::shared_ptr<AGuiElem> GetElementById(std::string id) const;
     const std::shared_ptr<RaylibText> GetTextsById(std::string id) const;
-    const std::shared_ptr<GCheckBox> GetCheckBoxesById(std::string id) const;
-    const std::shared_ptr<GSlider> GetSlidersById(std::string id) const;
-    const std::shared_ptr<GList> GetListsById(std::string id) const;
-    const std::shared_ptr<GListEx> GetListExsById(std::string id) const;
-    const std::shared_ptr<GTextInput> GetInputTextsById(std::string id) const;
-    const std::shared_ptr<GTextInputBox> GetInputTextBoxsById(std::string id) const;
-    const std::shared_ptr<GSpinner> GetSpinnersById(std::string id) const;
-    const std::shared_ptr<GValueBox> GetValueBoxesById(std::string id) const;
-    const std::shared_ptr<GGroup> GetGroupsById(std::string id) const;
-    const std::shared_ptr<GToggleGroup> GetToggleGroupsById(std::string id) const;
-    const std::shared_ptr<GToggleSlider> GetToggleSlidersById(std::string id) const;
-    const std::shared_ptr<GPannel> GetPannelsById(std::string id) const;
-    const std::shared_ptr<GColorPicker> GetColorPickersById(std::string id) const;
-    const std::shared_ptr<GProgressBar> GetProgressBarsById(std::string id) const;
-    const std::shared_ptr<GDropDown> GetDropDownsById(std::string id) const;
 
-    void AddButton(const std::shared_ptr<GButton> button);
-    void AddWindBox(const std::shared_ptr<GWindBox> windBox);
+    void AddElement(const std::shared_ptr<AGuiElem> elem);
     void AddText(const std::shared_ptr<RaylibText> text);
-    void AddCheckBox(const std::shared_ptr<GCheckBox> checkBox);
-    void AddSlider(const std::shared_ptr<GSlider> slider);
-    void AddList(const std::shared_ptr<GList> list);
-    void AddListEx(const std::shared_ptr<GListEx> listEx);
-    void AddInputText(const std::shared_ptr<GTextInput> inputText);
-    void AddInputTextBox(const std::shared_ptr<GTextInputBox> inputTextBox);
-    void AddSpinner(const std::shared_ptr<GSpinner> spinner);
-    void AddValueBox(const std::shared_ptr<GValueBox> valueBox);
-    void AddGroup(const std::shared_ptr<GGroup> group);
-    void AddToggleGroup(const std::shared_ptr<GToggleGroup> toggleGroup);
-    void AddToggleSlider(const std::shared_ptr<GToggleSlider> toggleSlider);
-    void AddPannel(const std::shared_ptr<GPannel> pannel);
-    void AddColorPicker(const std::shared_ptr<GColorPicker> colorPicker);
-    void AddProgressBar(const std::shared_ptr<GProgressBar> progressBar);
-    void AddDropDown(const std::shared_ptr<GDropDown> dropDown);
 
-    void SetButtons(std::vector<std::shared_ptr<GButton>> buttons);
-    void SetWindBoxes(std::vector<std::shared_ptr<GWindBox>> windBoxes);
+    void SetElements(std::vector<std::shared_ptr<AGuiElem>> elements);
     void SetTexts(std::vector<std::shared_ptr<RaylibText>> texts);
-    void SetCheckBoxes(std::vector<std::shared_ptr<GCheckBox>> checkBoxes);
-    void SetSliders(std::vector<std::shared_ptr<GSlider>> sliders);
-    void SetLists(std::vector<std::shared_ptr<GList>> lists);
-    void SetListExs(std::vector<std::shared_ptr<GListEx>> listExs);
-    void SetInputTexts(std::vector<std::shared_ptr<GTextInput>> inputTexts);
-    void SetInputTextBoxs(std::vector<std::shared_ptr<GTextInputBox>> inputTextBoxs);
-    void SetSpinners(std::vector<std::shared_ptr<GSpinner>> spinners);
-    void SetValueBoxes(std::vector<std::shared_ptr<GValueBox>> valueBoxes);
-    void SetGroups(std::vector<std::shared_ptr<GGroup>> groups);
-    void SetToggleGroups(std::vector<std::shared_ptr<GToggleGroup>> toggleGroups);
-    void SetToggleSliders(std::vector<std::shared_ptr<GToggleSlider>> toggleSliders);
-    void SetPannels(std::vector<std::shared_ptr<GPannel>> pannels);
-    void SetColorPickers(std::vector<std::shared_ptr<GColorPicker>> colorPickers);
-    void SetProgressBars(std::vector<std::shared_ptr<GProgressBar>> progressBars);
-    void SetDropDowns(std::vector<std::shared_ptr<GDropDown>> dropDowns);
 
-    void addListButton(std::vector<std::shared_ptr<GButton>> buttons);
-    void addListWindBox(std::vector<std::shared_ptr<GWindBox>> windBoxes);
+    void addListElement(std::vector<std::shared_ptr<AGuiElem>> elem);
     void addListText(std::vector<std::shared_ptr<RaylibText>> texts);
-    void addListCheckBox(std::vector<std::shared_ptr<GCheckBox>> checkBoxes);
-    void addListSlider(std::vector<std::shared_ptr<GSlider>> sliders);
-    void addListList(std::vector<std::shared_ptr<GList>> lists);
-    void addListListEx(std::vector<std::shared_ptr<GListEx>> listExs);
-    void addListInputText(std::vector<std::shared_ptr<GTextInput>> inputTexts);
-    void addListInputTextBox(std::vector<std::shared_ptr<GTextInputBox>> inputTextBoxs);
-    void addListSpinner(std::vector<std::shared_ptr<GSpinner>> spinners);
-    void addListValueBox(std::vector<std::shared_ptr<GValueBox>> valueBoxes);
-    void addListGroup(std::vector<std::shared_ptr<GGroup>> groups);
-    void addListToggleGroup(std::vector<std::shared_ptr<GToggleGroup>> toggleGroups);
-    void addListToggleSlider(std::vector<std::shared_ptr<GToggleSlider>> toggleSliders);
-    void addListPannel(std::vector<std::shared_ptr<GPannel>> pannels);
-    void addListColorPicker(std::vector<std::shared_ptr<GColorPicker>> colorPickers);
-    void addListProgressBar(std::vector<std::shared_ptr<GProgressBar>> progressBars);
-    void addListDropDown(std::vector<std::shared_ptr<GDropDown>> dropDowns);
 private:
-    std::vector<std::shared_ptr<GButton>> _Buttons;
-    std::vector<std::shared_ptr<GWindBox>> _WindBoxes;
     std::vector<std::shared_ptr<RaylibText>> _Texts;
-    std::vector<std::shared_ptr<GCheckBox>> _CheckBoxes;
-    std::vector<std::shared_ptr<GSlider>> _Sliders;
-    std::vector<std::shared_ptr<GList>> _Lists;
-    std::vector<std::shared_ptr<GListEx>> _ListExs;
-    std::vector<std::shared_ptr<GTextInput>> _InputTexts;
-    std::vector<std::shared_ptr<GTextInputBox>> _InputTextBoxs;
-    std::vector<std::shared_ptr<GSpinner>> _Spinners;
-    std::vector<std::shared_ptr<GValueBox>> _ValueBoxes;
-    std::vector<std::shared_ptr<GGroup>> _Groups;
-    std::vector<std::shared_ptr<GToggleGroup>> _ToggleGroups;
-    std::vector<std::shared_ptr<GToggleSlider>> _ToggleSliders;
-    std::vector<std::shared_ptr<GPannel>> _Pannels;
-    std::vector<std::shared_ptr<GColorPicker>> _ColorPickers;
-    std::vector<std::shared_ptr<GProgressBar>> _ProgressBars;
-    std::vector<std::shared_ptr<GDropDown>> _DropDowns;
+    std::vector<std::shared_ptr<AGuiElem>> _elements;
 };

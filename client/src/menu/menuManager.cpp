@@ -145,39 +145,39 @@ void MenuManager::createMenu(const nlohmann::json &menu, const int menuID)
         menuType type = static_cast<menuType>(menuID);
         
         this->_menuList[type]->addListText(loadsTexts(menu, type));
-        this->_menuList[type]->addListButton(loadsButtons(menu, type));
+        this->_menuList[type]->addListElement(loadsButtons(menu, type));
         this->_DebugLogger->Log("Creating WindBoxes", 4);
-        this->_menuList[type]->addListWindBox(loadsWindBoxes(menu, type));
+        this->_menuList[type]->addListElement(loadsWindBoxes(menu, type));
         this->_DebugLogger->Log("Creating CheckBoxes", 4);
-        this->_menuList[type]->addListCheckBox(loadsCheckBoxes(menu, type));
+        this->_menuList[type]->addListElement(loadsCheckBoxes(menu, type));
         this->_DebugLogger->Log("Creating Sliders", 4);
-        this->_menuList[type]->addListSlider(loadsSliders(menu, type));
+        this->_menuList[type]->addListElement(loadsSliders(menu, type));
         this->_DebugLogger->Log("Creating Lists", 4);
-        this->_menuList[type]->addListList(loadsLists(menu, type));
+        this->_menuList[type]->addListElement(loadsLists(menu, type));
         this->_DebugLogger->Log("Creating ListExs", 4);
-        this->_menuList[type]->addListListEx(loadsListExs(menu, type));
+        this->_menuList[type]->addListElement(loadsListExs(menu, type));
         this->_DebugLogger->Log("Creating InputTexts", 4);
-        this->_menuList[type]->addListInputText(loadsInputTexts(menu, type));
+        this->_menuList[type]->addListElement(loadsInputTexts(menu, type));
         this->_DebugLogger->Log("Creating InputTextBoxs", 4);
-        this->_menuList[type]->addListInputTextBox(loadsInputTextsBoxs(menu, type));
+        this->_menuList[type]->addListElement(loadsInputTextsBoxs(menu, type));
         this->_DebugLogger->Log("Creating Spinners", 4);
-        this->_menuList[type]->addListSpinner(loadsSpinners(menu, type));
+        this->_menuList[type]->addListElement(loadsSpinners(menu, type));
         this->_DebugLogger->Log("Creating ValueBoxes", 4);
-        this->_menuList[type]->addListValueBox(loadsValueBoxes(menu, type));
+        this->_menuList[type]->addListElement(loadsValueBoxes(menu, type));
         this->_DebugLogger->Log("Creating Groups", 4);
-        this->_menuList[type]->addListGroup(loadsGroups(menu, type));
+        this->_menuList[type]->addListElement(loadsGroups(menu, type));
         this->_DebugLogger->Log("Creating ToggleGroups", 4);
-        this->_menuList[type]->addListToggleGroup(loadsToggleGroups(menu, type));
+        this->_menuList[type]->addListElement(loadsToggleGroups(menu, type));
         this->_DebugLogger->Log("Creating ToggleSliders", 4);
-        this->_menuList[type]->addListToggleSlider(loadsToggleSliders(menu, type));
+        this->_menuList[type]->addListElement(loadsToggleSliders(menu, type));
         this->_DebugLogger->Log("Creating Pannels", 4);
-        this->_menuList[type]->addListPannel(loadsPannels(menu, type));
+        this->_menuList[type]->addListElement(loadsPannels(menu, type));
         this->_DebugLogger->Log("Creating ColorPickers", 4);
-        this->_menuList[type]->addListColorPicker(loadsColorPickers(menu, type));
+        this->_menuList[type]->addListElement(loadsColorPickers(menu, type));
         this->_DebugLogger->Log("Creating ProgressBars", 4);
-        this->_menuList[type]->addListProgressBar(loadsProgressBars(menu, type));
+        this->_menuList[type]->addListElement(loadsProgressBars(menu, type));
         this->_DebugLogger->Log("Creating DropDowns", 4);
-        this->_menuList[type]->addListDropDown(loadsDropDowns(menu, type));
+        this->_menuList[type]->addListElement(loadsDropDowns(menu, type));
     } catch (std::exception &e) {
         this->_DebugLogger->Log("invalid json : " + std::string(e.what()), 0);
     }
@@ -271,9 +271,9 @@ Vector2 MenuManager::getRelativePos(const nlohmann::json &x, const int width, co
     return pos;
 }
 
-std::vector<std::shared_ptr<GButton>> MenuManager::loadsButtons(const nlohmann::json &jsonbuttons, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsButtons(const nlohmann::json &jsonbuttons, menuType type)
 {
-    std::vector<std::shared_ptr<GButton>> buttons;
+    std::vector<std::shared_ptr<AGuiElem>> buttons;
 
     this->_DebugLogger->Log("Creating Buttons", 4);
     if (jsonbuttons.contains("buttons"))
@@ -295,7 +295,7 @@ std::vector<std::shared_ptr<RaylibButton>> MenuManager::loadsRLButtons(const nlo
 
 std::vector<std::shared_ptr<GWindBox>> MenuManager::loadsWindBoxes(const nlohmann::json &jsonWindBoxes, menuType type)
 {
-    std::vector<std::shared_ptr<GWindBox>> windBoxes;
+    std::vector<std::shared_ptr<AGuiElem>> windBoxes;
 
     this->_DebugLogger->Log("Creating WindBoxes", 4);
     if (jsonWindBoxes.contains("windBoxes"))
@@ -315,9 +315,9 @@ std::vector<std::shared_ptr<RaylibText>> MenuManager::loadsTexts(const nlohmann:
     return texts;
 }
 
-std::vector<std::shared_ptr<GCheckBox>> MenuManager::loadsCheckBoxes(const nlohmann::json &jsonCheckBoxes, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsCheckBoxes(const nlohmann::json &jsonCheckBoxes, menuType type)
 {
-    std::vector<std::shared_ptr<GCheckBox>> checkBoxes;
+    std::vector<std::shared_ptr<AGuiElem>> checkBoxes;
 
     this->_DebugLogger->Log("Creating CheckBoxes", 4);
     if (jsonCheckBoxes.contains("checkBoxes"))
@@ -326,9 +326,9 @@ std::vector<std::shared_ptr<GCheckBox>> MenuManager::loadsCheckBoxes(const nlohm
     return checkBoxes;
 }
 
-std::vector<std::shared_ptr<GSlider>> MenuManager::loadsSliders(const nlohmann::json &jsonSliders, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsSliders(const nlohmann::json &jsonSliders, menuType type)
 {
-    std::vector<std::shared_ptr<GSlider>> sliders;
+    std::vector<std::shared_ptr<AGuiElem>> sliders;
 
     this->_DebugLogger->Log("Creating Sliders", 4);
     if (jsonSliders.contains("sliders"))
@@ -337,9 +337,9 @@ std::vector<std::shared_ptr<GSlider>> MenuManager::loadsSliders(const nlohmann::
     return sliders;
 }
 
-std::vector<std::shared_ptr<GList>> MenuManager::loadsLists(const nlohmann::json &jsonLists, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsLists(const nlohmann::json &jsonLists, menuType type)
 {
-    std::vector<std::shared_ptr<GList>> lists;
+    std::vector<std::shared_ptr<AGuiElem>> lists;
 
     this->_DebugLogger->Log("Creating Lists", 4);
     if (jsonLists.contains("lists"))
@@ -348,9 +348,9 @@ std::vector<std::shared_ptr<GList>> MenuManager::loadsLists(const nlohmann::json
     return lists;
 }
 
-std::vector<std::shared_ptr<GListEx>> MenuManager::loadsListExs(const nlohmann::json &jsonListExs, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsListExs(const nlohmann::json &jsonListExs, menuType type)
 {
-    std::vector<std::shared_ptr<GListEx>> listExs;
+    std::vector<std::shared_ptr<AGuiElem>> listExs;
 
     this->_DebugLogger->Log("Creating ListExs", 4);
     if (jsonListExs.contains("listExs"))
@@ -359,9 +359,9 @@ std::vector<std::shared_ptr<GListEx>> MenuManager::loadsListExs(const nlohmann::
     return listExs;
 }
 
-std::vector<std::shared_ptr<GTextInput>> MenuManager::loadsInputTexts(const nlohmann::json &jsonInputTexts, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsInputTexts(const nlohmann::json &jsonInputTexts, menuType type)
 {
-    std::vector<std::shared_ptr<GTextInput>> inputTexts;
+    std::vector<std::shared_ptr<AGuiElem>> inputTexts;
 
     this->_DebugLogger->Log("Creating InputTexts", 4);
     if (jsonInputTexts.contains("inputTexts"))
@@ -370,9 +370,9 @@ std::vector<std::shared_ptr<GTextInput>> MenuManager::loadsInputTexts(const nloh
     return inputTexts;
 }
 
-std::vector<std::shared_ptr<GTextInputBox>> MenuManager::loadsInputTextsBoxs(const nlohmann::json &jsonInputTextBoxs, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsInputTextsBoxs(const nlohmann::json &jsonInputTextBoxs, menuType type)
 {
-    std::vector<std::shared_ptr<GTextInputBox>> inputTextBoxs;
+    std::vector<std::shared_ptr<AGuiElem>> inputTextBoxs;
 
     this->_DebugLogger->Log("Creating InputTextBoxs", 4);
     if (jsonInputTextBoxs.contains("inputTextBoxs"))
@@ -381,9 +381,9 @@ std::vector<std::shared_ptr<GTextInputBox>> MenuManager::loadsInputTextsBoxs(con
     return inputTextBoxs;
 }
 
-std::vector<std::shared_ptr<GSpinner>> MenuManager::loadsSpinners(const nlohmann::json &jsonSpinners, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsSpinners(const nlohmann::json &jsonSpinners, menuType type)
 {
-    std::vector<std::shared_ptr<GSpinner>> spinners;
+    std::vector<std::shared_ptr<AGuiElem>> spinners;
 
     this->_DebugLogger->Log("Creating Spinners", 4);
     if (jsonSpinners.contains("spinners"))
@@ -392,9 +392,9 @@ std::vector<std::shared_ptr<GSpinner>> MenuManager::loadsSpinners(const nlohmann
     return spinners;
 }
 
-std::vector<std::shared_ptr<GValueBox>> MenuManager::loadsValueBoxes(const nlohmann::json &jsonValueBoxes, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsValueBoxes(const nlohmann::json &jsonValueBoxes, menuType type)
 {
-    std::vector<std::shared_ptr<GValueBox>> valueBoxes;
+    std::vector<std::shared_ptr<AGuiElem>> valueBoxes;
 
     this->_DebugLogger->Log("Creating ValueBoxes", 4);
     if (jsonValueBoxes.contains("valueBoxes"))
@@ -403,9 +403,9 @@ std::vector<std::shared_ptr<GValueBox>> MenuManager::loadsValueBoxes(const nlohm
     return valueBoxes;
 }
 
-std::vector<std::shared_ptr<GGroup>> MenuManager::loadsGroups(const nlohmann::json &jsonGroups, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsGroups(const nlohmann::json &jsonGroups, menuType type)
 {
-    std::vector<std::shared_ptr<GGroup>> groups;
+    std::vector<std::shared_ptr<AGuiElem>> groups;
 
     this->_DebugLogger->Log("Creating Groups", 4);
     if (jsonGroups.contains("groups"))
@@ -414,9 +414,9 @@ std::vector<std::shared_ptr<GGroup>> MenuManager::loadsGroups(const nlohmann::js
     return groups;
 }
 
-std::vector<std::shared_ptr<GToggleGroup>> MenuManager::loadsToggleGroups(const nlohmann::json &jsonToggleGroups, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsToggleGroups(const nlohmann::json &jsonToggleGroups, menuType type)
 {
-    std::vector<std::shared_ptr<GToggleGroup>> toggleGroups;
+    std::vector<std::shared_ptr<AGuiElem>> toggleGroups;
 
     this->_DebugLogger->Log("Creating ToggleGroups", 4);
     if (jsonToggleGroups.contains("toggleGroups"))
@@ -425,9 +425,9 @@ std::vector<std::shared_ptr<GToggleGroup>> MenuManager::loadsToggleGroups(const 
     return toggleGroups;
 }
 
-std::vector<std::shared_ptr<GToggleSlider>> MenuManager::loadsToggleSliders(const nlohmann::json &jsonToggleSliders, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsToggleSliders(const nlohmann::json &jsonToggleSliders, menuType type)
 {
-    std::vector<std::shared_ptr<GToggleSlider>> toggleSliders;
+    std::vector<std::shared_ptr<AGuiElem>> toggleSliders;
 
     this->_DebugLogger->Log("Creating ToggleSliders", 4);
     if (jsonToggleSliders.contains("toggleSliders"))
@@ -436,9 +436,9 @@ std::vector<std::shared_ptr<GToggleSlider>> MenuManager::loadsToggleSliders(cons
     return toggleSliders;
 }
 
-std::vector<std::shared_ptr<GPannel>> MenuManager::loadsPannels(const nlohmann::json &jsonPannels, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsPannels(const nlohmann::json &jsonPannels, menuType type)
 {
-    std::vector<std::shared_ptr<GPannel>> pannels;
+    std::vector<std::shared_ptr<AGuiElem>> pannels;
 
     this->_DebugLogger->Log("Creating Pannels", 4);
     if (jsonPannels.contains("pannels"))
@@ -447,9 +447,9 @@ std::vector<std::shared_ptr<GPannel>> MenuManager::loadsPannels(const nlohmann::
     return pannels;
 }
 
-std::vector<std::shared_ptr<GColorPicker>> MenuManager::loadsColorPickers(const nlohmann::json &jsonColorPickers, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsColorPickers(const nlohmann::json &jsonColorPickers, menuType type)
 {
-    std::vector<std::shared_ptr<GColorPicker>> colorPickers;
+    std::vector<std::shared_ptr<AGuiElem>> colorPickers;
 
     this->_DebugLogger->Log("Creating ColorPickers", 4);
     if (jsonColorPickers.contains("colorPickers"))
@@ -458,9 +458,9 @@ std::vector<std::shared_ptr<GColorPicker>> MenuManager::loadsColorPickers(const 
     return colorPickers;
 }
 
-std::vector<std::shared_ptr<GProgressBar>> MenuManager::loadsProgressBars(const nlohmann::json &jsonProgressBars, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsProgressBars(const nlohmann::json &jsonProgressBars, menuType type)
 {
-    std::vector<std::shared_ptr<GProgressBar>> progressBars;
+    std::vector<std::shared_ptr<AGuiElem>> progressBars;
 
     this->_DebugLogger->Log("Creating ProgressBars", 4);
     if (jsonProgressBars.contains("progressBars"))
@@ -469,9 +469,9 @@ std::vector<std::shared_ptr<GProgressBar>> MenuManager::loadsProgressBars(const 
     return progressBars;
 }
 
-std::vector<std::shared_ptr<GDropDown>> MenuManager::loadsDropDowns(const nlohmann::json &jsonDropDowns, menuType type)
+std::vector<std::shared_ptr<AGuiElem>> MenuManager::loadsDropDowns(const nlohmann::json &jsonDropDowns, menuType type)
 {
-    std::vector<std::shared_ptr<GDropDown>> dropDowns;
+    std::vector<std::shared_ptr<AGuiElem>> dropDowns;
 
     this->_DebugLogger->Log("Creating DropDowns", 4);
     if (jsonDropDowns.contains("dropDowns"))
