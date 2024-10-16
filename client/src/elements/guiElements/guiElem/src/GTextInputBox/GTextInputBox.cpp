@@ -7,7 +7,7 @@
 
 #include "GTextInputBox.hpp"
 
-GTextInputBox::GTextInputBox(const Vector2 pos, const Vector2 size, const std::string id, const std::string title, const std::string message, const std::string buttons, const std::string text, int textMaxSize, const bool secretViewActive, const bool display) : AGuiElem(pos, size, text, id, display)
+GTextInputBox::GTextInputBox(const Vector2 pos, const Vector2 size, const int zindex, const std::string id, const std::string title, const std::string message, const std::string buttons, const std::string text, int textMaxSize, const bool secretViewActive, const bool display) : AGuiElem(pos, size, text, zindex, id, display)
 {
     this->_Title = title;
     this->_Message = message;

@@ -11,7 +11,7 @@
 
 class GValueBox : public AGuiElem {
 public:
-    GValueBox(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default value box text", const std::string id = "default", const int value = 0, const int minValue = 0, const int maxValue = 100, const bool editMode = false, const bool display = false);
+    GValueBox(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default value box text",const int zindex = 0, const std::string id = "default", const int value = 0, const int minValue = 0, const int maxValue = 100, const bool editMode = false, const bool display = false);
     ~GValueBox() = default;
 
     void draw() const;

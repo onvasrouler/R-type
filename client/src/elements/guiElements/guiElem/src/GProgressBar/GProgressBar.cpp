@@ -7,7 +7,7 @@
 
 #include "GProgressBar.hpp"
 
-GProgressBar::GProgressBar(const Vector2 pos, const Vector2 size, const std::string id, const std::string textLeft, const std::string textRight,const float value,const float minvalue,const float maxvalue, const bool display) : AGuiElem(pos, size, "default", id, display)
+GProgressBar::GProgressBar(const Vector2 pos, const Vector2 size, const int zindex, const std::string id, const std::string textLeft, const std::string textRight, const float value,const float minvalue,const float maxvalue, const bool display) : AGuiElem(pos, size, "default", zindex, id, display)
 {
     this->_TextLeft = textLeft;
     this->_TextRight = textRight;

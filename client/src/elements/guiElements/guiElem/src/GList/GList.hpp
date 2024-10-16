@@ -11,7 +11,7 @@
 
 class GList : public AGuiElem {
 public:
-    GList(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default;list;text", const std::string id = "default", const bool display = false);
+    GList(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default;list;text",const int zindex = 0, const std::string id = "default", const bool display = false);
     ~GList() = default;
 
     void draw() const;

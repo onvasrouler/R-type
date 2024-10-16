@@ -7,7 +7,7 @@
 
 #include "GListEx.hpp"
 
-GListEx::GListEx(const Vector2 pos, const Vector2 size, const std::string id, const std::vector<std::string> list, int active, const bool display) : AGuiElem(pos, size, "default", id, display)
+GListEx::GListEx(const Vector2 pos, const Vector2 size, const int zindex, const std::string id, const std::vector<std::string> list, int active, const bool display) : AGuiElem(pos, size, "default", zindex, id, display)
 {
     this->_List = list;
     this->_Active = active;

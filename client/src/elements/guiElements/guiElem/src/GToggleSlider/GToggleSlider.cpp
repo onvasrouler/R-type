@@ -7,7 +7,7 @@
 
 #include "GToggleSlider.hpp"
 
-GToggleSlider::GToggleSlider(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int active, const bool display) : AGuiElem(pos, size, text, id, display)
+GToggleSlider::GToggleSlider(const Vector2 pos, const Vector2 size, const std::string text, const int zindex, const std::string id, int active, const bool display) : AGuiElem(pos, size, text, zindex, id, display)
 {
     this->_Active = active;
 }

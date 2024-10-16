@@ -7,7 +7,7 @@
 
 #include "GSpinner.hpp"
 
-GSpinner::GSpinner(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int value, int minValue, int maxValue, const bool editMode, const bool display) : AGuiElem(pos, size, text, id, display)
+GSpinner::GSpinner(const Vector2 pos, const Vector2 size, const std::string text, const int zindex, const std::string id, int value, int minValue, int maxValue, const bool editMode, const bool display) : AGuiElem(pos, size, text, zindex, id, display)
 {
     this->_Value = value;
     this->_MinValue = minValue;

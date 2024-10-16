@@ -7,7 +7,7 @@
 
 #include "GTextInput.hpp"
 
-GTextInput::GTextInput(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, int textSize, const bool editMode, const bool display) : AGuiElem(pos, size, text, id, display)
+GTextInput::GTextInput(const Vector2 pos, const Vector2 size, const std::string text, const int zindex, const std::string id, int textSize, const bool editMode, const bool display) : AGuiElem(pos, size, text, zindex, id, display)
 {
     this->_TextMaxSize = textSize;
     this->_EditMode = editMode;

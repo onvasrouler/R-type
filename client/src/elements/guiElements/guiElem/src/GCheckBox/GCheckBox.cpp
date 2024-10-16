@@ -7,7 +7,7 @@
 
 #include "GCheckBox.hpp"
 
-GCheckBox::GCheckBox(const Vector2 pos, const Vector2 size, const std::string text, const std::string id, const bool checked, const bool display) : AGuiElem(pos, size, text, id, display)
+GCheckBox::GCheckBox(const Vector2 pos, const Vector2 size, const std::string text, const int zindex, const std::string id, const bool checked, const bool display) : AGuiElem(pos, size, text, zindex, id, display)
 {
     this->_isChecked = checked;
 }
