@@ -7,34 +7,14 @@
 
 #include "fpsCounter.hpp"
 
-FpsCounter::FpsCounter(const Vector2 pos, const int fontSize, const Color color)
+FpsCounter::FpsCounter(const Vector2 pos, const int zindex, const int fontSize, const Color color)
 {
    this-> _Position = pos;
    this->_Fps = 0;
    this->_FrameCount = 0;
    this->_ElapsedTime = 0;
-   this->_FpsText = std::make_unique<RaylibText>("FPS: 0", pos, fontSize, color, "FpsTextCounter", true);
+   this->_FpsText = std::make_shared<RLText>(pos, Vector2{0, static_cast<float>(fontSize)}, "FPS: 0", zindex, color);
    this->_Active = true;
-}
-
-void FpsCounter::setPosX(const int posX) const
-{
-   this->_FpsText->setPosX(posX);
-}
-
-void FpsCounter::setPosY(const int posY) const
-{
-   this->_FpsText->setPosY(posY);
-}
-
-void FpsCounter::setPos(const Vector2 pos) const
-{
-   this->_FpsText->setPos(pos);
-}
-
-void FpsCounter::setFontSize(const int fontSize) const
-{
-   this->_FpsText->setFontSize(fontSize);
 }
 
 void FpsCounter::setFps(const float fps)
@@ -43,55 +23,20 @@ void FpsCounter::setFps(const float fps)
    this->_FpsText->setText("FPS: " + std::to_string(_Fps));
 }
 
-void FpsCounter::setFpsText(std::unique_ptr<RaylibText> fpsText)
-{
-   this->_FpsText = std::move(fpsText);
-}
-
-void FpsCounter::setColor(const Color color) const
-{
-   this->_FpsText->setColor(color);
-}
-
-void FpsCounter::setColor(const unsigned char r, const unsigned char g, const unsigned char b, const unsigned char a) const
-{
-   this->_FpsText->setColor(Color{r, g, b, a});
-}
-
-int FpsCounter::getPosX() const
-{
-   return this->_FpsText->getPosX();
-}
-
-int FpsCounter::getPosY() const
-{
-   return this->_FpsText->getPosY();
-}
-
-Vector2 FpsCounter::getPos() const
-{
-   return this->_FpsText->getPos();
-}
-
-int FpsCounter::getFontSize() const
-{
-   return this->_FpsText->getFontSize();
-}
-
 float FpsCounter::getFps() const
 {
    return this->_Fps;
 }
 
-const std::unique_ptr<RaylibText>& FpsCounter::getFpsText() const
+const std::shared_ptr<RLText>& FpsCounter::getFpsText() const
 {
    return this->_FpsText;
 }
 
-void FpsCounter::draw() const
+void FpsCounter::drawFps()
 {
-   if (this->_Active)
-       this->_FpsText->DrawRlibText();
+   this->_FpsText->draw();
+   this->update();
 }
 
 void FpsCounter::reset()
@@ -114,19 +59,4 @@ void FpsCounter::update()
        roundedFps = static_cast<int>(_Fps);
        this->_FpsText->setText("FPS: " + std::to_string(roundedFps));
    }
-}
-
-void FpsCounter::setActive(const bool active)
-{
-   this->_Active = active;
-}
-
-void FpsCounter::toggleActive()
-{
-   this->_Active = !_Active;
-}
-
-bool FpsCounter::isActive() const
-{
-   return this->_Active;
 }
