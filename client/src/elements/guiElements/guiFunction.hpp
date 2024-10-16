@@ -30,8 +30,8 @@ class guiFunction {
      */
     #define custom_func(name, body) \
     { \
-    auto fn = [this]() { body; }; \
-    _FunctionList[#name] = fn; \
+        auto fn = [this]() { body; }; \
+        _FunctionList[#name] = fn; \
     }
 
     /**

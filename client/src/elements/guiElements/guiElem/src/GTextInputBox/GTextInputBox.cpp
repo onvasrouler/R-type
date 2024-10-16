@@ -21,6 +21,7 @@ void GTextInputBox::draw() const
     char* text;
     int result;
     bool secretviewactive;
+
     if (this->_Display) {
         text = const_cast<char*>(this->_Text.c_str());
         result = this->_Result;

@@ -21,6 +21,7 @@ void guiFunction::mapFunctions()
         int g;
         int b;
         int a;
+
         iss >> r >> g >> b >> a;
         this->_MenuManager->setBackgroundColor(Color{static_cast<unsigned char>(r), static_cast<unsigned char>(g), static_cast<unsigned char>(b), static_cast<unsigned char>(a)});
     });
@@ -31,6 +32,7 @@ void guiFunction::mapFunctions()
     custom_func(StartFunct, {
         std::string ip = this->_MenuManager->getCurrentGui()->GetValueById("adressInput");
         std::string port = this->_MenuManager->getCurrentGui()->GetValueById("portInput");
+
         this->_MenuManager->getCurrentGui()->GetElementById("InvalidAdressText")->setDisplay(false);
         this->_MenuManager->getCurrentGui()->GetElementById("InvalidPortText")->setDisplay(false);
         if (!isIpValid(ip))
