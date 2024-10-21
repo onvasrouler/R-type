@@ -18,12 +18,18 @@
     #include <unistd.h>
 #endif
 
-AbstractModule::AbstractModule() : MultiThreadElement()
+AbstractModule::AbstractModule() : MultiThreadElement(), _id(uuid().toString())
 {
     _Running = false;
 }
 
-AbstractModule::AbstractModule(const std::string name) : MultiThreadElement()
+AbstractModule::AbstractModule(const std::string name) : MultiThreadElement(), _id(uuid().toString())
+{
+    _ModuleName = name;
+    _Running = false;
+}
+
+AbstractModule::AbstractModule(const std::string name, const std::string id) : MultiThreadElement(), _id(id)
 {
     _ModuleName = name;
     _Running = false;
@@ -42,8 +48,8 @@ void AbstractModule::start()
         std::cout << "Starting module: " << _ModuleName << std::endl;
         struct sockaddr_in server_addr;
         server_addr.sin_family = AF_INET;
-        server_addr.sin_port = htons(MODULE_PORT);  // Utilisez le même port que celui défini dans le serveur
-        server_addr.sin_addr.s_addr = INADDR_ANY;  // Adresse IP locale
+        server_addr.sin_port = htons(MODULE_PORT);  // Use the same port as the server
+        server_addr.sin_addr.s_addr = INADDR_ANY;  // Local ip adress
         inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
         int serverSocket = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
 

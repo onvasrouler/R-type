@@ -89,26 +89,6 @@ class MultiThreadElement {
          */
         virtual std::string encodeInterCommunication(std::string message) = 0;
 
-        /**
-         *@brief Add a communicate module
-         *
-         * @param module The module to communicate with
-         */
-        void addCommunicateModule(const std::string module);
-
-        /**
-         * @brief Get the communicates modules
-         *
-         * @return std::vector<std::string> The communicates modules
-         */
-        std::vector<std::string> getCommunicatesModules() const;
-
-        /**
-         * @brief Get the id of the MultithreadElement
-         *
-         * @return std::string The id of the MultithreadElement
-         */
-        std::string getId() const;
         std::thread _thread; /*!< The thread of the module. */
         std::vector<MultiThreadData> _datas; /*!< The data stored. */
         std::vector<std::string> _sendingIntern; /*!< The messages to send. */
@@ -119,7 +99,5 @@ class MultiThreadElement {
         #else
             int _socket; /*!< The socket of the module. */
             std::vector<int> _otherModules; /*!< The sockets of the other modules. */
-            std::vector<std::string> _communicatesModules; /*!< The modules to communicate with. */
-            const std::string _id; /*!< The id of the module. */
         #endif
 };

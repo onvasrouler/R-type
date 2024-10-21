@@ -25,7 +25,7 @@ class NetworkModule : public AbstractModule {
          *
          * @param the name of the module
          */
-        NetworkModule(const std::string name);
+        NetworkModule(const std::string name, const std::string id);
         /**
          * @brief The destructor of the NetworkModule class
          *

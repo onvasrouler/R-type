@@ -8,7 +8,7 @@
 
 #include "networkModule.hpp"
 
-NetworkModule::NetworkModule(const std::string name) : AbstractModule(name) {
+NetworkModule::NetworkModule(const std::string name, const std::string id) : AbstractModule(name, id) {
     try {
         _udpServer = std::make_unique<UDPServer>(_io_context, PORT);
     } catch (std::exception& e) {
