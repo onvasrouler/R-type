@@ -21,18 +21,20 @@ src/main.cpp
 )
 target_include_directories(r-type_server
 PRIVATE
-${CMAKE_SOURCE_DIR}/server/client
-${CMAKE_SOURCE_DIR}/server/core
-${CMAKE_SOURCE_DIR}/server/game_engine
-${CMAKE_SOURCE_DIR}/server/lib
-${CMAKE_SOURCE_DIR}/server/network
-${CMAKE_SOURCE_DIR}/server/room
-${CMAKE_SOURCE_DIR}/server/src
+${CMAKE_SOURCE_DIR}/client
+${CMAKE_SOURCE_DIR}/config
+${CMAKE_SOURCE_DIR}/core
+${CMAKE_SOURCE_DIR}/game_engine
+${CMAKE_SOURCE_DIR}/lib
+${CMAKE_SOURCE_DIR}/network
+${CMAKE_SOURCE_DIR}/room
+${CMAKE_SOURCE_DIR}/src
 )
 
 target_link_libraries(r-type_server Boost::boost rtype_server_lib)
 
 add_subdirectory(client)
+add_subdirectory(config)
 add_subdirectory(core)
 add_subdirectory(game_engine)
 add_subdirectory(lib)
