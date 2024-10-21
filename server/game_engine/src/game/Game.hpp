@@ -23,6 +23,7 @@
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <sstream>
 
 #define MAX_PLAYERS 4 ///< The maximum number of players in the game.
 #define MAX_ENEMIES 2 ///< The maximum number of enemies in the game.

@@ -71,14 +71,20 @@ bool Game::create_player(const std::string id)
  */
 void Game::create_bullet(const Player player)
 {
-    this->_bullet.push_back(Bullet(player.get_x() + player.get_l(), player.get_y()));
-    std::string message = BULLET_SPAWN_CODE + std::string("/") + this->_bullet.back().get_id() + std::string("/") + std::to_string(this->_bullet.back().get_x()) + std::string("/") + std::to_string(this->_bullet.back().get_y()) + END_MESSAGE_CODE;
-    _sendMutex.lock();
-    for (auto &player : _player) {
-        _sendMessages.push_back(gameMessage(player.get_id(), message));
+    this->_bullet.emplace_back(player.get_x() + player.get_l(), player.get_y());
+
+    std::ostringstream messageStream;
+    messageStream << BULLET_SPAWN_CODE << "/"
+                  << this->_bullet.back().get_id() << "/"
+                  << this->_bullet.back().get_x() << "/"
+                  << this->_bullet.back().get_y() << END_MESSAGE_CODE;
+    std::string message = messageStream.str();
+
+    std::lock_guard<std::mutex> lock(_sendMutex);
+
+    for (const auto& player : _player) {
+        _sendMessages.emplace_back(player.get_id(), message);
     }
-    // std::cout << "Bullet created" << std::endl;
-    _sendMutex.unlock();
 }
 
 /**
