@@ -136,18 +136,79 @@ TEST_F(GameTest, LoadTestCreateManyEnemies) {
     EXPECT_EQ(game->getEnemies().size(), numEnemies);
 }
 
-// Charge test to create many bullets
+// Charge test to create many bullets with one player
 TEST_F(GameTest, LoadTestCreateManyBullets) {
     std::string playerId = "player1";
     game->create_player(playerId);
     Player player = game->getPlayers().at(0);
 
     const int numBullets = 1000;
+    start = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < numBullets; ++i) {
         game->create_bullet(player);
     }
 
     EXPECT_EQ(game->getBullets().size(), numBullets);
+}
+
+// Charge test to create many bullets with two players
+TEST_F(GameTest, LoadTestCreateManyBulletsTwoPlayers) {
+    game->create_player("player1");
+    game->create_player("player2");
+    Player player1 = game->getPlayers().at(0);
+    Player player2 = game->getPlayers().at(1);
+
+    const int numBullets = 1000;
+    start = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < numBullets; ++i) {
+        game->create_bullet(player1);
+        game->create_bullet(player2);
+    }
+
+    EXPECT_EQ(game->getBullets().size(), numBullets * 2);
+}
+
+// Charge test to create many bullets with three players
+TEST_F(GameTest, LoadTestCreateManyBulletsThreePlayers) {
+    game->create_player("player1");
+    game->create_player("player2");
+    game->create_player("player3");
+    Player player1 = game->getPlayers().at(0);
+    Player player2 = game->getPlayers().at(1);
+    Player player3 = game->getPlayers().at(2);
+
+    const int numBullets = 1000;
+    start = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < numBullets; ++i) {
+        game->create_bullet(player1);
+        game->create_bullet(player2);
+        game->create_bullet(player3);
+    }
+
+    EXPECT_EQ(game->getBullets().size(), numBullets * 3);
+}
+
+// Charge test to create many bullets with four players
+TEST_F(GameTest, LoadTestCreateManyBulletsFourPlayers) {
+    game->create_player("player1");
+    game->create_player("player2");
+    game->create_player("player3");
+    game->create_player("player4");
+    Player player1 = game->getPlayers().at(0);
+    Player player2 = game->getPlayers().at(1);
+    Player player3 = game->getPlayers().at(2);
+    Player player4 = game->getPlayers().at(3);
+
+    const int numBullets = 1000;
+    start = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < numBullets; ++i) {
+        game->create_bullet(player1);
+        game->create_bullet(player2);
+        game->create_bullet(player3);
+        game->create_bullet(player4);
+    }
+
+    EXPECT_EQ(game->getBullets().size(), numBullets * 4);
 }
 
 // Test to create multiple game instances with the maximum number of players per game
