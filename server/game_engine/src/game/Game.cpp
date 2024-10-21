@@ -42,6 +42,9 @@ Game::~Game()
  */
 bool Game::create_player(const std::string id)
 {
+    if (id.empty() || std::all_of(id.begin(), id.end(), [](unsigned char c) { return std::isspace(c); })) {
+        return false;
+    }
     if (this->_player.size() < 4) {
         Player player(500, id);
         this->_player.push_back(player);
