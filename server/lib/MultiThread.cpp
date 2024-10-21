@@ -24,7 +24,7 @@ static std::string generateId() {
     return id.toString();
 }
 
-MultiThreadElement::MultiThreadElement() : _id(generateId()) {
+MultiThreadElement::MultiThreadElement() {
     _datas = std::vector<MultiThreadData>();
     _sendingIntern = std::vector<std::string>();
     _receivedIntern = std::vector<std::string>();
@@ -60,16 +60,4 @@ std::any MultiThreadData::getData() const {
 
 void MultiThreadData::setData(const std::any data) {
     _data = data;
-}
-
-void MultiThreadElement::addCommunicateModule(const std::string module) {
-    _communicatesModules.push_back(module);
-}
-
-std::vector<std::string> MultiThreadElement::getCommunicatesModules() const {
-    return _communicatesModules;
-}
-
-std::string MultiThreadElement::getId() const {
-    return _id;
 }

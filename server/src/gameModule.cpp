@@ -8,8 +8,8 @@
 
 #include "gameModule.hpp"
 
-GameModule::GameModule(const std::string name)
-    : AbstractModule(name), _game(Game()) {
+GameModule::GameModule(const std::string name, const std::string id)
+    : AbstractModule(name, id), _game(Game()) {
     _Running = false;
     std::cout << "Module: " << _ModuleName << " created" << std::endl;
 }

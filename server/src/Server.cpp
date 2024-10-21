@@ -9,6 +9,7 @@
 #include "Server.hpp"
 #include "gameModule.hpp"
 #include "networkModule.hpp"
+#include "ConfigParser.hpp"
 #include <boost/asio.hpp>
 #include <signal.h>
 #ifdef _WIN32
@@ -23,7 +24,20 @@
 #include <sys/resource.h>
 #endif
 
-Server::Server() : MultiThreadElement() { _Running = false; }
+Server::Server() : MultiThreadElement() {
+    _Running = false;
+    ConfigParser parser;
+    parser.ParseConfig(std::string(std::filesystem::current_path()) + "/server/config/modules.json");
+    std::cout << "server name: " << parser.GetServerName() << std::endl;
+    for (auto &module : parser.GetModules()) {
+        std::cout << "module name: " << module.GetModuleName() << std::endl;
+        std::cout << "module path: " << module.GetModulePath() << std::endl;
+        for (auto &listen : module.GetModuleListen()) {
+            std::cout << "module listen: " << listen << std::endl;
+        }
+    }
+    exit(0);
+}
 
 Server::~Server() {
     std::cout << "Deleting server" << std::endl;
@@ -63,11 +77,20 @@ void Server::start() {
     }
     // create all the modules
     std::cout << "Creating modules" << std::endl;
-    NetworkModule* networkModule = new NetworkModule("NetworkModule");
-    GameModule* gameModule = new GameModule("GameModule");
+    ConfigParser parser;
+    parser.ParseConfig(std::string(std::filesystem::current_path()) + "/server/config/modules.json");
+    std::cout << "server name: " << parser.GetServerName() << std::endl;
+    for (auto &module : parser.GetModules()) {
+        std::cout << "module name: " << module.GetModuleName() << std::endl;
+        std::cout << "module path: " << module.GetModulePath() << std::endl;
+        for (auto &listen : module.GetModuleListen()) {
+            std::cout << "module listen: " << listen << std::endl;
+        }
+    }
+    NetworkModule* networkModule = new NetworkModule("Network Module", "a5dbbeb3-1435-473c-ba3b-36388bb64e8a");
+    GameModule* gameModule = new GameModule("Game Module", "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2");
     networkModule->addCommunicateModule(gameModule->getId());
     gameModule->addCommunicateModule(networkModule->getId());
-    gameModule->addCommunicateModule(_id);
     createModule(networkModule);
     createModule(gameModule);
 #ifdef _WIN32
