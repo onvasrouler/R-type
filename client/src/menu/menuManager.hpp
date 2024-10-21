@@ -6,13 +6,12 @@
 */
 
 #pragma once
-#include "../include.hpp"
-
 
 #include "../jsonParser/jsonParser.hpp"
 #include "../elements/guiElements/gui.hpp"
 #include "../elements/guiElements/guiElem/Elem.hpp"
 #include "../elements/guiElements/guiFunction.hpp"
+#include "../raylibWindow/utils.hpp"
 
 enum menuType {
     MAIN_MENU,
@@ -31,6 +30,14 @@ enum menuType {
 
 #define defaultErrorWidth 100
 #define defaultErrorHeight 100
+
+#define defaultErrroId "errorId"
+
+#define defaultDoDisplayElement true
+
+#define defaultErrorZindex 0
+
+#define defaultErrorColor Color{255, 0, 0, 255}
 
 /**
  * @class MenuManager

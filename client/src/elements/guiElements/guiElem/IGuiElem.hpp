@@ -7,7 +7,12 @@
 
 #pragma once
 
-#include "../../../include.hpp"
+#include <raylib.h>
+#include <string>
+#include <vector>
+#include <memory>
+#include <map>
+#include "../../../raygui/raygui.h"
 
 class IGuiElem {
 public:

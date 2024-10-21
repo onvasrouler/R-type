@@ -7,7 +7,10 @@
 
 #pragma once
 
-#include "../include.hpp"
+#include <nlohmann/json.hpp>
+#include <string>
+#include <map>
+#include <fstream>
 
 /**
  * @class JsonParser

@@ -7,6 +7,14 @@
 
 #pragma once
 
+#include <string>
+#include <ctime>
+#include <ostream>
+#include <iostream>
+#include <regex>
+#include <raylib.h>
+#include <filesystem>
+
 /**
  * @brief cleaner way to log messaged of raylib by
  * adding the date and time + the type of the message
