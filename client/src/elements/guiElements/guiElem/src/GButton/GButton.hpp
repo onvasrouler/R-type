@@ -11,7 +11,7 @@
 
 class GButton : public AGuiElem {
 public:
-    GButton(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default button text",const int zindex = 0, const std::string id = "default", const bool display = false);
+    GButton(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText, const int zindex = defaultZIndex, const std::string id = defaultId, const bool display = defaultDisplay);
     ~GButton() = default;
 
     void draw() const;

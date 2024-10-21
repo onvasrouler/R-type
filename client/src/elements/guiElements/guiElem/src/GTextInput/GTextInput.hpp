@@ -11,7 +11,7 @@
 
 class GTextInput : public AGuiElem {
 public:
-    GTextInput(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default text",const int zindex = 0, const std::string id = "default", const int textMaxSize = 100, const bool editMode = false, const bool display = false);
+    GTextInput(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText,const int zindex = defaultZIndex, const std::string id = defaultId, const int textMaxSize = 100, const bool editMode = false, const bool display = defaultDisplay);
     ~GTextInput() = default;
 
     void draw() const;

@@ -9,6 +9,15 @@
 
 #include "IGuiElem.hpp"
 
+#define defaultId "defaultiD"
+#define defaultText "default Text"
+#define defaultDisplay true
+#define defaultPos {0, 0}
+#define defaultSize {100, 100}
+#define defaultZIndex 0
+#define defaultIntvalue 0
+#define defaultText "default Text"
+
 /**
  * @class AGuiElem
  * @brief Abstract base class for GUI elements.
@@ -41,7 +50,7 @@ public:
      * @param id Initial ID of the GUI element. Default is "default".
      * @param display Initial display state of the GUI element. Default is false.
      */
-    AGuiElem(const Vector2 pos = {0, 0}, const Vector2 size = {100, 50}, const std::string text = "default", const int zindex = 0, const std::string id = "default", const bool display = false);
+    AGuiElem(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText, const int zindex = defaultZIndex, const std::string id = defaultId, const bool display = defaultDisplay);
 
     /**
      * @brief Default destructor for AGuiElem.

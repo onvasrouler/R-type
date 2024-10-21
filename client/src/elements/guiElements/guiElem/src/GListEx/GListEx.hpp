@@ -11,7 +11,7 @@
 
 class GListEx : public AGuiElem {
 public:
-    GListEx(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const int zindex = 0, const std::string id = "default", const std::vector<std::string> list = {"default", "list", "text"}, const int active = 0, const bool display = false);
+    GListEx(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const int zindex = defaultZIndex, const std::string id = defaultId, const std::vector<std::string> list = {"default", "list", "text"}, const int active = 0, const bool display = defaultDisplay);
     ~GListEx() = default;
 
     void draw() const;

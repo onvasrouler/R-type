@@ -11,7 +11,7 @@
 
 class GPannel : public AGuiElem {
 public:
-    GPannel(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default pannel text",const int zindex = 0, const std::string id = "default", const bool display = false);
+    GPannel(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText, const int zindex = defaultZIndex, const std::string id = defaultId, const bool display = defaultDisplay);
     ~GPannel() = default;
 
     void draw() const;

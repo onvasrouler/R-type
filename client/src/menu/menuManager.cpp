@@ -554,7 +554,7 @@ std::shared_ptr<RLText> MenuManager::createTexts(const nlohmann::json &text, con
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<RLText>(getRelativePos(defaultErrorPosX, defaultErrorPosY), Vector2{10, 10}, errorText, 100, Color{255, 0, 0, 255}, "errorId", true);
+        return std::make_shared<RLText>(getRelativePos(defaultErrorPosX, defaultErrorPosY), Vector2{10, 10}, errorText, defaultErrorZindex, defaultErrorColor, defaultErrroId, defaultDoDisplayElement);
     }
 }
 
@@ -574,7 +574,7 @@ std::shared_ptr<GButton> MenuManager::createButtons(const nlohmann::json &button
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GButton>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", true);
+        return std::make_shared<GButton>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, defaultDoDisplayElement);
     }
 }
 
@@ -595,7 +595,7 @@ std::shared_ptr<GWindBox> MenuManager::createWindBox(const nlohmann::json &windB
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GWindBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", false, true);
+        return std::make_shared<GWindBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, false, defaultDoDisplayElement);
     }
 }
 
@@ -616,7 +616,7 @@ std::shared_ptr<GCheckBox> MenuManager::createCheckBoxes(const nlohmann::json &c
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GCheckBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", false, true);
+        return std::make_shared<GCheckBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, false, defaultDoDisplayElement);
     }
 }
 
@@ -639,7 +639,7 @@ std::shared_ptr<GSlider> MenuManager::createSliders(const nlohmann::json &slider
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", 0.0F, 0.0F, 0.0F, true);
+        return std::make_shared<GSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, 0.0F, 0.0F, 0.0F, defaultDoDisplayElement);
     }
 }
 
@@ -659,7 +659,7 @@ std::shared_ptr<GList> MenuManager::createLists(const nlohmann::json &list, cons
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GList>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", true);
+        return std::make_shared<GList>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, defaultDoDisplayElement);
     }
 }
 
@@ -681,7 +681,7 @@ std::shared_ptr<GListEx> MenuManager::createListExs(const nlohmann::json &listEx
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GListEx>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, 0, "errorId", std::vector<std::string>{errorText}, 0, true);
+        return std::make_shared<GListEx>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, defaultErrorZindex, defaultErrroId, std::vector<std::string>{errorText}, 0, defaultDoDisplayElement);
     }
 }
 
@@ -703,7 +703,7 @@ std::shared_ptr<GTextInput> MenuManager::createInputTexts(const nlohmann::json &
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GTextInput>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", 0, false, true);
+        return std::make_shared<GTextInput>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, 0, false, defaultDoDisplayElement);
     }
 }
 
@@ -728,7 +728,7 @@ std::shared_ptr<GTextInputBox> MenuManager::createInputTextsBoxs(const nlohmann:
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GTextInputBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, 0, "errorId", "default title", "default message", "default buttons", "default text", 0, false, true);
+        return std::make_shared<GTextInputBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, defaultErrorZindex, defaultErrroId, "default title", "default message", "default buttons", "default text", 0, false, defaultDoDisplayElement);
     }
 }
 
@@ -752,7 +752,7 @@ std::shared_ptr<GSpinner> MenuManager::createSpinners(const nlohmann::json &spin
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GSpinner>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", 0, 0, 0, false, true);
+        return std::make_shared<GSpinner>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, 0, 0, 0, false, defaultDoDisplayElement);
     }
 }
 
@@ -776,7 +776,7 @@ std::shared_ptr<GValueBox> MenuManager::createValueBoxes(const nlohmann::json &v
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GValueBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId",0, 0, 0, false, true);
+        return std::make_shared<GValueBox>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId,0, 0, 0, false, defaultDoDisplayElement);
     }
 }
 
@@ -796,7 +796,7 @@ std::shared_ptr<GGroup> MenuManager::createGroups(const nlohmann::json &group, c
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", true);
+        return std::make_shared<GGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, defaultDoDisplayElement);
     }
 }
 
@@ -817,7 +817,7 @@ std::shared_ptr<GToggleGroup> MenuManager::createToggleGroups(const nlohmann::js
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GToggleGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", 0, true);
+        return std::make_shared<GToggleGroup>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, 0, defaultDoDisplayElement);
     }
 }
 
@@ -838,7 +838,7 @@ std::shared_ptr<GToggleSlider> MenuManager::createToggleSliders(const nlohmann::
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GToggleSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", 0, true);
+        return std::make_shared<GToggleSlider>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, 0, defaultDoDisplayElement);
     }
 }
 
@@ -858,7 +858,7 @@ std::shared_ptr<GPannel> MenuManager::createPannels(const nlohmann::json &pannel
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GPannel>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", true);
+        return std::make_shared<GPannel>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, defaultDoDisplayElement);
     }
 }
 
@@ -879,7 +879,7 @@ std::shared_ptr<GColorPicker> MenuManager::createColorPickers(const nlohmann::js
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GColorPicker>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, 0, "errorId", Color{0, 0, 0, 0}, true);
+        return std::make_shared<GColorPicker>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, errorText, defaultErrorZindex, defaultErrroId, defaultErrorColor, defaultDoDisplayElement);
     }
 }
 
@@ -903,7 +903,7 @@ std::shared_ptr<GProgressBar> MenuManager::createProgressBars(const nlohmann::js
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GProgressBar>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, 0, "errorId", errorText, errorText, 0, 0, 0, true);
+        return std::make_shared<GProgressBar>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, defaultErrorZindex, defaultErrroId, errorText, errorText, defaultErrorZindex, 0, 0, defaultDoDisplayElement);
     }
 }
 
@@ -925,6 +925,6 @@ std::shared_ptr<GDropDown> MenuManager::createDropDowns(const nlohmann::json &dr
     } catch (std::exception &e) {
         std::string errorText = "error occured : " + std::string(e.what());
         this->_DebugLogger->Log(errorText, 0);
-        return std::make_shared<GDropDown>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "error;occured", 0, "errorId", 0, false, true);
+        return std::make_shared<GDropDown>(Vector2{defaultErrorPosX, defaultErrorPosY}, Vector2{defaultErrorWidth, defaultErrorHeight}, "error;occured", defaultErrorZindex, defaultErrroId, 0, false, defaultDoDisplayElement);
     }
 }

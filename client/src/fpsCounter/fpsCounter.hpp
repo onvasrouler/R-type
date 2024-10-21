@@ -33,7 +33,7 @@ public:
      * @param fontSize The font size of the FPS text. Default is 10.
      * @param color The color of the FPS text. Default is BLACK.
      */
-    FpsCounter(const Vector2 pos = {0, 0}, const int zindex = 0, const int fontSize = 10, const Color color = BLACK);
+    FpsCounter(const Vector2 pos = defaultPos, const int zindex = defaultZIndex, const int fontSize = 10, const Color color = BLACK);
 
     /**
      * @brief Sets the current FPS value.

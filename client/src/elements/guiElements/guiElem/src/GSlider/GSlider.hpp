@@ -11,7 +11,7 @@
 
 class GSlider : public AGuiElem {
 public:
-    GSlider(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default slider text",const int zindex = 0, const std::string id = "default", const float value = 0.0F, const float minvalue = 0.0F, const float maxvalue = 100.0F, const bool display = false);
+    GSlider(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText, const int zindex = defaultZIndex, const std::string id = defaultId, const float value = 0.0F, const float minvalue = 0.0F, const float maxvalue = 100.0F, const bool display = defaultDisplay);
     ~GSlider() = default;
 
     void draw() const;

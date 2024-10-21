@@ -11,7 +11,7 @@
 
 class GToggleGroup : public AGuiElem {
 public:
-    GToggleGroup(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default;toggle;group",const int zindex = 0, const std::string id = "default", const int active = 0, const bool display = false);
+    GToggleGroup(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = "default;toggle;group",const int zindex = defaultZIndex, const std::string id = defaultId, const int active = 0, const bool display = defaultDisplay);
     ~GToggleGroup() = default;
 
     void draw() const;

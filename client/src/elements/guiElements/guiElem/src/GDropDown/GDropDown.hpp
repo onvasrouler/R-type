@@ -11,7 +11,7 @@
 
 class GDropDown : public AGuiElem {
 public:
-    GDropDown(const Vector2 pos = {0, 0}, const Vector2 size = {100, 100}, const std::string text = "default;drop;down;val",const int zindex = 0, const std::string id = "default", const int active = 0, const bool editMode = false, const bool display = false);
+    GDropDown(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = "default;drop;down;val",const int zindex = defaultZIndex, const std::string id = defaultId, const int active = 0, const bool editMode = false, const bool display = defaultDisplay);
     ~GDropDown() = default;
 
     void draw() const;
