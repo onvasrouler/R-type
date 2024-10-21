@@ -231,3 +231,197 @@ TEST(GameInstanceTest, MultipleGamesWithMaxPlayers) {
         delete game;
     }
 }
+
+// Test to verify the creation of multiple players and enemies
+TEST_F(GameTest, CreateMultiplePlayersAndEnemies) {
+    const int numPlayers = 4;
+    const int numEnemies = 4;
+
+    for (int i = 0; i < numPlayers; ++i) {
+        std::string playerId = "player" + std::to_string(i);
+        game->create_player(playerId);
+    }
+
+    for (int i = 0; i < numEnemies; ++i) {
+        game->create_enemy();
+    }
+
+    EXPECT_EQ(game->getPlayers().size(), numPlayers);
+    EXPECT_EQ(game->getEnemies().size(), numEnemies);
+}
+
+// Test to verify the destruction of multiple players and enemies
+TEST_F(GameTest, DestroyMultiplePlayersAndEnemies) {
+    const int numPlayers = 4;
+    const int numEnemies = 4;
+
+    for (int i = 0; i < numPlayers; ++i) {
+        std::string playerId = "player" + std::to_string(i);
+        game->create_player(playerId);
+    }
+
+    for (int i = 0; i < numEnemies; ++i) {
+        game->create_enemy();
+    }
+
+    for (int i = 0; i < numPlayers; ++i) {
+        std::string playerId = "player" + std::to_string(i);
+        game->destroy_player(playerId);
+    }
+
+    for (int i = 0; i < numEnemies; ++i) {
+        std::string enemyId = game->getEnemies().at(0).get_id();
+        game->destroy_enemy(enemyId);
+    }
+
+    EXPECT_EQ(game->getPlayers().size(), 0);
+    EXPECT_EQ(game->getEnemies().size(), 0);
+}
+
+// Test to verify the creation and destruction of multiple bullets
+TEST_F(GameTest, CreateAndDestroyMultipleBullets) {
+    std::string playerId = "player1";
+    game->create_player(playerId);
+    Player player = game->getPlayers().at(0);
+
+    const int numBullets = 1000;
+    for (int i = 0; i < numBullets; ++i) {
+        game->create_bullet(player);
+    }
+
+    for (int i = 0; i < numBullets; ++i) {
+        std::string bulletId = game->getBullets().at(0).get_id();
+        game->destroy_bullet(bulletId);
+    }
+
+    EXPECT_EQ(game->getBullets().size(), 0);
+}
+
+// Test to verify the creation and destruction of multiple players, enemies, and bullets
+TEST_F(GameTest, CreateAndDestroyMultipleEntities) {
+    const int numPlayers = 4;
+    const int numEnemies = 4;
+    const int numBullets = 1000;
+
+    for (int i = 0; i < numPlayers; ++i) {
+        std::string playerId = "player" + std::to_string(i);
+        game->create_player(playerId);
+    }
+
+    for (int i = 0; i < numEnemies; ++i) {
+        game->create_enemy();
+    }
+
+    Player player = game->getPlayers().at(0);
+    for (int i = 0; i < numBullets; ++i) {
+        game->create_bullet(player);
+    }
+
+    for (int i = 0; i < numPlayers; ++i) {
+        std::string playerId = "player" + std::to_string(i);
+        game->destroy_player(playerId);
+    }
+
+    for (int i = 0; i < numEnemies; ++i) {
+        std::string enemyId = game->getEnemies().at(0).get_id();
+        game->destroy_enemy(enemyId);
+    }
+
+    for (int i = 0; i < numBullets; ++i) {
+        std::string bulletId = game->getBullets().at(0).get_id();
+        game->destroy_bullet(bulletId);
+    }
+
+    EXPECT_EQ(game->getPlayers().size(), 0);
+    EXPECT_EQ(game->getEnemies().size(), 0);
+    EXPECT_EQ(game->getBullets().size(), 0);
+}
+
+// Test to verify the creation of multiple game instances with varying numbers of players
+TEST(GameInstanceTest, MultipleGamesWithVaryingPlayers) {
+    const int numGames = 10;
+    std::vector<int> playerCounts = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
+    std::vector<Game*> games;
+
+    for (int i = 0; i < numGames; ++i) {
+        Game* game = new Game();
+        for (int j = 0; j < playerCounts[i]; ++j) {
+            std::string playerId = "game" + std::to_string(i) + "_player" + std::to_string(j);
+            game->create_player(playerId);
+        }
+        games.push_back(game);
+    }
+
+    for (int i = 0; i < numGames; ++i) {
+        EXPECT_EQ(games[i]->getPlayers().size(), playerCounts[i]);
+        delete games[i];
+    }
+}
+
+// Test to verify the creation of multiple game instances with varying numbers of enemies
+TEST(GameInstanceTest, MultipleGamesWithVaryingEnemies) {
+    const int numGames = 10;
+    std::vector<int> enemyCounts = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
+    std::vector<Game*> games;
+
+    for (int i = 0; i < numGames; ++i) {
+        Game* game = new Game();
+        for (int j = 0; j < enemyCounts[i]; ++j) {
+            game->create_enemy();
+        }
+        games.push_back(game);
+    }
+
+    for (int i = 0; i < numGames; ++i) {
+        EXPECT_EQ(games[i]->getEnemies().size(), enemyCounts[i]);
+        delete games[i];
+    }
+}
+
+// Test to verify the creation of multiple game instances with varying numbers of bullets
+TEST(GameInstanceTest, MultipleGamesWithVaryingBullets) {
+    const int numGames = 10;
+    std::vector<int> bulletCounts = {100, 200, 300, 400, 100, 200, 300, 400, 100, 200};
+    std::vector<Game*> games;
+
+    for (int i = 0; i < numGames; ++i) {
+        Game* game = new Game();
+        game->create_player("player1");
+        Player player = game->getPlayers().at(0);
+        for (int j = 0; j < bulletCounts[i]; ++j) {
+            game->create_bullet(player);
+        }
+        games.push_back(game);
+    }
+
+    for (int i = 0; i < numGames; ++i) {
+        EXPECT_EQ(games[i]->getBullets().size(), bulletCounts[i]);
+        delete games[i];
+    }
+}
+
+// Test to verify the creation of multiple game instances with varying numbers of players and enemies
+TEST(GameInstanceTest, MultipleGamesWithVaryingPlayersAndEnemies) {
+    const int numGames = 10;
+    std::vector<int> playerCounts = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
+    std::vector<int> enemyCounts = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2};
+    std::vector<Game*> games;
+
+    for (int i = 0; i < numGames; ++i) {
+        Game* game = new Game();
+        for (int j = 0; j < playerCounts[i]; ++j) {
+            std::string playerId = "game" + std::to_string(i) + "_player" + std::to_string(j);
+            game->create_player(playerId);
+        }
+        for (int j = 0; j < enemyCounts[i]; ++j) {
+            game->create_enemy();
+        }
+        games.push_back(game);
+    }
+
+    for (int i = 0; i < numGames; ++i) {
+        EXPECT_EQ(games[i]->getPlayers().size(), playerCounts[i]);
+        EXPECT_EQ(games[i]->getEnemies().size(), enemyCounts[i]);
+        delete games[i];
+    }
+}
