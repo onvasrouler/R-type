@@ -44,7 +44,7 @@ TEST_F(GameTest, CreatePlayerSuccess) {
 // Test to verify the player creation limit
 TEST_F(GameTest, CreatePlayerLimit) {
     for (int i = 0; i < 4; ++i) {
-        std::string playerId = "player" + std::to_string(i);
+        std::string player//Id = "player" + std::to_string(i);
         game->create_player(playerId);
     }
 
@@ -122,4 +122,30 @@ TEST_F(GameTest, StopGame) {
     game->start();
     game->stop();
     EXPECT_FALSE(game->isRunning());
+}
+
+// Charging tests
+
+// Test de charge pour créer de nombreux ennemis
+TEST_F(GameTest, LoadTestCreateManyEnemies) {
+    const int numEnemies = 1000;
+    for (int i = 0; i < numEnemies; ++i) {
+        game->create_enemy();
+    }
+
+    EXPECT_EQ(game->getEnemies().size(), numEnemies);
+}
+
+// Test de charge pour créer de nombreuses balles
+TEST_F(GameTest, LoadTestCreateManyBullets) {
+    std::string playerId = "player1";
+    game->create_player(playerId);
+    Player player = game->getPlayers().at(0);
+
+    const int numBullets = 1000;
+    for (int i = 0; i < numBullets; ++i) {
+        game->create_bullet(player);
+    }
+
+    EXPECT_EQ(game->getBullets().size(), numBullets);
 }
