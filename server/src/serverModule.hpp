@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../core/AbstractModule.hpp"
+#include "../modules/AbstractModule.hpp"
 
 /** @class serverModule
  * @brief The serverModule class is a class that store a module and a socket.

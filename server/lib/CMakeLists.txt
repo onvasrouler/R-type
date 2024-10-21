@@ -4,7 +4,7 @@ target_sources(rtype_server_lib
   ${CMAKE_CURRENT_SOURCE_DIR}/Buffer.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/MultiThread.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/MultiThread.hpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/UUID.cpp
+  # ${CMAKE_CURRENT_SOURCE_DIR}/UUID.cpp
 )
 
 target_include_directories(rtype_server_lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

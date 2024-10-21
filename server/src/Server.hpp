@@ -9,7 +9,6 @@
 #pragma once
 #include "../lib/MultiThread.hpp"
 #include "serverModule.hpp"
-#include "UDPServer.hpp"
 
 #define NEW_CONNECTION_MESSAGE "201"
 #define BAD_CONNECTION_MESSAGE "500"

@@ -7,8 +7,8 @@
 */
 
 #include "Server.hpp"
-#include "gameModule.hpp"
-#include "networkModule.hpp"
+// #include "gameModule.hpp"
+// #include "networkModule.hpp"
 #include "ConfigParser.hpp"
 #include <boost/asio.hpp>
 #include <signal.h>
@@ -17,7 +17,7 @@
 #include <winsock2.h>              // For Windows socket functions
 #pragma comment(lib, "Ws2_32.lib") // Link with Ws2_32.lib for Winsock
 #else
-#include "../lib/UUID.hpp"
+#include "UUID.hpp"
 #include "sys/socket.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -36,7 +36,6 @@ Server::Server() : MultiThreadElement() {
             std::cout << "module listen: " << listen << std::endl;
         }
     }
-    exit(0);
 }
 
 Server::~Server() {
@@ -87,12 +86,12 @@ void Server::start() {
             std::cout << "module listen: " << listen << std::endl;
         }
     }
-    NetworkModule* networkModule = new NetworkModule("Network Module", "a5dbbeb3-1435-473c-ba3b-36388bb64e8a");
+    /*NetworkModule* networkModule = new NetworkModule("Network Module", "a5dbbeb3-1435-473c-ba3b-36388bb64e8a");
     GameModule* gameModule = new GameModule("Game Module", "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2");
     networkModule->addCommunicateModule(gameModule->getId());
     gameModule->addCommunicateModule(networkModule->getId());
     createModule(networkModule);
-    createModule(gameModule);
+    createModule(gameModule);*/
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
     ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);
@@ -102,6 +101,7 @@ void Server::start() {
 }
 
 void Server::run() {
+    exit(0);
     std::cout << "Server is running" << std::endl;
     _Running = true;
     fd_set readfds;

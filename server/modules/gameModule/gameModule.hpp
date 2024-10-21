@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "AbstractModule.hpp"
+#include "../AbstractModule.hpp"
 #include "Game.hpp"
 
 /** @class GameModule

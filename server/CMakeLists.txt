@@ -23,8 +23,6 @@ target_include_directories(r-type_server
 PRIVATE
 ${CMAKE_SOURCE_DIR}/client
 ${CMAKE_SOURCE_DIR}/config
-${CMAKE_SOURCE_DIR}/core
-${CMAKE_SOURCE_DIR}/game_engine
 ${CMAKE_SOURCE_DIR}/lib
 ${CMAKE_SOURCE_DIR}/network
 ${CMAKE_SOURCE_DIR}/room
@@ -35,9 +33,8 @@ target_link_libraries(r-type_server Boost::boost rtype_server_lib)
 
 add_subdirectory(client)
 add_subdirectory(config)
-add_subdirectory(core)
-add_subdirectory(game_engine)
 add_subdirectory(lib)
+add_subdirectory(modules)
 add_subdirectory(network)
 add_subdirectory(room)
 add_subdirectory(src)
