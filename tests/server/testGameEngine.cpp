@@ -44,7 +44,7 @@ TEST_F(GameTest, CreatePlayerSuccess) {
 // Test to verify the player creation limit
 TEST_F(GameTest, CreatePlayerLimit) {
     for (int i = 0; i < 4; ++i) {
-        std::string player//Id = "player" + std::to_string(i);
+        std::string playerId = "player" + std::to_string(i);
         game->create_player(playerId);
     }
 
@@ -126,7 +126,7 @@ TEST_F(GameTest, StopGame) {
 
 // Charging tests
 
-// Test de charge pour créer de nombreux ennemis
+// Charge test to create many enemies
 TEST_F(GameTest, LoadTestCreateManyEnemies) {
     const int numEnemies = 1000;
     for (int i = 0; i < numEnemies; ++i) {
@@ -136,7 +136,7 @@ TEST_F(GameTest, LoadTestCreateManyEnemies) {
     EXPECT_EQ(game->getEnemies().size(), numEnemies);
 }
 
-// Test de charge pour créer de nombreuses balles
+// Charge test to create many bullets
 TEST_F(GameTest, LoadTestCreateManyBullets) {
     std::string playerId = "player1";
     game->create_player(playerId);
@@ -148,4 +148,25 @@ TEST_F(GameTest, LoadTestCreateManyBullets) {
     }
 
     EXPECT_EQ(game->getBullets().size(), numBullets);
+}
+
+// Test to create multiple game instances with the maximum number of players per game
+TEST(GameInstanceTest, MultipleGamesWithMaxPlayers) {
+    const int numGames = 100;
+    const int maxPlayers = 4;
+    std::vector<Game*> games;
+
+    for (int i = 0; i < numGames; ++i) {
+        Game* game = new Game();
+        for (int j = 0; j < maxPlayers; ++j) {
+            std::string playerId = "game" + std::to_string(i) + "_player" + std::to_string(j);
+            game->create_player(playerId);
+        }
+        games.push_back(game);
+    }
+
+    for (auto game : games) {
+        EXPECT_EQ(game->getPlayers().size(), maxPlayers);
+        delete game;
+    }
 }
