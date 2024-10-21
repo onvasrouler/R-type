@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include "Player.hpp"
-#include "Enemy.hpp"
-#include "Bullet.hpp"
+#include "../entity/character/Player.hpp"
+#include "../entity/character/Enemy.hpp"
+#include "../entity/bullet/Bullet.hpp"
 #include "UUID.hpp"
 
 #include <vector>
@@ -196,6 +196,10 @@ public:
     std::vector<gameMessage> &getReadMessages();
     std::mutex &getSendMutex();
     std::mutex &getReadMutex();
+    std::vector<Player> &getPlayers() { return _player; };
+    std::vector<Enemy> &getEnemies() { return _enemy; };
+    std::vector<Bullet> &getBullets() { return _bullet; };
+    bool isRunning() { return _running; };
 
 private:
     std::vector<Player> _player; ///< List of players in the game.
