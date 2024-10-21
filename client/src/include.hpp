@@ -10,7 +10,7 @@
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>  
+#include <time.h>
 #include <raylib.h>
 #include "raygui/raygui.h"
 #include <iostream>
