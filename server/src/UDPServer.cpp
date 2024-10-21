@@ -169,12 +169,16 @@ void UDPServer::stop() {
 }
 
 void UDPServer::start_receive() {
+    std::cout << "_running status: " << (_running ? "true" : "false")
+              << std::endl;
+    std::cout << "start_receive" << std::endl;
     if (!_running) {
         return;
     }
     _socket.async_receive_from(
         boost::asio::buffer(_recv_buffer), _remote_endpoint,
         [this](std::error_code ec, std::size_t bytes_recvd) {
+            std::cout << "async_receive_from" << std::endl;
             if (!ec) {
                 handle_receive(bytes_recvd);
             } else {
@@ -193,16 +197,18 @@ void UDPServer::start_receive() {
                 start_receive();
             }
         });
+    std::cout << "start_receive end" << std::endl;
 }
 
 void UDPServer::handle_receive(std::size_t length) {
+    std::cout << "handle_receive" << std::endl;
     if (!_running) {
         return;
     }
     try {
         if (length > 0) {
             std::string decoded_message(_recv_buffer.data(), length);
-            // std::cout << "Decoded message: " << decoded_message << std::endl;
+            std::cout << "Decoded message: " << decoded_message << std::endl;
 
             packageData data = packageData(
                 decoded_message, _remote_endpoint.address().to_string(),
@@ -210,7 +216,9 @@ void UDPServer::handle_receive(std::size_t length) {
             std::cout << "Message received" << data.getData()
                       << " from: " << data.getIp() << ":" << data.getPort()
                       << std::endl;
+            std::string confirmation = "Message received: " + decoded_message;
             _receiveMutex.lock();
+            std::cout << "c" << std::endl;
             _receivedData.push_back(data);
             _receiveMutex.unlock();
         }

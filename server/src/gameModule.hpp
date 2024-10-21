@@ -27,7 +27,7 @@ class GameModule : public AbstractModule {
         * @brief Constructor of GameModule.
         * @param name The name of the module.
         */
-        GameModule(const std::string name, const std::string id);
+        GameModule(const std::string name);
         /**
         * @brief Destructor of GameModule.
         * if the module is running, it will stop it.

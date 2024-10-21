@@ -10,7 +10,9 @@
 #include "../lib/MultiThread.hpp"
 #include "serverModule.hpp"
 #include "UDPServer.hpp"
+#include "Client.hpp"
 
+#define SHUTDOWN_MESSAGE "500"
 #define NEW_CONNECTION_MESSAGE "201"
 #define BAD_CONNECTION_MESSAGE "500"
 
@@ -71,9 +73,42 @@ class Server : MultiThreadElement {
         * @param module The module to create
         */
         void createModule(AbstractModule *module);
-        bool canCommunicateWith(std::string moduleId, std::string communicateModuleId);
+        /**
+        * @brief This function check if the client is already connected
+        *
+        * @param ip The ip of the client
+        * @param port The port of the client
+        * @return true if the client is already connected
+        * @return false if the client is not connected
+        */
+        bool isClient(const std::string ip, const std::size_t port);
+        /**
+         * @brief This function create a message to send to the client
+         *
+         * @param ip The ip of the client
+         * @param port The port of the client
+         * @param message The message to send
+         * @return std::string The message to send
+         */
+        std::string createMessage(const std::string ip, const std::size_t port, const std::string message);
+        /**
+         * @brief This function find a client by its ip and port
+         *
+         * @param ip The ip of the client
+         * @param port The port of the client
+         * @return Client The client found
+         */
+        Client findClient(const std::string ip, const std::size_t port);
+        /**
+         * @brief This function find a client by its uuid
+         *
+         * @param uuid The uuid of the client
+         * @return Client The client found
+         */
+        Client findClient(const std::string uuid);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
+        std::vector<Client> _clients; /*!< The clients of the server. */
         #ifdef _WIN32
             SOCKET _maxSocket; /*!< The max socket of the server. */
         #else
