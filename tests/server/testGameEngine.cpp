@@ -425,3 +425,299 @@ TEST(GameInstanceTest, MultipleGamesWithVaryingPlayersAndEnemies) {
         delete games[i];
     }
 }
+
+// Player creation tests
+
+// Test to verify the creation of a player with an empty ID
+TEST_F(GameTest, CreatePlayerEmptyID) {
+    std::string playerId = "";
+    bool result = game->create_player(playerId);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(game->getPlayers().size(), 0);
+}
+
+// Test to verify the creation of a player with a long ID
+TEST_F(GameTest, CreatePlayerLongID) {
+    std::string playerId = std::string(256, 'a');
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with special characters in the ID
+TEST_F(GameTest, CreatePlayerSpecialCharsID) {
+    std::string playerId = "player!@#$%^&*()";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a numeric ID
+TEST_F(GameTest, CreatePlayerNumericID) {
+    std::string playerId = "123456";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a mixed alphanumeric ID
+TEST_F(GameTest, CreatePlayerAlphanumericID) {
+    std::string playerId = "player123";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a whitespace ID
+TEST_F(GameTest, CreatePlayerWhitespaceID) {
+    std::string playerId = " ";
+    bool result = game->create_player(playerId);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(game->getPlayers().size(), 0);
+}
+
+// Test to verify the creation of a player with a tab character in the ID
+TEST_F(GameTest, CreatePlayerTabID) {
+    std::string playerId = "\t";
+    bool result = game->create_player(playerId);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(game->getPlayers().size(), 0);
+}
+
+// Test to verify the creation of a player with a newline character in the ID
+TEST_F(GameTest, CreatePlayerNewlineID) {
+    std::string playerId = "\n";
+    bool result = game->create_player(playerId);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(game->getPlayers().size(), 0);
+}
+
+// Test to verify the creation of a player with a carriage return character in the ID
+TEST_F(GameTest, CreatePlayerCarriageReturnID) {
+    std::string playerId = "\r";
+    bool result = game->create_player(playerId);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(game->getPlayers().size(), 0);
+}
+
+// Test to verify the creation of a player with a null character in the ID
+TEST_F(GameTest, CreatePlayerNullID) {
+    std::string playerId = "\0";
+    bool result = game->create_player(playerId);
+
+    EXPECT_FALSE(result);
+    EXPECT_EQ(game->getPlayers().size(), 0);
+}
+
+// Test to verify the creation of a player with a very long ID
+TEST_F(GameTest, CreatePlayerVeryLongID) {
+    std::string playerId = std::string(1024, 'a');
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a negative ID
+TEST_F(GameTest, CreatePlayerNegativeID) {
+    std::string playerId = "-1";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a zero ID
+TEST_F(GameTest, CreatePlayerZeroID) {
+    std::string playerId = "0";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a floating-point ID
+TEST_F(GameTest, CreatePlayerFloatingPointID) {
+    std::string playerId = "1.23";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a hexadecimal ID
+TEST_F(GameTest, CreatePlayerHexadecimalID) {
+    std::string playerId = "0x1A";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with an octal ID
+TEST_F(GameTest, CreatePlayerOctalID) {
+    std::string playerId = "0123";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a binary ID
+TEST_F(GameTest, CreatePlayerBinaryID) {
+    std::string playerId = "0b1010";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a mixed case ID
+TEST_F(GameTest, CreatePlayerMixedCaseID) {
+    std::string playerId = "PlayerID";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a single character ID
+TEST_F(GameTest, CreatePlayerSingleCharID) {
+    std::string playerId = "a";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a double character ID
+TEST_F(GameTest, CreatePlayerDoubleCharID) {
+    std::string playerId = "aa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a triple character ID
+TEST_F(GameTest, CreatePlayerTripleCharID) {
+    std::string playerId = "aaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a quadruple character ID
+TEST_F(GameTest, CreatePlayerQuadrupleCharID) {
+    std::string playerId = "aaaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a quintuple character ID
+TEST_F(GameTest, CreatePlayerQuintupleCharID) {
+    std::string playerId = "aaaaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a sextuple character ID
+TEST_F(GameTest, CreatePlayerSextupleCharID) {
+    std::string playerId = "aaaaaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a septuple character ID
+TEST_F(GameTest, CreatePlayerSeptupleCharID) {
+    std::string playerId = "aaaaaaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with an octuple character ID
+TEST_F(GameTest, CreatePlayerOctupleCharID) {
+    std::string playerId = "aaaaaaaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a nonuple character ID
+TEST_F(GameTest, CreatePlayerNonupleCharID) {
+    std::string playerId = "aaaaaaaaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a decuple character ID
+TEST_F(GameTest, CreatePlayerDecupleCharID) {
+    std::string playerId = "aaaaaaaaaa";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a mixed character ID
+TEST_F(GameTest, CreatePlayerMixedCharID) {
+    std::string playerId = "a1!@#";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
+
+// Test to verify the creation of a player with a mixed character and whitespace ID
+TEST_F(GameTest, CreatePlayerMixedCharWhitespaceID) {
+    std::string playerId = "a1 !@#";
+    bool result = game->create_player(playerId);
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(game->getPlayers().size(), 1);
+    EXPECT_EQ(game->getPlayers().at(0).get_id(), playerId);
+}
