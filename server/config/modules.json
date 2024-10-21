@@ -1,0 +1,23 @@
+{
+    "name": "Rtype server",
+    "modules": [
+        {
+            "name": "Game Module",
+            "path": "",
+            "listen_modules": [
+                {
+                    "id": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a"
+                }
+            ]
+        },
+        {
+            "name": "Network Module",
+            "path": "",
+            "listen_modules": [
+                {
+                    "id": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2"
+                }
+            ]
+        }
+    ]
+}
