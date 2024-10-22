@@ -85,6 +85,7 @@ void AbstractModule::start()
 
 void AbstractModule::run()
 {
+    std::cout << "Test" << std::endl;
     std::cout << "Module: " << _ModuleName << " is running" << std::endl;
     while (_Running) {
         // Do something

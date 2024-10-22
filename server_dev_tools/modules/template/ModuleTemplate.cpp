@@ -11,18 +11,18 @@
 ModuleTemplate::ModuleTemplate(const std::string name, const std::string id)
     : AbstractModule(name, id)
 {
-    std::cout << "Module: " << _ModuleName << "is created" << std::endl;
+    std::cout << "Module: " << _ModuleName << " is created" << std::endl;
     // add what you want for your module
-    std::cout << "Module: " << _ModuleName << "created" << std::endl;
+    std::cout << "Module: " << _ModuleName << " created" << std::endl;
 }
 
 ModuleTemplate::~ModuleTemplate()
 {
-    std::cout << "Module: " << _ModuleName << "is destroyed" << std::endl;
+    std::cout << "Module: " << _ModuleName << " is destroyed" << std::endl;
     if (_Running) {
         stop();
     }
-    std::cout << "Module: " << _ModuleName << "destroyed" << std::endl;
+    std::cout << "Module: " << _ModuleName << " destroyed" << std::endl;
 }
 
 // void ModuleTemplate::start()
@@ -30,12 +30,12 @@ ModuleTemplate::~ModuleTemplate()
 void ModuleTemplate::run()
 {
     // add what you want for your module
-    std::cout << "Module: " << _ModuleName << "is running" << std::endl;
+    std::cout << "Module: " << _ModuleName << " is running" << std::endl;
     while (_Running) {
-        std::cout << "Module: " << _ModuleName << "is trolling you" << std::endl;
+        std::cout << "Module: " << _ModuleName << " is trolling you" << std::endl;
         // add what you want for your module
     }
-    std::cout << "Module: " << _ModuleName << "stop running" << std::endl;
+    std::cout << "Module: " << _ModuleName << " stop running" << std::endl;
 }
 
 // void ModuleTemplate::stop()

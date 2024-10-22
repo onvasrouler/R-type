@@ -49,7 +49,7 @@ class AbstractModule : public MultiThreadElement {
         /**
          * @brief The main loop of the module
          */
-        void run() override;
+        virtual void run() override;
         /**
          * @brief Stop the module.
          */

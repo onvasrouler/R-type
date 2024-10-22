@@ -83,7 +83,6 @@ void Server::start() {
     ConfigParser parser;
     parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
     std::cout << "server name: " << parser.GetServerName() << std::endl;
-    int i = 0;
     for (auto &module : parser.GetModules()) {
         std::cout << "module name: " << module.GetModuleName() << std::endl;
         std::cout << "module path: " << module.GetModulePath() << std::endl;
@@ -155,10 +154,6 @@ void Server::start() {
                 throw std::runtime_error("Error while loading the module");
             }
             AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
-            if (module.GetModuleName() == "Template Module") {
-                std::cout << "find" << std::endl;
-                // loadmodule->run();
-            }
             try {
                 createModule(loadmodule, file);
             } catch (std::exception &e) {
@@ -166,7 +161,6 @@ void Server::start() {
                 throw std::runtime_error("Error while creating the module");
             }
         #endif
-        i++;
     }
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
