@@ -4,21 +4,21 @@
         "modules": [
             {
                 "name": "Game Module",
-                "path": "./serverModules/gameModule.dll",
-                "uuid": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2",
+                "path": "\\serverModules\\gameModule.dll",
+                "uuid": "`&´×m",
                 "listen_modules": [
                     {
-                        "id": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a"
+                        "id": "EÀXP"
                     }
                 ]
             },
             {
                 "name": "Network Module",
-                "path": "./serverModules/networkModule.dll",
-                "uuid": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a",
+                "path": "\\serverModules\\networkModule.dll",
+                "uuid": "EÀXP",
                 "listen_modules": [
                     {
-                        "id": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2"
+                        "id": "`&´×m"
                     }
                 ]
             }

@@ -296,8 +296,16 @@ Client NetworkModule::findClient(const std::string uuid) {
     return client;
 }
 
-extern "C" {
-    AbstractModule* create_module(const std::string name, const std::string id) {
-        return new NetworkModule(name, id);
+#ifdef _WIN32
+    extern "C" {
+        __declspec(dllexport) AbstractModule* create_module(const std::string name, const std::string id) {
+            return new NetworkModule(name, id);
+        }
     }
-}
+#else
+    extern "C" {
+        AbstractModule* create_module(const std::string name, const std::string id) {
+            return new NetworkModule(name, id);
+        }
+    }
+#endif

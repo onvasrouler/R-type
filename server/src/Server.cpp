@@ -87,21 +87,73 @@ void Server::start() {
         for (auto &listen : module.GetModuleListen()) {
             std::cout << "module listen: " << listen << std::endl;
         }
-        //dlload the function create_module(name, uuid)
         std::string path = std::filesystem::current_path().string() + module.GetModulePath();
-        void *file = dlopen(path.c_str(), RTLD_LAZY);
-        if (!file) {
-            std::cerr << "Error: " << dlerror() << std::endl;
-            throw std::runtime_error("Error while loading the module");
-        }
-        AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(dlsym(file, "create_module"));
-        if (!create_module) {
-            std::cerr << "Error: " << dlerror() << std::endl;
-            throw std::runtime_error("Error while loading the module");
-        }
-        AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
-        createModule(loadmodule);
-        dlclose(file);
+        #ifdef _WIN32
+            if (!std::filesystem::exists(path)) {
+                std::cerr << "DLL not found: " << path << std::endl;
+                throw std::runtime_error("DLL not found");
+            }
+            int size_needed = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, NULL, 0);
+            std::wstring wpath(size_needed, L'\0'); // Use L'\0' to initialize with null characters
+            MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, &wpath[0], size_needed);
+
+            // Load the library
+            HMODULE hModule = LoadLibraryW(wpath.c_str());
+            if (!hModule) {
+                DWORD error = GetLastError();
+                LPVOID lpMsgBuf;
+                FormatMessageW(
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                    (LPWSTR)&lpMsgBuf, 0, NULL);
+                std::wcerr << L"Error loading library: " << (LPWSTR)lpMsgBuf << std::endl;
+                LocalFree(lpMsgBuf);
+                throw std::runtime_error("Error while loading the module");
+            } else {
+                std::cout << "Library loaded successfully: " << path << std::endl;
+            }
+
+            // Get the function pointer
+            AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(GetProcAddress(hModule, "create_module"));
+            if (!create_module) {
+                DWORD error = GetLastError();
+                LPVOID lpMsgBuf;
+                FormatMessageW(
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                    (LPWSTR)&lpMsgBuf, 0, NULL);
+                std::wcerr << L"Error getting function address: " << (LPWSTR)lpMsgBuf << std::endl;
+                LocalFree(lpMsgBuf);
+                FreeLibrary(hModule); // Free the library only after this
+                throw std::runtime_error("Error while loading the module");
+            }
+
+            // Use the create_module function
+            AbstractModule* moduleInstance = create_module(module.GetModuleName(), module.GetModuleId());
+            std::cout << "Loaded module: " << moduleInstance->getName() << std::endl;
+
+            createModule(moduleInstance);
+            // When done, remember to free the library
+            FreeLibrary(hModule);
+        #else
+            if (!std::filesystem::exists(path)) {
+                std::cerr << "SO not found: " << path << std::endl;
+                throw std::runtime_error("SO not found");
+            }
+            void *file = dlopen(path.c_str(), RTLD_LAZY);
+            if (!file) {
+                std::cerr << "Error: " << dlerror() << std::endl;
+                throw std::runtime_error("Error while loading the module");
+            }
+            AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(dlsym(file, "create_module"));
+            if (!create_module) {
+                std::cerr << "Error: " << dlerror() << std::endl;
+                throw std::runtime_error("Error while loading the module");
+            }
+            AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
+            createModule(loadmodule);
+            dlclose(file);
+        #endif
     }
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
