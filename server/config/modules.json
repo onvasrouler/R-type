@@ -3,6 +3,13 @@
     "Windows": {
         "modules": [
             {
+                "name": "Log Module",
+                "path": "/serverModules/logModule.dll",
+                "uuid": "`:ıÛ╚",
+                "listen_modules": [
+                ]
+            },
+            {
                 "name": "Game Module",
                 "path": "\\serverModules\\gameModule.dll",
                 "uuid": "`&´×m",
