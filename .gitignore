@@ -18,5 +18,7 @@ r-type_tests
 .vs
 compile.sh
 compile.bat
+!server_dev_tools/compile.sh
+!server_dev_tools/compile.bat
 vgcore*
 r-types
