@@ -8,18 +8,31 @@
 
 #pragma once
 
+#ifdef _WIN32
+    #include <Ws2tcpip.h>
+    #define WIN32_LEAN_AND_MEAN
+    #define _WIN32_WINNT 0x0A00
+#endif
+
 #include <memory>
 #include <iostream>
 #include <any>
 #include <thread>
 #include <vector>
-#include "UUID.hpp"
+#include "../modules/UUID.hpp"
 #ifdef _WIN32
-     #include <winsock2.h>
-    #include <ws2tcpip.h>
+    #if defined(_WIN32) && defined(WIN32_LEAN_AND_MEAN)
+        #include <winsock2.h>
+    #else
+        #include <winsock.h>
+    #endif
+    #include <windows.h>
     #pragma comment(lib, "ws2_32.lib") // Lien avec la bibliothèque WS2_32.lib
 #else
     #include "sys/socket.h"
+    #include <arpa/inet.h>
+    #include "netinet/in.h"
+    #include <unistd.h>
     #ifdef __APPLE__
         #include "sys/select.h"
     #endif

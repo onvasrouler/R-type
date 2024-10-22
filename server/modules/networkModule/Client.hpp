@@ -15,7 +15,7 @@
 #else
 #include "sys/socket.h"
 #endif
-#include "../lib/UUID.hpp"
+#include "../UUID.hpp"
 #include <string>
 
 /**

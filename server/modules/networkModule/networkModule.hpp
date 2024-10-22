@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../core/AbstractModule.hpp"
+#include "../AbstractModule.hpp"
 #include "UDPServer.hpp"
 #include "Client.hpp"
 
