@@ -29,11 +29,6 @@ ${CMAKE_SOURCE_DIR}/room
 ${CMAKE_SOURCE_DIR}/src
 )
 
-if(WIN32)
-    compile_options(rtype_server_lib PRIVATE /FS)
-    compile_options(r-type_server PRIVATE /FS)
-endif()
-
 add_subdirectory(client)
 add_subdirectory(config)
 add_subdirectory(lib)
