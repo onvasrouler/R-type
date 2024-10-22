@@ -5,20 +5,46 @@ project(RType VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+if(WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+endif()
 
+# Include project-specific directories
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/elements)
 
+# Find Raylib automatically using vcpkg
+find_package(raylib CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+
+
+# Set platform-specific libraries
 if(WIN32)
-    set(VCPKG_DIR "$ENV{USERPROFILE}/vcpkg")
-    include_directories(${VCPKG_DIR}/installed/x64-windows/include)
-    link_directories(${VCPKG_DIR}/installed/x64-windows/lib)
-    set(LIBS opengl32 gdi32 winmm raylib)  # Use opengl32 for Windows
+    set(LIBS opengl32 gdi32 winmm)  # Additional Windows libraries
 else()
-    set(LIBS GL dl rt X11 raylib pthread)  # Use GL for Unix-based systems
+    set(LIBS GL dl rt X11 pthread)  # Additional Unix-based libraries
 endif()
 
+# Raygui setup
+set(LIBGUIPATH ${CMAKE_SOURCE_DIR}/client/src/raygui)
+set(RAYGUI_SOURCES ${LIBGUIPATH}/raygui.c)
+set(RAYGUI_HEADERS ${LIBGUIPATH}/raygui.h)
+
+add_library(raygui STATIC ${RAYGUI_SOURCES})
+target_compile_definitions(raygui PRIVATE DRAYGUI_IMPLEMENTATION BUILD_LIBTYPE_SHARED)
+
+# Link Raylib and Raygui
+if(WIN32)
+    target_link_libraries(raygui raylib ${LIBS})
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(raygui raylib ${LIBS})
+elseif(APPLE)
+    target_link_libraries(raygui raylib "-framework OpenGL" "-framework Cocoa" ${LIBS})
+endif()
+
+# Add executable target
 set(SRC_FILES
     src/fpsCounter/fpsCounter.cpp
     src/jsonParser/jsonParser.cpp
@@ -52,32 +78,16 @@ set(GUIELEM_FILES
 )
 
 set(MAIN_FILE main.cpp)
-
 set(TARGET_NAME Rtype)
+
+link_directories(${CMAKE_SOURCE_DIR}/build/debug)
 
 add_executable(${TARGET_NAME} ${SRC_FILES} ${GUIELEM_FILES} ${MAIN_FILE})
 
-set(LIBGUIPATH ${CMAKE_SOURCE_DIR}/client/src/raygui)
-
-add_custom_target(raygui_dll ALL DEPENDS ${LIBGUIPATH}/raygui.dll ${LIBGUIPATH}/librayguidll.a)
-
-
-add_library(raygui SHARED ${LIBGUIPATH}/raygui.c )
-target_compile_definitions(raygui PRIVATE RAYGUI_IMPLEMENTATION)
-target_include_directories(raygui PUBLIC ${LIBGUIPATH})
-
-target_link_libraries(${TARGET_NAME} raygui ${LIBS})  # Link the correct libraries
+# Link Raylib and Raygui
+target_link_libraries(${TARGET_NAME} raylib nlohmann_json::nlohmann_json ${LIBS})
 
 if(APPLE)
     target_link_libraries(${TARGET_NAME} "-framework OpenGL" "-framework Cocoa")
     target_link_libraries(raygui "-framework OpenGL" "-framework Cocoa")
-else()
-    # The previous section is enough. Remove GL here for Windows.
 endif()
-
-target_link_libraries(${TARGET_NAME} raygui)
-
-add_custom_command(
-    TARGET raygui POST_BUILD
-    COMMAND mv ${LIBGUIPATH}/raygui.c ${LIBGUIPATH}/raygui.h
-)
