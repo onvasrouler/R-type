@@ -1,6 +1,8 @@
 *.o
 *.a
 *.so
+*.dll
+*.exe
 .git
 /build
 Doxyfile.bak
@@ -10,7 +12,6 @@ r-type_client
 r-type_server
 r-type_tests
 /out
-*.exe
 .vscode
 .vs
 compile.sh
