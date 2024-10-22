@@ -1,11 +1,13 @@
 *.o
 *.a
 *.so
+*.lib
 *.dll
 *.exe
 !generate module uuid windows.exe
 .git
 /build
+server_dev_tools/build/
 Doxyfile.bak
 docs/html
 docs/latex
@@ -15,7 +17,5 @@ r-type_tests
 /out
 .vscode
 .vs
-compile.sh
-compile.bat
 vgcore*
 r-types

@@ -23,9 +23,9 @@ class serverModule {
         * @param serverInterSocket The socket to communicate with the module.
         */
         #ifdef _WIN32
-            serverModule(AbstractModule* module, const SOCKET serverInterSocket);
+            serverModule(AbstractModule* module, const SOCKET serverInterSocket, HMODULE file);
         #else
-            serverModule(AbstractModule *module, const int serverInterSocket);
+            serverModule(AbstractModule *module, const int serverInterSocket, void *file);
         #endif
         /*
         * @brief Copy constructor of serverModule.
@@ -92,6 +92,17 @@ class serverModule {
          * @return The module name
          */
         std::string getModuleName() { return _module->getName(); }
+
+        /**
+         * @brief This function return the module dynamic library
+         *
+         * @return The module dynamic library
+         */
+        #ifdef _WIN32
+            HMODULE getDynamicLibrary() { return _dynamicLibrary; }
+        #else
+            void *getDynamicLibrary() { return _dynamicLibrary; }
+        #endif
     private:
         std::shared_ptr<AbstractModule> _module; // The module to store.
         #ifdef _WIN32
@@ -100,4 +111,9 @@ class serverModule {
             int _serverInterSocket; // The socket to communicate with the module.
         #endif
         std::vector<std::string> _messages; // The messages to send to the module.
+        #ifdef _WIN32
+            HMODULE _dynamicLibrary; // The dynamic library of the module.
+        #else
+            void *_dynamicLibrary; // The dynamic library of the module.
+        #endif
 };

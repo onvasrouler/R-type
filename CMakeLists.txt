@@ -4,6 +4,7 @@ project(R-type VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # set(CMAKE_BUILD_TYPE Debug)
 if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /FS")
@@ -16,6 +17,7 @@ option(DEBUG "Debug mode" ON)
 
 if (SERVER)
     add_subdirectory(server)
+    add_subdirectory(server_dev_tools/source_code)
 endif()
 
 if (CLIENT)

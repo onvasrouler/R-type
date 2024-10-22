@@ -7,8 +7,6 @@
 */
 
 #include "Server.hpp"
-// #include "gameModule.hpp"
-// #include "networkModule.hpp"
 #include "ConfigParser.hpp"
 #include <boost/asio.hpp>
 #include <signal.h>
@@ -46,6 +44,11 @@ Server::~Server() {
     std::cout << "Deleting the modules" << std::endl;
     for (auto& module : _modules) {
         module->~serverModule();
+        #ifdef _WIN32
+            FreeLibrary(module->getDynamicLibrary());
+        #else
+            dlclose(module->getDynamicLibrary());
+        #endif
     }
     std::cout << "Modules deleted" << std::endl;
     std::cout << "Server deleted" << std::endl;
@@ -132,9 +135,7 @@ void Server::start() {
             AbstractModule* moduleInstance = create_module(module.GetModuleName(), module.GetModuleId());
             std::cout << "Loaded module: " << moduleInstance->getName() << std::endl;
 
-            createModule(moduleInstance);
-            // When done, remember to free the library
-            FreeLibrary(hModule);
+            createModule(moduleInstance, hModule);
         #else
             if (!std::filesystem::exists(path)) {
                 std::cerr << "SO not found: " << path << std::endl;
@@ -143,7 +144,7 @@ void Server::start() {
             void *file = dlopen(path.c_str(), RTLD_LAZY);
             if (!file) {
                 std::cerr << "Error: " << dlerror() << std::endl;
-                throw std::runtime_error("Error while loading the module");
+                throw std::runtime_error("Error while open the .so file");
             }
             AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(dlsym(file, "create_module"));
             if (!create_module) {
@@ -151,8 +152,12 @@ void Server::start() {
                 throw std::runtime_error("Error while loading the module");
             }
             AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
-            createModule(loadmodule);
-            dlclose(file);
+            try {
+                createModule(loadmodule, file);
+            } catch (std::exception &e) {
+                std::cerr << e.what() << std::endl;
+                throw std::runtime_error("Error while creating the module");
+            }
         #endif
     }
 #ifdef _WIN32
@@ -164,7 +169,6 @@ void Server::start() {
 }
 
 void Server::run() {
-    exit(0);
     std::cout << "Server is running" << std::endl;
     _Running = true;
     fd_set readfds;
@@ -263,7 +267,12 @@ std::string Server::encodeInterCommunication(const std::string message) {
     // encode the message
 }
 
-void Server::createModule(AbstractModule* module) {
+#ifdef _WIN32
+    void Server::createModule(AbstractModule* module, HMODULE &file)
+#else
+    void Server::createModule(AbstractModule* module, void *file)
+#endif
+{
     try {
         module->start();
 #ifdef _WIN32
@@ -298,7 +307,7 @@ void Server::createModule(AbstractModule* module) {
                 "Error while creating a module: wrong message received");
         }
         _modules.push_back(
-            std::make_unique<serverModule>(module, moduleSocket));
+            std::make_unique<serverModule>(module, moduleSocket, file));
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         throw std::runtime_error(
