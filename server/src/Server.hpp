@@ -62,14 +62,18 @@ class Server : MultiThreadElement {
         * @param message The message to encode.
         */
         std::string encodeInterCommunication(const std::string message) override;
-        /*
+        /**
         * @brief The function that create a new module
         * This function will create a new module and add it to the vector _modules
         * It will also check if the module is connected
         * And throw an exception if it is not
         * @param module The module to create
         */
-        void createModule(AbstractModule *module, void *file);
+        #ifdef _WIN32
+            void createModule(AbstractModule *module, HMODULE &file);
+        #else
+            void createModule(AbstractModule *module, void *file);
+        #endif
         bool canCommunicateWith(std::string moduleId, std::string communicateModuleId);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */

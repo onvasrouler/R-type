@@ -135,9 +135,7 @@ void Server::start() {
             AbstractModule* moduleInstance = create_module(module.GetModuleName(), module.GetModuleId());
             std::cout << "Loaded module: " << moduleInstance->getName() << std::endl;
 
-            createModule(moduleInstance);
-            // When done, remember to free the library
-            FreeLibrary(hModule);
+            createModule(moduleInstance, hModule);
         #else
             if (!std::filesystem::exists(path)) {
                 std::cerr << "SO not found: " << path << std::endl;
@@ -269,7 +267,12 @@ std::string Server::encodeInterCommunication(const std::string message) {
     // encode the message
 }
 
-void Server::createModule(AbstractModule* module, void *file) {
+#ifdef _WIN32
+    void Server::createModule(AbstractModule* module, HMODULE &file)
+#else
+    void Server::createModule(AbstractModule* module, void *file)
+#endif
+{
     try {
         module->start();
 #ifdef _WIN32

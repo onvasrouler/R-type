@@ -9,6 +9,7 @@ set(CMAKE_BUILD_TYPE Debug)
 #Add the include directories for your module
 set(MODULE_INCLUDE ${CMAKE_SOURCE_DIR}/server/config)
 if(WIN32)
+set(SOURCE_CODE ${CMAKE_SOURCE_DIR}/server/config/windows/moduleSourceCode.lib)
 else()
     set(SOURCE_CODE ${CMAKE_SOURCE_DIR}/server/config/unix/moduleSourceCode.a)
 endif()
