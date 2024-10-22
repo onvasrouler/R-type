@@ -6,6 +6,7 @@
 !generate module uuid windows.exe
 .git
 /build
+server_dev_tools/build/
 Doxyfile.bak
 docs/html
 docs/latex
