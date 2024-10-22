@@ -132,3 +132,17 @@ void GameModule::stop() {
     _thread.join();
     std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
 }
+
+#ifdef _WIN32
+    extern "C" {
+        __declspec(dllexport) AbstractModule* create_module(const std::string name, const std::string id) {
+            return new GameModule(name, id);
+        }
+    }
+#else
+    extern "C" {
+        AbstractModule* create_module(const std::string name, const std::string id) {
+            return new GameModule(name, id);
+        }
+    }
+#endif

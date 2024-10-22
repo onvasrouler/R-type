@@ -22,6 +22,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/resource.h>
+#include <dlfcn.h>
 #endif
 
 Server::Server() : MultiThreadElement() {
@@ -82,16 +83,78 @@ void Server::start() {
     for (auto &module : parser.GetModules()) {
         std::cout << "module name: " << module.GetModuleName() << std::endl;
         std::cout << "module path: " << module.GetModulePath() << std::endl;
+        std::cout << "module uuid: " << module.GetModuleId() << std::endl;
         for (auto &listen : module.GetModuleListen()) {
             std::cout << "module listen: " << listen << std::endl;
         }
+        std::string path = std::filesystem::current_path().string() + module.GetModulePath();
+        #ifdef _WIN32
+            if (!std::filesystem::exists(path)) {
+                std::cerr << "DLL not found: " << path << std::endl;
+                throw std::runtime_error("DLL not found");
+            }
+            int size_needed = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, NULL, 0);
+            std::wstring wpath(size_needed, L'\0'); // Use L'\0' to initialize with null characters
+            MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, &wpath[0], size_needed);
+
+            // Load the library
+            HMODULE hModule = LoadLibraryW(wpath.c_str());
+            if (!hModule) {
+                DWORD error = GetLastError();
+                LPVOID lpMsgBuf;
+                FormatMessageW(
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                    (LPWSTR)&lpMsgBuf, 0, NULL);
+                std::wcerr << L"Error loading library: " << (LPWSTR)lpMsgBuf << std::endl;
+                LocalFree(lpMsgBuf);
+                throw std::runtime_error("Error while loading the module");
+            } else {
+                std::cout << "Library loaded successfully: " << path << std::endl;
+            }
+
+            // Get the function pointer
+            AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(GetProcAddress(hModule, "create_module"));
+            if (!create_module) {
+                DWORD error = GetLastError();
+                LPVOID lpMsgBuf;
+                FormatMessageW(
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                    (LPWSTR)&lpMsgBuf, 0, NULL);
+                std::wcerr << L"Error getting function address: " << (LPWSTR)lpMsgBuf << std::endl;
+                LocalFree(lpMsgBuf);
+                FreeLibrary(hModule); // Free the library only after this
+                throw std::runtime_error("Error while loading the module");
+            }
+
+            // Use the create_module function
+            AbstractModule* moduleInstance = create_module(module.GetModuleName(), module.GetModuleId());
+            std::cout << "Loaded module: " << moduleInstance->getName() << std::endl;
+
+            createModule(moduleInstance);
+            // When done, remember to free the library
+            FreeLibrary(hModule);
+        #else
+            if (!std::filesystem::exists(path)) {
+                std::cerr << "SO not found: " << path << std::endl;
+                throw std::runtime_error("SO not found");
+            }
+            void *file = dlopen(path.c_str(), RTLD_LAZY);
+            if (!file) {
+                std::cerr << "Error: " << dlerror() << std::endl;
+                throw std::runtime_error("Error while loading the module");
+            }
+            AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(dlsym(file, "create_module"));
+            if (!create_module) {
+                std::cerr << "Error: " << dlerror() << std::endl;
+                throw std::runtime_error("Error while loading the module");
+            }
+            AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
+            createModule(loadmodule);
+            dlclose(file);
+        #endif
     }
-    /*NetworkModule* networkModule = new NetworkModule("Network Module", "a5dbbeb3-1435-473c-ba3b-36388bb64e8a");
-    GameModule* gameModule = new GameModule("Game Module", "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2");
-    networkModule->addCommunicateModule(gameModule->getId());
-    gameModule->addCommunicateModule(networkModule->getId());
-    createModule(networkModule);
-    createModule(gameModule);*/
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
     ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);
