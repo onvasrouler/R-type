@@ -8,9 +8,11 @@
 
 #pragma once
 
-#include <Ws2tcpip.h>
-#define WIN32_LEAN_AND_MEAN
-#define _WIN32_WINNT 0x0A00
+#ifdef _WIN32
+    #include <Ws2tcpip.h>
+    #define WIN32_LEAN_AND_MEAN
+    #define _WIN32_WINNT 0x0A00
+#endif
 
 #include <memory>
 #include <iostream>
