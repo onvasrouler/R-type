@@ -27,7 +27,7 @@
 Server::Server() : MultiThreadElement() {
     _Running = false;
     ConfigParser parser;
-    parser.ParseConfig(std::string(std::filesystem::current_path()) + "/server/config/modules.json");
+    parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
     std::cout << "server name: " << parser.GetServerName() << std::endl;
     for (auto &module : parser.GetModules()) {
         std::cout << "module name: " << module.GetModuleName() << std::endl;
@@ -77,7 +77,7 @@ void Server::start() {
     // create all the modules
     std::cout << "Creating modules" << std::endl;
     ConfigParser parser;
-    parser.ParseConfig(std::string(std::filesystem::current_path()) + "/server/config/modules.json");
+    parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
     std::cout << "server name: " << parser.GetServerName() << std::endl;
     for (auto &module : parser.GetModules()) {
         std::cout << "module name: " << module.GetModuleName() << std::endl;

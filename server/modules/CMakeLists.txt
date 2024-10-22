@@ -1,7 +1,6 @@
 # Set the project name for modules
 project(Modules)
 
-# Include gameModule and networkModule directories
 add_subdirectory(gameModule)
 add_subdirectory(networkModule)
 
