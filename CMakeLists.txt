@@ -16,6 +16,7 @@ option(DEBUG "Debug mode" ON)
 
 if (SERVER)
     add_subdirectory(server)
+    add_subdirectory(server_dev_tools/source_code)
 endif()
 
 if (CLIENT)

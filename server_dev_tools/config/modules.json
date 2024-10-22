@@ -2,6 +2,7 @@
     "name": "Rtype server",
     "Windows": {
         "modules": [
+
             {
                 "name": "Game Module",
                 "path": "\\serverModules\\gameModule.dll",
