@@ -3,6 +3,7 @@
 *.so
 *.dll
 *.exe
+!generate module uuid windows.exe
 .git
 /build
 Doxyfile.bak
