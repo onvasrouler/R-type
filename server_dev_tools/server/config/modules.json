@@ -22,6 +22,19 @@
                         "id": "`&´×m"
                     }
                 ]
+            },
+            {
+                "name": "Template Module",
+                "path": "/serverModules/ModuleTemplate.dll",
+                "uuid": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a",
+                "listen_modules": [
+                    {
+                        "id": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2"
+                    },
+                    {
+                        "id": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a"
+                    }
+                ]
             }
         ]
     },
@@ -44,6 +57,19 @@
                 "listen_modules": [
                     {
                         "id": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2"
+                    }
+                ]
+            },
+            {
+                "name": "Template Module",
+                "path": "/serverModules/ModuleTemplate.so",
+                "uuid": "c8130a85-acae-48d1-a0ec-222e956c77aa",
+                "listen_modules": [
+                    {
+                        "id": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2"
+                    },
+                    {
+                        "id": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a"
                     }
                 ]
             }

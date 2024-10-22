@@ -33,50 +33,61 @@ AbstractModule::~AbstractModule()
 
 void AbstractModule::start()
 {
-    _Running = true;
-    _thread = std::thread([this](void *_) -> void * {
-        std::cout << "Starting module: " << _ModuleName << std::endl;
-        struct sockaddr_in server_addr;
-        server_addr.sin_family = AF_INET;
-        server_addr.sin_port = htons(MODULE_PORT);  // Use the same port as the server
-        server_addr.sin_addr.s_addr = INADDR_ANY;  // Local ip adress
-        inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
-        int serverSocket = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
+    // _Running = true;
+    try {
+        _thread = std::thread([this](void *_) -> void * {
+            std::cout << "Starting module: " << _ModuleName << std::endl;
+            struct sockaddr_in server_addr;
+            server_addr.sin_family = AF_INET;
+            server_addr.sin_port = htons(MODULE_PORT);  // Use the same port as the server
+            server_addr.sin_addr.s_addr = INADDR_ANY;  // Local ip adress
+            inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
+            int serverSocket = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
 
-        if (serverSocket == -1) {
-            std::throw_with_nested(std::runtime_error("Error: connection failed"));
-        }
-        _otherModules.push_back(serverSocket);
-        char buffer[1024] = {0};
-        int valread = recv(_socket, buffer, 1024, 0);
-        if (valread == -1) {
-            std::throw_with_nested(std::runtime_error("Error: reading failed"));
-        }
-        std::string message = buffer;
-        if (message != "200\n\t") {
-            std::throw_with_nested(std::runtime_error("Error: connection failed"));
-        }
-        #ifdef _WIN32
-            Sleep(2000);
-        #else
-            sleep(2);
-        #endif
-        send(_socket, "200\n\t", 5, 0);
-        std::cout << "Module: " << _ModuleName << " started" << std::endl;
-        #ifdef _WIN32
-            u_long mode = 1; // 1 to enable non-blocking mode
-            ioctlsocket(_socket, FIONBIO, &mode);
-        #endif
-        _Running = true;
-        run();
-        return nullptr;
-    }, nullptr);
+            if (serverSocket == -1) {
+                std::throw_with_nested(std::runtime_error("Error: connection failed"));
+            }
+            _otherModules.push_back(serverSocket);
+            char buffer[1024] = {0};
+            int valread = recv(_socket, buffer, 1024, 0);
+            if (valread == -1) {
+                std::throw_with_nested(std::runtime_error("Error: reading failed"));
+            }
+            std::string message = buffer;
+            if (message != "200\n\t") {
+                std::throw_with_nested(std::runtime_error("Error: connection failed"));
+            }
+            #ifdef _WIN32
+                Sleep(2000);
+            #else
+                sleep(2);
+            #endif
+            send(_socket, "200\n\t", 5, 0);
+            std::cout << "Module: " << _ModuleName << " started" << std::endl;
+            #ifdef _WIN32
+                u_long mode = 1; // 1 to enable non-blocking mode
+                ioctlsocket(_socket, FIONBIO, &mode);
+            #endif
+            try {
+                _Running = true;
+                run();
+            } catch (const std::exception &e) {
+                std::cerr << "Error durring runnig of: " << _ModuleName << std::endl;
+                std::cerr << e.what() << std::endl;
+            }
+            return nullptr;
+        }, nullptr);
+    } catch (const std::exception &e) {
+        std::cerr << "Error durring starting of: " << _ModuleName << std::endl;
+        std::cerr << e.what() << std::endl;
+    }
 }
 
 void AbstractModule::run()
 {
     std::cout << "Module: " << _ModuleName << " is running" << std::endl;
     while (_Running) {
+        // Do something
     }
     std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
 }

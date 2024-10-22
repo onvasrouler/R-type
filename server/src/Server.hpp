@@ -69,7 +69,7 @@ class Server : MultiThreadElement {
         * And throw an exception if it is not
         * @param module The module to create
         */
-        void createModule(AbstractModule *module);
+        void createModule(AbstractModule *module, void *file);
         bool canCommunicateWith(std::string moduleId, std::string communicateModuleId);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
