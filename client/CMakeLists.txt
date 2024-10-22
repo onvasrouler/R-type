@@ -14,10 +14,9 @@ if(WIN32)
     set(VCPKG_DIR "$ENV{USERPROFILE}/vcpkg")
     include_directories(${VCPKG_DIR}/installed/x64-windows/include)
     link_directories(${VCPKG_DIR}/installed/x64-windows/lib)
-    link_directories("C:/Program Files/raylib")
-    set(LIBS opengl32 gdi32 winmm raylib)
+    set(LIBS opengl32 gdi32 winmm raylib)  # Use opengl32 for Windows
 else()
-    set(LIBS GL dl rt X11 raylib)
+    set(LIBS GL dl rt X11 raylib pthread)  # Use GL for Unix-based systems
 endif()
 
 set(SRC_FILES
@@ -58,22 +57,22 @@ set(TARGET_NAME Rtype)
 
 add_executable(${TARGET_NAME} ${SRC_FILES} ${GUIELEM_FILES} ${MAIN_FILE})
 
-set(LIBGUIPATH ${CMAKE_SOURCE_DIR}/src/raygui)
+set(LIBGUIPATH ${CMAKE_SOURCE_DIR}/client/src/raygui)
 
-find_package(raylib REQUIRED)
+add_custom_target(raygui_dll ALL DEPENDS ${LIBGUIPATH}/raygui.dll ${LIBGUIPATH}/librayguidll.a)
 
-add_library(raygui SHARED ${LIBGUIPATH}/raygui.c)
+
+add_library(raygui SHARED ${LIBGUIPATH}/raygui.c )
 target_compile_definitions(raygui PRIVATE RAYGUI_IMPLEMENTATION)
 target_include_directories(raygui PUBLIC ${LIBGUIPATH})
 
-target_link_libraries(raygui raylib pthread m)
+target_link_libraries(${TARGET_NAME} raygui ${LIBS})  # Link the correct libraries
 
 if(APPLE)
     target_link_libraries(${TARGET_NAME} "-framework OpenGL" "-framework Cocoa")
     target_link_libraries(raygui "-framework OpenGL" "-framework Cocoa")
 else()
-    target_link_libraries(${TARGET_NAME} GL dl rt X11)
-    target_link_libraries(raygui GL dl rt X11)
+    # The previous section is enough. Remove GL here for Windows.
 endif()
 
 target_link_libraries(${TARGET_NAME} raygui)
