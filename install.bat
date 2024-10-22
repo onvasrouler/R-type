@@ -42,7 +42,7 @@ if not exist "%VCPKG_DIR%" (
 )
 
 echo "Installing required packages (boost and gtest)..."
-%VCPKG_DIR%\vcpkg install boost gtest sfml
+%VCPKG_DIR%\vcpkg install boost gtest raylib nlohmann-json
 if %ERRORLEVEL% neq 0 (
     echo "Error installing packages with vcpkg."
     pause
