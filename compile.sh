@@ -26,6 +26,7 @@ else if [ "$1" == "server" ]; then
     rm -rf server_dev_tools/serverModules/gameModule.so server_dev_tools/serverModules/networkModule.so server_dev_tools/serverModules/logModule.so
     rm -f server_dev_tools/r-type_server
     rm -f server_dev_tools/source_code/*.cpp
+    rm -f server_dev_tools/source_code/*.hpp
     cp server/modules/MultiThread.* server_dev_tools/source_code
     cp server/modules/AbstractModule.* server_dev_tools/source_code
     cp server/modules/UUID.* server_dev_tools/source_code
