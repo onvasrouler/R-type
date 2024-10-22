@@ -15,5 +15,6 @@ r-type_tests
 .vscode
 .vs
 compile.sh
+compile.bat
 vgcore*
 r-types
