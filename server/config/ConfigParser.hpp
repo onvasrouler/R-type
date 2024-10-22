@@ -16,10 +16,12 @@ class ConfigParseModule {
         const std::string GetModule() const;
         const std::string GetModuleName() const;
         const std::string GetModulePath() const;
+        const std::string GetModuleId() const;
         const std::vector<std::string> GetModuleListen() const;
     private:
         nlohmann::json _module;
         std::string _moduleName;
+        std::string _moduleId;
         std::string _modulePath;
         std::vector<std::string> _modulesListen;
 };

@@ -23,6 +23,11 @@ ConfigParseModule::ConfigParseModule(const nlohmann::json module) {
         _modulePath = "unknown";
     }
     try {
+        _moduleId = module["uuid"];
+    } catch (const std::exception& e) {
+        _moduleId = "unknown";
+    }
+    try {
         std::vector<nlohmann::json> listen = module["listen_modules"];
         for (auto &module : listen) {
             _modulesListen.push_back(module["id"]);
@@ -47,6 +52,11 @@ const std::string ConfigParseModule::GetModulePath() const
     return _modulePath;
 }
 
+const std::string ConfigParseModule::GetModuleId() const
+{
+    return _moduleId;
+}
+
 const std::vector<std::string> ConfigParseModule::GetModuleListen() const
 {
     return _modulesListen;
@@ -60,7 +70,12 @@ void ConfigParser::ParseConfig(std::string path)
     if (!file.is_open())
         throw std::runtime_error("Could not open file");
     file >> _config;
-    std::vector<nlohmann::json> modules = _config["modules"];
+    #ifdef _WIN32
+        nlohmann::json osModules = _config["Windows"];
+    #else
+        nlohmann::json osModules = _config["Unix"];
+    #endif
+    std::vector<nlohmann::json> modules = osModules["modules"];
     for (auto &module : modules) {
         ConfigParseModule configModule(module);
         _modules.push_back(configModule);

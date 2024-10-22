@@ -132,3 +132,9 @@ void GameModule::stop() {
     _thread.join();
     std::cout << "Module: " << _ModuleName << " stopped" << std::endl;
 }
+
+extern "C" {
+    AbstractModule* create_module(const std::string name, const std::string id) {
+        return new GameModule(name, id);
+    }
+}

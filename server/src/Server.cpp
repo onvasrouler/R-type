@@ -22,6 +22,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/resource.h>
+#include <dlfcn.h>
 #endif
 
 Server::Server() : MultiThreadElement() {
@@ -82,16 +83,26 @@ void Server::start() {
     for (auto &module : parser.GetModules()) {
         std::cout << "module name: " << module.GetModuleName() << std::endl;
         std::cout << "module path: " << module.GetModulePath() << std::endl;
+        std::cout << "module uuid: " << module.GetModuleId() << std::endl;
         for (auto &listen : module.GetModuleListen()) {
             std::cout << "module listen: " << listen << std::endl;
         }
+        //dlload the function create_module(name, uuid)
+        std::string path = std::filesystem::current_path().string() + module.GetModulePath();
+        void *file = dlopen(path.c_str(), RTLD_LAZY);
+        if (!file) {
+            std::cerr << "Error: " << dlerror() << std::endl;
+            throw std::runtime_error("Error while loading the module");
+        }
+        AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(dlsym(file, "create_module"));
+        if (!create_module) {
+            std::cerr << "Error: " << dlerror() << std::endl;
+            throw std::runtime_error("Error while loading the module");
+        }
+        AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
+        createModule(loadmodule);
+        dlclose(file);
     }
-    /*NetworkModule* networkModule = new NetworkModule("Network Module", "a5dbbeb3-1435-473c-ba3b-36388bb64e8a");
-    GameModule* gameModule = new GameModule("Game Module", "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2");
-    networkModule->addCommunicateModule(gameModule->getId());
-    gameModule->addCommunicateModule(networkModule->getId());
-    createModule(networkModule);
-    createModule(gameModule);*/
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
     ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);

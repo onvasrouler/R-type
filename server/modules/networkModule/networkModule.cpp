@@ -213,9 +213,7 @@ void NetworkModule::stop() {
         _udpServer->getSentData().push_back(packageData(message, client.getIp(), client.getPort()));
     }
     _udpServer->getSendMutex().unlock();
-    std::cout << "ok" << std::endl;
     _udpServer->sendMessages();
-    std::cout << "test" << std::endl;
     _udpServer->getStopMutex().lock();
 #ifdef _WIN32
     closesocket(_socket);
@@ -296,4 +294,10 @@ Client NetworkModule::findClient(const std::string uuid) {
         }
     }
     return client;
+}
+
+extern "C" {
+    AbstractModule* create_module(const std::string name, const std::string id) {
+        return new NetworkModule(name, id);
+    }
 }
