@@ -27,6 +27,11 @@ AbstractModule::AbstractModule(const std::string name, const std::string id) : M
 
 AbstractModule::~AbstractModule()
 {
+    try {
+        _thread.join();
+    } catch (const std::exception &e) {
+        std::cerr << "Failed to join thread: " << e.what() << std::endl;
+    }
     if (_Running)
         stop();
 }

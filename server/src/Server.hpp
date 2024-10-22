@@ -7,7 +7,7 @@
 */
 
 #pragma once
-#include "../lib/MultiThread.hpp"
+#include "MultiThread.hpp"
 #include "serverModule.hpp"
 
 #define NEW_CONNECTION_MESSAGE "201"
