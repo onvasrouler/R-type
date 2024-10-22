@@ -20,7 +20,7 @@ if (SERVER)
 endif()
 
 if (CLIENT)
-    add_subdirectory(client2)
+    add_subdirectory(client)
 endif()
 
 if (TESTS AND UNIX)
