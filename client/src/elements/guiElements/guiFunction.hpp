@@ -13,6 +13,7 @@
 #include <functional>
 #include <unordered_map>
 #include <memory>
+#include <sstream>
 
 class MenuManager;
 
