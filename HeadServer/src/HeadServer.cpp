@@ -7,7 +7,6 @@
 */
 
 #include "HeadServer.hpp"
-#include <boost/asio.hpp>
 #include <signal.h>
 #ifdef _WIN32
 #include <stdexcept>               // For exception handling
