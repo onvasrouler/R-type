@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 enable_testing()
 
-find_package(GTest CONFIG REQUIRED)
+find_package(GTest 1.15.2 CONFIG REQUIRED)
 
 add_executable(r-type_tests main.cpp)
 
