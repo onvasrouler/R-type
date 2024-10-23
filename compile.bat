@@ -9,6 +9,9 @@ rem Clean up previous builds
 if exist build (
     rmdir /s /q build
 )
+if exist Result (
+    rmdir /s /q Result
+)
 if exist r-type_server (
     del r-type_server
 )
@@ -55,18 +58,24 @@ if "%~1"=="clean" (
     move /Y build\server\modules\networkModule\Debug\networkModule.dll serverModules
 ) else if "%~1"=="client" (
     echo Building client
-    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE=C:/Users/aimer/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_PREFIX_PATH=C:/Users/aimer/vcpkg/installed/x64-windows -Wno-dev -D_WIN32_WINNT=0x0601 > ../build_log.txt 2>&1
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE=C:/Users/aimer/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_PREFIX_PATH=C:/Users/aimer/vcpkg/installed/x64-windows -Wno-dev -D_WIN32_WINNT=0x0601
     IF ERRORLEVEL 1 (
-        echo CMake configuration failed! See build_log.txt for details.
+        echo CMake configuration failed!
         exit /b 1
     )
     cd build
-    cmake --build .  > ../build_log.txt 2>&1
+    cmake --build .
     IF ERRORLEVEL 1 (
         echo Build failed! See build_log.txt for details.
         exit /b 1
     )
-    echo "Client built!"
+    cd ..
+    mkdir Result\client
+    xcopy build\client\Debug\* Result\client\ /E /I /Y
+    copy build\bin\Debug\raygui.dll Result\client\
+    xcopy client\config Result\client\config\ /E /I /Y
+    xcopy client\assets Result\client\assets\ /E /I /Y
+
     echo "Client built !"
 ) else (
     echo Building server and client

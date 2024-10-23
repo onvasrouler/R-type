@@ -1,50 +1,62 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.30.3)
 
 project(RType VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-if(WIN32)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+# Ajout des options de compilation en fonction du compilateur
+if (MSVC)
+    # Pour MSVC (Visual Studio), utiliser /W4 pour des avertissements plus stricts
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 else()
+    # Pour les compilateurs GCC et Clang, utiliser -Wall et -Wextra
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 endif()
 
-# Include project-specific directories
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/elements)
 
-# Find Raylib automatically using vcpkg
-find_package(raylib CONFIG REQUIRED)
-find_package(nlohmann_json CONFIG REQUIRED)
+# Utiliser vcpkg pour récupérer nlohmann-json
+find_package(nlohmann_json REQUIRED)
+find_package(raylib REQUIRED)
 
+add_library(raygui SHARED src/raygui/raygui.c)
 
-# Set platform-specific libraries
+target_compile_definitions(raygui PRIVATE RAYGUI_IMPLEMENTATION BUILD_LIBTYPE_SHARED)
+
+set_target_properties(raygui PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
+
+target_include_directories(raygui PRIVATE src)
+
 if(WIN32)
-    set(LIBS opengl32 gdi32 winmm)  # Additional Windows libraries
-else()
-    set(LIBS GL dl rt X11 pthread)  # Additional Unix-based libraries
-endif()
-
-# Raygui setup
-set(LIBGUIPATH ${CMAKE_SOURCE_DIR}/client/src/raygui)
-set(RAYGUI_SOURCES ${LIBGUIPATH}/raygui.c)
-set(RAYGUI_HEADERS ${LIBGUIPATH}/raygui.h)
-
-add_library(raygui STATIC ${RAYGUI_SOURCES})
-target_compile_definitions(raygui PRIVATE DRAYGUI_IMPLEMENTATION BUILD_LIBTYPE_SHARED)
-
-# Link Raylib and Raygui
-if(WIN32)
-    target_link_libraries(raygui raylib ${LIBS})
-elseif(UNIX AND NOT APPLE)
-    target_link_libraries(raygui raylib ${LIBS})
+    # Windows specific
+    target_link_libraries(raygui PRIVATE raylib opengl32 gdi32 winmm)
 elseif(APPLE)
-    target_link_libraries(raygui raylib "-framework OpenGL" "-framework Cocoa" ${LIBS})
+    # macOS specific
+    find_package(raylib REQUIRED)
+    target_link_libraries(raygui PRIVATE raylib "-framework OpenGL" pthread dl)
+elseif(UNIX)
+    # Linux specific
+    find_package(raylib REQUIRED)
+    target_link_libraries(raygui PRIVATE raylib GL m pthread dl rt X11)
 endif()
 
-# Add executable target
+install(TARGETS raygui RUNTIME DESTINATION bin LIBRARY DESTINATION lib)
+
+# Install the executable
+install(TARGETS ${TARGET_NAME} DESTINATION bin)
+
+if(WIN32)
+    set(LIBS opengl32 gdi32 winmm)  # Bibliothèques pour Windows
+else()
+    set(LIBS GL dl rt X11 pthread)  # Bibliothèques pour Unix
+endif()
+
 set(SRC_FILES
     src/fpsCounter/fpsCounter.cpp
     src/jsonParser/jsonParser.cpp
@@ -78,16 +90,18 @@ set(GUIELEM_FILES
 )
 
 set(MAIN_FILE main.cpp)
-set(TARGET_NAME Rtype)
+
+set(TARGET_NAME RType)
 
 link_directories(${CMAKE_SOURCE_DIR}/build/debug)
 
+# Ajouter l'exécutable
 add_executable(${TARGET_NAME} ${SRC_FILES} ${GUIELEM_FILES} ${MAIN_FILE})
 
-# Link Raylib and Raygui
-target_link_libraries(${TARGET_NAME} raylib nlohmann_json::nlohmann_json ${LIBS})
+# Lier les bibliothèques nécessaires (raylib, raygui, nlohmann-json, etc.)
+target_link_libraries(${TARGET_NAME} raylib raygui nlohmann_json::nlohmann_json ${LIBS})
 
+# Pour macOS, lier les frameworks supplémentaires
 if(APPLE)
     target_link_libraries(${TARGET_NAME} "-framework OpenGL" "-framework Cocoa")
-    target_link_libraries(raygui "-framework OpenGL" "-framework Cocoa")
 endif()
