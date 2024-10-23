@@ -8,18 +8,12 @@
 
 #include "AbstractModule.hpp"
 
-AbstractModule::AbstractModule() : MultiThreadElement(), _id(uuid().toString())
+AbstractModule::AbstractModule() : MultiThreadElement()
 {
     _Running = false;
 }
 
-AbstractModule::AbstractModule(const std::string name) : MultiThreadElement(), _id(uuid().toString())
-{
-    _ModuleName = name;
-    _Running = false;
-}
-
-AbstractModule::AbstractModule(const std::string name, const std::string id) : MultiThreadElement(), _id(id)
+AbstractModule::AbstractModule(const std::string name) : MultiThreadElement()
 {
     _ModuleName = name;
     _Running = false;
@@ -43,8 +37,8 @@ void AbstractModule::start()
         std::cout << "Starting module: " << _ModuleName << std::endl;
         struct sockaddr_in server_addr;
         server_addr.sin_family = AF_INET;
-        server_addr.sin_port = htons(MODULE_PORT);  // Use the same port as the server
-        server_addr.sin_addr.s_addr = INADDR_ANY;  // Local ip adress
+        server_addr.sin_port = htons(MODULE_PORT);  // Utilisez le même port que celui défini dans le serveur
+        server_addr.sin_addr.s_addr = INADDR_ANY;  // Adresse IP locale
         inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
         int serverSocket = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
 
@@ -117,19 +111,4 @@ std::string AbstractModule::encodeInterCommunication(const std::string message)
 {
     std::cout << "Encoding message: " << message << std::endl;
     return message;
-}
-
-void AbstractModule::addCommunicateModule(const std::string module)
-{
-    _communicatesModules.push_back(module);
-}
-
-const std::vector<std::string> AbstractModule::getCommunicatesModules() const
-{
-    return _communicatesModules;
-}
-
-const std::string AbstractModule::getId() const
-{
-    return _id;
 }

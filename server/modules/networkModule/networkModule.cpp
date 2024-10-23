@@ -8,7 +8,7 @@
 
 #include "networkModule.hpp"
 
-NetworkModule::NetworkModule(const std::string name, const std::string id) : AbstractModule(name, id) {
+NetworkModule::NetworkModule(const std::string name) : AbstractModule(name) {
     try {
         _udpServer = std::make_unique<UDPServer>(_io_context, PORT);
     } catch (std::exception& e) {
@@ -142,17 +142,12 @@ void NetworkModule::run() {
         if (FD_ISSET(_socket, &writefds)) {
             _udpServer->getReceiveMutex().lock();
             for (auto& data : _udpServer->getReceivedData()) {
-                std::string message = data.getData() + THREAD_END_MESSAGE;
-                if (isClient(data.getIp(), data.getPort())) {
-                } else {
-                    uuid userUUID;
-                    std::string userID = userUUID.toString();
-                    Client newClient(data.getIp(), data.getPort(), userID);
-                    _clients.push_back(newClient);
-                }
-                std::string messageToSend = createMessage(data.getIp(), data.getPort(), message);
-                std::cout << "send to core: " << messageToSend << std::endl;
-                send(_socket, messageToSend.c_str(), messageToSend.size(), 0);
+                std::string message = data.getIp() + ":" +
+                                      std::to_string(data.getPort()) + "/" +
+                                      data.getData() + THREAD_END_MESSAGE;
+                // std::cout << "Message send to core: " << message <<
+                // std::endl;
+                send(_socket, message.c_str(), message.size(), 0);
             }
             _udpServer->getReceivedData().clear();
             _udpServer->getReceiveMutex().unlock();
@@ -186,11 +181,14 @@ void NetworkModule::run() {
                              messages.find(THREAD_END_MESSAGE) + 2)) {
             try {
                 // encode message and send to the clients
-                std::string uuid = message.substr(0, message.find(":"));
-                std::cout << uuid << std::endl;
-                std::string messageData = message.substr(message.find(":") + 1);
-                std::cout << messageData << std::endl;
-                packageData data = createPackageData(uuid, messageData);
+                std::string ip = message.substr(0, message.find(":"));
+                message = message.substr(message.find(":") + 1);
+                std::size_t port =
+                    std::stoi(message.substr(0, message.find("/")));
+                message = message.substr(message.find("/") + 1);
+                // std::cout << "Message received from core: " << message <<
+                // std::endl;
+                packageData data = packageData(message, ip, port);
                 _udpServer->getSentData().push_back(data);
             } catch (std::exception& e) {
                 std::cerr << "Error: " << e.what() << std::endl;

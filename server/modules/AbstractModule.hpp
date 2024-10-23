@@ -28,17 +28,11 @@ class AbstractModule : public MultiThreadElement {
         /** @brief Constructor of AbstractModule.
          */
         AbstractModule();
-        /**
+        /*
         * @brief Constructor of AbstractModule.
         * @param name The name of the module.
         */
         AbstractModule(const std::string name);
-        /**
-         * @brief Constructor of AbstractModule.
-         * @param name The name of the module.
-         * @param id The id of the module.
-         */
-        AbstractModule(const std::string name, const std::string id);
         /** @brief Destructor of AbstractModule.
          */
         ~AbstractModule();
@@ -60,26 +54,6 @@ class AbstractModule : public MultiThreadElement {
          * @return The name of the module
          */
         std::string getName() const;
-        /**
-         *@brief Add a communicate module
-         *
-         * @param module The module to communicate with
-         */
-        void addCommunicateModule(const std::string module);
-
-        /**
-         * @brief Get the communicates modules
-         *
-         * @return std::vector<std::string> The communicates modules
-         */
-        const std::vector<std::string> getCommunicatesModules() const;
-
-        /**
-         * @brief Get the id of the MultithreadElement
-         *
-         * @return std::string The id of the MultithreadElement
-         */
-        const std::string getId() const;
     protected:
         /**
          * @brief Decode the message received from the server.
@@ -93,6 +67,4 @@ class AbstractModule : public MultiThreadElement {
         virtual std::string encodeInterCommunication(const std::string message) override;
         bool _Running; /*!< The state of the module. */
         std::string _ModuleName; /*!< The name of the module. */
-        std::vector<std::string> _communicatesModules; /*!< The modules to communicate with. */
-        const std::string _id; /*!< The id of the module. */
 };
