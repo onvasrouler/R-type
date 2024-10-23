@@ -12,7 +12,6 @@ r-type_tests
 *.exe
 .vscode
 .vs
-compile.sh
 vgcore*
 r-types
 Result/
