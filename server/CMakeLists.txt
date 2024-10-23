@@ -19,11 +19,22 @@ target_link_libraries(rtype_server_lib nlohmann_json::nlohmann_json)
 add_executable(r-type_server
 src/main.cpp
 )
-target_include_directories(r-type_server
-PRIVATE
+target_include_directories(r-type_server PRIVATE
+${CMAKE_CURRENT_SOURCE_DIR}
 ${CMAKE_SOURCE_DIR}/client
 ${CMAKE_SOURCE_DIR}/config
 ${CMAKE_SOURCE_DIR}/lib
+${CMAKE_SOURCE_DIR}/network
+${CMAKE_SOURCE_DIR}/room
+${CMAKE_SOURCE_DIR}/src
+)
+
+target_include_directories(rtype_server_lib PUBLIC
+${CMAKE_CURRENT_SOURCE_DIR}
+${CMAKE_SOURCE_DIR}/client
+${CMAKE_SOURCE_DIR}/config
+${CMAKE_SOURCE_DIR}/lib
+${CMAKE_SOURCE_DIR}/modules
 ${CMAKE_SOURCE_DIR}/network
 ${CMAKE_SOURCE_DIR}/room
 ${CMAKE_SOURCE_DIR}/src

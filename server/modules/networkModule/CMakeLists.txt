@@ -6,8 +6,8 @@ find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 # Add the source files for the library
 set(SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/MultiThread.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/MultiThread.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../MultiThread.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../MultiThread.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../AbstractModule.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../AbstractModule.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../UUID.cpp

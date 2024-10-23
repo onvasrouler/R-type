@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../lib/MultiThread.hpp"
+#include "MultiThread.hpp"
 
 #define MODULE_PORT 8082
 

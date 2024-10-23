@@ -3,6 +3,13 @@
     "Windows": {
         "modules": [
             {
+                "name": "Log Module",
+                "path": "/serverModules/logModule.dll",
+                "uuid": "`:ıÛ╚",
+                "listen_modules": [
+                ]
+            },
+            {
                 "name": "Game Module",
                 "path": "\\serverModules\\gameModule.dll",
                 "uuid": "`&´×m",
@@ -26,6 +33,13 @@
     },
     "Unix": {
         "modules": [
+            {
+                "name": "Log Module",
+                "path": "/serverModules/logModule.so",
+                "uuid": "255e924a-7708-4e13-92cd-638a4681986f",
+                "listen_modules": [
+                ]
+            },
             {
                 "name": "Game Module",
                 "path": "/serverModules/gameModule.so",

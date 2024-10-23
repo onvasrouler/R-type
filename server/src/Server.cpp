@@ -43,12 +43,17 @@ Server::~Server() {
         stop();
     std::cout << "Deleting the modules" << std::endl;
     for (auto& module : _modules) {
-        module->~serverModule();
-        #ifdef _WIN32
-            FreeLibrary(module->getDynamicLibrary());
-        #else
-            dlclose(module->getDynamicLibrary());
-        #endif
+        try {
+            module->~serverModule();
+            #ifdef _WIN32
+                FreeLibrary(module->getDynamicLibrary());
+            #else
+                dlclose(module->getDynamicLibrary());
+            #endif
+        } catch (std::exception& e) {
+            std::cerr << "Failed to destroy module" << std::endl;
+            std::cerr << e.what() << std::endl;
+        }
     }
     std::cout << "Modules deleted" << std::endl;
     std::cout << "Server deleted" << std::endl;
