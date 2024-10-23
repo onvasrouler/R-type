@@ -23,6 +23,6 @@ if (CLIENT)
     add_subdirectory(client2)
 endif()
 
-if (TESTS AND UNIX)
+if (TESTS)
     add_subdirectory(tests)
 endif()
