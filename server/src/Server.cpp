@@ -7,8 +7,7 @@
 */
 
 #include "Server.hpp"
-#include "gameModule.hpp"
-#include "networkModule.hpp"
+#include "ConfigParser.hpp"
 #include <boost/asio.hpp>
 #include <signal.h>
 #ifdef _WIN32
@@ -16,14 +15,27 @@
 #include <winsock2.h>              // For Windows socket functions
 #pragma comment(lib, "Ws2_32.lib") // Link with Ws2_32.lib for Winsock
 #else
-#include "../lib/UUID.hpp"
+#include "UUID.hpp"
 #include "sys/socket.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/resource.h>
+#include <dlfcn.h>
 #endif
 
-Server::Server() : MultiThreadElement() { _Running = false; }
+Server::Server() : MultiThreadElement() {
+    _Running = false;
+    ConfigParser parser;
+    parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
+    std::cout << "server name: " << parser.GetServerName() << std::endl;
+    for (auto &module : parser.GetModules()) {
+        std::cout << "module name: " << module.GetModuleName() << std::endl;
+        std::cout << "module path: " << module.GetModulePath() << std::endl;
+        for (auto &listen : module.GetModuleListen()) {
+            std::cout << "module listen: " << listen << std::endl;
+        }
+    }
+}
 
 Server::~Server() {
     std::cout << "Deleting server" << std::endl;
@@ -31,7 +43,17 @@ Server::~Server() {
         stop();
     std::cout << "Deleting the modules" << std::endl;
     for (auto& module : _modules) {
-        module->~serverModule();
+        try {
+            module->~serverModule();
+            #ifdef _WIN32
+                FreeLibrary(module->getDynamicLibrary());
+            #else
+                dlclose(module->getDynamicLibrary());
+            #endif
+        } catch (std::exception& e) {
+            std::cerr << "Failed to destroy module" << std::endl;
+            std::cerr << e.what() << std::endl;
+        }
     }
     std::cout << "Modules deleted" << std::endl;
     std::cout << "Server deleted" << std::endl;
@@ -63,10 +85,86 @@ void Server::start() {
     }
     // create all the modules
     std::cout << "Creating modules" << std::endl;
-    NetworkModule* networkModule = new NetworkModule("NetworkModule");
-    createModule(networkModule);
-    GameModule* gameModule = new GameModule("GameModule");
-    createModule(gameModule);
+    ConfigParser parser;
+    parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
+    std::cout << "server name: " << parser.GetServerName() << std::endl;
+    for (auto &module : parser.GetModules()) {
+        std::cout << "module name: " << module.GetModuleName() << std::endl;
+        std::cout << "module path: " << module.GetModulePath() << std::endl;
+        std::cout << "module uuid: " << module.GetModuleId() << std::endl;
+        for (auto &listen : module.GetModuleListen()) {
+            std::cout << "module listen: " << listen << std::endl;
+        }
+        std::string path = std::filesystem::current_path().string() + module.GetModulePath();
+        #ifdef _WIN32
+            if (!std::filesystem::exists(path)) {
+                std::cerr << "DLL not found: " << path << std::endl;
+                throw std::runtime_error("DLL not found");
+            }
+            int size_needed = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, NULL, 0);
+            std::wstring wpath(size_needed, L'\0'); // Use L'\0' to initialize with null characters
+            MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, &wpath[0], size_needed);
+
+            // Load the library
+            HMODULE hModule = LoadLibraryW(wpath.c_str());
+            if (!hModule) {
+                DWORD error = GetLastError();
+                LPVOID lpMsgBuf;
+                FormatMessageW(
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                    (LPWSTR)&lpMsgBuf, 0, NULL);
+                std::wcerr << L"Error loading library: " << (LPWSTR)lpMsgBuf << std::endl;
+                LocalFree(lpMsgBuf);
+                throw std::runtime_error("Error while loading the module");
+            } else {
+                std::cout << "Library loaded successfully: " << path << std::endl;
+            }
+
+            // Get the function pointer
+            AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(GetProcAddress(hModule, "create_module"));
+            if (!create_module) {
+                DWORD error = GetLastError();
+                LPVOID lpMsgBuf;
+                FormatMessageW(
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                    (LPWSTR)&lpMsgBuf, 0, NULL);
+                std::wcerr << L"Error getting function address: " << (LPWSTR)lpMsgBuf << std::endl;
+                LocalFree(lpMsgBuf);
+                FreeLibrary(hModule); // Free the library only after this
+                throw std::runtime_error("Error while loading the module");
+            }
+
+            // Use the create_module function
+            AbstractModule* moduleInstance = create_module(module.GetModuleName(), module.GetModuleId());
+            std::cout << "Loaded module: " << moduleInstance->getName() << std::endl;
+
+            createModule(moduleInstance, hModule);
+        #else
+            if (!std::filesystem::exists(path)) {
+                std::cerr << "SO not found: " << path << std::endl;
+                throw std::runtime_error("SO not found");
+            }
+            void *file = dlopen(path.c_str(), RTLD_LAZY);
+            if (!file) {
+                std::cerr << "Error: " << dlerror() << std::endl;
+                throw std::runtime_error("Error while open the .so file");
+            }
+            AbstractModule *(*create_module)(std::string, std::string) = reinterpret_cast<AbstractModule *(*)(std::string, std::string)>(dlsym(file, "create_module"));
+            if (!create_module) {
+                std::cerr << "Error: " << dlerror() << std::endl;
+                throw std::runtime_error("Error while loading the module");
+            }
+            AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
+            try {
+                createModule(loadmodule, file);
+            } catch (std::exception &e) {
+                std::cerr << e.what() << std::endl;
+                throw std::runtime_error("Error while creating the module");
+            }
+        #endif
+    }
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
     ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);
@@ -224,7 +322,12 @@ std::string Server::encodeInterCommunication(const std::string message) {
     // encode the message
 }
 
-void Server::createModule(AbstractModule* module) {
+#ifdef _WIN32
+    void Server::createModule(AbstractModule* module, HMODULE &file)
+#else
+    void Server::createModule(AbstractModule* module, void *file)
+#endif
+{
     try {
         module->start();
 #ifdef _WIN32
@@ -253,7 +356,7 @@ void Server::createModule(AbstractModule* module) {
             throw std::runtime_error(
                 "Error while creating a module: wrong message received");
         _modules.push_back(
-            std::make_unique<serverModule>(module, moduleSocket));
+            std::make_unique<serverModule>(module, moduleSocket, file));
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
         throw std::runtime_error(
