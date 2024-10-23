@@ -33,11 +33,16 @@ class LogModule : public AbstractModule {
         * @brief The main loop of the module
         */
         void run() override;
-        /*
+        /**
         * @brief Stop the module.
         */
         void stop() override;
     private:
+        /**
+         * @brief Cheeck if their is the directories needed by the log module
+         * if not it will create them
+         */
+        void checkLogDir();
         /**
         * @brief Encode the message to send to the server.
         * @param message The message to encode.
