@@ -61,8 +61,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ env.version }}
-          release_name: "v${{ env.version }}"
+          tag_name: v${{ github.run_number }}
+          release_name: "Release ${{ github.run_number }}"
           body: "Release created after merge to main"
           draft: false
           prerelease: false
