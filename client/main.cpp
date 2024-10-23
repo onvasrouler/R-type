@@ -6,7 +6,6 @@
 */
 
 #include "src/raylibWindow/raylibWindow.hpp"
-#include "src/fpsCounter/fpsCounter.hpp"
 
 int main() {
     // Check if the config files are present
