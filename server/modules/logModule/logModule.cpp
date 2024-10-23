@@ -142,13 +142,15 @@ void LogModule::run() {
             std::string line = log.substr(0, pos);
             if (line.find(DEBUG_MACRO) != std::string::npos) {
                 line = line.substr(std::string(DEBUG_MACRO).size(), line.size());
-                std::ostream old_stream(old_buf);
-                old_stream << line << "\n";
+                std::cout.rdbuf(old_buf);
+                std::cout << line << "\n";
+                std::cout.rdbuf(buffer.rdbuf());
+            } else {
+                std::string logFormat = getHourMinuteSeconds() + " " + getDayName() + "-" + getDayNumber() + "-" + getMonthName() + "-" + getYear() + ": " + line + "\n";
+                file.open(path, std::ios::app);
+                file.write(logFormat.c_str(), logFormat.size());
+                file.close();
             }
-            std::string logFormat = getHourMinuteSeconds() + " " + getDayName() + "-" + getDayNumber() + "-" + getMonthName() + "-" + getYear() + ": " + line + "\n";
-            file.open(path, std::ios::app);
-            file.write(logFormat.c_str(), logFormat.size());
-            file.close();
             log.erase(0, pos + 1); // Remove processed line
         }
     }
