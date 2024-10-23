@@ -12,6 +12,7 @@ permissions:
 
 env:
   MIRROR_URL: "git@github.com:EpitechPromo2027/B-CPP-500-NAN-5-1-rtype-aimeric.rouyer.git"
+  BASE_VERSION: "3.5"
 
 jobs:
   push_to_mirror:
@@ -31,6 +32,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get current release number
+        id: get_version
+        run: |
+          current_version=$(git tag --list "v${{ env.BASE_VERSION }}.*" | sort -V | tail -n 1 | sed 's/v//')
+          if [ -z "$current_version" ]; then
+            next_version="${{ env.BASE_VERSION }}.0"
+          else
+            next_version=$(echo $current_version | awk -F. -v OFS=. '{$NF++; print}')
+          fi
+          echo "Next version: $next_version"
+          echo "version=$next_version" >> $GITHUB_ENV
+
       - name: Zip Linux Installer
         run: |
           zip linux_installer.zip install.sh
@@ -45,8 +58,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: "Release ${{ github.run_number }}"
+          tag_name: v${{ env.version }}
+          release_name: "v${{ env.version }}"
           body: "Release created after merge to main"
           draft: false
           prerelease: false
