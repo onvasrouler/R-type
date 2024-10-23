@@ -53,6 +53,7 @@ class LogModule : public AbstractModule {
         * @param message The message to decode.
         */
         std::string decodeInterCommunication(const std::string message) override;
-        // std::ostringstream _buffer; /*!< The buffer to store the logs */
-        std::mutex _destroyMutex; /*!< The mutex to protect the destruction of the module */
+        // std::ostringstream _buffer; /*The buffer to store the logs */
+        std::mutex _destroyMutex; /*The mutex to protect the destruction of the module */
+        std::string _date; /*The date of the day*/
 };

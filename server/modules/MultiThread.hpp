@@ -40,6 +40,7 @@
 
 #define PORT 8081
 #define THREAD_END_MESSAGE "\n\t"
+#define DEBUG_MACRO "Debug: "
 
 /**
  * @brief The MultiThreadData class is a class to store data in a multithread context.
