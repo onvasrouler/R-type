@@ -1,6 +1,7 @@
 #!/bin/bash
 
 server_binary="r-type_server"
+head_server_binary="r-type_head_server"
 client_binary="r-type_client"
 tests_binary="r-type_tests"
 serverModulesDir="serverModules"
@@ -15,6 +16,10 @@ clean_server() {
     rm -f server_dev_tools/source_code/*.hpp
 }
 
+clean_head_server() {
+    rm -f $head_server_binary
+}
+
 clean_client() {
     rm -f $client_binary
 }
@@ -25,6 +30,7 @@ clean_tests() {
 
 clean_all() {
     clean_server
+    clean_head_server
     clean_client
     clean_tests
 }
@@ -69,6 +75,15 @@ compile_server() {
     setup_dev_tools
 }
 
+compiler_head_server() {
+    clean_head_server
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=OFF -DHEAD_SERVER=ON
+    cd build
+    make
+    cd ..
+    mv build/HeadServer/$head_server_binary .
+}
+
 compile_client() {
     clean_client
     cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON
@@ -105,6 +120,8 @@ elif [ "$1" == "tests" ]; then
     compile_tests
 elif [ "$1" == "server" ]; then
     compile_server
+elif [ "$1" == "HeadServer" ]; then
+    compiler_head_server
 elif [ "$1" == "client" ]; then
     compile_client
 else
