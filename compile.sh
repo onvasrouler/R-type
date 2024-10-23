@@ -70,6 +70,7 @@ compile_server() {
 }
 
 compile_client() {
+    clean_client
     cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON
     cd build
     make
@@ -87,6 +88,8 @@ compile_tests () {
 }
 
 compile() {
+    clean_client
+    clean_server
     cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON
     cd build
     make
