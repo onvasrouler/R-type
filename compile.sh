@@ -67,7 +67,7 @@ setup_dev_tools() {
 compile_server() {
     clean_server
     copy_server_source_code
-    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=OFF
+    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=OFF -DHEAD_SERVER=OFF
     cd build
     make
     cd ..
@@ -86,7 +86,7 @@ compiler_head_server() {
 
 compile_client() {
     clean_client
-    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DHEAD_SERVER=OFF
     cd build
     make
     cd ..
@@ -95,7 +95,7 @@ compile_client() {
 
 compile_tests () {
     clean_all
-    cmake -S . -B build -DTESTS=ON -DSERVER=ON -DCLIENT=ON
+    cmake -S . -B build -DTESTS=ON -DSERVER=ON -DCLIENT=ON -DHEAD_SERVER=ON
     cd build
     make
     cd ..
@@ -105,7 +105,7 @@ compile_tests () {
 compile() {
     clean_client
     clean_server
-    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON
+    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON -DHEAD_SERVER=ON
     cd build
     make
     cd ..
