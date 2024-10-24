@@ -82,7 +82,7 @@ if %ERRORLEVEL% neq 0 (
 echo "CMake configuration successful."
 
 echo "Building the project..."
-cmake --build .
+call compile.bat client
 if %ERRORLEVEL% neq 0 (
     echo "Error during build."
     pause

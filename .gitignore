@@ -1,7 +1,15 @@
 *.o
 *.a
+*.so
+*.lib
+*.dll
+*.exe
+!generate module uuid windows.exe
 .git
 /build
+server_dev_tools/build/
+server_dev_tools/source_code/*
+!server_dev_tools/source_code/CMakeLists.txt
 Doxyfile.bak
 docs/html
 docs/latex
@@ -9,9 +17,9 @@ r-type_client
 r-type_server
 r-type_tests
 /out
-*.exe
 .vscode
 .vs
 vgcore*
 r-types
+logs/
 Result/

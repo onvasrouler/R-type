@@ -106,8 +106,10 @@ Server server;
 void signalHandler(int signum) {
     try {
         // server.stop();  // Stop the server
+        std::cout << "Interrupt signal (" << signum << ") received." << std::endl;
         exit(0); // Exit the program
     } catch (std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
         exit(1); // Exit the program with error
     }
 }
