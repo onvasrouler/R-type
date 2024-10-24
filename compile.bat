@@ -58,7 +58,7 @@ if "%~1"=="clean" (
     move /Y build\server\modules\networkModule\Debug\networkModule.dll serverModules
 ) else if "%~1"=="client" (
     echo Building client
-    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE=C:/Users/aimer/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_PREFIX_PATH=C:/Users/aimer/vcpkg/installed/x64-windows -Wno-dev -D_WIN32_WINNT=0x0601
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE=%TOOLCHAIN_FILE_PATH% -DCMAKE_PREFIX_PATH=C:/Users/aimer/vcpkg/installed/x64-windows -Wno-dev -D_WIN32_WINNT=0x0601
     IF ERRORLEVEL 1 (
         echo CMake configuration failed!
         exit /b 1
