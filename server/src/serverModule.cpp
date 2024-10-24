@@ -10,15 +10,17 @@
 
 #ifdef _WIN32
 serverModule::serverModule(AbstractModule* module,
-                           const SOCKET serverInterSocket) {
+                           const SOCKET serverInterSocket, HMODULE file) {
     _module = std::shared_ptr<AbstractModule>(module);
     _serverInterSocket = serverInterSocket;
+    _dynamicLibrary = file;
 }
 #else
 serverModule::serverModule(AbstractModule* module,
-                           const int serverInterSocket) {
+                           const int serverInterSocket, void *file) {
     _module = std::shared_ptr<AbstractModule>(module);
     _serverInterSocket = serverInterSocket;
+    _dynamicLibrary = file;
 }
 #endif
 
