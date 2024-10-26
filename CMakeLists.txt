@@ -24,6 +24,10 @@ if (CLIENT)
     add_subdirectory(client2)
 endif()
 
+if (HEAD_SERVER)
+    add_subdirectory(HeadServer)
+endif()
+
 if (TESTS AND UNIX)
     add_subdirectory(tests)
 endif()
