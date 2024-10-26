@@ -11,6 +11,7 @@
 #include "MultiThread.hpp"
 
 #define MODULE_PORT 8082
+#define MODULE_CONNECT_VALIDATION_CODE "200\n\t"
 
 /** @class AbstractModule
  *  @brief The AbstractModule class is the base class for all modules.

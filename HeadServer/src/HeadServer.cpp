@@ -119,7 +119,7 @@ void HeadServer::run() {
 #ifdef _WIN32
             for (int valread = recv(module->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
-                 valread = recv(module->getSocket(), buffer, 1024, 0)) {
+                 valread = recv(module->getSocket(), buffer, std::string(buffer).size(), 0)) {
                 std::cout << "Read: " << buffer << " from game module"
                           << std::endl;
                 messages += buffer;
@@ -128,7 +128,7 @@ void HeadServer::run() {
             for (int valread =
                      recv(module->getSocket(), buffer, 1024, MSG_DONTWAIT);
                  valread != -1 && valread != 0;
-                 valread = recv(module->getSocket(), buffer, 1024,
+                 valread = recv(module->getSocket(), buffer, std::string(buffer).size(),
                                 MSG_DONTWAIT)) {
                 messages += buffer;
             }
@@ -202,18 +202,18 @@ void HeadServer::createModule(AbstractModule* module) {
             _maxSocket = moduleSocket;
         }
 #endif
-        if (send(moduleSocket, "200\n\t", 5, 0) < 0) {
+        if (send(moduleSocket, MODULE_CONNECT_VALIDATION_CODE, std::string(MODULE_CONNECT_VALIDATION_CODE).size(), 0) < 0) {
             throw std::runtime_error(
                 "Error while creating a module: send failed");
         }
         char buffer[1024] = {0};
-        int valread = recv(moduleSocket, buffer, 1024, 0);
+        int valread = recv(moduleSocket, buffer, std::string(buffer).size(), 0);
         if (valread < 0 || valread != 5) {
             throw std::runtime_error(
                 "Error while creating a module: recv failed");
         }
         std::string message = buffer;
-        if (message != "200\n\t") {
+        if (message != MODULE_CONNECT_VALIDATION_CODE) {
             throw std::runtime_error(
                 "Error while creating a module: wrong message received");
         }
