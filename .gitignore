@@ -15,6 +15,7 @@ docs/html
 docs/latex
 r-type_client
 r-type_server
+r-type_head_server
 r-type_tests
 /out
 .vscode
