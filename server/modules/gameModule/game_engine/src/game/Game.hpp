@@ -197,6 +197,11 @@ public:
     std::mutex &getSendMutex();
     std::mutex &getReadMutex();
 
+    std::vector<Player> &getPlayers();
+    std::vector<Enemy> &getEnemies();
+    std::vector<Bullet> &getBullets();
+    bool isRunning();
+
 private:
     std::vector<Player> _player; ///< List of players in the game.
     std::vector<Enemy> _enemy; ///< List of enemies in the game.

@@ -491,3 +491,19 @@ std::string &gameMessage::getId() {
 const std::string gameMessage::getMessage() {
     return _message;
 }
+
+std::vector<Player> &Game::getPlayers() {
+    return _player;
+}
+
+std::vector<Enemy> &Game::getEnemies() {
+    return _enemy;
+}
+
+std::vector<Bullet> &Game::getBullets() {
+    return _bullet;
+}
+
+bool Game::isRunning() {
+    return _running;
+}
