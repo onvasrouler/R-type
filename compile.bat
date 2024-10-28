@@ -2,11 +2,16 @@
 setlocal
 
 set server_binary="r-type_server.exe"
+set head_server_binary="r-type_head_server.exe"
 set client_binary="r-type_client/exe"
 set tests_binary="r-type_tests/exe"
 set serverModulesDir="serverModules"
 
+rem Remove existing build artifacts
+rd -r -Force build
+
 rem Control flow based on input argument
+echo %1
 if "%1" == "clean" (
     call :clean_all
     goto :eof
@@ -19,15 +24,13 @@ if "%1" == "clean" (
 ) else if "%1" == "client" (
     call :compile_client
     goto :eof
+) else if "%1" == "HeadServer" (
+    call :compile_head_server
+    goto :eof
 ) else (
     call :compile
     goto :eof
 )
-
-rem Remove existing build artifacts
-rd /s /q build
-
-goto :eof
 
 :clean_server
     del /f %server_binary%
@@ -41,6 +44,10 @@ goto :eof
     del /f server_dev_tools\source_code\*.hpp
 goto :eof
 
+:clean_head_server
+    del /f %head_server_binary%
+goto :eof
+
 :clean_client
     del /f %client_binary%
 goto :eof
@@ -51,6 +58,7 @@ goto :eof
 
 :clean_all
     call :clean_server
+    call :clean_head_server
     call :clean_client
     call :clean_tests
 goto :eof
@@ -81,7 +89,8 @@ goto :eof
 :compile_server
     call :clean_server
     call :copy_server_source_code
-    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=OFF -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
+    echo "Compiling server"
+    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DHEAD_SERVER=OFF -DCLIENT=OFF -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
     cd build
     cmake --build .
     cd ..
@@ -89,9 +98,20 @@ goto :eof
     call :setup_dev_tools
 goto :eof
 
+:compile_head_server
+    call :clean_head_server
+    echo "Compiling Head Server"
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DHEAD_SERVER=ON -DCLIENT=OFF -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
+    cd build
+    cmake --build .
+    cd ..
+    move /y build\HeadServer\Debug\%head_server_binary% .
+goto :eof
+
 :compile_client
     call :clean_client
-    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
+    echo "Compiling Client"
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DHEAD_SERVER=OFF -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
     cd build
     cmake --build .
     cd ..
@@ -100,7 +120,8 @@ goto :eof
 
 :compile_tests
     call :clean_all
-    cmake -S . -B build -DTESTS=ON -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
+    echo "Compiling Tests"
+    cmake -S . -B build -DTESTS=ON -DSERVER=ON -DHEAD_SERVER=ON -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
     cd build
     cmake --build .
     cd ..
@@ -110,7 +131,9 @@ goto :eof
 :compile
     call :clean_client
     call :clean_server
-    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
+    call :clean_head_server
+    echo "Compiling All"
+    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DHEAD_SERVER=ON -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE="C:/Users/tenne/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev -D_WIN32_WINNT=0x0601
     cd build
     cmake --build .
     cd ..
