@@ -1,0 +1,13 @@
+{
+    "entities": {
+        "bullet": {
+            "sprite": "bullet.png"
+        },
+        "player": {
+            "sprite": "player.png"
+        },
+        "enemy": {
+            "sprite": "enemy.png"
+        }
+    }
+}
