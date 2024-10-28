@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 #include <chrono>
-#include "../../server/game_engine/src/game/Game.hpp"
+#include "../../server/modules/gameModule/game_engine/src/game/Game.hpp"
 
 class GameTest : public ::testing::Test {
 protected:

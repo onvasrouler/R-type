@@ -8,6 +8,7 @@ find_library(UUID_LIB uuid)
 find_package(nlohmann_json 3.11.3 REQUIRED)
 
 add_library(rtype_server_lib STATIC)
+add_library(rtype_server_tests_lib STATIC)
 
 target_include_directories(rtype_server_lib PUBLIC include)
 
@@ -30,6 +31,17 @@ ${CMAKE_SOURCE_DIR}/src
 )
 
 target_include_directories(rtype_server_lib PUBLIC
+${CMAKE_CURRENT_SOURCE_DIR}
+${CMAKE_SOURCE_DIR}/client
+${CMAKE_SOURCE_DIR}/config
+${CMAKE_SOURCE_DIR}/lib
+${CMAKE_SOURCE_DIR}/modules
+${CMAKE_SOURCE_DIR}/network
+${CMAKE_SOURCE_DIR}/room
+${CMAKE_SOURCE_DIR}/src
+)
+
+target_include_directories(rtype_server_tests_lib PUBLIC
 ${CMAKE_CURRENT_SOURCE_DIR}
 ${CMAKE_SOURCE_DIR}/client
 ${CMAKE_SOURCE_DIR}/config

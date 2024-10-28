@@ -33,6 +33,9 @@ Game::~Game()
     std::cout << "Game engine destroyed" << std::endl;
 }
 
+#include <algorithm>
+#include <cctype>
+
 /**
  * @brief Create a new player in the game.
  *
@@ -61,7 +64,6 @@ bool Game::create_player(const std::string id)
 
     return true;
 }
-
 /**
  * @brief Create a new bullet for a given player.
  *
