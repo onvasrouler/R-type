@@ -20,7 +20,7 @@ class Game
 {
 public:
     Game();
-    ~Game();
+    ~Game() = default;
 
     void run(sf::RenderWindow &window, boost::asio::io_context &io_context, boost::asio::ip::basic_resolver_results<boost::asio::ip::udp> &endpoints);
     void processEvents(sf::RenderWindow &window, boost::asio::ip::basic_resolver_results<boost::asio::ip::udp> &endpoints);

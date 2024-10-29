@@ -13,8 +13,8 @@
 #pragma once
 
 #include "AEntity.hpp"
-#include "Level.hpp"
-#include "Hp.hpp"
+#include "../tools/src/Level.hpp"
+#include "../tools/src/Hp.hpp"
 
 #define BASIC_LIFE_VALUE 1
 #define BASIC_LEVEL_VALUE 1

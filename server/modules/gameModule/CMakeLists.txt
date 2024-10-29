@@ -13,6 +13,11 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/gameModule.hpp
 )
 
+target_sources(rtype_server_tests_lib PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/gameModule.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gameModule.hpp
+)
+
 # Create the shared library
 add_library(gameModule SHARED ${SOURCES})
 
@@ -27,4 +32,9 @@ add_subdirectory(game_engine)
 target_include_directories(gameModule PUBLIC
 ${CMAKE_CURRENT_SOURCE_DIR}
 ${CMAKE_CURRENT_SOURCE_DIR}/..
+)
+
+target_include_directories(rtype_server_tests_lib
+    PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )

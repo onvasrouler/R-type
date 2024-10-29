@@ -33,6 +33,9 @@ Game::~Game()
     std::cout << "Game engine destroyed" << std::endl;
 }
 
+#include <algorithm>
+#include <cctype>
+
 /**
  * @brief Create a new player in the game.
  *
@@ -42,6 +45,14 @@ Game::~Game()
  */
 bool Game::create_player(const std::string id)
 {
+    // Check if the id is empty or contains only whitespace characters
+    if (id.empty() || std::all_of(id.begin(), id.end(), [](unsigned char c)
+        {
+            return std::isspace(c);
+        })) {
+        return false;
+    }
+
     if (this->_player.size() < 4) {
         Player player(500, id);
         this->_player.push_back(player);
@@ -61,7 +72,6 @@ bool Game::create_player(const std::string id)
 
     return true;
 }
-
 /**
  * @brief Create a new bullet for a given player.
  *
@@ -488,4 +498,20 @@ std::string &gameMessage::getId() {
 
 const std::string gameMessage::getMessage() {
     return _message;
+}
+
+std::vector<Player> &Game::getPlayers() {
+    return _player;
+}
+
+std::vector<Enemy> &Game::getEnemies() {
+    return _enemy;
+}
+
+std::vector<Bullet> &Game::getBullets() {
+    return _bullet;
+}
+
+bool Game::isRunning() {
+    return _running;
 }

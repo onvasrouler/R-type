@@ -17,7 +17,7 @@ class GameObject
 {
 public:
     GameObject(int x, int y, enum Type type, sf::Texture &text);
-    ~GameObject();
+    ~GameObject() = default;
 
     void setPosition(int x, int y);
 

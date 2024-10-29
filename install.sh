@@ -17,11 +17,11 @@ command_exists() {
 echo "Installing system dependencies..."
 if command_exists apt; then
     sudo apt update
-    sudo apt install -y git cmake build-essential curl unzip uuid-dev clang-format
+    sudo apt install -y git cmake build-essential curl unzip uuid-dev clang-format raylib raylib-devel
 elif command_exists dnf; then
-    sudo dnf install -y git cmake gcc-c++ curl unzip libuuid-devel clang-tools-extra
+    sudo dnf install -y git cmake gcc-c++ curl unzip libuuid-devel clang-tools-extra raylib raylib-devel
 elif command_exists brew; then
-    brew install git cmake curl unzip clang-format
+    brew install git cmake curl unzip clang-format raylib raylib-devel
 else
     echo "Error: Unsupported package manager. Please install git, cmake, curl, and unzip manually."
     exit 1
