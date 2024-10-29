@@ -21,7 +21,7 @@ clean_head_server() {
 }
 
 clean_client() {
-    rm -f $client_binary
+    rm -rf Result/client
 }
 
 clean_tests() {
@@ -85,12 +85,23 @@ compiler_head_server() {
 }
 
 compile_client() {
-    clean_client
-    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DHEAD_SERVER=OFF
+    echo "Building client"
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -Wno-dev
+    if [ $? -ne 0 ]; then
+        echo "CMake configuration failed!"
+        exit 1
+    fi
     cd build
-    make
+    cmake --build .
+    if [ $? -ne 0 ]; then
+        echo "Build failed! See build_log.txt for details."
+        exit 1
+    fi
     cd ..
-    mv build/client/$client_binary .
+    mkdir -p Result/client
+    cp -r build/client/RType Result/client/
+    cp -r client/config Result/client/config/
+    cp -r client/assets Result/client/assets/
 }
 
 compile_tests () {

@@ -8,28 +8,176 @@
         "START_MENU": {
             "isSimple": true,
             "id": 1,
-            "title": "settings",
+            "title": "Start Menu",
             "buttons": [
                 {
-                    "id": 0,
-                    "text": "Start",
+                    "id": "startButton",
+                    "text": "",
                     "position": {
-                        "x": 15,
-                        "y": 15
+                        "x": "10%",
+                        "y": 400
                     },
                     "size": {
-                        "width": 100,
-                        "height": 20
+                        "width": "80%",
+                        "height": 100
                     },
+                    "display": true,
+                    "z-index": 0,
+                    "functionName": "StartFunct"
+
+                }
+            ],
+            "RlibButtons": [
+                {
+                    "id": "startButton",
+                    "text": "",
+                    "position": {
+                        "x": "10%",
+                        "y": 400
+                    },
+                    "size": {
+                        "width": "80%",
+                        "height": 100
+                    },
+                    "display": true,
+                    "z-index": 2,
+                    "functionName": "StartFunct"
+
+                }
+            ],
+            "texts": [
+                {
+                    "id": "0",
+                    "text": "R-Type",
+                    "position": {
+                        "x": "center",
+                        "y": 10
+                    },
+                    "fontSize": 30,
                     "color": {
                         "r": 0,
-                        "g": 255,
+                        "g": 0,
                         "b": 0,
                         "a": 255
                     },
-                    "type": 0,
+                    "display": true,
                     "functionName": "defaultFunct"
-
+                },
+                {
+                    "id": "1",
+                    "text": "START",
+                    "position": {
+                        "x": "center",
+                        "y": 430
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": true,
+                    "z-index": 1,
+                    "functionName": "None"
+                },
+                {
+                    "id": "InvalidAdressText",
+                    "text": "Invalid Adress",
+                    "position": {
+                        "x": "center",
+                        "y": 100
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 255,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": false,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "InvalidPortText",
+                    "text": "Invalid Port",
+                    "position": {
+                        "x": "center",
+                        "y": 225
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 255,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": false,
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "inputTexts": [
+                {
+                    "id": "adressInput",
+                    "position": {
+                        "x": "30%",
+                        "y": 150
+                    },
+                    "size": {
+                        "width": "40%",
+                        "height": 50
+                    },
+                    "text": "",
+                    "textMaxSize": 16,
+                    "editMode": false,
+                    "display": true,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "portInput",
+                    "position": {
+                        "x": "30%",
+                        "y": 275
+                    },
+                    "size": {
+                        "width": "40%",
+                        "height": 50
+                    },
+                    "text": "",
+                    "textMaxSize": 16,
+                    "editMode": false,
+                    "display": true,
+                    "functionName": "defaultFunct"
+                }
+            ],
+            "groups": [
+                {
+                    "id": "adressGroup",
+                    "position": {
+                        "x": "28%",
+                        "y": 130
+                    },
+                    "size": {
+                        "width": "44%",
+                        "height": 90
+                    },
+                    "text": "IP",
+                    "display": true,
+                    "functionName": "defaultFunct"
+                },
+                {
+                    "id": "portGroup",
+                    "position": {
+                        "x": "28%",
+                        "y": 255
+                    },
+                    "size": {
+                        "width": "44%",
+                        "height": 90
+                    },
+                    "text": "Port",
+                    "display": true,
+                    "functionName": "defaultFunct"
                 }
             ]
         },
@@ -39,10 +187,10 @@
             "templates" : ["PARAM_NAVBAR"],
             "texts": [
                 {
-                    "id": 0,
+                    "id": "settingText",
                     "text": "Settings",
                     "position": {
-                        "x": 300,
+                        "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
@@ -52,6 +200,7 @@
                         "b": 255,
                         "a": 255
                     },
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
             ]
@@ -62,10 +211,10 @@
             "id": 3,
             "texts": [
                 {
-                    "id": 0,
+                    "id": "videoText",
                     "text": "video",
                     "position": {
-                        "x": 300,
+                        "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
@@ -75,14 +224,16 @@
                         "b": 255,
                         "a": 255
                     },
-                    "functionName": "defaultFunct"
+                    "display": true,
+                    "functionName": "defaultFunct"     
                 }
             ],
             "colorPickers" : [
                 {
+                    "id": "backgroundColor",
                     "position": {
                         "x": 600,
-                        "y": 140
+                        "y": 200
                     },
                     "size": {
                         "width": 120,
@@ -95,55 +246,60 @@
                         "b": 255,
                         "a": 255
                     },
-                    "functionName": "defaultFunct"
+                    "display": true,
+                    "functionName": "changeBgColor"
                 }
             ],
             "groups": [
                 {
+                    "id": "0",
                     "position": {
                         "x": 580,
-                        "y": 120
+                        "y": 180
                     },
                     "size": {
                         "width": 180,
                         "height": 170
                     },
                     "text": "background color",
-                    "active": 0,
-                    "functionName": "defaultFunct"
+                    "display": true,
+                    "functionName": "none"
                 },
                 {
+                    "id": "0",
                     "position": {
                         "x": 60,
-                        "y": 120
+                        "y": 180
                     },
                     "size": {
                         "width": 150,
-                        "height": 150
+                        "height": 60
                     },
-                    "text": "framerate rate",
-                    "active": 0,
-                    "functionName": "defaultFunct"
+                    "text": "frame rate limit",
+                    "display": true,
+                    "functionName": "none"
                 },
                 {
+                    "id": "0",
                     "position": {
-                        "x": 230,
-                        "y": 120
+                        "x": 240,
+                        "y": 180
                     },
                     "size": {
-                        "width": 160,
-                        "height": 150
+                        "width": 150,
+                        "height": 60
                     },
-                    "text": "Resolution",
-                    "active": 0,
-                    "functionName": "defaultFunct"
+                    "text": "resolution",
+                    "display": true,
+                    "functionName": "none"
                 }
             ],
             "dropDowns" : [
                 {
+                    "id": "frameRateLimit",
                     "position": {
                         "x": 75,
-                        "y": 140
+                        "y": 200
                     },
                     "size": {
                         "width": 120,
@@ -152,20 +308,23 @@
                     "text": "30;60;90;120",
                     "active": 1,
                     "editMode": true,
+                    "display": true,
                     "functionName": "defaultFunct"
                 },
                 {
+                    "id": "resolutionChoice",
                     "position": {
-                        "x": 250,
-                        "y": 140
+                        "x": 255,
+                        "y": 200
                     },
                     "size": {
                         "width": 120,
                         "height": 20
                     },
-                    "text": "1920x1080",
+                    "text": "1920x1080;1920x1080;1920x1080",
                     "active": 1,
                     "editMode": true,
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
             ],
@@ -174,17 +333,51 @@
         },
         "SETTINGS_AUDIO": {
             "isSimple": true,
+            "templates" : ["PARAM_NAVBAR"],
             "id": 4,
-            "texts": [],
-            "buttons": [],
-            "toggleGroups": []
+            "texts": [
+                {
+                    "id": "0",
+                    "text": "Audio",
+                    "position": {
+                        "x": "center",
+                        "y": 10
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "defaultFunct"
+                }
+            ]
         },
         "SETTINGS_CONTROLS": {
             "isSimple": true,
+            "templates" : ["PARAM_NAVBAR"],
             "id": 5,
-            "texts": [],
-            "buttons": [],
-            "toggleGroups": []
+            "texts": [
+                {
+                    "id": "0",
+                    "text": "Controls",
+                    "position": {
+                        "x": "center",
+                        "y": 10
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 255,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "defaultFunct"
+                }
+            ]
         },
         
         "GAME_MENU": {
@@ -207,10 +400,10 @@
         "PARAM_NAVBAR": {
             "buttons": [
                 {
-                    "id": 0,
+                    "id": "exitButton",
                     "text": "Exit",
                     "position": {
-                        "x": 15,
+                        "x": 20,
                         "y": 15
                     },
                     "size": {
@@ -223,12 +416,12 @@
                         "b": 0,
                         "a": 255
                     },
-                    "type": 0,
+                    "display": true,
                     "functionName": "ExitButton"
 
                 },
                 {
-                    "id": 1,
+                    "id": "generalButton",
                     "text": "General",
                     "position": {
                         "x": 20,
@@ -238,18 +431,12 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "GeneralSettingsButton"
 
                 },
                 {
-                    "id": 2,
+                    "id": "videoButton",
                     "text": "Video",
                     "position": {
                         "x": 220,
@@ -259,18 +446,12 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "VideoSettingsButton"
 
                 },
                 {
-                    "id": 3,
+                    "id": "audioButton",
                     "text": "Audio",
                     "position": {
                         "x": 420,
@@ -280,18 +461,12 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "AudioSettingsButton"
 
                 },
                 {
-                    "id": 0,
+                    "id": "controlsButton",
                     "text": "Controls",
                     "position": {
                         "x": 620,
@@ -301,13 +476,7 @@
                         "width": 150,
                         "height": 70
                     },
-                    "color": {
-                        "r": 0,
-                        "g": 255,
-                        "b": 0,
-                        "a": 255
-                    },
-                    "type": 0,
+                    "display": true,
                     "functionName": "ControlsSettingsButton"
 
                 }

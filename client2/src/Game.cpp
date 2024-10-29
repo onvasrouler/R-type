@@ -18,15 +18,10 @@
 Game::Game() : _socket(nullptr)
 {
     gameIsRunning = false;
-
     
     enemyTexture.loadFromFile("chipset/enemy.png");
     playerTexture.loadFromFile("chipset/player.png");
     bulletTexture.loadFromFile("chipset/bullet.png");
-}
-
-Game::~Game()
-{
 }
 
 #ifdef _WIN32

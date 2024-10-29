@@ -7,90 +7,76 @@
 
 #pragma once
 
-#include "guiElem.hpp"
-#include "../raylibText/raylibText.hpp"
+#include "guiElem/Elem.hpp"
 
+
+/**
+ * @class RGui
+ * @brief A class representing a graphical user interface (GUI) manager.
+ * 
+ * The RGui class is responsible for managing and rendering GUI elements.
+ * It provides methods to draw the GUI, retrieve elements by their ID,
+ * add new elements, and set a list of elements.
+ */
 class RGui {
 public:
+    /**
+     * @brief Default constructor for RGui.
+     */
     RGui() = default;
-    ~RGui() = default;
 
+    /**
+     * @brief Destructor for RGui.
+     */
+    ~RGui();
+
+    /**
+     * @brief Draws the GUI elements.
+     * 
+     * This method is responsible for rendering all the GUI elements managed by this class.
+     */
     void DrawGui() const;
 
-    void AddButton(GButton button);
-    void AddWindBox(GWindBox windBox);
-    void AddText(RaylibText text);
-    void AddCheckBox(GCheckBox checkBox);
-    void AddSlider(GSlider slider);
-    void AddList(GList list);
-    void AddListEx(GListEx listEx);
-    void addInputText(GTextInput inputText);
-    void addInputTextBox(GTextInputBox inputText);
-    void addSpinner(GSpinner spinner);
-    void AddValueBox(GValueBox valueBox);
-    void AddGroup(GGroup group);
-    void AddToggleGroup(GToggleGroup toggleGroup);
-    void AddToggleSlider(GToggleSlider toggleSlider);
-    void AddPannel(GPannel pannel);
-    void AddColorPicker(GColorPicker colorPicker);
-    void AddProgressBar(GProgressBar progressBar);
-    void AddDropDown(GDropDown dropDown);
+    /**
+     * @brief Retrieves the value of an element by its ID.
+     * 
+     * @param id The ID of the element.
+     * @return The value of the element as a string.
+     */
+    std::string GetValueById(const std::string id) const;
 
-    void SetButtons(std::vector<GButton> buttons);
-    void SetWindBoxes(std::vector<GWindBox> windBoxes);
-    void setTexts(std::vector<RaylibText> texts);
-    void setCheckBoxes(std::vector<GCheckBox> checkBoxes);
-    void setSliders(std::vector<GSlider> sliders);
-    void setLists(std::vector<GList> lists);
-    void setListExs(std::vector<GListEx> listExs);
-    void setInputTexts(std::vector<GTextInput> inputTexts);
-    void setInputTextsBoxs(std::vector<GTextInputBox> inputTexts);
-    void setSpinners(std::vector<GSpinner> spinners);
-    void setValueBoxes(std::vector<GValueBox> valueBoxes);
-    void setGroups(std::vector<GGroup> groups);
-    void setToggleGroups(std::vector<GToggleGroup> toggleGroups);
-    void setToggleSliders(std::vector<GToggleSlider> toggleSliders);
-    void setPannels(std::vector<GPannel> pannels);
-    void setColorPickers(std::vector<GColorPicker> colorPickers);
-    void setProgressBars(std::vector<GProgressBar> progressBars);
-    void setDropDowns(std::vector<GDropDown> dropDowns);
+    /**
+     * @brief Retrieves a shared pointer to an element by its ID.
+     * 
+     * @param id The ID of the element.
+     * @return A shared pointer to the element.
+     */
+    const std::shared_ptr<AGuiElem> GetElementById(const std::string id) const;
 
+    /**
+     * @brief Adds a new GUI element.
+     * 
+     * @param elem A shared pointer to the new element to be added.
+     */
+    void AddElement(const std::shared_ptr<AGuiElem> elem);
 
-    void addListButton(std::vector<GButton> buttons);
-    void addListWindBox(std::vector<GWindBox> windBoxes);
-    void addListText(std::vector<RaylibText> texts);
-    void addListCheckBox(std::vector<GCheckBox> checkBoxes);
-    void addListSlider(std::vector<GSlider> sliders);
-    void addListList(std::vector<GList> lists);
-    void addListListEx(std::vector<GListEx> listExs);
-    void addListInputText(std::vector<GTextInput> inputTexts);
-    void addListInputTextBox(std::vector<GTextInputBox> inputTexts);
-    void addListSpinner(std::vector<GSpinner> spinners);
-    void addListValueBox(std::vector<GValueBox> valueBoxes);
-    void addListGroup(std::vector<GGroup> groups);
-    void addListToggleGroup(std::vector<GToggleGroup> toggleGroups);
-    void addListToggleSlider(std::vector<GToggleSlider> toggleSliders);
-    void addListPannel(std::vector<GPannel> pannels);
-    void addListColorPicker(std::vector<GColorPicker> colorPickers);
-    void addListProgressBar(std::vector<GProgressBar> progressBars);
-    void addListDropDown(std::vector<GDropDown> dropDowns);
+    /**
+     * @brief Sets the list of GUI elements.
+     * 
+     * @param elements A vector of shared pointers to the elements to be set.
+     */
+    void SetElements(const std::vector<std::shared_ptr<AGuiElem>> elements);
+
+    /**
+     * @brief Adds a list of GUI elements.
+     * 
+     * @param elem A vector of shared pointers to the elements to be added.
+     */
+    void addListElement(const std::vector<std::shared_ptr<AGuiElem>> elem);
+
 private:
-    std::vector<GButton> _Buttons;
-    std::vector<GWindBox> _WindBoxes;
-    std::vector<RaylibText> _Texts;
-    std::vector<GCheckBox> _CheckBoxes;
-    std::vector<GSlider> _Sliders;
-    std::vector<GList> _Lists;
-    std::vector<GListEx> _ListExs;
-    std::vector<GTextInput> _InputTexts;
-    std::vector<GTextInputBox> _InputTextsBoxs;
-    std::vector<GSpinner> _Spinners;
-    std::vector<GValueBox> _ValueBoxes;
-    std::vector<GGroup> _Groups;
-    std::vector<GToggleGroup> _ToggleGroups;
-    std::vector<GToggleSlider> _ToggleSliders;
-    std::vector<GPannel> _Pannels;
-    std::vector<GColorPicker> _ColorPickers;
-    std::vector<GProgressBar> _ProgressBars;
-    std::vector<GDropDown> _DropDowns;
+    /**
+     * @brief A vector of shared pointers to the GUI elements managed by this class.
+     */
+    std::vector<std::shared_ptr<AGuiElem>> _elements;
 };
