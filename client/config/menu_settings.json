@@ -385,14 +385,38 @@
             "id": 6,
             "title": "Game Menu"
         },
-        "PAUSE_MENU": {
+        "CONNECTION_MENU": {
             "isSimple": true,
             "id": 7,
+            "title": "Connection Menu",
+            "texts": [
+                {
+                    "id": "0",
+                    "text": "Connecting to server...",
+                    "position": {
+                        "x": "center",
+                        "y": "50%"
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "defaultFunct"
+                }
+            ]
+        },
+        "PAUSE_MENU": {
+            "isSimple": true,
+            "id": 8,
             "title": "Pause Menu"
         },
         "GAME_OVER_MENU": {
             "isSimple": true,
-            "id": 8,
+            "id": 9,
             "title": "Game Over Menu"
         }
     },
