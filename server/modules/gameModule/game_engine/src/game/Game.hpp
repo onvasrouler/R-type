@@ -178,6 +178,13 @@ public:
     void update_world();
 
     /**
+     * @brief check player acivity.
+     * 
+     * This method check the last activity of players, and destroy them if le last move was 5 minutes ago.
+     */
+    void check_activity();
+
+    /**
      * @brief Check if two entities are in collision.
      * 
      * @param entity1 The first entity.
