@@ -14,7 +14,7 @@
 
 #include <ctime>
 #include <chrono>
-#include "ACharacter.hpp"
+#include "../ACharacter.hpp"
 
 #define INITIAL_X 100 ///< The initial x-coordinate of the player in pixels.
 #define INITIAL_DIMENSION 70 ///< The initial dimensions of the player in pixels.

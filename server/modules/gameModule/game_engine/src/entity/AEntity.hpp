@@ -13,10 +13,10 @@
 #pragma once
 
 #include "IEntity.hpp"
-#include "Point.hpp"
-#include "Rect.hpp"
+#include "../tools/special/Point.hpp"
+#include "../tools/special/Rect.hpp"
 #include "UUID.hpp"
-#include "Type.hpp"
+#include "../tools/src/Type.hpp"
 
 /**
  * @class AEntity

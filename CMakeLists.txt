@@ -35,6 +35,6 @@ if (HEAD_SERVER)
     add_subdirectory(HeadServer)
 endif()
 
-if (TESTS AND UNIX)
+if (TESTS)
     add_subdirectory(tests)
 endif()

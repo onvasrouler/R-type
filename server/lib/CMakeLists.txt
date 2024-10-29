@@ -6,4 +6,13 @@ target_sources(rtype_server_lib
   # ${CMAKE_CURRENT_SOURCE_DIR}/MultiThread.hpp
 )
 
+target_sources(rtype_server_tests_lib
+  PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/Buffer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/Buffer.hpp
+  # ${CMAKE_CURRENT_SOURCE_DIR}/MultiThread.cpp
+  # ${CMAKE_CURRENT_SOURCE_DIR}/MultiThread.hpp
+)
+
 target_include_directories(rtype_server_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(rtype_server_tests_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

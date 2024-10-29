@@ -2,6 +2,11 @@
 setlocal
 
 set TOOLCHAIN_FILE_PATH=%USERPROFILE%\vcpkg\scripts\buildsystems\vcpkg.cmake
+set server_binary="r-type_server.exe"
+set head_server_binary="r-type_head_server.exe"
+set client_binary="r-type_client.exe"
+set tests_binary="r-type_tests.exe"
+set serverModulesDir="serverModules"
 
 echo "dcmake_toolchain_file: %TOOLCHAIN_FILE_PATH%"
 
@@ -86,5 +91,8 @@ if "%~1"=="clean" (
     move /Y build/server/r-type_server .
     move /Y build/client/r-type_client .
 )
+
+.\build\tests\Debug\%tests_binary%
+goto :eof
 
 endlocal

@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../AbstractModule.hpp"
-#include "Game.hpp"
+#include "game_engine/src/game/Game.hpp"
 
 /** @class GameModule
  *  @brief The GameModule class is the class for the game module.
