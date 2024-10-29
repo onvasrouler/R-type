@@ -21,6 +21,7 @@ RlibWindow::RlibWindow(const int windowWidth, const int windowHeight, const std:
 
 void RlibWindow::setDefaultVal()
 {
+    this->_DebugLogger->Log("setting simple value : _AutoReloadMenus -> _OldMenuType", 2);
     this->_AutoReloadMenus = false;
     this->_UpPressed = false;
     this->_DownPressed = false;
@@ -29,14 +30,44 @@ void RlibWindow::setDefaultVal()
     this->_SpacePressed = false;
     this->_EscapePressed = false;
     this->_OldMenuType = START_MENU;
+    this->_DebugLogger->Log("setting _GuiFunction", 2);
     this->_GuiFunction = std::make_shared<guiFunction>();
+
+    this->_DebugLogger->Log("creating menu with json parser", 2);
     this->_Menus = std::make_shared<MenuManager>(_JsonParser);
+
+    this->_DebugLogger->Log("setting debuglogger to menuManager", 2);
     this->_Menus->setDebugLogger(_DebugLogger);
+
+    this->_DebugLogger->Log("setting guifunct to menuManager", 2);
     this->_Menus->setGuiFunction(_GuiFunction);
+
+    this->_DebugLogger->Log("setting menuManager to guifunct", 2);
     this->_GuiFunction->setMenuManager(_Menus);
+
+    this->_DebugLogger->Log("mapping functions", 2);
     this->_GuiFunction->mapFunctions();
+
+    this->_DebugLogger->Log("setting window size", 2);
     this->_Menus->setWindowSize(_WindowWidth, _WindowHeight);
+
+    this->_DebugLogger->Log("loading menu", 2);
     this->_Menus->loadMenu();
+
+    this->_DebugLogger->Log("setting game to raylibwindow", 2);
+    this->_Game = std::make_shared<Game>(_JsonParser, _DebugLogger);
+
+    this->_DebugLogger->Log("setting game to menuManager", 2);
+    this->_Menus->setGame(_Game);
+
+    this->_DebugLogger->Log("initiating game", 2);
+    this->_Game->initGame();
+
+    this->_DebugLogger->Log("creating networkelem", 2);
+    this->_NetworkElem = std::make_shared<NetworkElem>();
+
+    this->_DebugLogger->Log("setting networkelem to menuManager", 2);
+    this->_Menus->setNetworkElem(_NetworkElem);
 
 }
 
