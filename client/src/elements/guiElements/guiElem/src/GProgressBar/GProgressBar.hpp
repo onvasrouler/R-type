@@ -11,7 +11,7 @@
 
 class GProgressBar : public AGuiElem {
 public:
-    GProgressBar(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const int zindex = defaultZIndex, const std::string id = defaultId, const std::string textLeft = "default progress bar left text", const std::string textRight = "default progress bar right text", const float value = 0.0F, const float minvalue = 0.0F, const float maxvalue = 100.0F, const bool display = defaultDisplay);
+    GProgressBar(const Vector2 pos = DEFAULT_POS, const Vector2 size = DEFAULT_SIZE, const int zindex = DEFAULT_Z_INDEX, const std::string id = DEFAULT_ID, const std::string textLeft = "default progress bar left text", const std::string textRight = "default progress bar right text", const float value = 0.0F, const float minvalue = 0.0F, const float maxvalue = 100.0F, const bool display = DEFAULT_DISPLAY);
     ~GProgressBar() = default;
 
     void draw() const;
