@@ -40,7 +40,7 @@ void guiFunction::mapFunctions()
         if (!isPortValid(port))
             this->_MenuManager->getCurrentGui()->GetElementById("InvalidPortText")->setDisplay(true);
         if (isIpValid(ip) && isPortValid(port))
-            std::cout << "Connecting to " << ip << ":" << port << std::endl;
+            this->_MenuManager->setGameInfo(ip, port);
     });
 }
 
