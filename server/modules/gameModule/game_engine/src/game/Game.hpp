@@ -27,6 +27,7 @@
 #define MAX_PLAYERS 4 ///< The maximum number of players in the game.
 #define MAX_ENEMIES 2 ///< The maximum number of enemies in the game.
 #define END_MESSAGE_CODE "\r\n"
+#define TIME_OUT 5 ///< The maximum inactive player allowed in minuts.
 
 //new Player 0:
     #define NEW_PLAYER_REQUEST_CODE "00"
