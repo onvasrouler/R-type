@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "ACharacter.hpp"
+#include "../ACharacter.hpp"
 
 #define ENEMY_MOVE_DISTANCE 3 ///< The distance in pixels an enemy moves per update.
 #define ENEMY_SIZE 70 ///< The size of the enemy in pixels.

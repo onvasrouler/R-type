@@ -3,8 +3,8 @@ setlocal
 
 set server_binary="r-type_server.exe"
 set head_server_binary="r-type_head_server.exe"
-set client_binary="r-type_client/exe"
-set tests_binary="r-type_tests/exe"
+set client_binary="r-type_client.exe"
+set tests_binary="r-type_tests.exe"
 set serverModulesDir="serverModules"
 
 rem Remove existing build artifacts
@@ -125,7 +125,7 @@ goto :eof
     cd build
     cmake --build .
     cd ..
-    .\build\tests\%tests_binary%
+    .\build\tests\Debug\%tests_binary%
 goto :eof
 
 :compile
