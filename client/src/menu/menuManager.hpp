@@ -9,9 +9,10 @@
 
 #include "../jsonParser/jsonParser.hpp"
 #include "../elements/guiElements/gui.hpp"
-#include "../elements/guiElements/guiElem/Elem.hpp"
 #include "../elements/guiElements/guiFunction.hpp"
 #include "../raylibWindow/utils.hpp"
+#include "../game/game.hpp"
+#include "../network/networkElem.hpp"
 
 enum menuType {
     MAIN_MENU,
@@ -21,6 +22,7 @@ enum menuType {
     SETTINGS_AUDIO,
     SETTINGS_CONTROLS,
     GAME_MENU,
+    CONNECTION_MENU,
     PAUSE_MENU,
     GAME_OVER_MENU
 };
@@ -140,6 +142,11 @@ public:
      * @param color The background color.
      */
     void setBackgroundColor(const Color color);
+
+
+    void setGame(std::shared_ptr<Game> game);
+
+    void setNetworkElem(std::shared_ptr<NetworkElem> networkElem);
 
     /**
      * @brief Gets the window height.
@@ -268,7 +275,13 @@ public:
      */
     bool jsonToBool(const nlohmann::json &json) const;
 
+    void setGameInfo(const std::string ip = "1.1.1.1", const std::string port = "1234");
+
+
 private:
+
+    void checkForNetwork();
+
     /**
      * @brief Creates a menu from JSON.
      * @param menu The JSON object representing the menu.
@@ -596,6 +609,8 @@ private:
 
     std::map<menuType, std::shared_ptr<RGui>> _menuList; /**< Map of menu types to RGui objects. this is the list off all the menu */
     std::shared_ptr<guiFunction> _guiFunction; /**< Shared pointer to a guiFunction object. */
+    std::shared_ptr<Game> _Game;
+    std::shared_ptr<NetworkElem> _NetworkElem;
 
     struct MenuItem { /**< Represents a menu item stored created by funct newMenuItems. */
         int x;
@@ -605,12 +620,14 @@ private:
         std::string functionName;
     };
 
+    std::string _Ip;
+    std::string _Port; 
+
     Color _BackgroundColor; /**< The background color of the menu, is used to communicated with rayLibWindow without using potentially risky pointer. */
     std::map<menuType, std::vector<MenuItem>> _MenuItems; /**< Map of menu types to MenuItem objects used to handle and treat click. */
 
     int _WindowWidth; /**< The width of the window. is used for responsivity */
     int _WindowHeight; /**< The height of the window. is used for responsivity */
 
-    std::string ip; /**< The IP address of the server. */
-    std::string port; /**< The port of the server. */
+    bool _Is_connecting;
 };

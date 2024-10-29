@@ -13,12 +13,14 @@ MenuManager::MenuManager()
     this->_type = START_MENU;
     this->_WindowHeight = GetScreenHeight();
     this->_WindowWidth = GetScreenWidth();
+    _Is_connecting = false;
 }
 
 MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
 {
     this->_type = START_MENU;
     this->_JsonParser = jsonParser;
+    _Is_connecting = false;
 }
 
 void MenuManager::setMenuType(const menuType type)
@@ -66,6 +68,16 @@ int MenuManager::getWindowWidth() const
 void MenuManager::setBackgroundColor(const Color color)
 {
     this->_BackgroundColor = color;
+}
+
+void MenuManager::setGame(std::shared_ptr<Game> game)
+{
+    _Game = game;
+}
+
+void MenuManager::setNetworkElem(std::shared_ptr<NetworkElem> networkElem)
+{
+    _NetworkElem = networkElem;
 }
 
 std::shared_ptr<MenuManager> MenuManager::getThis()
@@ -498,6 +510,25 @@ void MenuManager::eraseMenu()
     this->_JsonParser->eraseCache("./config/menu_settings.json");
 }
 
+void MenuManager::setGameInfo(const std::string ip, const std::string port)
+{
+    _Ip = ip;
+    _Port = port;
+    if (_NetworkElem)
+        _NetworkElem->setServerInfos(ip, port);
+    else
+        this->_DebugLogger->Log("NetworkElem not setted", 0);
+    if (_Game)
+        _Game->setServerInfos(ip, port);
+    else
+        this->_DebugLogger->Log("Game not setted", 0);
+    std::cout << "ip : " << ip << " port : " << port;
+    this->setMenuType(CONNECTION_MENU);
+    _Is_connecting = true;
+    std::cout << "switching to connection menu";
+    this->_NetworkElem->connect();
+}
+
 void MenuManager::setJsonParser(std::shared_ptr<JsonParser> jsonParser)
 {
     this->_JsonParser = jsonParser;
@@ -509,13 +540,36 @@ void MenuManager::setDebugLogger(std::shared_ptr<DebugLogger> debugLogger)
     this->_DebugLogger->Log("MenuManager DebugLogger setted");
 }
 
+void MenuManager::checkForNetwork()
+{
+
+    if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTING)
+        const_cast<MenuManager*>(this)->setMenuType(CONNECTION_MENU);
+    else if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTED)
+        const_cast<MenuManager*>(this)->setMenuType(GAME_MENU);
+    else
+        const_cast<MenuManager*>(this)->setMenuType(START_MENU);
+    if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTION_FAILED) {
+        std::cout << "connection failed" << std::endl;
+        _Is_connecting = false;
+        this->_NetworkElem->disconnect();
+    }
+    
+}
+
 void MenuManager::drawMenu() const
 {
     this->_DebugLogger->Log("Drawing menu in menu manager", 2);
+    if (_Is_connecting)
+        const_cast<MenuManager*>(this)->checkForNetwork();
     if (this->_menuList.find(_type) != this->_menuList.end())
         this->_menuList.at(_type)->DrawGui();
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        std::cout << "mouse pressed" << std::endl;
         Vector2 mousePosition = GetMousePosition();
+        //check that the list of menu items is not empty
+        if (this->_MenuItems.find(_type) == this->_MenuItems.end())
+            return;
         for (auto &item : this->_MenuItems.at(_type)) {
             if (CheckCollisionPointRec(mousePosition, Rectangle{static_cast<float>(item.x), static_cast<float>(item.y), static_cast<float>(item.width), static_cast<float>(item.length)})) {
                 std::function<void()> func = _guiFunction->getFunction(item.functionName);
