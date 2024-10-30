@@ -318,6 +318,27 @@ void Game::check_collisions()
 }
 
 /**
+ * @brief check player acivity.
+ * 
+ * This method check the last activity of players, and destroy them if le last move was 5 minutes ago.
+ */
+void Game::check_activity()
+{
+    auto cl = std::chrono::high_resolution_clock::now();
+    std::vector<std::string> to_destroy;
+
+    for (auto& player : this->_player) {
+        if (std::chrono::duration<double, std::ratio<60>>(cl - player.get_last_move()) >= TIME_OUT) {
+            to_destroy.push_back(player.get_id());
+        }
+    }
+
+    for (auto id : to_destroy) {
+        this->destroy_player(id);
+    }
+}
+
+/**
  * @brief Start the game.
  *
  * This method initializes the game by creating initial players.
@@ -372,6 +393,7 @@ void Game::run()
         if (std::chrono::duration<double>(now - cl).count() > 0.1) {
             cl = std::chrono::high_resolution_clock::now();
             this->update_world();
+            this->check_activity();
         }
         if (std::chrono::duration<double>(now - cl2).count() >= 2.0 && this->_enemy.size() < MAX_ENEMIES) {
             cl2 = std::chrono::high_resolution_clock::now();

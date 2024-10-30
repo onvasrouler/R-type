@@ -103,8 +103,21 @@ public:
      */
     void restart_cl();
 
+    /**
+     * @brief Get the clock value of the player.
+     * 
+     * @return std::clock_t The clock value of the player.
+     */
+    std::chrono::high_resolution_clock::time_point get_last_move();
+
+    /**
+     * @brief Restart the clock of the player.
+     */
+    void restart_last_move();
+
 private:
     bool _has_shot;
     enum Direction _dir;
     std::chrono::high_resolution_clock::time_point _cl;
+    std::chrono::high_resolution_clock::time_point _last_move;
 };
