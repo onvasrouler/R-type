@@ -61,6 +61,7 @@ if "%~1"=="clean" (
     mkdir serverModules
     move /Y build\server\modules\gameModule\Debug\gameModule.dll serverModules
     move /Y build\server\modules\networkModule\Debug\networkModule.dll serverModules
+    move /Y build\server\modules\logModule\Debug\logModule.dll serverModules
 ) else if "%~1"=="client" (
     echo Building client
     cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE=%TOOLCHAIN_FILE_PATH% -DCMAKE_PREFIX_PATH=C:/Users/aimer/vcpkg/installed/x64-windows -Wno-dev -D_WIN32_WINNT=0x0601

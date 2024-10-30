@@ -328,7 +328,7 @@ void Game::check_activity()
     std::vector<std::string> to_destroy;
 
     for (auto& player : this->_player) {
-        if (std::chrono::duration<double, std::ratio<60>>(cl - player.get_last_move()) >= TIME_OUT) {
+        if (std::chrono::duration<double, std::ratio<60>>(cl - player.get_last_move()) >= std::chrono::duration<double, std::ratio<60>>(TIME_OUT)) {
             to_destroy.push_back(player.get_id());
         }
     }
