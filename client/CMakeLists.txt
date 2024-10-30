@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Ajout des options de compilation en fonction du compilateur
 if (MSVC)
     # Pour MSVC (Visual Studio), utiliser /W4 pour des avertissements plus stricts
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /MP /D_WIN32_WINNT=0x0601")
 else()
     # Pour les compilateurs GCC et Clang, utiliser -Wall et -Wextra
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")

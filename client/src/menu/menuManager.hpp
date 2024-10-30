@@ -7,6 +7,9 @@
 
 #pragma once
 
+#define RAYGUI_IMPLEMENTATION
+#define RAYLIB_NO_WINDOW
+
 #include "../jsonParser/jsonParser.hpp"
 #include "../elements/guiElements/gui.hpp"
 #include "../elements/guiElements/guiFunction.hpp"
@@ -14,7 +17,8 @@
 #include "../game/game.hpp"
 #include "../network/networkElem.hpp"
 
-enum menuType {
+enum menuType
+{
     MAIN_MENU,
     START_MENU,
     SETTINGS_GENERAL,
@@ -30,7 +34,7 @@ enum menuType {
 #define defaultErrorPosX 100
 #define defaultErrorPosY 100
 
-#define defaultErrorWidth 100
+#define defaultErrorWidth  100
 #define defaultErrorHeight 100
 
 #define defaultErrroId "errorId"
@@ -44,17 +48,18 @@ enum menuType {
 /**
  * @class MenuManager
  * @brief Manages the menu system for the application.
- * 
- * The MenuManager class is responsible for handling the creation, rendering, and management of menus within the application.
- * It provides various methods to set and get menu properties, load and reload menus, and create different GUI elements.
- * 
+ *
+ * The MenuManager class is responsible for handling the creation, rendering, and management of menus within the
+ * application. It provides various methods to set and get menu properties, load and reload menus, and create different
+ * GUI elements.
+ *
  * * The MenuManager class is responsible for handling various menu-related functionalities,
  * including setting menu types, window dimensions, background colors, and GUI functions.
  * It also provides methods for loading, reloading, and drawing menus, as well as converting
  * positions and creating various GUI elements from JSON objects.
- * 
+ *
  * @note This class uses the nlohmann::json library for JSON parsing and manipulation.
- * 
+ *
  * @details The MenuManager class supports the following functionalities:
  * - Setting and getting menu types.
  * - Setting and getting window dimensions.
@@ -63,7 +68,7 @@ enum menuType {
  * - Loading, reloading, and drawing menus.
  * - Converting positions to relative coordinates.
  * - Creating various GUI elements from JSON objects.
- * 
+ *
  * @see JsonParser
  * @see DebugLogger
  * @see RGui
@@ -87,7 +92,8 @@ enum menuType {
  * @see GProgressBar
  * @see GDropDown
  */
-class MenuManager : public std::enable_shared_from_this<MenuManager> {
+class MenuManager : public std::enable_shared_from_this<MenuManager>
+{
 public:
     /**
      * @brief Default constructor for MenuManager.
@@ -142,7 +148,6 @@ public:
      * @param color The background color.
      */
     void setBackgroundColor(const Color color);
-
 
     void setGame(std::shared_ptr<Game> game);
 
@@ -210,7 +215,7 @@ public:
      * @param y The y position in JSON format.
      * @return The relative position as a Vector2.
      */
-    Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y) const;
+    Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json& x, const nlohmann::json_abi_v3_11_3::json& y) const;
 
     /**
      * @brief Gets the relative position with width and height.
@@ -220,7 +225,11 @@ public:
      * @param height The height.
      * @return The relative position as a Vector2.
      */
-    Vector2 getRelativePos(const nlohmann::json_abi_v3_11_3::json &x, const int width, const nlohmann::json_abi_v3_11_3::json &y, const int height) const;
+    Vector2 getRelativePos(
+        const nlohmann::json_abi_v3_11_3::json& x,
+        const int                               width,
+        const nlohmann::json_abi_v3_11_3::json& y,
+        const int                               height) const;
 
     /**
      * @brief Converts a position to relative x position.
@@ -273,13 +282,11 @@ public:
      * @param json The JSON object.
      * @return The boolean value.
      */
-    bool jsonToBool(const nlohmann::json &json) const;
+    bool jsonToBool(const nlohmann::json& json) const;
 
     void setGameInfo(const std::string ip = "1.1.1.1", const std::string port = "1234");
 
-
 private:
-
     void checkForNetwork();
 
     /**
@@ -287,14 +294,14 @@ private:
      * @param menu The JSON object representing the menu.
      * @param menuID The ID of the menu.
      */
-    void createMenu(const nlohmann::json &menu, const int menuID = 0);
+    void createMenu(const nlohmann::json& menu, const int menuID = 0);
 
     /**
      * @brief Integrates a template into the menu.
      * @param menu The JSON object representing the menu.
      * @param menuID The ID of the menu.
      */
-    void integrateTemplate(const nlohmann::json &menu, const int menuID = 0);
+    void integrateTemplate(const nlohmann::json& menu, const int menuID = 0);
 
     /**
      * @brief Erases the menu.
@@ -307,7 +314,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created RLText object.
      */
-    std::shared_ptr<RLText> createTexts(const nlohmann::json &text, const menuType type);
+    std::shared_ptr<RLText> createTexts(const nlohmann::json& text, const menuType type);
 
     /**
      * @brief Creates button elements from JSON.
@@ -315,7 +322,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GButton object.
      */
-    std::shared_ptr<GButton> createButtons(const nlohmann::json &button, const menuType type);
+    std::shared_ptr<GButton> createButtons(const nlohmann::json& button, const menuType type);
 
     /**
      * @brief Creates wind box elements from JSON.
@@ -323,7 +330,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GWindBox object.
      */
-    std::shared_ptr<GWindBox> createWindBox(const nlohmann::json &windBox, const menuType type);
+    std::shared_ptr<GWindBox> createWindBox(const nlohmann::json& windBox, const menuType type);
 
     /**
      * @brief Creates check box elements from JSON.
@@ -331,7 +338,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GCheckBox object.
      */
-    std::shared_ptr<GCheckBox> createCheckBoxes(const nlohmann::json &checkBox, const menuType type);
+    std::shared_ptr<GCheckBox> createCheckBoxes(const nlohmann::json& checkBox, const menuType type);
 
     /**
      * @brief Creates slider elements from JSON.
@@ -339,7 +346,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GSlider object.
      */
-    std::shared_ptr<GSlider> createSliders(const nlohmann::json &slider, const menuType type);
+    std::shared_ptr<GSlider> createSliders(const nlohmann::json& slider, const menuType type);
 
     /**
      * @brief Creates list elements from JSON.
@@ -347,7 +354,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GList object.
      */
-    std::shared_ptr<GList> createLists(const nlohmann::json &list, const menuType type);
+    std::shared_ptr<GList> createLists(const nlohmann::json& list, const menuType type);
 
     /**
      * @brief Creates extended list elements from JSON.
@@ -355,7 +362,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GListEx object.
      */
-    std::shared_ptr<GListEx> createListExs(const nlohmann::json &listEx, const menuType type);
+    std::shared_ptr<GListEx> createListExs(const nlohmann::json& listEx, const menuType type);
 
     /**
      * @brief Creates text input elements from JSON.
@@ -363,7 +370,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GTextInput object.
      */
-    std::shared_ptr<GTextInput> createInputTexts(const nlohmann::json &inputText, const menuType type);
+    std::shared_ptr<GTextInput> createInputTexts(const nlohmann::json& inputText, const menuType type);
 
     /**
      * @brief Creates text input box elements from JSON.
@@ -371,7 +378,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GTextInputBox object.
      */
-    std::shared_ptr<GTextInputBox> createInputTextsBoxs(const nlohmann::json &inputTextBox, const menuType type);
+    std::shared_ptr<GTextInputBox> createInputTextsBoxs(const nlohmann::json& inputTextBox, const menuType type);
 
     /**
      * @brief Creates spinner elements from JSON.
@@ -379,7 +386,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GSpinner object.
      */
-    std::shared_ptr<GSpinner> createSpinners(const nlohmann::json &spinner, const menuType type);
+    std::shared_ptr<GSpinner> createSpinners(const nlohmann::json& spinner, const menuType type);
 
     /**
      * @brief Creates value box elements from JSON.
@@ -387,7 +394,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GValueBox object.
      */
-    std::shared_ptr<GValueBox> createValueBoxes(const nlohmann::json &valueBox, const menuType type);
+    std::shared_ptr<GValueBox> createValueBoxes(const nlohmann::json& valueBox, const menuType type);
 
     /**
      * @brief Creates group elements from JSON.
@@ -395,7 +402,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GGroup object.
      */
-    std::shared_ptr<GGroup> createGroups(const nlohmann::json &group, const menuType type);
+    std::shared_ptr<GGroup> createGroups(const nlohmann::json& group, const menuType type);
 
     /**
      * @brief Creates toggle group elements from JSON.
@@ -403,7 +410,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GToggleGroup object.
      */
-    std::shared_ptr<GToggleGroup> createToggleGroups(const nlohmann::json &toggleGroup, const menuType type);
+    std::shared_ptr<GToggleGroup> createToggleGroups(const nlohmann::json& toggleGroup, const menuType type);
 
     /**
      * @brief Creates toggle slider elements from JSON.
@@ -411,7 +418,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GToggleSlider object.
      */
-    std::shared_ptr<GToggleSlider> createToggleSliders(const nlohmann::json &toggleSlider, const menuType type);
+    std::shared_ptr<GToggleSlider> createToggleSliders(const nlohmann::json& toggleSlider, const menuType type);
 
     /**
      * @brief Creates panel elements from JSON.
@@ -419,7 +426,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GPannel object.
      */
-    std::shared_ptr<GPannel> createPannels(const nlohmann::json &pannel, const menuType type);
+    std::shared_ptr<GPannel> createPannels(const nlohmann::json& pannel, const menuType type);
 
     /**
      * @brief Creates color picker elements from JSON.
@@ -427,7 +434,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GColorPicker object.
      */
-    std::shared_ptr<GColorPicker> createColorPickers(const nlohmann::json &colorPicker, const menuType type);
+    std::shared_ptr<GColorPicker> createColorPickers(const nlohmann::json& colorPicker, const menuType type);
 
     /**
      * @brief Creates progress bar elements from JSON.
@@ -435,7 +442,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GProgressBar object.
      */
-    std::shared_ptr<GProgressBar> createProgressBars(const nlohmann::json &progressBar, const menuType type);
+    std::shared_ptr<GProgressBar> createProgressBars(const nlohmann::json& progressBar, const menuType type);
 
     /**
      * @brief Creates drop-down elements from JSON.
@@ -443,7 +450,7 @@ private:
      * @param type The type of the menu.
      * @return Shared pointer to the created GDropDown object.
      */
-    std::shared_ptr<GDropDown> createDropDowns(const nlohmann::json &dropDown, const menuType type);
+    std::shared_ptr<GDropDown> createDropDowns(const nlohmann::json& dropDown, const menuType type);
 
     /**
      * @brief Loads button elements from JSON.
@@ -451,7 +458,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsButtons(const nlohmann::json &buttons, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsButtons(const nlohmann::json& buttons, const menuType type);
 
     /**
      * @brief Loads wind box elements from JSON.
@@ -459,7 +466,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsWindBoxes(const nlohmann::json &windBoxes, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsWindBoxes(const nlohmann::json& windBoxes, const menuType type);
 
     /**
      * @brief Loads text elements from JSON.
@@ -467,7 +474,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsTexts(const nlohmann::json &texts, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsTexts(const nlohmann::json& texts, const menuType type);
 
     /**
      * @brief Loads check box elements from JSON.
@@ -475,7 +482,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsCheckBoxes(const nlohmann::json &checkBoxes, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsCheckBoxes(const nlohmann::json& checkBoxes, const menuType type);
 
     /**
      * @brief Loads slider elements from JSON.
@@ -483,7 +490,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsSliders(const nlohmann::json &sliders, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsSliders(const nlohmann::json& sliders, const menuType type);
 
     /**
      * @brief Loads list elements from JSON.
@@ -491,7 +498,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsLists(const nlohmann::json &lists, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsLists(const nlohmann::json& lists, const menuType type);
 
     /**
      * @brief Loads extended list elements from JSON.
@@ -499,7 +506,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsListExs(const nlohmann::json &listExs, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsListExs(const nlohmann::json& listExs, const menuType type);
 
     /**
      * @brief Loads text input elements from JSON.
@@ -507,7 +514,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsInputTexts(const nlohmann::json &inputTexts, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsInputTexts(const nlohmann::json& inputTexts, const menuType type);
 
     /**
      * @brief Loads text input box elements from JSON.
@@ -515,15 +522,16 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsInputTextsBoxs(const nlohmann::json &inputTextsBoxs, const menuType type);
-    
+    std::vector<std::shared_ptr<AGuiElem>>
+        loadsInputTextsBoxs(const nlohmann::json& inputTextsBoxs, const menuType type);
+
     /**
      * @brief Loads spinner elements from JSON.
      * @param spinners The JSON object representing the spinners.
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsSpinners(const nlohmann::json &spinners, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsSpinners(const nlohmann::json& spinners, const menuType type);
 
     /**
      * @brief Loads value box elements from JSON.
@@ -531,7 +539,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsValueBoxes(const nlohmann::json &valueBoxes, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsValueBoxes(const nlohmann::json& valueBoxes, const menuType type);
 
     /**
      * @brief Loads group elements from JSON.
@@ -539,7 +547,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsGroups(const nlohmann::json &groups, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsGroups(const nlohmann::json& groups, const menuType type);
 
     /**
      * @brief Loads toggle group elements from JSON.
@@ -547,7 +555,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsToggleGroups(const nlohmann::json &toggleGroups, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsToggleGroups(const nlohmann::json& toggleGroups, const menuType type);
 
     /**
      * @brief Loads toggle slider elements from JSON.
@@ -555,7 +563,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsToggleSliders(const nlohmann::json &toggleSliders, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsToggleSliders(const nlohmann::json& toggleSliders, const menuType type);
 
     /**
      * @brief Loads panel elements from JSON.
@@ -563,7 +571,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsPannels(const nlohmann::json &pannels, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsPannels(const nlohmann::json& pannels, const menuType type);
 
     /**
      * @brief Loads color picker elements from JSON.
@@ -571,7 +579,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsColorPickers(const nlohmann::json &colorPickers, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsColorPickers(const nlohmann::json& colorPickers, const menuType type);
 
     /**
      * @brief Loads progress bar elements from JSON.
@@ -579,7 +587,7 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsProgressBars(const nlohmann::json &progressBars, const menuType type);
+    std::vector<std::shared_ptr<AGuiElem>> loadsProgressBars(const nlohmann::json& progressBars, const menuType type);
 
     /**
      * @brief Loads drop-down elements from JSON.
@@ -587,8 +595,8 @@ private:
      * @param type The type of the menu.
      * @return Vector of shared pointers to the loaded AGuiElem objects.
      */
-    std::vector<std::shared_ptr<AGuiElem>> loadsDropDowns(const nlohmann::json &dropDowns, const menuType type);
-    
+    std::vector<std::shared_ptr<AGuiElem>> loadsDropDowns(const nlohmann::json& dropDowns, const menuType type);
+
     /**
      * @brief Registers the element in a list to handle when the element is clicked
      * @param x The x position in JSON format.
@@ -598,33 +606,43 @@ private:
      * @param functionName The name of the function to call when the element is clicked.
      * @param type The type of the menu.
      */
-    void newMenuItems(const nlohmann::json_abi_v3_11_3::json &x, const nlohmann::json_abi_v3_11_3::json &y, const nlohmann::json_abi_v3_11_3::json &width, const nlohmann::json_abi_v3_11_3::json &length, std::string functionName, menuType type);
+    void newMenuItems(
+        const nlohmann::json_abi_v3_11_3::json& x,
+        const nlohmann::json_abi_v3_11_3::json& y,
+        const nlohmann::json_abi_v3_11_3::json& width,
+        const nlohmann::json_abi_v3_11_3::json& length,
+        std::string                             functionName,
+        menuType                                type);
 
     nlohmann::json _menuJson; /**< The JSON object representing the menu. */
     nlohmann::json _menuTemplate; /**< The JSON object representing the menu template (ex: navbar). */
 
-    menuType _type; /**< The type of the menu. see menuType */
-    std::shared_ptr<JsonParser> _JsonParser; /**< Shared pointer to a JsonParser object. */
+    menuType                     _type; /**< The type of the menu. see menuType */
+    std::shared_ptr<JsonParser>  _JsonParser; /**< Shared pointer to a JsonParser object. */
     std::shared_ptr<DebugLogger> _DebugLogger; /**< Shared pointer to a DebugLogger object. */
 
-    std::map<menuType, std::shared_ptr<RGui>> _menuList; /**< Map of menu types to RGui objects. this is the list off all the menu */
+    std::map<menuType, std::shared_ptr<RGui>>
+                                 _menuList; /**< Map of menu types to RGui objects. this is the list off all the menu */
     std::shared_ptr<guiFunction> _guiFunction; /**< Shared pointer to a guiFunction object. */
-    std::shared_ptr<Game> _Game;
+    std::shared_ptr<Game>        _Game;
     std::shared_ptr<NetworkElem> _NetworkElem;
 
-    struct MenuItem { /**< Represents a menu item stored created by funct newMenuItems. */
-        int x;
-        int y;
-        int width;
-        int length;
+    struct MenuItem
+    { /**< Represents a menu item stored created by funct newMenuItems. */
+        int         x;
+        int         y;
+        int         width;
+        int         length;
         std::string functionName;
     };
 
     std::string _Ip;
-    std::string _Port; 
+    std::string _Port;
 
-    Color _BackgroundColor; /**< The background color of the menu, is used to communicated with rayLibWindow without using potentially risky pointer. */
-    std::map<menuType, std::vector<MenuItem>> _MenuItems; /**< Map of menu types to MenuItem objects used to handle and treat click. */
+    Color _BackgroundColor; /**< The background color of the menu, is used to communicated with rayLibWindow without
+                               using potentially risky pointer. */
+    std::map<menuType, std::vector<MenuItem>>
+        _MenuItems; /**< Map of menu types to MenuItem objects used to handle and treat click. */
 
     int _WindowWidth; /**< The width of the window. is used for responsivity */
     int _WindowHeight; /**< The height of the window. is used for responsivity */
