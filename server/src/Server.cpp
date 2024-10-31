@@ -157,6 +157,9 @@ void Server::start() {
                 throw std::runtime_error("Error while loading the module");
             }
             AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
+            for (auto &listen : module.GetModuleListen()) {
+                loadmodule->addCommunicateModule(listen);
+            }
             try {
                 createModule(loadmodule, file);
             } catch (std::exception &e) {
@@ -222,13 +225,15 @@ void Server::run() {
                                 MSG_DONTWAIT)) {
                 messages += buffer;
             }
-            // std::cout << "Message received: " << messages << " from: " << module->getModuleName() << std::endl;
+            std::cout << "Core message received: " << messages << " from: " << module->getModuleName() << std::endl;
             for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
                     messages.find(THREAD_END_MESSAGE) != std::string::npos;
                     messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
                     message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
                     message += THREAD_END_MESSAGE;
                 for (auto &writeToModule : _modules) {
+                    if (canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId()))
+                        std::cout << "Core find good module" << std::endl;
                     if (FD_ISSET(module->getSocket(), &writefds) && canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId())) {
                         writeToModule->addMessage(message);
                     }
@@ -241,9 +246,9 @@ void Server::run() {
                 !FD_ISSET(module->getSocket(), &writefds))
                 continue;
             for (auto& message : module->getMessages()) {
-                // std::cout << "Sending message: " << message
-                //           << "to module: " << module->getModuleName()
-                //           << std::endl;
+                std::cout << "Core sending message: " << message
+                          << "to module: " << module->getModuleName()
+                          << std::endl;
                 send(module->getSocket(), message.c_str(), message.size(), 0);
             }
             module->clearMessages();
@@ -328,7 +333,10 @@ bool Server::canCommunicateWith(std::string moduleId,
     }
     for (auto& module : _modules) {
         if (module->getModule()->getId() == moduleId) {
+            std::cout << "Core find target module" << std::endl;
+            std::cout << "ne=b communicate Modules: " << module->getModule()->getCommunicatesModules().size() << std::endl;
             for (auto& communicateModule : module->getModule()->getCommunicatesModules()) {
+                std::cout << communicateModule << " " << communicateModuleId << std::endl;
                 if (communicateModule == communicateModuleId)
                     return true;
             }
