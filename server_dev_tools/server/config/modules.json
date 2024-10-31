@@ -72,6 +72,16 @@
                         "id": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a"
                     }
                 ]
+            },
+            {
+                "name": "Admin Panel Module",
+                "path": "/serverModules/AdminPanelModule.so",
+                "uuid": "996d8043-b32e-489c-9ba4-435cc3f88d81",
+                "listen_modules": [
+                    {
+                        "id": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2"
+                    }
+                ]
             }
         ]
     }
