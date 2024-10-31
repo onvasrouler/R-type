@@ -27,24 +27,6 @@
 
                 }
             ],
-            "RlibButtons": [
-                {
-                    "id": "startButton",
-                    "text": "",
-                    "position": {
-                        "x": "10%",
-                        "y": 400
-                    },
-                    "size": {
-                        "width": "80%",
-                        "height": 100
-                    },
-                    "display": true,
-                    "z-index": 2,
-                    "functionName": "StartFunct"
-
-                }
-            ],
             "texts": [
                 {
                     "id": "0",
@@ -61,7 +43,7 @@
                         "a": 255
                     },
                     "display": true,
-                    "functionName": "defaultFunct"
+                    "functionName": "None"
                 },
                 {
                     "id": "1",
@@ -96,7 +78,7 @@
                         "a": 255
                     },
                     "display": false,
-                    "functionName": "defaultFunct"
+                    "functionName": "None"
                 },
                 {
                     "id": "InvalidPortText",
@@ -113,7 +95,7 @@
                         "a": 255
                     },
                     "display": false,
-                    "functionName": "defaultFunct"
+                    "functionName": "None"
                 }
             ],
             "inputTexts": [
@@ -163,7 +145,7 @@
                     },
                     "text": "IP",
                     "display": true,
-                    "functionName": "defaultFunct"
+                    "functionName": "None"
                 },
                 {
                     "id": "portGroup",
@@ -177,7 +159,7 @@
                     },
                     "text": "Port",
                     "display": true,
-                    "functionName": "defaultFunct"
+                    "functionName": "None"
                 }
             ]
         },
