@@ -72,6 +72,11 @@ set(SRC_FILES
     src/elements/guiElements/gui.cpp
     src/elements/guiElements/guiFunction.cpp
     src/menu/menuManager.cpp
+    src/menu/GuiElementFactory.cpp
+    src/network/networkElem.cpp
+    src/game/game.cpp
+    src/game/entities/AEntities.cpp
+    src/game/entities/EntitiesFactory.cpp
     src/raylibWindow/utils.cpp
     src/raylibWindow/raylibWindow.cpp
 )
