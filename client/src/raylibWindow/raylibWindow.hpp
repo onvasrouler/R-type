@@ -6,8 +6,7 @@
 */
 
 #pragma once
-#define RAYGUI_IMPLEMENTATION
-#define RAYLIB_NO_WINDOW
+
 #include "../fpsCounter/fpsCounter.hpp"
 #include "../jsonParser/jsonParser.hpp"
 #include "../menu/menuManager.hpp"
