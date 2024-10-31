@@ -313,7 +313,6 @@ void AdminPanelModule::run() {
 }
 
 void AdminPanelModule::stop() {
-    // std::lock_guard<std::mutex> lock(_destroyMutex); // Lock to ensure thread safety
     if (!_Running) return;
 
     _Running = false; // Mark as not running
