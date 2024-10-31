@@ -7,6 +7,7 @@
 */
 
 #include "adminClient.hpp"
+#include <iostream>
 
 AdminClient::AdminClient(const std::shared_ptr<boost::asio::ip::tcp::socket> socket)
     : _socket(socket)
@@ -45,6 +46,7 @@ std::vector<std::string> AdminClient::getMessages()
 void AdminClient::clearMessages()
 {
     std::lock_guard<std::mutex> lock(_mutex);
+    std::cout << "clear messages" << std::endl;
     _messages.clear();
 }
 
@@ -66,4 +68,14 @@ bool AdminClient::CompareSocket(const std::shared_ptr<boost::asio::ip::tcp::sock
 std::string AdminClient::GetUUID()
 {
     return _uuid;
+}
+
+void AdminClient::setName(const std::string &name)
+{
+    this->name = name;
+}
+
+void AdminClient::setLogged(const bool logged)
+{
+    _Logged = logged;
 }

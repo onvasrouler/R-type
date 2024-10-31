@@ -17,6 +17,13 @@
 
 #define ADMIN_PANEL_MODULE_PORT 8084
 
+#define ADMIN_PASSWORD "123456passwordazerty00000013082004"
+
+//admin protocol
+#define ADMIN_END_OF_MESSAGE "\r\n"
+#define ADMIN_PROTOCOL_LOGIN "LOGIN"
+#define ADMIN_PROTOCOL_LOGOUT "LOGOUT"
+
 class AdminPanelModule : public AbstractModule {
     public:
         /**

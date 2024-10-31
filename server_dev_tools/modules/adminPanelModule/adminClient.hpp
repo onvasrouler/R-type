@@ -28,10 +28,14 @@ class AdminClient {
         bool CompareSocket(const std::shared_ptr<boost::asio::ip::tcp::socket> socket);
         std::string GetUUID();
 
+        void setName(const std::string &name);
+        void setLogged(const bool logged);
+
     private:
         std::shared_ptr<boost::asio::ip::tcp::socket> _socket;
         std::mutex _mutex;
         std::vector<std::string> _messages;
         std::string _uuid;
+        std::string name;
         bool _Logged;
 };

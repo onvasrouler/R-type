@@ -124,27 +124,28 @@ std::string getIPv4AddressFromIpconfig() {
 #endif
 
 void AdminPanelModule::handle_client(std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
-    try {
-        // Read message from client
-        std::array<char, 128> buffer;
-        boost::system::error_code error;
-        size_t len = socket->read_some(boost::asio::buffer(buffer), error);
+    auto buffer = std::make_shared<std::array<char, 128>>();
 
-        if (error == boost::asio::error::eof) {
-            std::cout << "Client disconnected." << std::endl;
-        } else if (error) {
-            throw boost::system::system_error(error);
-        } else {
-            std::string message = std::string(buffer.data(), len);
-            std::cout << "Received from admin: " << message << std::endl;
-            if (!isClient(socket)) {
-                _clients.push_back(std::make_shared<AdminClient>(socket));
+    socket->async_read_some(boost::asio::buffer(*buffer), 
+        [this, socket, buffer](boost::system::error_code error, std::size_t len) {
+            if (!error) {
+                std::string message(buffer->data(), len);
+                std::cout << "Received from admin: " << message << std::endl;
+
+                if (!isClient(socket)) {
+                    _clients.push_back(std::make_shared<AdminClient>(socket));
+                }
+                if (message.find(ADMIN_END_OF_MESSAGE) == message.size() - 2) {
+                    message = message.substr(0, message.size() - 2);  // Remove delimiter
+                    addMessage(socket, message);
+                }
+                
+                // Recursively call `handle_client` for the next message
+                handle_client(socket);
+            } else {
+                std::cout << "Client disconnected: " << error.message() << std::endl;
             }
-            addMessage(socket, message);
-        }
-    } catch (std::exception& e) {
-        std::cerr << "Exception in client handler: " << e.what() << std::endl;
-    }
+        });
 }
 
 void AdminPanelModule::start_accept(boost::asio::ip::tcp::acceptor& acceptor) {
@@ -165,11 +166,9 @@ AdminPanelModule::AdminPanelModule(const std::string name, const std::string id)
 }
 
 AdminPanelModule::~AdminPanelModule() {
-    {
-        std::cout << "Module: " << _ModuleName << " is destroying" << std::endl;
-        stop(); // Ensure the module is stopped before destruction
-        std::cout << "Module: " << _ModuleName << " is destructed" << std::endl;
-    }
+    std::cout << "Module: " << _ModuleName << " is destroying" << std::endl;
+    stop(); // Ensure the module is stopped before destruction
+    std::cout << "Module: " << _ModuleName << " is destructed" << std::endl;
 }
 
 void AdminPanelModule::run() {
@@ -190,6 +189,55 @@ void AdminPanelModule::run() {
     tv.tv_usec = 100;
 
     while (_Running) {
+        for (auto client : _clients) {
+            if (client->hasMessage()) {
+                std::vector<std::string> messages = client->getMessages();
+                for (auto message : messages) {
+                    //if message start with ADMIN_PROTOCOL_LOGIN the value in this define
+                    message = message.substr(message.find(":") + 1);
+                    std::cout << "Message from client: \"" << message << "\"" << std::endl;
+                    std::cout << message.find(ADMIN_PROTOCOL_LOGIN) << std::endl;
+                    std::cout << message << std::endl;
+                    std::cout << ADMIN_PROTOCOL_LOGIN << std::endl;
+                    if (message.find(ADMIN_PROTOCOL_LOGIN) == 0) {
+                        if (client->IsLogged()) {
+                            client->WriteTo("You are already logged in");
+                            continue;
+                        }
+                        std::cout << "Login attempt" << std::endl;
+                        message = message.substr(message.find(" ") + 1);
+                        std::string name = message.substr(0, message.find(":"));
+                        std::string password = message.substr(message.find(":") + 1);
+                        std::cout << "Name: " << name << std::endl;
+                        std::cout << "Password: " << password << std::endl;
+                        if (password == ADMIN_PASSWORD) {
+                            client->WriteTo("Logged in as " + name + ADMIN_END_OF_MESSAGE);
+                            client->WriteTo(std::string("Welcome to the admin panel") + ADMIN_END_OF_MESSAGE);
+                            client->WriteTo(std::string("You can now send messages to the server") + ADMIN_END_OF_MESSAGE);
+                            client->WriteTo(std::string("To logout, send: ") + ADMIN_PROTOCOL_LOGOUT + ADMIN_END_OF_MESSAGE);
+                            client->setName(name);
+                            client->setLogged(true);
+                            client->clearMessages();
+                        } else {
+                            client->WriteTo("Login failed");
+                        }
+                        continue;
+                    }
+                    std::cout << message.find(ADMIN_PROTOCOL_LOGOUT) << std::endl;
+                    if (message.find(ADMIN_PROTOCOL_LOGOUT) == 0) {
+                        if (!client->IsLogged()) {
+                            client->WriteTo(std::string("You are not logged in") + ADMIN_END_OF_MESSAGE);
+                            continue;
+                        }
+                        client->WriteTo(std::string("Logged out") + ADMIN_END_OF_MESSAGE);
+                        client->setLogged(false);
+                    }
+                }
+                if (!client->IsLogged()) {
+                    client->clearMessages();
+                }
+            }
+        }
         FD_ZERO(&readfds);
         FD_ZERO(&writefds);
         FD_SET(_socket, &readfds);
@@ -206,16 +254,20 @@ void AdminPanelModule::run() {
             continue;
         }
         // Process messages from clients
-        if (FD_ISSET(_socket, &writefds)) {
-            for (auto client : _clients) {
-                if (client->hasMessage()) {
-                    std::vector<std::string> messages = client->getMessages();
-                    for (auto message : messages) {
+        for (auto client : _clients) {
+            if (client->hasMessage()) {
+                std::vector<std::string> messages = client->getMessages();
+                for (auto message : messages) {
+                    //if message start with ADMIN_PROTOCOL_LOGIN the value in this define
+                    if (!client->IsLogged()) {
+                        continue;
+                    }
+                    if (FD_ISSET(_socket, &writefds)) {
                         std::cout << "Message from client: " << message << std::endl;
                         send(_socket, message.c_str(), message.size(), 0);
+                        client->clearMessages();
                     }
                 }
-                client->clearMessages();
             }
         }
         if (!FD_ISSET(_socket, &readfds)) {
@@ -291,7 +343,7 @@ bool AdminPanelModule::isClient(const std::shared_ptr<boost::asio::ip::tcp::sock
 void AdminPanelModule::addMessage(const std::shared_ptr<boost::asio::ip::tcp::socket> socket, const std::string message) {
     for (auto client : _clients) {
         if (client->CompareSocket(socket)) {
-            std::string formatMessage = client->GetUUID() + ": " + message;
+            std::string formatMessage = client->GetUUID() + ":" + message;
             client->addMessage(formatMessage);
         }
     }
