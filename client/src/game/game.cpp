@@ -19,22 +19,6 @@ void Game::setEntityFactoryJsonParser(std::shared_ptr<JsonParser> jsonParser)
     _EntitiesFactory->setJsonParser(jsonParser);
 }
 
-void Game::setServerInfos(const std::string ip, const std::string port)
-{
-    _Ip = ip;
-    _Port = port;
-}
-
-void Game::setPort(const std::string port)
-{
-    _Port = port;
-}
-
-void Game::setIp(const std::string ip)
-{
-    _Ip = ip;
-}
-
 void Game::initGame()
 {
     _EntitiesFactory->loadEntities(ASSETS_FILE_PATH);
@@ -61,14 +45,4 @@ bool Game::isRunning() const
 std::shared_ptr<EntitiesFactory> Game::getEntitiesFactory() const
 {
     return _EntitiesFactory;
-}
-
-std::string Game::getIp() const
-{
-    return _Ip;
-}
-
-std::string Game::getPort() const
-{
-    return _Port;
 }
