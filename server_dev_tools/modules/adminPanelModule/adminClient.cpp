@@ -42,6 +42,12 @@ std::vector<std::string> AdminClient::getMessages()
     return _messages;
 }
 
+void AdminClient::clearMessages()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    _messages.clear();
+}
+
 bool AdminClient::IsConnected()
 {
     return _socket->is_open();

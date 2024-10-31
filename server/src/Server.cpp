@@ -89,6 +89,9 @@ void Server::start() {
     parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
     std::cout << "server name: " << parser.GetServerName() << std::endl;
     for (auto &module : parser.GetModules()) {
+        if (!module.GetModuleLoad()) {
+            continue;
+        }
         std::cout << "module name: " << module.GetModuleName() << std::endl;
         std::cout << "module path: " << module.GetModulePath() << std::endl;
         std::cout << "module uuid: " << module.GetModuleId() << std::endl;

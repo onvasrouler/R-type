@@ -22,6 +22,7 @@ class AdminClient {
         void addMessage(const std::string &message);
         bool hasMessage();
         std::vector<std::string> getMessages();
+        void clearMessages();
         bool IsConnected();
         bool IsLogged();
         bool CompareSocket(const std::shared_ptr<boost::asio::ip::tcp::socket> socket);
