@@ -5,9 +5,6 @@
 ** main
 */
 
-#define RAYGUI_IMPLEMENTATION
-#define RAYLIB_NO_WINDOW
-
 #include "src/raylibWindow/raylibWindow.hpp"
 
 int main()
