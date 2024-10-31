@@ -89,6 +89,9 @@ void Server::start() {
     parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
     std::cout << "server name: " << parser.GetServerName() << std::endl;
     for (auto &module : parser.GetModules()) {
+        if (!module.GetModuleLoad()) {
+            continue;
+        }
         std::cout << "module name: " << module.GetModuleName() << std::endl;
         std::cout << "module path: " << module.GetModulePath() << std::endl;
         std::cout << "module uuid: " << module.GetModuleId() << std::endl;
@@ -286,6 +289,7 @@ std::string Server::encodeInterCommunication(const std::string message) {
 {
     try {
         module->start();
+        std::cout << "Module started: " << module->getName() << std::endl;
 #ifdef _WIN32
         SOCKET moduleSocket = accept(_socket, (struct sockaddr*)NULL, NULL);
         if (moduleSocket == INVALID_SOCKET) {
@@ -302,16 +306,19 @@ std::string Server::encodeInterCommunication(const std::string message) {
             _maxSocket = moduleSocket;
         }
 #endif
+        std::cout << "Module connected: " << module->getName() << std::endl;
         if (send(moduleSocket, "200\n\t", 5, 0) < 0) {
             throw std::runtime_error(
                 "Error while creating a module: send failed");
         }
+        std::cout << "Message sent to module: " << module->getName() << std::endl;
         char buffer[1024] = {0};
         int valread = recv(moduleSocket, buffer, 1024, 0);
         if (valread < 0 || valread != 5) {
             throw std::runtime_error(
                 "Error while creating a module: recv failed");
         }
+        std::cout << "Message received from module: " << module->getName() << std::endl;
         std::string message = buffer;
         if (message != "200\n\t") {
             throw std::runtime_error(
@@ -320,6 +327,7 @@ std::string Server::encodeInterCommunication(const std::string message) {
         _modules.push_back(
             std::make_unique<serverModule>(module, moduleSocket, file));
     } catch (std::exception& e) {
+        std::cerr << "Error while creating a module" << std::endl;
         std::cerr << e.what() << std::endl;
         throw std::runtime_error(
             "Error while creating a module: module not connected");

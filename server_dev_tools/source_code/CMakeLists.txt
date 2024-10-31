@@ -6,12 +6,12 @@ find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 # Add the source files for the library
 set(SOURCES
-    ../../HeadServer/modules/AbstractModule.cpp
-    ../../HeadServer/modules/AbstractModule.hpp
-    ../../HeadServer/modules/MultiThread.cpp
-    ../../HeadServer/modules/MultiThread.hpp
-    ../../HeadServer/modules/UUID.cpp
-    ../../HeadServer/modules/UUID.hpp
+    AbstractModule.cpp
+    AbstractModule.hpp
+    MultiThread.cpp
+    MultiThread.hpp
+    UUID.cpp
+    UUID.hpp
 )
 
 # Create the shared library

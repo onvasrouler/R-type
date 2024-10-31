@@ -18,6 +18,11 @@ ConfigParseModule::ConfigParseModule(const nlohmann::json module) {
         _moduleName = "unknown";
     }
     try {
+        _load = module["load"];
+    } catch (const std::exception& e) {
+        _load = false;
+    }
+    try {
         _modulePath = module["path"];
     } catch (const std::exception& e) {
         _modulePath = "unknown";
@@ -45,6 +50,11 @@ const std::string ConfigParseModule::GetModule() const
 const std::string ConfigParseModule::GetModuleName() const
 {
     return _moduleName;
+}
+
+const bool ConfigParseModule::GetModuleLoad() const
+{
+    return _load;
 }
 
 const std::string ConfigParseModule::GetModulePath() const
