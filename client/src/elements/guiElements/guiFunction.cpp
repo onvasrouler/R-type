@@ -13,7 +13,7 @@ void guiFunction::mapFunctions()
     custom_func(printMessage, std::cout << "Hello from a dynamically created function!" << std::endl);
     custom_func(showGoodbye, std::cout << "Goodbye from a custom function!" << std::endl);
     custom_func(defaultFunct, std::cout << "Default function" << std::endl);
-    custom_func(ExitButton, std::cout << "Exiting ..." << std::endl);
+    custom_func(ExitButton, exit(0));
     custom_func(changeBgColor, {
         std::string color = this->_MenuManager->getCurrentGui()->GetValueById("backgroundColor");
         std::istringstream iss(color);
@@ -32,15 +32,19 @@ void guiFunction::mapFunctions()
     custom_func(StartFunct, {
         std::string ip = this->_MenuManager->getCurrentGui()->GetValueById("adressInput");
         std::string port = this->_MenuManager->getCurrentGui()->GetValueById("portInput");
+        // std::string username = this->_MenuManager->getCurrentGui()->GetValueById("usernameInput");
 
         this->_MenuManager->getCurrentGui()->GetElementById("InvalidAdressText")->setDisplay(false);
         this->_MenuManager->getCurrentGui()->GetElementById("InvalidPortText")->setDisplay(false);
+        // this->_MenuManager->getCurrentGui()->GetElementById("InvalidUsernameText")->setDisplay(false);
+        // if (username == "")
+        //     this->_MenuManager->getCurrentGui()->GetElementById("InvalidUsernameText")->setDisplay(true);
         if (!isIpValid(ip))
             this->_MenuManager->getCurrentGui()->GetElementById("InvalidAdressText")->setDisplay(true);
         if (!isPortValid(port))
             this->_MenuManager->getCurrentGui()->GetElementById("InvalidPortText")->setDisplay(true);
         if (isIpValid(ip) && isPortValid(port))
-            this->_MenuManager->setGameInfo(ip, port);
+            this->_MenuManager->setGameInfo(port, ip); // mettre tout le haut en com et taper l'ip en statique ici pour pas avoir a la retaper a chaque fois
     });
 }
 
