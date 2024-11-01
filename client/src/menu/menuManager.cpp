@@ -14,6 +14,7 @@ MenuManager::MenuManager()
     this->_WindowHeight = GetScreenHeight();
     this->_WindowWidth = GetScreenWidth();
     _Is_connecting = false;
+    _Is_connected = false;
     this->_GuiElementFactory = std::make_shared<GuiElementFactory>();
     this->_GuiElementFactory->setWindowHeight(this->_WindowHeight);
     this->_GuiElementFactory->setWindowWidth(this->_WindowWidth);
@@ -24,6 +25,7 @@ MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
     this->_type = START_MENU;
     this->_JsonParser = jsonParser;
     _Is_connecting = false;
+    _Is_connected = false;
     this->_GuiElementFactory = std::make_shared<GuiElementFactory>(jsonParser);
 
 }
@@ -259,20 +261,30 @@ void MenuManager::checkForNetwork()
     else if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTED) {
         const_cast<MenuManager*>(this)->setMenuType(GAME_MENU);
         _Is_connecting = false;
+        _Is_connected = true;
     } else
         const_cast<MenuManager*>(this)->setMenuType(START_MENU);
     if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTION_FAILED) {
         _Is_connecting = false;
+        _Is_connected = false;
         this->_NetworkElem->disconnect();
+    }
+    std::cout << "checking if game is shutting down" << std::endl;
+    if (this->_Game->getShutDown() && _Is_connected) {
+        std::cout << "shutting down" << std::endl;
+        _Is_connecting = false;
+        _Is_connected = false;
+        const_cast<MenuManager*>(this)->setMenuType(START_MENU);
     }
     
 }
 
 void MenuManager::drawMenu() const
 {
+    std::cout << "meny type : " << _type << std::endl;
     if (_DebugLogger)
         this->_DebugLogger->Log("Drawing menu in menu manager", 2);
-    if (_Is_connecting)
+    if (_Is_connecting || _Is_connected)
         const_cast<MenuManager*>(this)->checkForNetwork();
     if (this->_menuList.find(_type) != this->_menuList.end())
         this->_menuList.at(_type)->DrawGui();
@@ -289,12 +301,16 @@ void MenuManager::drawMenu() const
             }
         }
     }
-    if (_Game)
-        this->_Game->draw();
+    if (_NetworkElem && _Is_connected)
+        this->_NetworkElem->update();
 }
 
 void MenuManager::handleInput(int key, int pressedOrReleased)
 {
+    if (!_Is_connected)
+        return;
     if (_Game)
         this->_Game->handleInput(key, pressedOrReleased);
+    if (_NetworkElem)
+        this->_NetworkElem->handleInput(key, pressedOrReleased);
 }

@@ -242,4 +242,5 @@ private:
     int _WindowHeight; /**< The height of the window. is used for responsivity */
 
     bool _Is_connecting;
+    bool _Is_connected;
 };
