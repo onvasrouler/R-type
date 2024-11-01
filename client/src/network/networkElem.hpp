@@ -198,7 +198,7 @@ public:
      * 
      * @param message The message to send.
      */
-    void send(const std::string message);
+    void send(const std::string& message);
 
     void initConnection();
 

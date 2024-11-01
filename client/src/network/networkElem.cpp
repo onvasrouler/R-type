@@ -116,11 +116,12 @@ void NetworkElem::initConnection()
 }
 
 
-void NetworkElem::send(const std::string message)
+void NetworkElem::send(const std::string& message)
 {
-    std::vector<char> binary_message(message.begin(), message.end());
-    _Socket.async_send_to(boost::asio::buffer(binary_message), _Endpoint,
-        [](boost::system::error_code ec, std::size_t /*length*/) {
+    auto binary_message = std::make_shared<std::vector<char>>(message.begin(), message.end());
+    
+    _Socket.async_send_to(boost::asio::buffer(*binary_message), _Endpoint,
+        [binary_message](boost::system::error_code ec, std::size_t /*length*/) {
             if (ec) {
                 std::cerr << "Send error: " << ec.message() << std::endl;
             }
