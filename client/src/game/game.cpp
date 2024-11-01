@@ -100,9 +100,6 @@ void Game::handleData(std::vector<std::string> tokens)
         return;
     if (_DebugLogger)
         _DebugLogger->Log("Game is handling data", 4);
-    for (const auto& token : tokens) {
-        std::cout << token << std::endl;
-    }
 
     try {
         std::string instruction = tokens[0];
@@ -122,7 +119,6 @@ void Game::handleData(std::vector<std::string> tokens)
             _EntitiesList[uuid]->setRelativePosX(std::stoi(tokens[2]), _WindowWidth);
             _EntitiesList[uuid]->setRelativePosY(std::stoi(tokens[3]), _WindowHeight);
         } else {
-            std::cout << "creating entity bc id " << uuid << " not found" << std::endl;
             #ifdef _WIN32
             #else
             if (uuid.length() != 36)
@@ -185,7 +181,6 @@ void Game::handleBullet(std::string uuid, std::vector<std::string> tokens)
         _DebugLogger->Log("Game is handling bullet", 4);
     if (tokens[0] == "220") {
         createBullet(uuid);
-        std::cout << "created bullet" << std::endl;
         _EntitiesList[uuid]->setRelativePosX(std::stoi(tokens[2]), _WindowWidth);
         _EntitiesList[uuid]->setRelativePosY(std::stoi(tokens[3]), _WindowHeight);
     }

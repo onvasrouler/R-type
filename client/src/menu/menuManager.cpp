@@ -269,9 +269,7 @@ void MenuManager::checkForNetwork()
         this->_NetworkElem->disconnect();
         const_cast<MenuManager*>(this)->setMenuType(START_MENU);
     }
-    std::cout << "checking if game is shutting down" << std::endl;
     if (this->_Game->getShutDown() && _Is_connected) {
-        std::cout << "shutting down" << std::endl;
         _Is_connecting = false;
         _Is_connected = false;
         const_cast<MenuManager*>(this)->setMenuType(START_MENU);
@@ -281,7 +279,6 @@ void MenuManager::checkForNetwork()
 
 void MenuManager::drawMenu() const
 {
-    std::cout << "meny type : " << _type << std::endl;
     if (_DebugLogger)
         this->_DebugLogger->Log("Drawing menu in menu manager", 2);
     if (_Is_connecting || _Is_connected)

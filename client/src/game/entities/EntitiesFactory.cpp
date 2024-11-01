@@ -32,7 +32,6 @@ void EntitiesFactory::loadEntities(const std::string filename)
         if (_EntitiesData.contains("entities"))
             for (auto &entity : _EntitiesData["entities"])
                 _Entities[std::stoi(entity["id"].get<std::string>())] = createEntity(entity);
-        std::cout << "Entities created" << std::endl;
     } else if (_DebugLogger)
             _DebugLogger->Log("JsonParser not setted", 0);
         else

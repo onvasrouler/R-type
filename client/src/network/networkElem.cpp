@@ -141,7 +141,6 @@ void NetworkElem::asyncReceive()
                     _Connected = true;
                     this->_Game->start();
                 }
-                std::cout << "received data : " << data << std::endl;
                 if (_Status != Status::CONNECTED)
                     _Status = Status::CONNECTED;
                 _Game->update(data);
