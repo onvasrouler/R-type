@@ -258,16 +258,16 @@ void MenuManager::checkForNetwork()
 
     if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTING)
         const_cast<MenuManager*>(this)->setMenuType(CONNECTION_MENU);
-    else if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTED) {
+    else if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTED && _Is_connected == false) {
         const_cast<MenuManager*>(this)->setMenuType(GAME_MENU);
         _Is_connecting = false;
         _Is_connected = true;
-    } else
-        const_cast<MenuManager*>(this)->setMenuType(START_MENU);
+    }
     if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTION_FAILED) {
         _Is_connecting = false;
         _Is_connected = false;
         this->_NetworkElem->disconnect();
+        const_cast<MenuManager*>(this)->setMenuType(START_MENU);
     }
     std::cout << "checking if game is shutting down" << std::endl;
     if (this->_Game->getShutDown() && _Is_connected) {
