@@ -91,6 +91,10 @@ void MenuManager::setGame(std::shared_ptr<Game> game)
 void MenuManager::setNetworkElem(std::shared_ptr<NetworkElem> networkElem)
 {
     _NetworkElem = networkElem;
+    if (_Game)
+        _NetworkElem->setGame(_Game);
+    else
+        this->_DebugLogger->Log("Game not setted", 0);
 }
 
 std::shared_ptr<MenuManager> MenuManager::getThis()
@@ -214,7 +218,7 @@ void MenuManager::eraseMenu()
     this->_JsonParser->eraseCache("./config/menu_settings.json");
 }
 
-void MenuManager::setGameInfo(const std::string ip, const std::string port)
+void MenuManager::setGameInfo(const std::string ip, const std::string port) // ajouter std::string username
 {
     _Ip = ip;
     _Port = port;
@@ -245,13 +249,11 @@ void MenuManager::checkForNetwork()
     if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTING)
         const_cast<MenuManager*>(this)->setMenuType(CONNECTION_MENU);
     else if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTED) {
-        std::cout << "connection success" << std::endl;
         const_cast<MenuManager*>(this)->setMenuType(GAME_MENU);
         _Is_connecting = false;
     } else
         const_cast<MenuManager*>(this)->setMenuType(START_MENU);
     if (this->_NetworkElem->getStatus() == NetworkElem::Status::CONNECTION_FAILED) {
-        std::cout << "connection failed" << std::endl;
         _Is_connecting = false;
         this->_NetworkElem->disconnect();
     }
@@ -260,7 +262,8 @@ void MenuManager::checkForNetwork()
 
 void MenuManager::drawMenu() const
 {
-    this->_DebugLogger->Log("Drawing menu in menu manager", 2);
+    if (_DebugLogger)
+        this->_DebugLogger->Log("Drawing menu in menu manager", 2);
     if (_Is_connecting)
         const_cast<MenuManager*>(this)->checkForNetwork();
     if (this->_menuList.find(_type) != this->_menuList.end())
@@ -278,4 +281,12 @@ void MenuManager::drawMenu() const
             }
         }
     }
+    if (_Game)
+        this->_Game->draw();
+}
+
+void MenuManager::handleInput(int key, int pressedOrReleased)
+{
+    if (_Game)
+        this->_Game->handleInput(key, pressedOrReleased);
 }

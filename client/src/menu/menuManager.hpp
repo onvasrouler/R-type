@@ -191,6 +191,8 @@ public:
 
     void setGameInfo(const std::string ip = "1.1.1.1", const std::string port = "1234");
 
+    void handleInput(int key, int pressedOrReleased);
+
 private:
     void checkForNetwork();
 
