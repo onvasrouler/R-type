@@ -8,6 +8,7 @@
 #pragma once
 
 #include "IEntities.hpp"
+#include <raylib.h>
 
 class AEntities : public IEntities {
 public:
