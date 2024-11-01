@@ -60,7 +60,7 @@ void RlibWindow::setDefaultVal()
     this->_Menus->loadMenu();
 
     this->_DebugLogger->Log("setting game to raylibwindow", 2);
-    this->_Game = std::make_shared<Game>(_JsonParser, _DebugLogger);
+    this->_Game = std::make_shared<Game>(_JsonParser, _DebugLogger, _WindowWidth, _WindowHeight);
 
     this->_DebugLogger->Log("setting game to menuManager", 2);
     this->_Menus->setGame(_Game);
@@ -69,7 +69,7 @@ void RlibWindow::setDefaultVal()
     this->_Game->initGame();
 
     this->_DebugLogger->Log("creating networkelem", 2);
-    this->_NetworkElem = std::make_shared<NetworkElem>();
+    this->_NetworkElem = std::make_shared<NetworkElem>(_DebugLogger);
 
     this->_DebugLogger->Log("setting networkelem to menuManager", 2);
     this->_Menus->setNetworkElem(_NetworkElem);
@@ -295,6 +295,7 @@ void RlibWindow::update()
 
 void RlibWindow::updateKeyboadInputs()
 {
+    
     for ( const auto& [key, action] : keyDownActions )
         if ( IsKeyPressed(key) )
             action();
@@ -303,7 +304,9 @@ void RlibWindow::updateKeyboadInputs()
             action();
     for ( int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key )
         if ( IsKeyPressed(key) )
-            _DebugLogger->Log("Key pressed: " + GetKeyPressed(), 2);
+            this->_Menus->handleInput(key, 1);
+        else if ( IsKeyReleased(key) )
+            this->_Menus->handleInput(key, 0);
 }
 
 void RlibWindow::BeginRlibDraw() const

@@ -45,7 +45,7 @@ public:
      * @param ip The IP address of the server (default is "1.1.1.1").
      * @param port The port number of the server (default is "1234").
      */
-    NetworkElem(const std::string ip = "1.1.1.1", const std::string port = "1234");
+    NetworkElem(const std::shared_ptr<DebugLogger> debuglogger = nullptr, std::string ip = "1.1.1.1", const std::string port = "1234");
 
     /**
      * @brief Destroys the NetworkElem object and cleans up resources.
@@ -128,12 +128,22 @@ public:
 
     void setGame(std::shared_ptr<Game> game);
 
+    void setDebugLogger(std::shared_ptr<DebugLogger> debugLogger);
+
+    void update();
+
+    void handleInput(int key, int pressedOrReleased);
+
 
     private:
     
     std::shared_ptr<Game> _Game;
+    std::shared_ptr<DebugLogger> _DebugLogger;
+
     std::string _Ip;
     std::string _Port;
+    std::string _Username;
+
     bool _Connected;
     std::atomic<Status> _Status;
     boost::asio::io_service _Io_service;
