@@ -34,13 +34,6 @@ void EntitiesFactory::loadEntities(const std::string filename)
                 _Entities[entity["id"]] = createEntity(entity);
     } else if (_DebugLogger)
         _DebugLogger->Log("JsonParser not setted", 0);
-    else
-        std::cerr << "JsonParser not setted" << std::endl;
-
-    std::cout << "created nb of entities : " << _Entities.size() << std::endl;
-
-    for (auto &entity : _Entities)
-        std::cout << entity.first << std::endl;
 }
 
 std::shared_ptr<AEntities> EntitiesFactory::createEntity(nlohmann::json entityData)
