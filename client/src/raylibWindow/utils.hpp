@@ -48,6 +48,16 @@ bool isIpValid(const std::string ip);
 bool isPortValid(const std::string port);
 
 /**
+ * @brief Split a string into tokens
+ * 
+ * @param str the string to split
+ * @param delimiter the delimiter to split the string with
+ * @param tokens the tokens to store the splitted string
+ * @return std::vector<std::string> the splitted string
+ */
+std::vector<std::string> splitter(const std::string str, char delimiter);
+
+/**
  * @class DebugLogger
  * @brief A class for logging debug messages with optional depth control.
  * 
