@@ -14,6 +14,7 @@
 #include <regex>
 #include <raylib.h>
 #include <filesystem>
+#include <sstream>
 
 /**
  * @brief cleaner way to log messaged of raylib by

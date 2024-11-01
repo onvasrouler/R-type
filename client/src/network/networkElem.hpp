@@ -12,9 +12,82 @@
 #include <thread>
 #include <iostream>
 #include <atomic>
-#include <boost/asio.hpp>
-namespace b_w = boost::asio;
 #include "../game/game.hpp"
+
+#if defined(_WIN32)
+// To avoid conflicting windows.h symbols with raylib, some flags are defined
+// WARNING: Those flags avoid inclusion of some Win32 headers that could be required
+// by user at some point and won't be included...
+//-------------------------------------------------------------------------------------
+
+// If defined, the following flags inhibit definition of the indicated items.
+
+
+
+#define NOSYSCOMMANDS     // SC_*
+#define NORASTEROPS       // Binary and Tertiary raster ops
+#define NOSHOWWINDOW      // SW_*
+#define OEMRESOURCE       // OEM Resource values
+#define NOCLIPBOARD       // Clipboard routines
+
+#define NOCOLOR           // Screen colors
+#define NOCTLMGR          // Control and Dialog routines
+#define NODRAWTEXT        // DrawText() and DT_*
+#define NOGDI             // All GDI defines and routines
+
+
+
+#define NOKERNEL          // All KERNEL defines and routines
+#define NOUSER            // All USER defines and routines
+//#define NONLS             // All NLS defines and routines
+#define NOMB              // MB_* and MessageBox()
+#define NOMEMMGR          // GMEM_*, LMEM_*, GHND, LHND, associated routines
+#define NOMETAFILE        // typedef METAFILEPICT
+#define NOMINMAX          // Macros min(a,b) and max(a,b)
+#define NOMSG             // typedef MSG and associated routines
+#define NOOPENFILE        // OpenFile(), OemToAnsi, AnsiToOem, and OF_*
+#define NOSCROLL          // SB_* and scrolling routines
+#define NOSERVICE         // All Service Controller routines, SERVICE_ equates, etc.
+#define NOSOUND           // Sound driver routines
+#define NOTEXTMETRIC      // typedef TEXTMETRIC and associated routines
+#define NOWH              // SetWindowsHook and WH_*
+#define NOWINOFFSETS      // GWL_*, GCL_*, associated routines
+#define NOCOMM            // COMM driver routines
+#define NOKANJI           // Kanji support stuff.
+#define NOHELP            // Help engine interface.
+#define NOPROFILER        // Profiler interface.
+#define NODEFERWINDOWPOS  // DeferWindowPos routines
+#define NOMCX             // Modem Configuration Extensions
+
+// Type required before windows.h inclusion
+typedef struct tagMSG *LPMSG;
+
+#include <boost/asio.hpp>
+
+// Type required by some unused function...
+typedef struct tagBITMAPINFOHEADER {
+  DWORD biSize;
+  LONG  biWidth;
+  LONG  biHeight;
+  WORD  biPlanes;
+  WORD  biBitCount;
+  DWORD biCompression;
+  DWORD biSizeImage;
+  LONG  biXPelsPerMeter;
+  LONG  biYPelsPerMeter;
+  DWORD biClrUsed;
+  DWORD biClrImportant;
+} BITMAPINFOHEADER, *PBITMAPINFOHEADER;
+
+#include <objbase.h>
+#include <mmreg.h>
+#include <mmsystem.h>
+
+// Some required types defined for MSVC/TinyC compiler
+#if defined(_MSC_VER) || defined(__TINYC__)
+    #include "propidl.h"
+#endif
+#endif
 
 /**
  * @class NetworkElem
@@ -149,14 +222,14 @@ public:
 
     bool _Connected;
     std::atomic<Status> _Status;
-    b_w::io_service _Io_service;
-    b_w::ip::udp::socket _Socket;
-    b_w::ip::udp::endpoint _Endpoint;
-    b_w::ip::udp::endpoint _Sender_endpoint;
+    boost::asio::io_service _Io_service;
+    boost::asio::ip::udp::socket _Socket;
+    boost::asio::ip::udp::endpoint _Endpoint;
+    boost::asio::ip::udp::endpoint _Sender_endpoint;
     std::thread _Network_thread;
     std::string _Response;
-    b_w::steady_timer _Timer;
-    b_w::steady_timer _Timer2;
+    boost::asio::steady_timer _Timer;
+    boost::asio::steady_timer _Timer2;
     std::array<char, 1024> _Buffer;
 
     bool _DownPressed;

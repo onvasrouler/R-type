@@ -10,7 +10,7 @@
 NetworkElem::NetworkElem(const std::shared_ptr<DebugLogger> debuglogger, const std::string ip, const std::string port) :
 _Io_service(),
 _Socket(_Io_service),
-_Endpoint(b_w::ip::address::from_string(ip), std::stoi(port)),
+_Endpoint(boost::asio::ip::address::from_string(ip), std::stoi(port)),
 _Timer(_Io_service),
 _Timer2(_Io_service)
 {
@@ -46,7 +46,7 @@ void NetworkElem::setPort(const std::string port)
 
 void NetworkElem::setIp(const std::string ip)
 {
-    _Endpoint.address(b_w::ip::address::from_string(ip));
+    _Endpoint.address(boost::asio::ip::address::from_string(ip));
     _Ip = ip;
 }
 
@@ -83,7 +83,7 @@ void NetworkElem::connect()
     _Status = Status::CONNECTING;
 
     try {
-        _Socket.open(b_w::ip::udp::v4());
+        _Socket.open(boost::asio::ip::udp::v4());
         _Timer.expires_after(std::chrono::seconds(10));
         _Timer.async_wait([this](boost::system::error_code ec) {
             if (!ec && _Status == Status::CONNECTING) {
@@ -119,7 +119,7 @@ void NetworkElem::initConnection()
 void NetworkElem::send(const std::string message)
 {
     std::vector<char> binary_message(message.begin(), message.end());
-    _Socket.async_send_to(b_w::buffer(binary_message), _Endpoint,
+    _Socket.async_send_to(boost::asio::buffer(binary_message), _Endpoint,
         [](boost::system::error_code ec, std::size_t /*length*/) {
             if (ec) {
                 std::cerr << "Send error: " << ec.message() << std::endl;
@@ -132,7 +132,7 @@ void NetworkElem::asyncReceive()
     if (_Game->getShutDown())
         return;
     _Buffer.fill(0);
-    _Socket.async_receive_from(b_w::buffer(_Buffer), _Sender_endpoint,
+    _Socket.async_receive_from(boost::asio::buffer(_Buffer), _Sender_endpoint,
         [this](boost::system::error_code ec, std::size_t length) {
             if (!ec) {
                 std::string data(_Buffer.data(), length);
