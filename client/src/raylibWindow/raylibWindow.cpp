@@ -65,9 +65,6 @@ void RlibWindow::setDefaultVal()
     this->_DebugLogger->Log("setting game to menuManager", 2);
     this->_Menus->setGame(_Game);
 
-    this->_DebugLogger->Log("initiating game", 2);
-    this->_Game->initGame();
-
     this->_DebugLogger->Log("creating networkelem", 2);
     this->_NetworkElem = std::make_shared<NetworkElem>(_DebugLogger);
 
@@ -250,6 +247,8 @@ void RlibWindow::InitRlib()
     GuiLoadStyleDefault();
     _Menus->setBackgroundColor(_BackgroundColor);
     _DebugLogger->Log("Raylib Window Initiated");
+    this->_DebugLogger->Log("initiating game", 2);
+    this->_Game->initGame();
 }
 
 void RlibWindow::CloseRlibWindow() const
