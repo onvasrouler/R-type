@@ -223,7 +223,7 @@ void MenuManager::setGameInfo(const std::string ip, const std::string port) // a
     _Ip = ip;
     _Port = port;
     if (_NetworkElem)
-        _NetworkElem->setServerInfos(ip, port);
+        _NetworkElem->setServerInfos(ip, port); // ajouter username
     else
         this->_DebugLogger->Log("NetworkElem not setted", 0);
     this->setMenuType(CONNECTION_MENU);
