@@ -431,7 +431,7 @@ class GuiElementFactory {
 
     void setWindowWidth(const int windowWidth);
     void setWindowHeight(const int windowHeight);
-
+    void setWindowSize(const int windowWidth, const int windowHeight);
     
     std::map<menuType, std::vector<MenuItem>> getMenuItems() const;
 

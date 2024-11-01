@@ -741,13 +741,19 @@ void GuiElementFactory::setDebugLogger(std::shared_ptr<DebugLogger> debugLogger)
     this->_DebugLogger = debugLogger;
 }
 
-void GuiElementFactory::setWindowWidth(int width)
+void GuiElementFactory::setWindowWidth(const int width)
 {
     this->_WindowWidth = width;
 }
 
-void GuiElementFactory::setWindowHeight(int height)
+void GuiElementFactory::setWindowHeight(const int height)
 {
+    this->_WindowHeight = height;
+}
+
+void GuiElementFactory::setWindowSize(const int width, const int height)
+{
+    this->_WindowWidth = width;
     this->_WindowHeight = height;
 }
 
