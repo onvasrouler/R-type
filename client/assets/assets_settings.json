@@ -1,16 +1,17 @@
 {
     "entities": {
-        "bullet": {
-            "id": "0",
-            "sprite": "./bullet.png"
-        },
         "player": {
             "id": "1",
-            "sprite": "./player.png"
+            "sprite": "./assets/player.png"
         },
         "enemy": {
             "id": "2",
-            "sprite": "./enemy.png"
+            "sprite": "./assets/enemy.png"
+        },
+        "bullet": {
+            "id": "3",
+            "sprite": "./assets/bullet.png"
         }
+
     }
 }
