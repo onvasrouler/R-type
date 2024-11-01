@@ -104,7 +104,7 @@ set(GUIELEM_FILES
 
 set(MAIN_FILE main.cpp)
 
-set(TARGET_NAME RType)
+set(TARGET_NAME r-type_client)
 
 link_directories(${CMAKE_SOURCE_DIR}/build/debug)
 
