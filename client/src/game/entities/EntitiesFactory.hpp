@@ -11,7 +11,14 @@
 
 #include "../../jsonParser/jsonParser.hpp"
 #include "../../raylibWindow/utils.hpp"
-#include "AEntities.hpp"
+#include "Entities.hpp"
+
+enum class EntityType {
+    DEFAULTENT,
+    PLAYER,
+    ENEMY,
+    BULLET
+};
 
 class EntitiesFactory {
 public:
@@ -23,7 +30,9 @@ public:
 
     void loadEntities(const std::string filename);
 
-    std::shared_ptr<AEntities> createEntity(nlohmann::json_abi_v3_11_3::json entityData);
+    std::shared_ptr<Entities> createEntity(nlohmann::json_abi_v3_11_3::json entityData);
+
+    std::shared_ptr<Entities> getEntity(EntityType type);
 
 private:
     std::shared_ptr<JsonParser> _JsonParser; /**< Shared pointer to a JsonParser object. */
@@ -31,7 +40,7 @@ private:
 
     nlohmann::json_abi_v3_11_3::json _EntitiesData;
 
-    std::map<std::string, std::shared_ptr<AEntities>> _Entities;
+    std::map<int, std::shared_ptr<Entities>> _Entities;
 
 
 };

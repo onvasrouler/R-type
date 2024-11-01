@@ -31,14 +31,17 @@ void EntitiesFactory::loadEntities(const std::string filename)
         _EntitiesData = _JsonParser->parseFile(filename);
         if (_EntitiesData.contains("entities"))
             for (auto &entity : _EntitiesData["entities"])
-                _Entities[entity["id"]] = createEntity(entity);
+                _Entities[std::stoi(entity["id"].get<std::string>())] = createEntity(entity);
+        std::cout << "Entities created" << std::endl;
     } else if (_DebugLogger)
-        _DebugLogger->Log("JsonParser not setted", 0);
+            _DebugLogger->Log("JsonParser not setted", 0);
+        else
+            std::cerr << "JsonParser not setted" << std::endl;
 }
 
-std::shared_ptr<AEntities> EntitiesFactory::createEntity(nlohmann::json entityData)
+std::shared_ptr<Entities> EntitiesFactory::createEntity(nlohmann::json entityData)
 {
-    std::shared_ptr<AEntities> entity = std::make_shared<AEntities>();
+    std::shared_ptr<Entities> entity = std::make_shared<Entities>();
 
     // entity->setPos(Vector2{entityData["pos"]["x"], entityData["pos"]["y"]});
     // entity->setSpeed(Vector2{entityData["speed"]["x"], entityData["speed"]["y"]});
@@ -48,10 +51,22 @@ std::shared_ptr<AEntities> EntitiesFactory::createEntity(nlohmann::json entityDa
     std::string texturePath = entityData["sprite"].get<std::string>();
 
     entity->setTexturePath(texturePath);
-    entity->setTexture(LoadTexture(texturePath.c_str()));
+    entity->setImage(LoadImage(texturePath.c_str()));
+    entity->setTexture(LoadTextureFromImage(entity->getImage()));
     // entity->setSize(Vector2{entityData["size"]["x"], entityData["size"]["y"]});
     // entity->setScale(entityData["scale"]);
     // entity->setRotation(entityData["rotation"]);
     entity->setId(entityData["id"].get<std::string>());
     return entity;
+}
+
+std::shared_ptr<Entities> EntitiesFactory::getEntity(EntityType type)
+{
+   int entityType = static_cast<int>(type);
+   std::shared_ptr<Entities> newEntity = std::make_shared<Entities>();
+   newEntity->setTexturePath(_Entities[entityType]->getTexturePath());
+    newEntity->setImage(_Entities[entityType]->getImage());
+    newEntity->setTexture(_Entities[entityType]->getTexture());
+    newEntity->setId(_Entities[entityType]->getId());
+    return newEntity;
 }
