@@ -75,7 +75,7 @@ set(SRC_FILES
     src/menu/GuiElementFactory.cpp
     src/network/networkElem.cpp
     src/game/game.cpp
-    src/game/entities/AEntities.cpp
+    src/game/entities/Entities.cpp
     src/game/entities/EntitiesFactory.cpp
     src/raylibWindow/utils.cpp
     src/raylibWindow/raylibWindow.cpp
