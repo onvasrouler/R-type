@@ -7,10 +7,13 @@
 
 #pragma once
 
-#include <boost/asio.hpp>
+
+#include <string>
 #include <thread>
 #include <iostream>
 #include <atomic>
+#include <boost/asio.hpp>
+namespace b_w = boost::asio;
 #include "../game/game.hpp"
 
 /**
@@ -57,7 +60,7 @@ public:
      * 
      * @param ip The new IP address.
      */
-    void setIp(const std::string ip);
+    void setIp(std::string ip);
 
     /**
      * @brief Sets the port number of the server.
@@ -146,15 +149,21 @@ public:
 
     bool _Connected;
     std::atomic<Status> _Status;
-    boost::asio::io_service _Io_service;
-    boost::asio::ip::udp::socket _Socket;
-    boost::asio::ip::udp::endpoint _Endpoint;
-    boost::asio::ip::udp::endpoint _Sender_endpoint;
+    b_w::io_service _Io_service;
+    b_w::ip::udp::socket _Socket;
+    b_w::ip::udp::endpoint _Endpoint;
+    b_w::ip::udp::endpoint _Sender_endpoint;
     std::thread _Network_thread;
     std::string _Response;
-    boost::asio::steady_timer _Timer;
-    boost::asio::steady_timer _Timer2;
+    b_w::steady_timer _Timer;
+    b_w::steady_timer _Timer2;
     std::array<char, 1024> _Buffer;
+
+    bool _DownPressed;
+    bool _UpPressed;
+    bool _LeftPressed;
+    bool _RightPressed;
+    bool _SpacePressed;
 
 
 
