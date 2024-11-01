@@ -48,12 +48,14 @@ void MenuManager::setWindowHeight(const int windowHeight)
 {
     this->_WindowHeight = windowHeight;
     this->_GuiElementFactory->setWindowHeight(windowHeight);
+    this->_Game->setWindowHeight(windowHeight);
 }
 
 void MenuManager::setWindowWidth(const int windowWidth)
 {
     this->_WindowWidth = windowWidth;
     this->_GuiElementFactory->setWindowWidth(windowWidth);
+    this->_Game->setWindowWidth(windowWidth);
 }
 
 void MenuManager::setWindowSize(const int windowWidth, const int windowHeight)
@@ -62,6 +64,8 @@ void MenuManager::setWindowSize(const int windowWidth, const int windowHeight)
     this->setWindowWidth(windowWidth);
     this->_GuiElementFactory->setWindowWidth(windowWidth);
     this->_GuiElementFactory->setWindowHeight(windowHeight);
+    this->_Game->setWindowWidth(windowWidth);
+    this->_Game->setWindowHeight(windowHeight);
 }
 
 int MenuManager::getWindowHeight() const
