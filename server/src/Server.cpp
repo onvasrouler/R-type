@@ -171,13 +171,23 @@ void Server::start() {
             }
         #endif
     }
-#ifdef _WIN32
-    u_long mode = 1; // 1 to enable non-blocking mode
     for (auto &module : _modules) {
+#ifdef _WIN32
+        u_long mode = 1; // 1 to enable non-blocking mode
         ioctlsocket(module->getSocket(), FIONBIO, &mode);
-    }
+#else
+        fcntl(module->getSocket(), F_SETFL, O_NONBLOCK);
 #endif
-    std::cout << "Modules created" << std::endl;
+        for (auto &communicateModuleID : module->getModule()->getCommunicatesModules()) {
+            for (auto &otherModule : _modules) {
+                if (otherModule->getModule()->getId() == communicateModuleID) {
+                    // module->addCommunicatesModule(otherModule->getSocket());
+                    otherModule->addCommunicatesModule(module->getSocket());
+                }
+            }
+        }
+        std::cout << "Modules created" << std::endl;
+    }
 }
 
 void Server::run() {
@@ -230,32 +240,43 @@ void Server::run() {
             }
             std::cout << "Core message received: " << messages << " from: " << module->getModuleName() << std::endl;
             for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-                    messages.find(THREAD_END_MESSAGE) != std::string::npos;
-                    messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
-                    message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
-                    message += THREAD_END_MESSAGE;
-                for (auto &writeToModule : _modules) {
-                    if (canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId()))
-                        std::cout << "Core find good module" << std::endl;
-                    if (FD_ISSET(module->getSocket(), &writefds) && canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId())) {
-                        writeToModule->addMessage(message);
-                    }
+                messages.find(THREAD_END_MESSAGE) != std::string::npos;
+                messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
+                message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
+                message += THREAD_END_MESSAGE;
+                for (auto &communicateModule : module->getCommunicatesSockets()) {
+                    _messageToSend.push_back(std::make_tuple(communicateModule, message));
                 }
             }
 #endif
         }
-        for (auto& module : _modules) {
-            if (module->getMessages().empty() ||
-                !FD_ISSET(module->getSocket(), &writefds))
-                continue;
-            for (auto& message : module->getMessages()) {
-                std::cout << "Core sending message: " << message
-                          << "to module: " << module->getModuleName()
-                          << std::endl;
-                send(module->getSocket(), message.c_str(), message.size(), 0);
+        // for (auto& module : _modules) {
+        //     if (module->getMessages().empty() ||
+        //         !FD_ISSET(module->getSocket(), &writefds))
+        //         continue;
+        //     // for (auto& message : module->getMessages()) {
+        //     //     std::cout << "Core sending message: " << message
+        //     //               << "to module: " << module->getModuleName()
+        //     //               << std::endl;
+        //     //     send(module->getSocket(), message.c_str(), message.size(), 0);
+        //     // }
+        //     module->clearMessages();
+        // }
+        for (auto& message : _messageToSend) {
+            if (FD_ISSET(std::get<0>(message), &writefds)) {
+                std::string moduleName = "";
+                for (auto& module : _modules) {
+                    if (module->getSocket() == std::get<0>(message)) {
+                        moduleName = module->getModuleName();
+                        break;
+                    }
+                }
+                std::cout << "Core sending message: " << std::get<1>(message)
+                          << "to module: " << moduleName << std::endl;
+                send(std::get<0>(message), std::get<1>(message).c_str(), std::get<1>(message).size(), 0);
             }
-            module->clearMessages();
         }
+        _messageToSend.clear();
     }
 }
 
@@ -341,8 +362,6 @@ bool Server::canCommunicateWith(std::string moduleId,
     }
     for (auto& module : _modules) {
         if (module->getModule()->getId() == moduleId) {
-            std::cout << "Core find target module" << std::endl;
-            std::cout << "ne=b communicate Modules: " << module->getModule()->getCommunicatesModules().size() << std::endl;
             for (auto& communicateModule : module->getModule()->getCommunicatesModules()) {
                 std::cout << communicateModule << " " << communicateModuleId << std::endl;
                 if (communicateModule == communicateModuleId)

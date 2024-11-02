@@ -52,3 +52,25 @@ void serverModule::addMessage(const std::string message) {
 std::vector<std::string> serverModule::getMessages() { return _messages; }
 
 void serverModule::clearMessages() { _messages.clear(); }
+
+std::vector<std::string> serverModule::getCommunicatesModules() {
+    return _communicatesModulesID;
+}
+
+#ifdef _WIN32
+    std::vector<SOCKET> serverModule::getCommunicatesSockets() {
+        return _communicatesModules;
+    }
+
+    void serverModule::addCommunicatesModule(const SOCKET moduleSocket) {
+        _communicatesModules.push_back(moduleSocket);
+    }
+#else
+    std::vector<int> serverModule::getCommunicatesSockets() {
+        return _communicatesModules;
+    }
+
+    void serverModule::addCommunicatesModule(const int moduleSocket) {
+        _communicatesModules.push_back(moduleSocket);
+    }
+#endif

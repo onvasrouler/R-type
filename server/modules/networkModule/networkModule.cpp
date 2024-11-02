@@ -185,6 +185,8 @@ void NetworkModule::run() {
                          messages = messages.substr(
                              messages.find(THREAD_END_MESSAGE) + 2)) {
             try {
+                std::cout << "Module: " << _ModuleName << " received: " << message << " from core"
+                          << std::endl;
                 // encode message and send to the clients
                 std::string uuid = message.substr(0, message.find(":"));
                 std::cout << uuid << std::endl;

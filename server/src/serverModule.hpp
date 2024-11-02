@@ -103,6 +103,61 @@ class serverModule {
         #else
             void *getDynamicLibrary() { return _dynamicLibrary; }
         #endif
+
+        /**
+         * @brief This function return the list of modules to communicate with
+         *
+         * @return The list of modules to communicate with
+         */
+        std::vector<std::string> getCommunicatesModules();
+
+        /**
+         * @brief This function return the list of sockets of the modules to communicate with
+         *
+         * @return The list of sockets of the modules to communicate with
+         */
+        #ifdef _WIN32
+            std::vector<SOCKET> getCommunicatesSockets();
+        #else
+            std::vector<int> getCommunicatesSockets();
+        #endif
+
+        /**
+         * @brief This function add a module to communicate with
+         *
+         * @param moduleSocket The socket of the module to communicate with
+         */
+        #ifdef _WIN32
+            void addCommunicatesModule(const SOCKET moduleSocket);
+        #else
+            void addCommunicatesModule(const int moduleSocket);
+        #endif
+
+        /**
+         * @brief Thsi function add a module id to communicate with
+         *
+         * @param moduleID The id of the module to communicate with
+         */
+        void addCommunicatesModuleID(const std::string moduleID);
+
+        /**
+         * @brief This function return the id of the module
+         *
+         * @return The id of the module
+         */
+        std::string getModuleID() { return _module->getId(); }
+
+        /**
+         * @brief This function return the socket of the module
+         *
+         * @return The socket of the module
+         */
+        #ifdef _WIN32
+            SOCKET getModuleSocket() { return _serverInterSocket; }
+        #else
+            int getModuleSocket() { return _serverInterSocket; }
+        #endif
+
     private:
         std::shared_ptr<AbstractModule> _module; // The module to store.
         #ifdef _WIN32
@@ -116,4 +171,10 @@ class serverModule {
         #else
             void *_dynamicLibrary; // The dynamic library of the module.
         #endif
+        #ifdef _WIN32
+            std::vector<SOCKET> _communicatesModules; /*!< The sockets of the modules to communicate with. */
+        #else
+            std::vector<int> _communicatesModules; /*!< The sockets of the modules to communicate with. */
+        #endif
+        std::vector<std::string> _communicatesModulesID; /*!< The names of the modules to communicate with. */
 };
