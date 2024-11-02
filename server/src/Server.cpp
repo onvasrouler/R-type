@@ -143,7 +143,15 @@ void Server::start() {
             AbstractModule* moduleInstance = create_module(module.GetModuleName(), module.GetModuleId());
             std::cout << "Loaded module: " << moduleInstance->getName() << std::endl;
 
-            createModule(moduleInstance, hModule);
+            for (auto &listen : module.GetModuleListen()) {
+                moduleInstance->addCommunicateModule(listen);
+            }
+            try {
+                createModule(moduleInstance, hModule);
+            } catch (std::exception &e) {
+                std::cerr << e.what() << std::endl;
+                throw std::runtime_error("Error while creating the module");
+            }
         #else
             if (!std::filesystem::exists(path)) {
                 std::cerr << "SO not found: " << path << std::endl;
@@ -226,8 +234,6 @@ void Server::run() {
             for (int valread = recv(module->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
                  valread = recv(module->getSocket(), buffer, 1024, 0)) {
-                std::cout << "Read: " << buffer << " from game module"
-                          << std::endl;
                 messages += buffer;
             }
 #else
@@ -238,17 +244,18 @@ void Server::run() {
                                 MSG_DONTWAIT)) {
                 messages += buffer;
             }
+#endif
             std::cout << "Core message received: " << messages << " from: " << module->getModuleName() << std::endl;
             for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
                 messages.find(THREAD_END_MESSAGE) != std::string::npos;
                 messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
                 message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
                 message += THREAD_END_MESSAGE;
+                std::cout << "Nb communicate module: " << module->getCommunicatesSockets().size() << std::endl;
                 for (auto &communicateModule : module->getCommunicatesSockets()) {
                     _messageToSend.push_back(std::make_tuple(communicateModule, message));
                 }
             }
-#endif
         }
         // for (auto& module : _modules) {
         //     if (module->getMessages().empty() ||
@@ -262,8 +269,16 @@ void Server::run() {
         //     // }
         //     module->clearMessages();
         // }
+        #ifdef _WIN32
+            std::vector<std::tuple<SOCKET, std::string>> messagesNotSent;
+        #else
+            std::vector<std::tuple<int, std::string>> messagesNotSent;
+        #endif
+        if (!_messageToSend.empty())
+            std::cout << "Message to send: " << _messageToSend.size() << std::endl;
         for (auto& message : _messageToSend) {
             if (FD_ISSET(std::get<0>(message), &writefds)) {
+                std::cout << "test" << std::endl;
                 std::string moduleName = "";
                 for (auto& module : _modules) {
                     if (module->getSocket() == std::get<0>(message)) {
@@ -275,8 +290,12 @@ void Server::run() {
                           << "to module: " << moduleName << std::endl;
                 send(std::get<0>(message), std::get<1>(message).c_str(), std::get<1>(message).size(), 0);
             }
+            else {
+                std::cout << "Message not sent" << std::endl;
+                messagesNotSent.push_back(message);
+            }
         }
-        _messageToSend.clear();
+        _messageToSend = messagesNotSent;
     }
 }
 

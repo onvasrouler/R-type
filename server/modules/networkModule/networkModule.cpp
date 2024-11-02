@@ -151,7 +151,7 @@ void NetworkModule::run() {
                     _clients.push_back(newClient);
                 }
                 std::string messageToSend = createMessage(data.getIp(), data.getPort(), message);
-                std::cout << "send to core: " << messageToSend << std::endl;
+                std::cout << "Module: " << _ModuleName << " send to core: " << messageToSend << std::endl;
                 send(_socket, messageToSend.c_str(), messageToSend.size(), 0);
             }
             _udpServer->getReceivedData().clear();

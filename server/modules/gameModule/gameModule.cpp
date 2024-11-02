@@ -94,8 +94,8 @@ void GameModule::run() {
              valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
             messages += buffer;
         }
-        std::cout << "Module: " << _ModuleName << " message received: " << messages << " from core" << std::endl;
 #endif
+        std::cout << "Module: " << _ModuleName << " message received: " << messages << " from core" << std::endl;
         _game.getReadMutex().lock();
         for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
             messages.find(THREAD_END_MESSAGE) != std::string::npos;
