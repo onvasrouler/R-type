@@ -7,8 +7,24 @@
 
 #pragma once
 
-#include "guiElem/Elem.hpp"
-
+#include "guiElem/src/GButton/GButton.hpp"
+#include "guiElem/src/GCheckBox/GCheckBox.hpp"
+#include "guiElem/src/GColorPicker/GColorPicker.hpp"
+#include "guiElem/src/GDropDown/GDropDown.hpp"
+#include "guiElem/src/GGroup/GGroup.hpp"
+#include "guiElem/src/GList/GList.hpp"
+#include "guiElem/src/GListEx/GListEx.hpp"
+#include "guiElem/src/GPannel/GPannel.hpp"
+#include "guiElem/src/GProgressBar/GProgressBar.hpp"
+#include "guiElem/src/GSlider/GSlider.hpp"
+#include "guiElem/src/GSpinner/GSpinner.hpp"
+#include "guiElem/src/GTextInput/GTextInput.hpp"
+#include "guiElem/src/GTextInputBox/GTextInputBox.hpp"
+#include "guiElem/src/GToggleGroup/GToggleGroup.hpp"
+#include "guiElem/src/GToggleSlider/GToggleSlider.hpp"
+#include "guiElem/src/GValueBox/GValueBox.hpp"
+#include "guiElem/src/GWindBox/GWindBox.hpp"
+#include "guiElem/src/Text/Text.hpp"
 
 /**
  * @class RGui

@@ -7,80 +7,103 @@
 
 #include "raylibWindow.hpp"
 
-RlibWindow::RlibWindow(const int windowWidth, const int windowHeight, const std::string title, const Color backgroundColor, const int frameRateLimit)
+RlibWindow::RlibWindow(
+    const int         windowWidth,
+    const int         windowHeight,
+    const std::string title,
+    const Color       backgroundColor,
+    const int         frameRateLimit)
 {
     this->_FpsCounter = std::make_unique<FpsCounter>();
     this->_FpsCounter->getFpsText()->setDisplay(false);
-    this->_WindowWidth = windowWidth;
-    this->_WindowHeight = windowHeight;
-    this->_Title = title;
+    this->_WindowWidth     = windowWidth;
+    this->_WindowHeight    = windowHeight;
+    this->_Title           = title;
     this->_BackgroundColor = backgroundColor;
-    this->_FrameRateLimit = frameRateLimit;
+    this->_FrameRateLimit  = frameRateLimit;
     this->setDefaultVal();
 }
 
 void RlibWindow::setDefaultVal()
 {
+    this->_DebugLogger->Log("setting simple value : _AutoReloadMenus -> _OldMenuType", 2);
     this->_AutoReloadMenus = false;
-    this->_UpPressed = false;
-    this->_DownPressed = false;
-    this->_LeftPressed = false;
-    this->_RightPressed = false;
-    this->_SpacePressed = false;
-    this->_EscapePressed = false;
-    this->_OldMenuType = START_MENU;
+    this->_UpPressed       = false;
+    this->_DownPressed     = false;
+    this->_LeftPressed     = false;
+    this->_RightPressed    = false;
+    this->_SpacePressed    = false;
+    this->_EscapePressed   = false;
+    this->_OldMenuType     = START_MENU;
+    this->_DebugLogger->Log("setting _GuiFunction", 2);
     this->_GuiFunction = std::make_shared<guiFunction>();
+
+    this->_DebugLogger->Log("creating menu with json parser", 2);
     this->_Menus = std::make_shared<MenuManager>(_JsonParser);
+
+    this->_DebugLogger->Log("setting debuglogger to menuManager", 2);
     this->_Menus->setDebugLogger(_DebugLogger);
+
+    this->_DebugLogger->Log("setting guifunct to menuManager", 2);
     this->_Menus->setGuiFunction(_GuiFunction);
+
+    this->_DebugLogger->Log("setting menuManager to guifunct", 2);
     this->_GuiFunction->setMenuManager(_Menus);
+
+    this->_DebugLogger->Log("mapping functions", 2);
     this->_GuiFunction->mapFunctions();
+
+    this->_DebugLogger->Log("setting window size", 2);
     this->_Menus->setWindowSize(_WindowWidth, _WindowHeight);
+
+    this->_DebugLogger->Log("loading menu", 2);
     this->_Menus->loadMenu();
 
+    this->_DebugLogger->Log("setting game to raylibwindow", 2);
+    this->_Game = std::make_shared<Game>(_JsonParser, _DebugLogger, _WindowWidth, _WindowHeight);
+
+    this->_DebugLogger->Log("setting game to menuManager", 2);
+    this->_Menus->setGame(_Game);
+
+    this->_DebugLogger->Log("creating networkelem", 2);
+    this->_NetworkElem = std::make_shared<NetworkElem>(_DebugLogger);
+
+    this->_DebugLogger->Log("setting networkelem to menuManager", 2);
+    this->_Menus->setNetworkElem(_NetworkElem);
 }
 
 RlibWindow::RlibWindow(const std::string filename)
 {
-    nlohmann::json json;
+    nlohmann::json          json;
     std::shared_ptr<RLText> fpsTxt;
-    this->_JsonParser = std::make_unique<JsonParser>();
-    this->_FpsCounter = std::make_unique<FpsCounter>();
+    this->_JsonParser  = std::make_unique<JsonParser>();
+    this->_FpsCounter  = std::make_unique<FpsCounter>();
     this->_DebugLogger = std::make_shared<DebugLogger>(true);
 
     json = _JsonParser->parseFile(filename);
 
-    this->_WindowWidth = json["windowWidth"];
-    this->_WindowHeight = json["windowHeight"];
-    this->_Title = json["windowTitle"];
+    this->_WindowWidth     = json["windowWidth"];
+    this->_WindowHeight    = json["windowHeight"];
+    this->_Title           = json["windowTitle"];
     this->_BackgroundColor = {
         json["backgroundColor"]["r"],
         json["backgroundColor"]["g"],
         json["backgroundColor"]["b"],
-        json["backgroundColor"]["a"]
-    };
+        json["backgroundColor"]["a"]};
     this->_FrameRateLimit = json["frameRateLimit"];
-    this->_IsFullscreen = json["windowMaximized"];
-    this->_windowX = json["windowX"];
-    this->_windowY = json["windowY"];
+    this->_IsFullscreen   = json["windowMaximized"];
+    this->_windowX        = json["windowX"];
+    this->_windowY        = json["windowY"];
 
     fpsTxt = this->_FpsCounter->getFpsText();
 
-    fpsTxt->setPos(
-        Vector2{
-            json["fpsText"]["position"]["x"],
-            json["fpsText"]["position"]["y"]
-            }
-        );
+    fpsTxt->setPos(Vector2{json["fpsText"]["position"]["x"], json["fpsText"]["position"]["y"]});
     fpsTxt->setSize(Vector2{0.0F, json["fpsText"]["fontSize"].get<float>()});
-    fpsTxt->setColor(
-        Color{
-            json["fpsText"]["color"]["r"],
-            json["fpsText"]["color"]["g"],
-            json["fpsText"]["color"]["b"],
-            json["fpsText"]["color"]["a"]
-            }
-        );
+    fpsTxt->setColor(Color{
+        json["fpsText"]["color"]["r"],
+        json["fpsText"]["color"]["g"],
+        json["fpsText"]["color"]["b"],
+        json["fpsText"]["color"]["a"]});
     fpsTxt->setDisplay(json["fpsText"]["display"]);
     fpsTxt->setZIndex(json["fpsText"]["z-index"]);
     this->_DebugLogger->SetActive(json["logger"]["active"]);
@@ -105,7 +128,7 @@ void RlibWindow::setHeight(const int windowHeight)
 
 void RlibWindow::setSize(const int windowWidth, const int windowHeight)
 {
-    this->_WindowWidth = windowWidth;
+    this->_WindowWidth  = windowWidth;
     this->_WindowHeight = windowHeight;
 }
 
@@ -134,7 +157,7 @@ void RlibWindow::swapSettings()
 {
     _DebugLogger->Log("Settings Touch or Button clicked swapping the state of the config menu", 1);
     this->_MenuOpened = !_MenuOpened;
-    if (_MenuOpened) {
+    if ( _MenuOpened ) {
         _DebugLogger->Log("Config Menu wasn't oppened, opening it...", 1);
         this->_OldMenuType = this->_Menus->getMenuType();
         this->_Menus->setMenuType(SETTINGS_GENERAL);
@@ -218,12 +241,14 @@ void RlibWindow::InitRlib()
     InitWindow(_WindowWidth, _WindowHeight, _Title.c_str());
     SetTargetFPS(_FrameRateLimit);
     SetExitKey(KeyboardKey::KEY_NULL);
-    if (_IsFullscreen)
+    if ( _IsFullscreen )
         ToggleFullscreen();
     SetWindowPosition(_windowX, _windowY);
     GuiLoadStyleDefault();
     _Menus->setBackgroundColor(_BackgroundColor);
     _DebugLogger->Log("Raylib Window Initiated");
+    this->_DebugLogger->Log("initiating game", 2);
+    this->_Game->initGame();
 }
 
 void RlibWindow::CloseRlibWindow() const
@@ -244,7 +269,7 @@ void RlibWindow::update()
     _DebugLogger->Log("Begin Draw", 3);
     this->BeginRlibDraw();
     _DebugLogger->Log("Checking if window resized", 3);
-    if (IsWindowResized()) {
+    if ( IsWindowResized() ) {
         _DebugLogger->Log("Window resize", 2);
         _DebugLogger->Log("Updated size in raylibWindow class", 3);
         this->setSize(GetScreenWidth(), GetScreenHeight());
@@ -260,7 +285,7 @@ void RlibWindow::update()
     this->_FpsCounter->getFpsText()->draw();
     _DebugLogger->Log("Updating keyboard input", 3);
     this->updateKeyboadInputs();
-    if (_AutoReloadMenus)
+    if ( _AutoReloadMenus )
         _Menus->reloadOnChanges();
     _DebugLogger->Log("Ending draw", 3);
     this->EndRlibDraw();
@@ -269,16 +294,18 @@ void RlibWindow::update()
 
 void RlibWindow::updateKeyboadInputs()
 {
-    for (const auto& [key, action] : keyDownActions)
-        if (IsKeyPressed(key))
+    
+    for ( const auto& [key, action] : keyDownActions )
+        if ( IsKeyPressed(key) )
             action();
-    for (const auto& [key, action] : keyUpActions)
-        if (IsKeyReleased(key))
+    for ( const auto& [key, action] : keyUpActions )
+        if ( IsKeyReleased(key) )
             action();
-    for (int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key)
-        if (IsKeyPressed(key))
-            _DebugLogger->Log("Key pressed: " + GetKeyPressed(), 2);
-
+    for ( int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key )
+        if ( IsKeyPressed(key) )
+            this->_Menus->handleInput(key, 1);
+        else if ( IsKeyReleased(key) )
+            this->_Menus->handleInput(key, 0);
 }
 
 void RlibWindow::BeginRlibDraw() const

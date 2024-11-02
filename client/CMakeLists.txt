@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Ajout des options de compilation en fonction du compilateur
 if (MSVC)
     # Pour MSVC (Visual Studio), utiliser /W4 pour des avertissements plus stricts
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /MP /D_WIN32_WINNT=0x0601")
 else()
     # Pour les compilateurs GCC et Clang, utiliser -Wall et -Wextra
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
@@ -22,14 +22,14 @@ find_package(nlohmann_json REQUIRED)
 find_package(raylib REQUIRED)
 
 add_custom_command(
-    OUTPUT ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.c
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.h ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.c
-    DEPENDS ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.h
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/raygui/raygui.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/raygui/raygui.h ${CMAKE_SOURCE_DIR}/src/raygui/raygui.c
+    DEPENDS ${CMAKE_SOURCE_DIR}/src/raygui/raygui.h
     COMMENT "Copying raygui.h to raygui.c"
 )
 
 # Add the renamed file to the library
-add_library(raygui SHARED ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.c)
+add_library(raygui SHARED ${CMAKE_SOURCE_DIR}/src/raygui/raygui.c)
 
 target_compile_definitions(raygui PRIVATE RAYGUI_IMPLEMENTATION BUILD_LIBTYPE_SHARED)
 
@@ -72,6 +72,11 @@ set(SRC_FILES
     src/elements/guiElements/gui.cpp
     src/elements/guiElements/guiFunction.cpp
     src/menu/menuManager.cpp
+    src/menu/GuiElementFactory.cpp
+    src/network/networkElem.cpp
+    src/game/game.cpp
+    src/game/entities/Entities.cpp
+    src/game/entities/EntitiesFactory.cpp
     src/raylibWindow/utils.cpp
     src/raylibWindow/raylibWindow.cpp
 )
@@ -99,7 +104,7 @@ set(GUIELEM_FILES
 
 set(MAIN_FILE main.cpp)
 
-set(TARGET_NAME RType)
+set(TARGET_NAME r-type_client)
 
 link_directories(${CMAKE_SOURCE_DIR}/build/debug)
 
