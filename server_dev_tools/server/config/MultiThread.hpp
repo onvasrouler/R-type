@@ -19,7 +19,6 @@
 #include <any>
 #include <thread>
 #include <vector>
-#include "UUID.hpp"
 #ifdef _WIN32
     #if defined(_WIN32) && defined(WIN32_LEAN_AND_MEAN)
         #include <winsock2.h>
@@ -101,7 +100,6 @@ class MultiThreadElement {
          * @brief Stop the module.
          */
         virtual std::string encodeInterCommunication(std::string message) = 0;
-
         std::thread _thread; /*!< The thread of the module. */
         std::vector<MultiThreadData> _datas; /*!< The data stored. */
         std::vector<std::string> _sendingIntern; /*!< The messages to send. */

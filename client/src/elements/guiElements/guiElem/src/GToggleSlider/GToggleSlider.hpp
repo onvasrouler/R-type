@@ -11,7 +11,7 @@
 
 class GToggleSlider : public AGuiElem {
 public:
-    GToggleSlider(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = "default;toggle",const int zindex = defaultZIndex, const std::string id = defaultId, const int active = 0, const bool display = defaultDisplay);
+    GToggleSlider(const Vector2 pos = DEFAULT_POS, const Vector2 size = DEFAULT_SIZE, const std::string text = "default;toggle",const int zindex = DEFAULT_Z_INDEX, const std::string id = DEFAULT_ID, const int active = 0, const bool display = DEFAULT_DISPLAY);
     ~GToggleSlider() = default;
 
     void draw() const;

@@ -1,0 +1,17 @@
+{
+    "entities": {
+        "player": {
+            "id": "1",
+            "sprite": "./assets/player.png"
+        },
+        "enemy": {
+            "id": "2",
+            "sprite": "./assets/enemy.png"
+        },
+        "bullet": {
+            "id": "3",
+            "sprite": "./assets/bullet.png"
+        }
+
+    }
+}

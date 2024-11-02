@@ -11,7 +11,7 @@
 
 class GTextInputBox : public AGuiElem {
 public:
-    GTextInputBox(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const int zindex = defaultZIndex, const std::string id = defaultId, const std::string title = "default title", const std::string message = "default message", const std::string buttons = "default;buttons", const std::string text = defaultText, const int textMaxSize = 100, const bool secretViewActive = NULL, const bool display = defaultDisplay);
+    GTextInputBox(const Vector2 pos = DEFAULT_POS, const Vector2 size = DEFAULT_SIZE, const int zindex = DEFAULT_Z_INDEX, const std::string id = DEFAULT_ID, const std::string title = "default title", const std::string message = "default message", const std::string buttons = "default;buttons", const std::string text = DEFAULT_TEXT, const int textMaxSize = 100, const bool secretViewActive = NULL, const bool display = DEFAULT_DISPLAY);
     ~GTextInputBox() = default;
 
     void draw() const;

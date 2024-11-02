@@ -7,14 +7,20 @@
 
 #include "AGuiElem.hpp"
 
-AGuiElem::AGuiElem(const Vector2 pos, const Vector2 size, const std::string text, const int zindex, const std::string id, const bool display)
+AGuiElem::AGuiElem(
+    const Vector2     pos,
+    const Vector2     size,
+    const std::string text,
+    const int         zindex,
+    const std::string id,
+    const bool        display)
 {
-    this->_Pos = pos;
-    this->_Size = size;
-    this->_Text = text;
-    this->_Id = id;
+    this->_Pos     = pos;
+    this->_Size    = size;
+    this->_Text    = text;
+    this->_Id      = id;
     this->_Display = display;
-    this->_ZIndex = zindex;
+    this->_ZIndex  = zindex;
 }
 
 void AGuiElem::setPos(const Vector2 pos)

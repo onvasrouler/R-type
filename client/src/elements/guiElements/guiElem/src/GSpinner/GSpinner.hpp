@@ -11,7 +11,7 @@
 
 class GSpinner : public AGuiElem {
 public:
-    GSpinner(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText, const int zindex = defaultZIndex, const std::string id = defaultId, const int value = defaultIntvalue, const int minValue = 0, const int maxValue = 100, const bool editMode = false, const bool display = defaultDisplay);
+    GSpinner(const Vector2 pos = DEFAULT_POS, const Vector2 size = DEFAULT_SIZE, const std::string text = DEFAULT_TEXT, const int zindex = DEFAULT_Z_INDEX, const std::string id = DEFAULT_ID, const int value = DEFAULT_INT_VALUE, const int minValue = 0, const int maxValue = 100, const bool editMode = false, const bool display = DEFAULT_DISPLAY);
     ~GSpinner() = default;
 
     void draw() const;

@@ -85,6 +85,7 @@ compiler_head_server() {
 }
 
 compile_client() {
+    clean_client
     echo "Building client"
     cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -Wno-dev
     if [ $? -ne 0 ]; then

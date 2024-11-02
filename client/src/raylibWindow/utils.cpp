@@ -52,6 +52,21 @@ bool isPortValid(const std::string port)
     return std::regex_match(port, portPattern);
 }
 
+std::vector<std::string> splitter(const std::string str, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::stringstream ss(str);
+    std::string token;
+
+    while (std::getline(ss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    if (!tokens.empty() && tokens.back().size() >= 2) {
+        tokens.back().erase(tokens.back().size() - 2, 2);
+    }
+    return(tokens);
+}
+
 DebugLogger::DebugLogger(const bool active, const int depth)
 {
     this->_Active = active;

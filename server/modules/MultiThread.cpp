@@ -19,11 +19,6 @@
     }
 #endif
 
-static std::string generateId() {
-    uuid id;
-    return id.toString();
-}
-
 MultiThreadElement::MultiThreadElement() {
     _datas = std::vector<MultiThreadData>();
     _sendingIntern = std::vector<std::string>();

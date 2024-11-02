@@ -11,7 +11,7 @@
 
 class GCheckBox : public AGuiElem {
 public:
-    GCheckBox(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText, const int zindex = defaultZIndex, const std::string id = defaultId, const bool checked = false, const bool display = defaultDisplay);
+    GCheckBox(const Vector2 pos = DEFAULT_POS, const Vector2 size = DEFAULT_SIZE, const std::string text = DEFAULT_TEXT, const int zindex = DEFAULT_Z_INDEX, const std::string id = DEFAULT_ID, const bool checked = false, const bool display = DEFAULT_DISPLAY);
     ~GCheckBox() = default;
 
     void draw() const;

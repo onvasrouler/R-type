@@ -14,6 +14,7 @@
 #include <regex>
 #include <raylib.h>
 #include <filesystem>
+#include <sstream>
 
 /**
  * @brief cleaner way to log messaged of raylib by
@@ -46,6 +47,16 @@ bool isIpValid(const std::string ip);
  * @return false if the port is not valid
  */
 bool isPortValid(const std::string port);
+
+/**
+ * @brief Split a string into tokens
+ * 
+ * @param str the string to split
+ * @param delimiter the delimiter to split the string with
+ * @param tokens the tokens to store the splitted string
+ * @return std::vector<std::string> the splitted string
+ */
+std::vector<std::string> splitter(const std::string str, char delimiter);
 
 /**
  * @class DebugLogger

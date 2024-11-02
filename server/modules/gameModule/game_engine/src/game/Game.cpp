@@ -233,7 +233,7 @@ void Game::update_world()
         }
         auto cl = std::chrono::high_resolution_clock::now();
         if (player.get_has_shot() == true && std::chrono::duration<double>(cl - player.get_cl()).count() >= 1.0) {
-            // std::cout << "fire" << std::endl;
+            std::cout << "fire" << std::endl;
             this->create_bullet(player);
             player.set_has_shot(false);
             player.restart_cl();
@@ -463,7 +463,7 @@ void Game::handleMessages() {
         if (message == SHOOT) {
             for (auto &player : _player) {
                 if (player.get_id() == receivedMessage.getId()) {
-                    // std::cout << "tire" << std::endl;
+                    std::cout << "tire" << std::endl;
                     player.set_has_shot(true);
                     break;
                 }
@@ -510,8 +510,8 @@ bool Game::isPlayer(const std::string id) {
 
 gameMessage::gameMessage(const std::string &id, const std::string message) : _message(message) {
     _id = id;
-    // std::cout << "param uuid: " << id << std::endl;
-    // std::cout << "Game message uuid: " << _id << std::endl;
+    std::cout << "param uuid: " << id << std::endl;
+    std::cout << "Game message uuid: " << _id << std::endl;
 };
 
 std::string &gameMessage::getId() {

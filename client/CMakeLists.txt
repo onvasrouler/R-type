@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Ajout des options de compilation en fonction du compilateur
 if (MSVC)
     # Pour MSVC (Visual Studio), utiliser /W4 pour des avertissements plus stricts
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /MP /D_WIN32_WINNT=0x0601")
 else()
     # Pour les compilateurs GCC et Clang, utiliser -Wall et -Wextra
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
@@ -72,6 +72,11 @@ set(SRC_FILES
     src/elements/guiElements/gui.cpp
     src/elements/guiElements/guiFunction.cpp
     src/menu/menuManager.cpp
+    src/menu/GuiElementFactory.cpp
+    src/network/networkElem.cpp
+    src/game/game.cpp
+    src/game/entities/Entities.cpp
+    src/game/entities/EntitiesFactory.cpp
     src/raylibWindow/utils.cpp
     src/raylibWindow/raylibWindow.cpp
 )
@@ -99,7 +104,7 @@ set(GUIELEM_FILES
 
 set(MAIN_FILE main.cpp)
 
-set(TARGET_NAME RType)
+set(TARGET_NAME r-type_client)
 
 link_directories(${CMAKE_SOURCE_DIR}/build/debug)
 
