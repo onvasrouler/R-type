@@ -151,7 +151,7 @@ void NetworkModule::run() {
                     _clients.push_back(newClient);
                 }
                 std::string messageToSend = createMessage(data.getIp(), data.getPort(), message);
-                std::cout << "Module: " << _ModuleName << " send to core: " << messageToSend << std::endl;
+                std::cout << "Module: " + _ModuleName + " send to core: " + messageToSend + "\n";
                 send(_socket, messageToSend.c_str(), messageToSend.size(), 0);
             }
             _udpServer->getReceivedData().clear();
@@ -185,8 +185,7 @@ void NetworkModule::run() {
                          messages = messages.substr(
                              messages.find(THREAD_END_MESSAGE) + 2)) {
             try {
-                std::cout << "Module: " << _ModuleName << " received: " << message << " from core"
-                          << std::endl;
+                std::cout << "Module: " + _ModuleName + " received: " + message + " from core\n";
                 // encode message and send to the clients
                 std::string uuid = message.substr(0, message.find(":"));
                 std::cout << uuid << std::endl;

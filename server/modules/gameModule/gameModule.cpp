@@ -41,7 +41,7 @@ std::string GameModule::decodeInterCommunication(const std::string message) {
 
 void GameModule::run() {
     _game.start();
-    std::cout << "Module: " << _ModuleName << " is running" << std::endl;
+    std::cout << "Module: " + _ModuleName + " is running\n";
     fd_set readfds;
     fd_set writefds;
     struct timeval tv;
@@ -69,7 +69,7 @@ void GameModule::run() {
             for (auto& data : _game.getSendMessages()) {
                 std::string message =
                     data.getId() + ":" + data.getMessage() + THREAD_END_MESSAGE;
-                std::cout << "Module: " << _ModuleName << " send to core: " << message << std::endl;
+                std::cout << "Module: " + _ModuleName + " send to core: " + message + "\n";
                 send(_socket, message.c_str(), message.size(), 0);
             }
             _game.getSendMessages().clear();
@@ -95,7 +95,7 @@ void GameModule::run() {
             messages += buffer;
         }
 #endif
-        std::cout << "Module: " << _ModuleName << " message received: " << messages << " from core" << std::endl;
+        std::cout << "Module: " + _ModuleName + " message received: " + messages << " from core\n";
         _game.getReadMutex().lock();
         for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
             messages.find(THREAD_END_MESSAGE) != std::string::npos;

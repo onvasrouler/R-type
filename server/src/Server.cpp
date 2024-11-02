@@ -245,13 +245,12 @@ void Server::run() {
                 messages += buffer;
             }
 #endif
-            std::cout << "Core message received: " << messages << " from: " << module->getModuleName() << std::endl;
+            std::cout << "Core message received: " + messages + " from: " + module->getModuleName() + "\n";
             for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
                 messages.find(THREAD_END_MESSAGE) != std::string::npos;
                 messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
                 message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
                 message += THREAD_END_MESSAGE;
-                std::cout << "Nb communicate module: " << module->getCommunicatesSockets().size() << std::endl;
                 for (auto &communicateModule : module->getCommunicatesSockets()) {
                     _messageToSend.push_back(std::make_tuple(communicateModule, message));
                 }
@@ -275,10 +274,9 @@ void Server::run() {
             std::vector<std::tuple<int, std::string>> messagesNotSent;
         #endif
         if (!_messageToSend.empty())
-            std::cout << "Message to send: " << _messageToSend.size() << std::endl;
+            std::cout << std::string("Message to send: ") + std::to_string(_messageToSend.size()) + "\n";
         for (auto& message : _messageToSend) {
             if (FD_ISSET(std::get<0>(message), &writefds)) {
-                std::cout << "test" << std::endl;
                 std::string moduleName = "";
                 for (auto& module : _modules) {
                     if (module->getSocket() == std::get<0>(message)) {
@@ -286,8 +284,8 @@ void Server::run() {
                         break;
                     }
                 }
-                std::cout << "Core sending message: " << std::get<1>(message)
-                          << "to module: " << moduleName << std::endl;
+                std::cout << "Core sending message: " + std::get<1>(message)
+                          + "to module: " + moduleName + "\n";
                 send(std::get<0>(message), std::get<1>(message).c_str(), std::get<1>(message).size(), 0);
             }
             else {
