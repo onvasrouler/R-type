@@ -11,7 +11,7 @@
 
 class RLText  : public AGuiElem {
 public:
-    RLText(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = "default button text", const int zindex = defaultZIndex, const Color color = {0, 0, 0, 255}, const std::string id = defaultId, const bool display = defaultDisplay);
+    RLText(const Vector2 pos = DEFAULT_POS, const Vector2 size = DEFAULT_SIZE, const std::string text = "default button text", const int zindex = DEFAULT_Z_INDEX, const Color color = {0, 0, 0, 255}, const std::string id = DEFAULT_ID, const bool display = DEFAULT_DISPLAY);
     ~RLText() = default;
 
     void draw() const;

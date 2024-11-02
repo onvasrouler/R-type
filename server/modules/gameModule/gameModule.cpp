@@ -8,8 +8,8 @@
 
 #include "gameModule.hpp"
 
-GameModule::GameModule(const std::string name, const std::string id)
-    : AbstractModule(name, id), _game(Game()) {
+GameModule::GameModule(const std::string name)
+    : AbstractModule(name), _game(Game()) {
     _Running = false;
     std::cout << "Module: " << _ModuleName << " created" << std::endl;
 }
@@ -97,10 +97,12 @@ void GameModule::run() {
 #endif
         std::cout << "Module: " + _ModuleName + " message received: " + messages << " from core\n";
         _game.getReadMutex().lock();
-        for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-            messages.find(THREAD_END_MESSAGE) != std::string::npos;
-            messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
-            message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
+        std::string message =
+            messages.substr(0, messages.find(THREAD_END_MESSAGE));
+        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
+             message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
+             messages =
+                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
             // encode message and send to the clients
             std::string id = message.substr(0, message.find(":"));
             uuid uuid(id);
@@ -108,9 +110,9 @@ void GameModule::run() {
                 message.find(":") + 1,
                 message.size() - std::string(THREAD_END_MESSAGE).size());
             gameMessage gameMessage(id, message);
-            // std::cout << "Message received: " << gameMessage.getMessage()
-            //           << std::endl;
-            // std::cout << "From: " << gameMessage.getId() << std::endl;
+            std::cout << "Message received: " << gameMessage.getMessage()
+                      << std::endl;
+            std::cout << "From: " << gameMessage.getId() << std::endl;
             _game.getReadMessages().push_back(gameMessage);
         }
         _game.getReadMutex().unlock();

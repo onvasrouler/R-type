@@ -8,7 +8,7 @@
 
 #include "networkModule.hpp"
 
-NetworkModule::NetworkModule(const std::string name, const std::string id) : AbstractModule(name, id) {
+NetworkModule::NetworkModule(const std::string name) : AbstractModule(name) {
     try {
         _udpServer = std::make_unique<UDPServer>(_io_context, PORT);
     } catch (std::exception& e) {
@@ -187,11 +187,14 @@ void NetworkModule::run() {
             try {
                 std::cout << "Module: " + _ModuleName + " received: " + message + " from core\n";
                 // encode message and send to the clients
-                std::string uuid = message.substr(0, message.find(":"));
-                std::cout << uuid << std::endl;
-                std::string messageData = message.substr(message.find(":") + 1);
-                std::cout << messageData << std::endl;
-                packageData data = createPackageData(uuid, messageData);
+                std::string ip = message.substr(0, message.find(":"));
+                message = message.substr(message.find(":") + 1);
+                std::size_t port =
+                    std::stoi(message.substr(0, message.find("/")));
+                message = message.substr(message.find("/") + 1);
+                // std::cout << "Message received from core: " << message <<
+                // std::endl;
+                packageData data = packageData(message, ip, port);
                 _udpServer->getSentData().push_back(data);
             } catch (std::exception& e) {
                 std::cerr << "Error: " << e.what() << std::endl;

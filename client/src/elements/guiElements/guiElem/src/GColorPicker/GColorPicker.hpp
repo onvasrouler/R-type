@@ -11,7 +11,7 @@
 
 class GColorPicker : public AGuiElem {
 public:
-    GColorPicker(const Vector2 pos = defaultPos, const Vector2 size = defaultSize, const std::string text = defaultText, const int zindex = defaultZIndex, const std::string id = defaultId, const Color color = WHITE, const bool display = defaultDisplay);
+    GColorPicker(const Vector2 pos = DEFAULT_POS, const Vector2 size = DEFAULT_SIZE, const std::string text = DEFAULT_TEXT, const int zindex = DEFAULT_Z_INDEX, const std::string id = DEFAULT_ID, const Color color = WHITE, const bool display = DEFAULT_DISPLAY);
     ~GColorPicker() = default;
 
     void draw() const;
