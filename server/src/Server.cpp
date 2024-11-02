@@ -89,6 +89,9 @@ void Server::start() {
     parser.ParseConfig(std::filesystem::current_path().string() + "/server/config/modules.json");
     std::cout << "server name: " << parser.GetServerName() << std::endl;
     for (auto &module : parser.GetModules()) {
+        if (!module.GetModuleLoad()) {
+            continue;
+        }
         std::cout << "module name: " << module.GetModuleName() << std::endl;
         std::cout << "module path: " << module.GetModulePath() << std::endl;
         std::cout << "module uuid: " << module.GetModuleId() << std::endl;
@@ -157,6 +160,9 @@ void Server::start() {
                 throw std::runtime_error("Error while loading the module");
             }
             AbstractModule *loadmodule = create_module(module.GetModuleName(), module.GetModuleId());
+            for (auto &listen : module.GetModuleListen()) {
+                loadmodule->addCommunicateModule(listen);
+            }
             try {
                 createModule(loadmodule, file);
             } catch (std::exception &e) {
@@ -167,8 +173,9 @@ void Server::start() {
     }
 #ifdef _WIN32
     u_long mode = 1; // 1 to enable non-blocking mode
-    ioctlsocket(_modules[0]->getSocket(), FIONBIO, &mode);
-    ioctlsocket(_modules[1]->getSocket(), FIONBIO, &mode);
+    for (auto &module : _modules) {
+        ioctlsocket(module->getSocket(), FIONBIO, &mode);
+    }
 #endif
     std::cout << "Modules created" << std::endl;
 }
@@ -259,6 +266,20 @@ void Server::run() {
                                 MSG_DONTWAIT)) {
                 messages += buffer;
             }
+            std::cout << "Core message received: " << messages << " from: " << module->getModuleName() << std::endl;
+            for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
+                    messages.find(THREAD_END_MESSAGE) != std::string::npos;
+                    messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
+                    message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
+                    message += THREAD_END_MESSAGE;
+                for (auto &writeToModule : _modules) {
+                    if (canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId()))
+                        std::cout << "Core find good module" << std::endl;
+                    if (FD_ISSET(module->getSocket(), &writefds) && canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId())) {
+                        writeToModule->addMessage(message);
+                    }
+                }
+            }
 #endif
             message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
             for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
@@ -284,7 +305,7 @@ void Server::run() {
                 !FD_ISSET(module->getSocket(), &writefds))
                 continue;
             for (auto& message : module->getMessages()) {
-                std::cout << "Sending message: " << message
+                std::cout << "Core sending message: " << message
                           << "to module: " << module->getModuleName()
                           << std::endl;
                 send(module->getSocket(), message.c_str(), message.size(), 0);
@@ -330,6 +351,7 @@ std::string Server::encodeInterCommunication(const std::string message) {
 {
     try {
         module->start();
+        std::cout << "Module started: " << module->getName() << std::endl;
 #ifdef _WIN32
         SOCKET moduleSocket = accept(_socket, (struct sockaddr*)NULL, NULL);
         if (moduleSocket == INVALID_SOCKET)
@@ -343,14 +365,19 @@ std::string Server::encodeInterCommunication(const std::string message) {
         if (moduleSocket > _maxSocket)
             _maxSocket = moduleSocket;
 #endif
-        if (send(moduleSocket, "200\n\t", 5, 0) < 0)
+        std::cout << "Module connected: " << module->getName() << std::endl;
+        if (send(moduleSocket, "200\n\t", 5, 0) < 0) {
             throw std::runtime_error(
                 "Error while creating a module: send failed");
+        }
+        std::cout << "Message sent to module: " << module->getName() << std::endl;
         char buffer[1024] = {0};
         int valread = recv(moduleSocket, buffer, 1024, 0);
         if (valread < 0 || valread != 5)
             throw std::runtime_error(
                 "Error while creating a module: recv failed");
+        }
+        std::cout << "Message received from module: " << module->getName() << std::endl;
         std::string message = buffer;
         if (message != "200\n\t")
             throw std::runtime_error(
@@ -358,6 +385,7 @@ std::string Server::encodeInterCommunication(const std::string message) {
         _modules.push_back(
             std::make_unique<serverModule>(module, moduleSocket, file));
     } catch (std::exception& e) {
+        std::cerr << "Error while creating a module" << std::endl;
         std::cerr << e.what() << std::endl;
         throw std::runtime_error(
             "Error while creating a module: module not connected");
@@ -369,22 +397,15 @@ bool Server::isClient(const std::string ip, const std::size_t port) {
         if (client.getIp() == ip && client.getPort() == port)
             return true;
     }
-    return false;
-}
-
-std::string Server::createMessage(const std::string ip, const std::size_t port,
-                                  const std::string message) {
-    Client client = findClient(ip, port);
-    std::string messageToSend =
-        client.getUuid() + ":" + message + THREAD_END_MESSAGE;
-    return messageToSend;
-}
-
-Client Server::findClient(const std::string ip, const std::size_t port) {
-    Client client;
-    for (auto& c : _clients) {
-        if (c.getIp() == ip && c.getPort() == port) {
-            return c;
+    for (auto& module : _modules) {
+        if (module->getModule()->getId() == moduleId) {
+            std::cout << "Core find target module" << std::endl;
+            std::cout << "ne=b communicate Modules: " << module->getModule()->getCommunicatesModules().size() << std::endl;
+            for (auto& communicateModule : module->getModule()->getCommunicatesModules()) {
+                std::cout << communicateModule << " " << communicateModuleId << std::endl;
+                if (communicateModule == communicateModuleId)
+                    return true;
+            }
         }
     }
     return client;

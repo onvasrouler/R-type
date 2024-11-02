@@ -32,28 +32,38 @@ AbstractModule::~AbstractModule()
 
 void AbstractModule::start()
 {
+    std::cout << "test" << std::endl;
     _Running = true;
     _thread = std::thread([this](void *_) -> void * {
+        std::cout << "ok" << std::endl;
         std::cout << "Starting module: " << _ModuleName << std::endl;
         struct sockaddr_in server_addr;
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(MODULE_PORT);  // Utilisez le même port que celui défini dans le serveur
         server_addr.sin_addr.s_addr = INADDR_ANY;  // Adresse IP locale
         inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr);
+        #ifdef _WIN32
+            Sleep(1000);
+        #else
+            sleep(1);
+        #endif
+        std::cout << "Module: " << _ModuleName << " connecting to server" << std::endl;
         int serverSocket = connect(_socket, (struct sockaddr *)&server_addr, sizeof(server_addr));
 
         if (serverSocket == -1) {
-            std::throw_with_nested(std::runtime_error("Error: connection failed"));
+            std::throw_with_nested(std::runtime_error("Error: connection failed to server"));
         }
+        std::cout << "Module: " << _ModuleName << " connected to server" << std::endl;
         _otherModules.push_back(serverSocket);
         char buffer[1024] = {0};
         int valread = recv(_socket, buffer, 1024, 0);
         if (valread == -1) {
             std::throw_with_nested(std::runtime_error("Error: reading failed"));
         }
+        std::cout << "Module: " << _ModuleName << " received message: " << buffer << std::endl;
         std::string message = buffer;
         if (message != "200\n\t") {
-            std::throw_with_nested(std::runtime_error("Error: connection failed"));
+            std::throw_with_nested(std::runtime_error("Error: connection failed wrong message: " + message));
         }
         #ifdef _WIN32
             Sleep(2000);

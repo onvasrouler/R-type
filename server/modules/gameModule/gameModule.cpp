@@ -69,7 +69,7 @@ void GameModule::run() {
             for (auto& data : _game.getSendMessages()) {
                 std::string message =
                     data.getId() + ":" + data.getMessage() + THREAD_END_MESSAGE;
-                std::cout << "send to core: " << message << std::endl;
+                std::cout << "Module: " << _ModuleName << " send to core: " << message << std::endl;
                 send(_socket, message.c_str(), message.size(), 0);
             }
             _game.getSendMessages().clear();
@@ -94,6 +94,7 @@ void GameModule::run() {
              valread = recv(_socket, buffer, 1024, MSG_DONTWAIT)) {
             messages += buffer;
         }
+        std::cout << "Module: " << _ModuleName << " message received: " << messages << " from core" << std::endl;
 #endif
         _game.getReadMutex().lock();
         std::string message =
