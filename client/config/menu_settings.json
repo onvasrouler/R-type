@@ -15,7 +15,7 @@
                     "text": "",
                     "position": {
                         "x": "10%",
-                        "y": 400
+                        "y": "75%"
                     },
                     "size": {
                         "width": "80%",
@@ -50,7 +50,7 @@
                     "text": "START",
                     "position": {
                         "x": "center",
-                        "y": 430
+                        "y": "82%"
                     },
                     "fontSize": 30,
                     "color": {
@@ -64,11 +64,28 @@
                     "functionName": "None"
                 },
                 {
+                    "id": "InvalidUsernameText",
+                    "text": "Empty Username",
+                    "position": {
+                        "x": "6%",
+                        "y": "22%"
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 255,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": false,
+                    "functionName": "None"
+                },
+                {
                     "id": "InvalidAdressText",
                     "text": "Invalid Adress",
                     "position": {
-                        "x": "center",
-                        "y": 100
+                        "x": "6%",
+                        "y": "40%"
                     },
                     "fontSize": 30,
                     "color": {
@@ -84,8 +101,8 @@
                     "id": "InvalidPortText",
                     "text": "Invalid Port",
                     "position": {
-                        "x": "center",
-                        "y": 225
+                        "x": "8%",
+                        "y": "58%"
                     },
                     "fontSize": 30,
                     "color": {
@@ -100,10 +117,26 @@
             ],
             "inputTexts": [
                 {
+                    "id": "usernameInput",
+                    "position": {
+                        "x": "30%",
+                        "y": "20%"
+                    },
+                    "size": {
+                        "width": "40%",
+                        "height": 50
+                    },
+                    "text": "",
+                    "textMaxSize": 30,
+                    "editMode": false,
+                    "display": true,
+                    "functionName": "defaultFunct"
+                },
+                {
                     "id": "adressInput",
                     "position": {
                         "x": "30%",
-                        "y": 150
+                        "y": "38%"
                     },
                     "size": {
                         "width": "40%",
@@ -119,7 +152,7 @@
                     "id": "portInput",
                     "position": {
                         "x": "30%",
-                        "y": 275
+                        "y": "55%"
                     },
                     "size": {
                         "width": "40%",
@@ -134,16 +167,30 @@
             ],
             "groups": [
                 {
-                    "id": "adressGroup",
+                    "id": "usernmaeGroup",
                     "position": {
                         "x": "28%",
-                        "y": 130
+                        "y": "17%"
                     },
                     "size": {
                         "width": "44%",
                         "height": 90
                     },
-                    "text": "IP",
+                    "text": "username",
+                    "display": true,
+                    "functionName": "None"
+                },
+                {
+                    "id": "adressGroup",
+                    "position": {
+                        "x": "28%",
+                        "y": "35%"
+                    },
+                    "size": {
+                        "width": "44%",
+                        "height": 90
+                    },
+                    "text": "adress",
                     "display": true,
                     "functionName": "None"
                 },
@@ -151,7 +198,7 @@
                     "id": "portGroup",
                     "position": {
                         "x": "28%",
-                        "y": 255
+                        "y": "52%"
                     },
                     "size": {
                         "width": "44%",
@@ -169,24 +216,76 @@
             "templates" : ["PARAM_NAVBAR"],
             "texts": [
                 {
-                    "id": "settingText",
-                    "text": "Settings",
+                    "id": "GeneralText",
+                    "text": "General",
                     "position": {
                         "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
                     "color": {
-                        "r": 0,
+                        "r": 255,
                         "g": 255,
                         "b": 255,
                         "a": 255
                     },
                     "display": true,
+                    "functionName": "defaultFunct"     
+                }
+            ],
+            "groups": [
+                {
+                    "id": "0",
+                    "position": {
+                        "x": "6%",
+                        "y": 180
+                    },
+                    "size": {
+                        "width": "22%",
+                        "height": "15%"
+                    },
+                    "text": "daltonism filter",
+                    "display": true,
+                    "functionName": "none"
+                }
+            ],
+            "dropDowns" : [
+                {
+                    "id": "daltonismFilter",
+                    "position": {
+                        "x": "7%",
+                        "y": 200
+                    },
+                    "size": {
+                        "width": "20%",
+                        "height": "10%"
+                    },
+                    "text": "none;protanopia;deuteranopia;tritanopia",
+                    "active": 0,
+                    "editMode": true,
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
-            ]
+            ],
+            "buttons": [
+            {
+                "id": "videoButton",
+                "text": "apply",
+                "position": {
+                    "x": "7%",
+                    "y": "50%"
+                },
+                "size": {
+                    "width": "20%",
+                    "height": "10%"
+                },
+                "display": true,
+                "functionName": "applyDaltonismFilter"
+
+            }
+        ]
         },
+        
         "SETTINGS_VIDEO": {
             "isSimple": true,
             "templates" : ["PARAM_NAVBAR"],
@@ -214,7 +313,7 @@
                 {
                     "id": "backgroundColor",
                     "position": {
-                        "x": 600,
+                        "x": "77%",
                         "y": 200
                     },
                     "size": {
@@ -236,7 +335,7 @@
                 {
                     "id": "0",
                     "position": {
-                        "x": 580,
+                        "x": "75%",
                         "y": 180
                     },
                     "size": {
@@ -250,12 +349,12 @@
                 {
                     "id": "0",
                     "position": {
-                        "x": 60,
+                        "x": "40%",
                         "y": 180
                     },
                     "size": {
-                        "width": 150,
-                        "height": 60
+                        "width": "22%",
+                        "height": "15%"
                     },
                     "text": "frame rate limit",
                     "display": true,
@@ -264,12 +363,12 @@
                 {
                     "id": "0",
                     "position": {
-                        "x": 240,
+                        "x": "6%",
                         "y": 180
                     },
                     "size": {
-                        "width": 150,
-                        "height": 60
+                        "width": "22%",
+                        "height": "15%"
                     },
                     "text": "resolution",
                     "display": true,
@@ -280,12 +379,12 @@
                 {
                     "id": "frameRateLimit",
                     "position": {
-                        "x": 75,
+                        "x": "41%",
                         "y": 200
                     },
                     "size": {
-                        "width": 120,
-                        "height": 20
+                        "width": "20%",
+                        "height": "10%"
                     },
                     "text": "30;60;90;120",
                     "active": 1,
@@ -296,12 +395,12 @@
                 {
                     "id": "resolutionChoice",
                     "position": {
-                        "x": 255,
+                        "x": "7%",
                         "y": 200
                     },
                     "size": {
-                        "width": 120,
-                        "height": 20
+                        "width": "20%",
+                        "height": "10%"
                     },
                     "text": "1920x1080;1920x1080;1920x1080",
                     "active": 1,
@@ -399,7 +498,68 @@
         "GAME_OVER_MENU": {
             "isSimple": true,
             "id": 9,
-            "title": "Game Over Menu"
+            "title": "Game Over Menu",
+            "texts": [
+                {
+                    "id": "GameOverText",
+                    "text": "GAME OVER",
+                    "position": {
+                        "x": "45%",
+                        "y": "40%"
+                    },
+                    "fontSize": 30,
+                    "color": {
+                        "r": 255,
+                        "g": 0,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "None"
+                }
+            ],
+            "buttons": [
+                {
+                    "id": "restartButton",
+                    "text": "Restart",
+                    "position": {
+                        "x": "30%",
+                        "y": "55%"
+                    },
+                    "size": {
+                        "width": "40%",
+                        "height": "10%"
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "RestartButton"
+                },
+                {
+                    "id": "exitButton",
+                    "text": "Exit",
+                    "position": {
+                        "x": "30%",
+                        "y": "70%"
+                    },
+                    "size": {
+                        "width": "40%",
+                        "height": "10%"
+                    },
+                    "color": {
+                        "r": 0,
+                        "g": 255,
+                        "b": 0,
+                        "a": 255
+                    },
+                    "display": true,
+                    "functionName": "ExitButton"
+                }
+            ]
         }
     },
     "templates": {
@@ -409,12 +569,12 @@
                     "id": "exitButton",
                     "text": "Exit",
                     "position": {
-                        "x": 20,
+                        "x": "5%",
                         "y": 15
                     },
                     "size": {
-                        "width": 100,
-                        "height": 20
+                        "width": "10%",
+                        "height": "6%"
                     },
                     "color": {
                         "r": 0,
@@ -430,11 +590,11 @@
                     "id": "generalButton",
                     "text": "General",
                     "position": {
-                        "x": 20,
+                        "x": "5%",
                         "y": 60
                     },
                     "size": {
-                        "width": 150,
+                        "width": "20%",
                         "height": 70
                     },
                     "display": true,
@@ -445,11 +605,11 @@
                     "id": "videoButton",
                     "text": "Video",
                     "position": {
-                        "x": 220,
+                        "x": "28%",
                         "y": 60
                     },
                     "size": {
-                        "width": 150,
+                        "width": "20%",
                         "height": 70
                     },
                     "display": true,
@@ -460,11 +620,11 @@
                     "id": "audioButton",
                     "text": "Audio",
                     "position": {
-                        "x": 420,
+                        "x": "52%",
                         "y": 60
                     },
                     "size": {
-                        "width": 150,
+                        "width": "20%",
                         "height": 70
                     },
                     "display": true,
@@ -475,11 +635,11 @@
                     "id": "controlsButton",
                     "text": "Controls",
                     "position": {
-                        "x": 620,
+                        "x": "75%",
                         "y": 60
                     },
                     "size": {
-                        "width": 150,
+                        "width": "20%",
                         "height": 70
                     },
                     "display": true,

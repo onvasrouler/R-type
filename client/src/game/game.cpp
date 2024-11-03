@@ -29,7 +29,15 @@ Game::Game(std::shared_ptr<JsonParser> jsonParser, std::shared_ptr<DebugLogger> 
     _EntitiesFactory = std::make_shared<EntitiesFactory>(jsonParser, debugLogger);
     _Running = false;
     _GameOver = false;
+    _Username = "default";
+    _ScoreText = std::make_shared<RLText>(Vector2{10, 30}, Vector2{0, 30}, "Score : 0", 0, Color{0, 0, 0, 255});
+    _UsernameText = std::make_shared<RLText>(Vector2{10, 70}, Vector2{0, 30}, "Username : ", 0, Color{0, 0, 0, 255});
+    _ScoreText->setDisplay(true);
+    _UsernameText->setDisplay(true);
+    _BackgroundElem = std::make_shared<Background>(_WindowWidth, _WindowHeight);
+    _Score = 0;
 }
+
 
 void Game::setEntityFactoryJsonParser(std::shared_ptr<JsonParser> jsonParser)
 {
@@ -45,11 +53,13 @@ void Game::setDebugLogger(std::shared_ptr<DebugLogger> debugLogger)
 void Game::setWindowWidth(const int width)
 {
     _WindowWidth = width;
+    _BackgroundElem->setWidth(width);
 }
 
 void Game::setWindowHeight(const int height)
 {
     _WindowHeight = height;
+    _BackgroundElem->setHeight(height);
 }
 
 void Game::setWindowSize(const int width, const int height)
@@ -60,6 +70,10 @@ void Game::setWindowSize(const int width, const int height)
 
 void Game::initGame()
 {
+    _BackgroundElem->loadTextures();
+    _EntitiesList.clear();
+    _ScoreText->setText("Score : 0");
+    _Score = 0;
     if (_EntitiesFactory)
         _EntitiesFactory->loadEntities(ASSETS_FILE_PATH);
     else
@@ -71,36 +85,37 @@ void Game::initGame()
 
 void Game::start()
 {
+    _Score = 0;
+    _ScoreText->setText("Score : 0");
     _Running = true;
     _ShutDown = false;
+    _modif.clear();
     if (_DebugLogger)
-        _DebugLogger->Log("Game is running", 2);
+        _DebugLogger->Log("Game is starting", 2);
 }
 
 void Game::update()
 {
-    _modifMutex.lock();
+    if (_DebugLogger)
+        _DebugLogger->Log("Game is updating", 2);
+    if (!_modif.empty()) {
+        _modifMutex.lock();
+    } else {
+        _modifMutex.unlock();
+        return;
+    }
     for (auto& data : _modif) {
-        if (data.find("202") != std::string::npos)
-            std::cerr << "update: " << data << std::endl;
         if (!_Running) 
             return;
         if (_DebugLogger)
             _DebugLogger->Log("Game received data", 4);
-        for (char c : data) {
-           if (!isalnum(c) && c != '/' && c != '-' && c != '\n' && c != '\r') {
-               if (_DebugLogger)
-                   _DebugLogger->Log("Invalid character in data", 0);
-               _modifMutex.unlock();
-               return;
-           }
-        }
         if (data == "500\r\n") {
             _ShutDown = true;
             resetGame();
         }
         try {
-
+            if (_DebugLogger)
+                _DebugLogger->Log("Game is splitting data in update", 4);
             std::vector<std::string> tokens = splitter(data, '/');
             int maxThreads = std::thread::hardware_concurrency();
             int threadCount = getThreadCount();
@@ -114,6 +129,8 @@ void Game::update()
                     nullptr);
                     thread.detach();
             } else {
+                if (_DebugLogger)
+                    _DebugLogger->Log("Game is handling data in update", 4);
                 handleData(tokens);
             }
 
@@ -136,9 +153,6 @@ void Game::handleData(std::vector<std::string> tokens)
 
     try {
         std::string instruction = tokens[0];
-        if (instruction == "202") {
-            std::cerr << "handle 202" << std::endl;
-        }
         std::string uuid = tokens[1];
     if (instruction == "01" || instruction == "200" || instruction == "201" )
         handlePlayer(uuid, tokens);
@@ -149,17 +163,14 @@ void Game::handleData(std::vector<std::string> tokens)
 
     if (instruction == "203" || instruction == "213" || instruction == "222")
         destroyEntity(tokens);
+    if (instruction == "213")
+        _Score += 1;
     
     if (instruction == "202" || instruction == "212" || instruction == "221") {
         if (_EntitiesList.find(uuid) != _EntitiesList.end()) {
             _EntitiesList[uuid]->setRelativePosX(std::stoi(tokens[2]), _WindowWidth);
             _EntitiesList[uuid]->setRelativePosY(std::stoi(tokens[3]), _WindowHeight);
         } else {
-            #ifdef _WIN32
-            #else
-            if (uuid.length() != 36)
-                return;
-            #endif
             if (tokens[0] == "202")
                 createPlayer(uuid);
             if (tokens[0] == "212")
@@ -184,9 +195,12 @@ void Game::handlePlayer(std::string uuid, std::vector<std::string> tokens)
     if (_DebugLogger)
         _DebugLogger->Log("Game is handling player", 4);
     if (tokens[0] == "01") {
+        if (_DebugLogger)
+            _DebugLogger->Log("Game is creating player with id : " + uuid, 4);
         createPlayer(uuid);
         _EntitiesList[uuid]->setRelativePosX(std::stoi(tokens[5]), _WindowWidth);
         _EntitiesList[uuid]->setRelativePosY(std::stoi(tokens[6]), _WindowHeight);
+        _EntitiesList[uuid]->setUsername(_Username);
         _PlayerId = uuid;
     }
     if (tokens[0] == "200") {
@@ -271,6 +285,7 @@ void Game::destroyEntity(std::vector<std::string> tokens)
         if(tokens[1] == _PlayerId) {
             _Running = false;
             _GameOver = true;
+            _DebugLogger->Log("Game over !!!", 4);
         }
         _EntitiesList.erase(tokens[1]);
     }
@@ -279,18 +294,24 @@ void Game::destroyEntity(std::vector<std::string> tokens)
 void Game::draw()
 {
 
-    
+    _DebugLogger->Log("Game start to draw", 4);
     if (!_Running && !_GameOver)
         return;
-
-    if (_GameOver) {
-        DrawText("Game Over", _WindowWidth / 2 - 50, _WindowHeight / 2 - 50, 20, RED);
-        return;
-    }
-
+    _DebugLogger->Log("Drawing background", 4);
+    _BackgroundElem->draw();
+    _DebugLogger->Log("Drawing entities", 4);
     for (const auto &entity : _EntitiesList)
         entity.second->draw();
-
+    _DebugLogger->Log("creating score text", 4);
+    std::string score = "Score : " + std::to_string(_Score);
+    _DebugLogger->Log("Score : " + score, 4);
+    _DebugLogger->Log("Setting score text", 4);
+    _ScoreText->setText(score);
+    _DebugLogger->Log("Drawing score text", 4);
+    _ScoreText->draw();
+    _DebugLogger->Log("Drawing username text", 4);
+    _UsernameText->draw();
+    
     if (_DebugLogger)
         _DebugLogger->Log("Game is drawing", 4);
 }
@@ -301,7 +322,9 @@ void Game::resetGame()
         _DebugLogger->Log("Game is resetting", 4);
     _Running = false;
     _GameOver = false;
+    _ShutDown = false;
     _EntitiesList.clear();
+    _modif.clear();
 }
 
 void Game::clearEntities()
@@ -315,6 +338,7 @@ void Game::clearEntities()
 
 void Game::stop()
 {
+    _modifMutex.unlock();
     _Running = false;
     if (_DebugLogger)
         _DebugLogger->Log("Game is stopped", 2);
@@ -348,4 +372,10 @@ bool Game::getShutDown()
 bool Game::getGameOver()
 {
     return _GameOver;
+}
+
+void Game::setUserName(std::string username)
+{
+    _Username = username;
+    _UsernameText->setText("Username : " + username);
 }

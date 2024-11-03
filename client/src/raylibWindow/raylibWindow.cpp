@@ -111,11 +111,6 @@ RlibWindow::RlibWindow(const std::string filename)
     this->setDefaultVal();
 }
 
-RlibWindow::~RlibWindow()
-{
-    CloseWindow();
-}
-
 void RlibWindow::setWidth(const int windowWidth)
 {
     this->_WindowWidth = windowWidth;
@@ -249,6 +244,13 @@ void RlibWindow::InitRlib()
     _DebugLogger->Log("Raylib Window Initiated");
     this->_DebugLogger->Log("initiating game", 2);
     this->_Game->initGame();
+    this->_DebugLogger->Log("creating the daltonism shader", 2);
+    this->_DaltonismFilter = std::make_shared<daltonismFilter>();
+    if ( this->_NetworkElem != nullptr )
+        this->_NetworkElem->setDaltonismFilter(this->_DaltonismFilter);
+    if ( this->_Menus != nullptr )
+        this->_Menus->setDaltonismFilter(this->_DaltonismFilter);
+        
 }
 
 void RlibWindow::CloseRlibWindow() const
@@ -290,6 +292,12 @@ void RlibWindow::update()
     _DebugLogger->Log("Ending draw", 3);
     this->EndRlibDraw();
     _DebugLogger->Log("Raylib Window Updated", 2);
+    if (this->_GuiFunction->doCloseWindow()) {
+        _DebugLogger->Log("Closing window", 1);
+        CloseWindow();
+
+    }
+    
 }
 
 void RlibWindow::updateKeyboadInputs()

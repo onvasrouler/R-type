@@ -73,6 +73,8 @@ public:
      */
     MenuManager(const std::shared_ptr<JsonParser> jsonParser);
 
+    ~MenuManager() = default;
+
     /**
      * @brief Sets the menu type.
      * @param type The type of the menu.
@@ -193,6 +195,14 @@ public:
 
     void handleInput(int key, int pressedOrReleased);
 
+    void setUserName(const std::string username);
+
+    void restartGame();
+
+    void setDaltonismFilter(std::shared_ptr<daltonismFilter> daltonismFilter);
+
+    std::shared_ptr<daltonismFilter> getDaltonismFilter() const;
+
 private:
     void checkForNetwork();
 
@@ -215,6 +225,11 @@ private:
      */
     void eraseMenu();
 
+    void setIsConnecting(bool is_connecting);
+
+    void setIsConnected(bool is_connected);
+
+
     std::shared_ptr<GuiElementFactory> _GuiElementFactory;
 
     
@@ -227,6 +242,7 @@ private:
 
     std::map<menuType, std::shared_ptr<RGui>>
                                  _menuList; /**< Map of menu types to RGui objects. this is the list off all the menu */
+    std::shared_ptr<daltonismFilter> _DaltonismFilter; /**< Shared pointer to the daltonism filter. */
     std::shared_ptr<guiFunction> _guiFunction; /**< Shared pointer to a guiFunction object. */
     std::shared_ptr<Game>        _Game;
     std::shared_ptr<NetworkElem> _NetworkElem;
@@ -243,4 +259,8 @@ private:
 
     bool _Is_connecting;
     bool _Is_connected;
+
+    std::string _Username;
+
+    bool _SettingsOpened;
 };

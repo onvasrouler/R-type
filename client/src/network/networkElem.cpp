@@ -80,8 +80,12 @@ void NetworkElem::connect()
 {
     this->disconnect();
     _Game->start();
+    if (_Socket.is_open())
+        _Socket.close();
+    _Socket.close();
     _Status = Status::CONNECTING;
-
+    if (_DebugLogger)
+        _DebugLogger->Log("Connecting to server", 2);
     try {
         _Socket.open(boost::asio::ip::udp::v4());
         _Timer.expires_after(std::chrono::seconds(10));
@@ -100,6 +104,9 @@ void NetworkElem::connect()
     }
      if (!_Network_thread.joinable())
         _Network_thread = std::thread([this]() { _Io_service.run(); });
+    _LastSendTime = std::chrono::steady_clock::now();
+    if (_DebugLogger)
+        _DebugLogger->Log("end of connecting to server", 2);
 }
 
 void NetworkElem::initConnection()
@@ -107,10 +114,8 @@ void NetworkElem::initConnection()
     _Timer2.expires_after(std::chrono::seconds(2));
     _Timer2.async_wait([this](boost::system::error_code ec) {
         if (!ec && _Status == Status::CONNECTING) {
-            this->send("00\r\n");
             asyncReceive();
             initConnection();
-            
         }
     });
 }
@@ -118,10 +123,6 @@ void NetworkElem::initConnection()
 
 void NetworkElem::send(const std::string& message)
 {
-    if (message.find("up") != std::string::npos || message.find("down") != std::string::npos || message.find("left") != std::string::npos || message.find("right") != std::string::npos) {
-        std::cerr << message << std::endl;
-    }
-
     auto binary_message =std::vector<char>(message.begin(), message.end());
 
     
@@ -144,11 +145,10 @@ void NetworkElem::asyncReceive()
                 }
                 if (_Status != Status::CONNECTED)
                     _Status = Status::CONNECTED;
+                if (_DebugLogger)
+                    _DebugLogger->Log("Received data: " + data, 5);
                 _Game->_modifMutex.lock();
                 _Game->_modif.push_back(data);
-                if (data.find("202") != std::string::npos) {
-                    std::cerr << data << std::endl;
-                }
                 _Game->_modifMutex.unlock();
                 asyncReceive();
             } else if (ec) {
@@ -196,21 +196,37 @@ void NetworkElem::update()
     }
     if (_Status == Status::CONNECTED) {
 
-        if (_UpPressed == 1)
-            send("0/up\r\n");
-        if (_DownPressed == 1)
-            send("1/down\r\n");
-        if (_LeftPressed == 1)
-            send("2/left\r\n");
-        if (_RightPressed == 1){
-            send("3/right\r\n");
+        auto now = std::chrono::steady_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - _LastSendTime);
+        if (_DebugLogger)
+            _DebugLogger->Log("duration: " + std::to_string(duration.count()), 5);
+        if (duration.count() >= 20) {
+            if (_DebugLogger)
+                _DebugLogger->Log("sending data depending on input", 5);
+            if (_UpPressed == 1)
+                send("0/up\r\n");
+            if (_DownPressed == 1)
+                send("1/down\r\n");
+            if (_LeftPressed == 1)
+                send("2/left\r\n");
+            if (_RightPressed == 1)
+                send("3/right\r\n");
+            if (_SpacePressed == 1)
+                send("1/shoot\r\n");
+            _LastSendTime = now;
         }
-        if (_SpacePressed == 1) {
-            send("1/shoot\r\n");
-            _SpacePressed = 0;
-        }
+        if (_DebugLogger)
+            _DebugLogger->Log("updating game", 5);
         _Game->update();
+        if (_DebugLogger)
+            _DebugLogger->Log("game updated", 5);
+        if (_DaltonismFilter)
+            BeginShaderMode(_DaltonismFilter->getShader());
         _Game->draw();
+        if (_DebugLogger)
+            _DebugLogger->Log("game drawn", 5);
+        if (_DaltonismFilter)
+            EndShaderMode();
     }
 }
 
@@ -228,4 +244,14 @@ void NetworkElem::handleInput(int key, int pressedOrReleased)
         _RightPressed = (pressedOrReleased == 1);
     if (key == 32 || key == 57)
         _SpacePressed = (pressedOrReleased == 1);
+}
+
+std::shared_ptr<Game> NetworkElem::getGame() const
+{
+    return _Game;
+}
+
+void NetworkElem::setDaltonismFilter(std::shared_ptr<daltonismFilter> daltonismFilter)
+{
+    _DaltonismFilter = daltonismFilter;
 }
