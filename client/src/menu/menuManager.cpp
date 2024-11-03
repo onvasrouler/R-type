@@ -35,11 +35,19 @@ MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
 void MenuManager::setMenuType(const menuType type)
 {
     this->_type = type;
+    if (type == SETTINGS_AUDIO || type == SETTINGS_CONTROLS || type == SETTINGS_GENERAL || type == SETTINGS_VIDEO)
+       _SettingsOpened = true;
+    else
+        _SettingsOpened = false;        
 }
 
 void MenuManager::setMenuType(const int typeId)
 {
     this->_type = static_cast<menuType>(typeId);
+    if (typeId == SETTINGS_AUDIO || typeId == SETTINGS_CONTROLS || typeId == SETTINGS_GENERAL || typeId == SETTINGS_VIDEO)
+       _SettingsOpened = true;
+    else
+        _SettingsOpened = false;
 }
 
 
@@ -234,6 +242,7 @@ void MenuManager::setGameInfo(const std::string ip, const std::string port) // a
 {
     _Ip = ip;
     _Port = port;
+    _Game->resetGame();
     if (_NetworkElem)
         _NetworkElem->setServerInfos(ip, port); // ajouter username
     else
@@ -282,7 +291,7 @@ void MenuManager::drawMenu() const
 {
     if (_DebugLogger)
         this->_DebugLogger->Log("Drawing menu in menu manager", 2);
-    if ((_Is_connecting || _Is_connected) && this->_Game->getGameOver() == false)
+    if (((_Is_connecting || _Is_connected) && this->_Game->getGameOver() == false) || this->_Game->isRunning())
         const_cast<MenuManager*>(this)->checkForNetwork();
     else if (this->_Game->getGameOver()) {
         const_cast<MenuManager*>(this)->setMenuType(GAME_OVER_MENU);
@@ -290,6 +299,11 @@ void MenuManager::drawMenu() const
         const_cast<MenuManager*>(this)->_Game->resetGame();
         const_cast<MenuManager*>(this)->setIsConnecting(false);
         const_cast<MenuManager*>(this)->setIsConnected(false);
+    }
+    if (_NetworkElem && _Is_connected) {
+        this->_NetworkElem->update();
+        if (_DebugLogger)
+            this->_DebugLogger->Log("NetworkElem updated because network elem exist and is connected", 2);
     }
     if (this->_menuList.find(_type) != this->_menuList.end())
         this->_menuList.at(_type)->DrawGui();
@@ -318,13 +332,6 @@ void MenuManager::drawMenu() const
             }
         }
     }
-    if (_DebugLogger)
-        this->_DebugLogger->Log("End of drawing menu in menu manager", 2);
-    if (_NetworkElem && _Is_connected) {
-        this->_NetworkElem->update();
-        if (_DebugLogger)
-            this->_DebugLogger->Log("NetworkElem updated because network elem exist and is connected", 2);
-        }
     if (_DebugLogger)
         this->_DebugLogger->Log("End of drawing menu function", 2);
 }
@@ -371,4 +378,14 @@ void MenuManager::restartGame()
     _Is_connecting = false;
     _Is_connected = false;
     _Username = "";
+}
+
+void MenuManager::setDaltonismFilter(std::shared_ptr<daltonismFilter> daltonismFilter)
+{
+    _DaltonismFilter = daltonismFilter;
+}
+
+std::shared_ptr<daltonismFilter> MenuManager::getDaltonismFilter() const
+{
+    return _DaltonismFilter;
 }
