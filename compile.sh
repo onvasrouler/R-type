@@ -106,7 +106,7 @@ compile_tests () {
 }
 
 compile() {
-    clean_client
+    clean_client    
     clean_server
     copy_server_source_code
     cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON -DHEAD_SERVER=ON
