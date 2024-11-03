@@ -8,6 +8,8 @@
 #pragma once
 
 #include "entities/EntitiesFactory.hpp"
+#include "../elements/guiElements/gui.hpp"
+#include "./background.hpp"
 #include <mutex>
 
 #define ASSETS_FILE_PATH "./assets/assets_settings.json"
@@ -57,11 +59,17 @@ public:
     std::vector<std::string> _modif;
     std::mutex _modifMutex;
 
+    void setUserName(std::string username);
+
 private:
     std::shared_ptr<EntitiesFactory> _EntitiesFactory; /**< Shared pointer to a EntitiesFactory object. */
     std::map<std::string, std::shared_ptr<Entities>> _EntitiesList; /**< Map of menu types to AEntities objects. */
     std::shared_ptr<DebugLogger> _DebugLogger; /**< Shared pointer to a DebugLogger object. */
     std::shared_ptr<JsonParser> _JsonParser; /**< Shared pointer to a JsonParser object. */
+    std::shared_ptr<RLText> _ScoreText;
+    std::shared_ptr<RLText> _UsernameText;
+    std::shared_ptr<Background> _BackgroundElem;
+    int _Score;
     bool _Running; /**< Boolean to check if the game is running. */
 
     bool _GameOver;
@@ -73,4 +81,6 @@ private:
     std::string _PlayerId;
 
     std::string _DataBuffer;
+
+    std::string _Username;
 };

@@ -13,7 +13,8 @@ void guiFunction::mapFunctions()
     custom_func(printMessage, std::cout << "Hello from a dynamically created function!" << std::endl);
     custom_func(showGoodbye, std::cout << "Goodbye from a custom function!" << std::endl);
     custom_func(defaultFunct, std::cout << "Default function" << std::endl);
-    custom_func(ExitButton, exit(0));
+    custom_func(RestartButton, this->_MenuManager->restartGame());
+    custom_func(ExitButton, this->_DoCloseWindow = true);
     custom_func(changeBgColor, {
         std::string color = this->_MenuManager->getCurrentGui()->GetValueById("backgroundColor");
         std::istringstream iss(color);
@@ -28,23 +29,44 @@ void guiFunction::mapFunctions()
     custom_func(GeneralSettingsButton, this->_MenuManager->setMenuType(2));
     custom_func(VideoSettingsButton, this->_MenuManager->setMenuType(3));
     custom_func(AudioSettingsButton, this->_MenuManager->setMenuType(4));
+    custom_func(applyDaltonismFilter, {
+        std::string daltinismType = this->_MenuManager->getCurrentGui()->GetValueById("daltonismFilter");
+        if (daltinismType == "")
+            return;
+        int type = std::stoi(daltinismType);
+        auto daltFilter = this->_MenuManager->getDaltonismFilter();
+        if (daltFilter)
+            daltFilter->setDaltonismType(type);
+    });
     custom_func(ControlsSettingsButton, this->_MenuManager->setMenuType(5));
     custom_func(StartFunct, {
         std::string ip = this->_MenuManager->getCurrentGui()->GetValueById("adressInput");
         std::string port = this->_MenuManager->getCurrentGui()->GetValueById("portInput");
-        // // std::string username = this->_MenuManager->getCurrentGui()->GetValueById("usernameInput");
+        std::string username = this->_MenuManager->getCurrentGui()->GetValueById("usernameInput");
 
-        this->_MenuManager->getCurrentGui()->GetElementById("InvalidAdressText")->setDisplay(false);
-        this->_MenuManager->getCurrentGui()->GetElementById("InvalidPortText")->setDisplay(false);
-        // // this->_MenuManager->getCurrentGui()->GetElementById("InvalidUsernameText")->setDisplay(false);
-        // // if (username == "")
-        // //     this->_MenuManager->getCurrentGui()->GetElementById("InvalidUsernameText")->setDisplay(true);
+        auto invAddrTxt = this->_MenuManager->getCurrentGui()->GetElementById("InvalidAdressText");
+        auto invPortTxt = this->_MenuManager->getCurrentGui()->GetElementById("InvalidPortText");
+        auto invUserTxt = this->_MenuManager->getCurrentGui()->GetElementById("InvalidUsernameText");
+
+        if (invAddrTxt != nullptr)
+            invAddrTxt->setDisplay(false);
+        if (invPortTxt != nullptr)
+            invPortTxt->setDisplay(false);
+        if (invUserTxt != nullptr)
+            invUserTxt->setDisplay(false);
+        if (username == "")
+            if (invUserTxt != nullptr)
+                invUserTxt->setDisplay(true);
         if (!isIpValid(ip))
-            this->_MenuManager->getCurrentGui()->GetElementById("InvalidAdressText")->setDisplay(true);
+            if (invAddrTxt != nullptr)
+                invAddrTxt->setDisplay(true);
         if (!isPortValid(port))
-            this->_MenuManager->getCurrentGui()->GetElementById("InvalidPortText")->setDisplay(true);
-        if (isIpValid(ip) && isPortValid(port))
+            if (invPortTxt != nullptr)
+                invPortTxt->setDisplay(true);
+        if (isIpValid(ip) && isPortValid(port) && username != "") {
+            this->_MenuManager->setUserName(username);
             this->_MenuManager->setGameInfo(ip, port); // mettre tout le haut en com et taper l'ip en statique ici pour pas avoir a la retaper a chaque fois
+        }
     });
 }
 
@@ -69,4 +91,9 @@ std::function<void()> guiFunction::getFunction(const std::string functionName)
         return _FunctionList[functionName];
     else
         return nullptr;
+}
+
+bool guiFunction::doCloseWindow()
+{
+    return _DoCloseWindow;
 }

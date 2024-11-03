@@ -87,6 +87,10 @@ void Entities::setUUID(const std::string uuid) {
     _UUID = uuid;
 }
 
+void Entities::setUsername(const std::string username) {
+    _Username = username;
+}
+
 void Entities::draw() const {
     DrawTextureEx(_Texture, _Pos, 0, 1, WHITE);
 }
@@ -165,6 +169,10 @@ std::string Entities::getId() const {
 
 std::string Entities::getUUID() const {
     return _UUID;
+}
+
+std::string Entities::getUsername() const {
+    return _Username;
 }
 
 Entities::Entities(const Entities& other)

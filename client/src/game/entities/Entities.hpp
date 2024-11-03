@@ -29,6 +29,7 @@ public:
     void setDamage(const int damage);
     void setAlive(const bool alive);
     void setUUID(const std::string uuid);
+    void setUsername(const std::string username);
 
     void setTexturePath(const std::string texture);
     void setImage(const Image image);
@@ -52,6 +53,7 @@ public:
     int getHealth() const;
     int getDamage() const;
     bool getAlive() const;
+    std::string getUsername() const;
 
     std::string getTexturePath() const;
     Image getImage() const;
@@ -79,4 +81,5 @@ private:
     float _Rotation;
     std::string _Id;
     std::string _UUID;
+    std::string _Username;
 };
