@@ -18,6 +18,7 @@ MenuManager::MenuManager()
     this->_GuiElementFactory = std::make_shared<GuiElementFactory>();
     this->_GuiElementFactory->setWindowHeight(this->_WindowHeight);
     this->_GuiElementFactory->setWindowWidth(this->_WindowWidth);
+    _Username = "default";
 }
 
 MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
@@ -27,6 +28,7 @@ MenuManager::MenuManager(std::shared_ptr<JsonParser> jsonParser)
     _Is_connecting = false;
     _Is_connected = false;
     this->_GuiElementFactory = std::make_shared<GuiElementFactory>(jsonParser);
+    _Username = "default";
 
 }
 
@@ -274,32 +276,57 @@ void MenuManager::checkForNetwork()
         _Is_connected = false;
         const_cast<MenuManager*>(this)->setMenuType(START_MENU);
     }
-    
 }
 
 void MenuManager::drawMenu() const
 {
     if (_DebugLogger)
         this->_DebugLogger->Log("Drawing menu in menu manager", 2);
-    if (_Is_connecting || _Is_connected)
+    if ((_Is_connecting || _Is_connected) && this->_Game->getGameOver() == false)
         const_cast<MenuManager*>(this)->checkForNetwork();
+    else if (this->_Game->getGameOver()) {
+        const_cast<MenuManager*>(this)->setMenuType(GAME_OVER_MENU);
+        const_cast<MenuManager*>(this)->_NetworkElem->disconnect();
+        const_cast<MenuManager*>(this)->_Game->resetGame();
+        const_cast<MenuManager*>(this)->setIsConnecting(false);
+        const_cast<MenuManager*>(this)->setIsConnected(false);
+    }
     if (this->_menuList.find(_type) != this->_menuList.end())
         this->_menuList.at(_type)->DrawGui();
+    if (_DebugLogger) {
+        std::string type = "Menu type : " + std::to_string(_type);
+        this->_DebugLogger->Log(type, 2);
+    }
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (_DebugLogger)
+            this->_DebugLogger->Log("Mouse button pressed", 2);
         Vector2 mousePosition = GetMousePosition();
+        if (_DebugLogger) {
+            std::string mousePos = "Mouse position : x = " + std::to_string(mousePosition.x) + " y = " + std::to_string(mousePosition.y);
+            this->_DebugLogger->Log(mousePos, 2);
+        }
         //check that the list of menu items is not empty
         if (this->_MenuItems.find(_type) == this->_MenuItems.end())
             return;
         for (auto &item : this->_MenuItems.at(_type)) {
             if (CheckCollisionPointRec(mousePosition, Rectangle{static_cast<float>(item.x), static_cast<float>(item.y), static_cast<float>(item.width), static_cast<float>(item.length)})) {
                 std::function<void()> func = _guiFunction->getFunction(item.functionName);
+                if (_DebugLogger)
+                    this->_DebugLogger->Log("Function name : " + item.functionName, 2);
                 if (func != nullptr)
                     func();
             }
         }
     }
-    if (_NetworkElem && _Is_connected)
+    if (_DebugLogger)
+        this->_DebugLogger->Log("End of drawing menu in menu manager", 2);
+    if (_NetworkElem && _Is_connected) {
         this->_NetworkElem->update();
+        if (_DebugLogger)
+            this->_DebugLogger->Log("NetworkElem updated because network elem exist and is connected", 2);
+        }
+    if (_DebugLogger)
+        this->_DebugLogger->Log("End of drawing menu function", 2);
 }
 
 void MenuManager::handleInput(int key, int pressedOrReleased)
@@ -310,4 +337,38 @@ void MenuManager::handleInput(int key, int pressedOrReleased)
         this->_Game->handleInput(key, pressedOrReleased);
     if (_NetworkElem)
         this->_NetworkElem->handleInput(key, pressedOrReleased);
+}
+
+void MenuManager::setIsConnecting(bool is_connecting)
+{
+    _Is_connecting = is_connecting;
+}
+
+void MenuManager::setIsConnected(bool is_connected)
+{
+    _Is_connected = is_connected;
+}
+
+void MenuManager::setUserName(const std::string username)
+{
+    _Username = username;
+    if (_NetworkElem)
+        if (_NetworkElem->getGame() != nullptr)
+            _NetworkElem->getGame()->setUserName(username);
+        else
+            this->_DebugLogger->Log("Game not setted on network elem", 0);
+    else
+        this->_DebugLogger->Log("NetworkElem not setted", 0);
+}
+
+void MenuManager::restartGame()
+{
+    if (_Game)
+        _Game->resetGame();
+    if (_NetworkElem)
+        _NetworkElem->disconnect();
+    this->setMenuType(START_MENU);
+    _Is_connecting = false;
+    _Is_connected = false;
+    _Username = "";
 }

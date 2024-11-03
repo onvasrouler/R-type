@@ -73,6 +73,8 @@ public:
      */
     MenuManager(const std::shared_ptr<JsonParser> jsonParser);
 
+    ~MenuManager() = default;
+
     /**
      * @brief Sets the menu type.
      * @param type The type of the menu.
@@ -193,6 +195,10 @@ public:
 
     void handleInput(int key, int pressedOrReleased);
 
+    void setUserName(const std::string username);
+
+    void restartGame();
+
 private:
     void checkForNetwork();
 
@@ -214,6 +220,11 @@ private:
      * @brief Erases the menu.
      */
     void eraseMenu();
+
+    void setIsConnecting(bool is_connecting);
+
+    void setIsConnected(bool is_connected);
+
 
     std::shared_ptr<GuiElementFactory> _GuiElementFactory;
 
@@ -243,4 +254,6 @@ private:
 
     bool _Is_connecting;
     bool _Is_connected;
+
+    std::string _Username;
 };
