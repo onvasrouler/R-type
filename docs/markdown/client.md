@@ -2,94 +2,120 @@
 
 ## Overview
 
-This project is an implementation of a game called R-Type, which includes network communication using Boost.Asio (UDP), graphical rendering using SFML, and a menu interface to handle user input and game control.
+The R-Type Client is a game window manager for the R-Type project, handling user inputs, graphical rendering, networking, and logging within a Raylib window. This document provides an overview of its core classes, their functionality, and the methods for managing the game state.
 
-The project consists of three main components:
-- **Game**: Manages the game loop, event processing, rendering, and network communication with the server.
-- **GameObject**: Represents various objects in the game, such as players, enemies, and bullets.
-- **Menu**: Displays the main menu, processes user inputs, and initializes the game.
+---
 
-The communication between the client and server is done using UDP sockets, where the client sends control messages, and the server responds with updates that are processed by the game.
+## Classes and Methods
 
-## Dependencies
+### 1. `RlibWindow`
+Manages the Raylib window, including initialization, rendering, and user input handling.
 
-- **SFML** (Simple and Fast Multimedia Library) for graphics and window management.
-- **Boost.Asio** for network communication (UDP).
-- **C++ Standard Library** for core functionality.
+#### Constructor
+- `RlibWindow(int windowWidth, int windowHeight, std::string title, Color backgroundColor, int frameRateLimit)`: Sets up window properties and initial states.
+- `RlibWindow(std::string filename)`: Loads settings from a JSON file.
 
-## Class Descriptions:
+#### Methods
+- `setDefaultVal()`: Sets initial values for window configuration, including menu management and key press tracking.
+- `setWidth(int windowWidth)`, `setHeight(int windowHeight)`, `setSize(int width, int height)`: Adjusts window dimensions.
+- `setWindowPosition(int windowX, int windowY)`, `setWindowPosX(int windowX)`, `setWindowPosY(int windowY)`: Sets window position.
+- `setTitle(std::string title)`: Sets the window title.
+- `swapSettings()`: Toggles settings display in the menu.
+- `InitRlib()`: Initializes the Raylib window and settings.
+- `CloseRlibWindow()`: Closes the Raylib window.
+- `update()`: Main update loop to handle resizing, drawing, and menu updates.
 
-### `Game`
+---
 
-The `Game` class manages the main game loop, processes events, and communicates with the server over UDP.
+### 2. `DebugLogger`
+Provides logging capabilities to monitor client activity, with adjustable verbosity levels.
 
-- **Attributes**:
-  - `_socket`: A unique pointer to a UDP socket.
-  - `gameIsRunning`: A boolean flag to indicate if the game is currently running.
-  - `backgroundTexture` and `backgroundSprite`: SFML components to render the game background.
-  - `objects`: A map storing all game objects (players, enemies, bullets).
-  - `recv_buffer`: A buffer to store incoming messages from the server.
-  - `sender_endpoint_`: The sender's endpoint for receiving messages.
+#### Constructor
+- `DebugLogger(bool active, int depth)`: Initializes the logger with active status and depth level.
 
-- **Methods**:
-  - `run()`: Starts the game, sends an initial message to the server, and handles the game loop.
-  - `startRecieve()`: Starts receiving data asynchronously from the server.
-  - `processEvents()`: Processes input events like keyboard and mouse presses.
-  - `update()`: Updates the game state based on the server's messages.
-  - `handle_receive()`: Processes received messages and restarts the receive operation.
-  - `render()`: Draws the game objects on the window.
+#### Methods
+- `Log(std::string msg, int depth)`: Logs messages if the current depth is within the defined logging depth.
+- `SetActive(bool active)`, `SetLogDepth(int depth)`: Sets logging parameters.
+- `GetActive()`, `GetLogDepth()`: Returns current logging status and depth.
 
-### `GameObject`
+---
 
-The `GameObject` class represents an object in the game such as a player, enemy, or bullet.
+### 3. `NetworkElem`
+Manages network connection, handling server communication, connection status, and network operations.
 
-- **Attributes**:
-  - `Sprite`: An SFML sprite used to display the game object.
-  - `Texture`: An SFML texture that holds the image of the game object.
+#### Constructor
+- `NetworkElem(std::shared_ptr<DebugLogger> debuglogger, std::string ip, std::string port)`: Initializes network with server details.
 
-- **Methods**:
-  - `GameObject()`: Initializes the game object with a position and type (player, enemy, or bullet).
-  - `setPosition()`: Updates the position of the game object.
+#### Methods
+- `connect()`, `disconnect()`: Manages connection lifecycle.
+- `setServerInfos(std::string ip, std::string port)`: Updates server details.
+- `asyncReceive()`: Listens for incoming data asynchronously.
+- `send(std::string message)`: Sends data to the server.
+- `update()`: Updates network status and communication.
 
-### `Menu`
+---
 
-The `Menu` class manages the main menu and handles user input to either start the game or exit.
+### 4. `MenuManager`
+Handles game menus, integrating GUI elements and templates from JSON files.
 
-- **Attributes**:
-  - `window`: An SFML window object to render the menu.
-  - `backgroundTexture` and `backgroundSprite`: SFML components to display the menu background.
-  - `menuOptions` and `menuTexts`: Maps of menu options and corresponding text.
-  - `ip` and `port`: Strings for IP address and port input by the user.
-  - `isTypingIp` and `isTypingPort`: Booleans to track if the user is typing in the IP or port fields.
+#### Constructor
+- `MenuManager(std::shared_ptr<JsonParser> jsonParser)`: Initializes menu settings.
 
-- **Methods**:
-  - `run()`: The main menu loop that processes events and renders the menu.
-  - `processEvents()`: Handles mouse clicks and keyboard inputs to navigate the menu and start the game.
-  - `update()`: Updates the menu display.
-  - `render()`: Draws the menu options and updates the screen.
-  - `tryToConnect()`: Attempts to connect to the server and start the game using the provided IP and port.
+#### Methods
+- `setMenuType(menuType type)`, `getMenuType()`: Manages the current menu type.
+- `setWindowSize(int width, int height)`: Adjusts window size for menu.
+- `loadMenu()`, `reloadMenu()`, `drawMenu()`: Manages loading, reloading, and drawing menu elements.
+- `setGameInfo(std::string ip, std::string port)`: Updates network information and sets the connection menu.
 
-## Diagram
+---
 
-<img src="../../assets/docs/client_graph.png" style="width:80%">
+### 5. `JsonParser`
+Loads, parses, and manages JSON files for window and menu configurations.
 
-## Game Flow
+#### Methods
+- `parseFile(std::string filename)`: Loads JSON configuration file.
+- `writeFile(std::string filename, nlohmann::json json)`, `writePrettyFile(std::string filename, nlohmann::json json, int indent = 4)`: Writes JSON data to file.
+- `fileHasChanged(std::string filename)`: Checks if a JSON file has been modified.
 
-- Menu: The user interacts with the main menu to either start the game or exit.
-- Connection: The user inputs the server's IP address and port, and attempts to connect to the server.
-- Game Initialization: Upon a successful connection, the game initializes and starts the main loop.
-- Game Loop:
-    The game receives updates from the server.
-    The game processes player inputs (e.g., movement, actions).
-    The game renders objects (players, enemies, bullets) based on the received data.
-- Exit: The user can exit the game by pressing a key or closing the window.
+---
 
-## Error Handling
+### 6. `Game`
+Manages game state, entities, and gameplay interactions.
 
-- If there is an error in receiving data from the server, an error message is displayed.
-- If the server sends invalid data, the game handles it gracefully and continues to function.
-- The game also ensures that textures are loaded correctly, otherwise, exceptions are thrown.
+#### Constructor
+- `Game(std::shared_ptr<JsonParser> jsonParser, std::shared_ptr<DebugLogger> debugLogger, int width, int height)`: Initializes the game with window size, parser, and logger.
 
-## Conclusion
+#### Methods
+- `initGame()`, `start()`, `update(std::string data)`: Manages game initialization, start, and state updates.
+- `handleData(std::vector<std::string> tokens)`, `handlePlayer(std::string uuid, std::vector<std::string> tokens)`: Processes game data for entities.
+- `draw()`: Renders game entities.
+- `resetGame()`, `stop()`: Resets and stops game state.
 
-This project demonstrates networked game development using C++ with SFML for graphics and Boost.Asio for networking. The game structure allows for continuous communication with a server, where the server controls the game state, and the client processes input and renders the updated game objects.
+---
+
+## Utility Functions
+
+- `CustomLog(int msgType, const char *text, va_list args)`: Custom log formatting with time stamps.
+- `HealthCheck()`: Verifies the existence of critical JSON configuration files.
+- `isIpValid(std::string ip)`, `isPortValid(std::string port)`: Validates IP and port formats.
+- `splitter(std::string str, char delimiter)`: Splits strings into tokens for data parsing.
+
+---
+
+## JSON Configuration
+
+### Window Settings
+- **Path**: `./config/window_settings.json`
+- **Properties**: Defines window dimensions, position, title, and other customizable settings.
+
+### Menu Settings
+- **Path**: `./config/menu_settings.json`
+- **Properties**: Defines menu structure, including elements such as buttons, text fields, and dropdowns, with templates for GUI consistency.
+
+---
+
+## Notes
+
+- Ensure that required configuration files are available and valid in the `./config/` directory for proper initialization.
+- Debug logging depth is adjustable to control verbosity for development and troubleshooting.
+- Ensure to put `config` and `assets` folder at the same place at the binary r-type_client in the workspace.
