@@ -22,14 +22,14 @@ find_package(nlohmann_json REQUIRED)
 find_package(raylib REQUIRED)
 
 add_custom_command(
-    OUTPUT ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.c
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.h ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.c
-    DEPENDS ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.h
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/raygui/raygui.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/raygui/raygui.h ${CMAKE_SOURCE_DIR}/src/raygui/raygui.c
+    DEPENDS ${CMAKE_SOURCE_DIR}/src/raygui/raygui.h
     COMMENT "Copying raygui.h to raygui.c"
 )
 
 # Add the renamed file to the library
-add_library(raygui SHARED ${CMAKE_SOURCE_DIR}/client/src/raygui/raygui.c)
+add_library(raygui SHARED ${CMAKE_SOURCE_DIR}/src/raygui/raygui.c)
 
 target_compile_definitions(raygui PRIVATE RAYGUI_IMPLEMENTATION BUILD_LIBTYPE_SHARED)
 

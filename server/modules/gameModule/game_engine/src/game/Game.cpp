@@ -224,13 +224,13 @@ void Game::update_world()
     for (auto& player : this->_player) {
         if (player.get_dir() != NONE) {
             player.move();
-            std::string message = PLAYER_POSITION_CODE + std::string("/") + player.get_id() + std::string("/") + std::to_string(player.get_x()) + std::string("/") + std::to_string(player.get_y()) + END_MESSAGE_CODE;
-            _sendMutex.lock();
-            for (auto &player : _player) {
-                _sendMessages.push_back(gameMessage(player.get_id(), message));
-            }
-            _sendMutex.unlock();
         }
+        std::string message = PLAYER_POSITION_CODE + std::string("/") + player.get_id() + std::string("/") + std::to_string(player.get_x()) + std::string("/") + std::to_string(player.get_y()) + END_MESSAGE_CODE;
+        _sendMutex.lock();
+        for (auto &player : _player) {
+            _sendMessages.push_back(gameMessage(player.get_id(), message));
+        }
+        _sendMutex.unlock();
         auto cl = std::chrono::high_resolution_clock::now();
         if (player.get_has_shot() == true && std::chrono::duration<double>(cl - player.get_cl()).count() >= 1.0) {
             std::cout << "fire" << std::endl;

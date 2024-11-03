@@ -6,6 +6,7 @@
                 "name": "Log Module",
                 "path": "/serverModules/logModule.dll",
                 "uuid": "`:ıÛ╚",
+                "load": false,
                 "listen_modules": [
                 ]
             },
@@ -13,6 +14,7 @@
                 "name": "Game Module",
                 "path": "\\serverModules\\gameModule.dll",
                 "uuid": "`&´×m",
+                "load": true,
                 "listen_modules": [
                     {
                         "id": "EÀXP"
@@ -23,6 +25,7 @@
                 "name": "Network Module",
                 "path": "\\serverModules\\networkModule.dll",
                 "uuid": "EÀXP",
+                "load": true,
                 "listen_modules": [
                     {
                         "id": "`&´×m"
@@ -37,6 +40,7 @@
                 "name": "Log Module",
                 "path": "/serverModules/logModule.so",
                 "uuid": "255e924a-7708-4e13-92cd-638a4681986f",
+                "load": true,
                 "listen_modules": [
                 ]
             },
@@ -44,6 +48,7 @@
                 "name": "Game Module",
                 "path": "/serverModules/gameModule.so",
                 "uuid": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2",
+                "load": true,
                 "listen_modules": [
                     {
                         "id": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a"
@@ -54,6 +59,7 @@
                 "name": "Network Module",
                 "path": "/serverModules/networkModule.so",
                 "uuid": "a5dbbeb3-1435-473c-ba3b-36388bb64e8a",
+                "load": true,
                 "listen_modules": [
                     {
                         "id": "f1b4b73f-a9d1-44bc-91c8-bd4d71828fe2"

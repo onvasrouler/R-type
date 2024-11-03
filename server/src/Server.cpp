@@ -143,7 +143,15 @@ void Server::start() {
             AbstractModule* moduleInstance = create_module(module.GetModuleName(), module.GetModuleId());
             std::cout << "Loaded module: " << moduleInstance->getName() << std::endl;
 
-            createModule(moduleInstance, hModule);
+            for (auto &listen : module.GetModuleListen()) {
+                moduleInstance->addCommunicateModule(listen);
+            }
+            try {
+                createModule(moduleInstance, hModule);
+            } catch (std::exception &e) {
+                std::cerr << e.what() << std::endl;
+                throw std::runtime_error("Error while creating the module");
+            }
         #else
             if (!std::filesystem::exists(path)) {
                 std::cerr << "SO not found: " << path << std::endl;
@@ -171,13 +179,23 @@ void Server::start() {
             }
         #endif
     }
-#ifdef _WIN32
-    u_long mode = 1; // 1 to enable non-blocking mode
     for (auto &module : _modules) {
+#ifdef _WIN32
+        u_long mode = 1; // 1 to enable non-blocking mode
         ioctlsocket(module->getSocket(), FIONBIO, &mode);
-    }
+#else
+        fcntl(module->getSocket(), F_SETFL, O_NONBLOCK);
 #endif
-    std::cout << "Modules created" << std::endl;
+        for (auto &communicateModuleID : module->getModule()->getCommunicatesModules()) {
+            for (auto &otherModule : _modules) {
+                if (otherModule->getModule()->getId() == communicateModuleID) {
+                    // module->addCommunicatesModule(otherModule->getSocket());
+                    otherModule->addCommunicatesModule(module->getSocket());
+                }
+            }
+        }
+        std::cout << "Modules created" << std::endl;
+    }
 }
 
 void Server::run() {
@@ -212,50 +230,7 @@ void Server::run() {
 #ifdef _WIN32
             for (int valread = recv(_modules[0]->getSocket(), buffer, 1024, 0);
                  valread != -1 && valread != 0;
-                 valread = recv(_modules[0]->getSocket(), buffer, 1024, 0)) {
-                messages += buffer;
-            }
-#else
-            for (int valread =
-                     recv(_modules[0]->getSocket(), buffer, 1024, MSG_DONTWAIT);
-                 valread != -1 && valread != 0;
-                 valread = recv(_modules[0]->getSocket(), buffer, 1024,
-                                MSG_DONTWAIT)) {
-                messages += buffer;
-            }
-#endif
-        }
-        std::string message =
-            messages.substr(0, messages.find(THREAD_END_MESSAGE));
-        for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
-             message = messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-             messages =
-                 messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
-            // get ip and port
-            std::string ip = message.substr(0, message.find(":"));
-            message = message.substr(message.find(":") + 1);
-            std::size_t port = std::stoi(message.substr(0, message.find("/")));
-            message = message.substr(message.find("/") + 1);
-            if (isClient(ip, port)) {
-                std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend);
-            } else {
-                uuid userUUID;
-                std::string userID = userUUID.toString();
-                Client newClient(ip, port, userID);
-                _clients.push_back(newClient);
-                std::string messageToSend = createMessage(ip, port, message);
-                _modules[1]->addMessage(messageToSend);
-            }
-        }
-        messages.clear();
-        if (FD_ISSET(_modules[1]->getSocket(), &readfds)) {
-#ifdef _WIN32
-            for (int valread = recv(_modules[1]->getSocket(), buffer, 1024, 0);
-                 valread != -1 && valread != 0;
-                 valread = recv(_modules[1]->getSocket(), buffer, 1024, 0)) {
-                std::cout << "Read: " << buffer << " from game module"
-                          << std::endl;
+                 valread = recv(module->getSocket(), buffer, 1024, 0)) {
                 messages += buffer;
             }
 #else
@@ -266,52 +241,56 @@ void Server::run() {
                                 MSG_DONTWAIT)) {
                 messages += buffer;
             }
-            std::cout << "Core message received: " << messages << " from: " << module->getModuleName() << std::endl;
+#endif
+            std::cout << "Core message received: " + messages + " from: " + module->getModuleName() + "\n";
             for (std::string message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-                    messages.find(THREAD_END_MESSAGE) != std::string::npos;
-                    messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
-                    message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
-                    message += THREAD_END_MESSAGE;
-                for (auto &writeToModule : _modules) {
-                    if (canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId()))
-                        std::cout << "Core find good module" << std::endl;
-                    if (FD_ISSET(module->getSocket(), &writefds) && canCommunicateWith(writeToModule->getModule()->getId(), module->getModule()->getId())) {
-                        writeToModule->addMessage(message);
-                    }
+                messages.find(THREAD_END_MESSAGE) != std::string::npos;
+                messages = messages.substr(messages.find(THREAD_END_MESSAGE) + 2),
+                message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
+                message += THREAD_END_MESSAGE;
+                for (auto &communicateModule : module->getCommunicatesSockets()) {
+                    _messageToSend.push_back(std::make_tuple(communicateModule, message));
                 }
             }
-#endif
-            message = messages.substr(0, messages.find(THREAD_END_MESSAGE));
-            for (; messages.find(THREAD_END_MESSAGE) != std::string::npos;
-                 message =
-                     messages.substr(0, messages.find(THREAD_END_MESSAGE)),
-                 messages =
-                     messages.substr(messages.find(THREAD_END_MESSAGE) + 2)) {
-                // get uuid and message
-                std::string uuidString = message.substr(0, message.find(":"));
-                message = message.substr(
-                    message.find(":") + 1,
-                    message.size() - std::string(THREAD_END_MESSAGE).size());
-                // send the message to the client
-                std::string ip = findClient(uuidString).getIp();
-                std::size_t port = findClient(uuidString).getPort();
-                std::string messageToSend = ip + ":" + std::to_string(port) +
-                                            "/" + message + THREAD_END_MESSAGE;
-                _modules[0]->addMessage(messageToSend);
+        }
+        // for (auto& module : _modules) {
+        //     if (module->getMessages().empty() ||
+        //         !FD_ISSET(module->getSocket(), &writefds))
+        //         continue;
+        //     // for (auto& message : module->getMessages()) {
+        //     //     std::cout << "Core sending message: " << message
+        //     //               << "to module: " << module->getModuleName()
+        //     //               << std::endl;
+        //     //     send(module->getSocket(), message.c_str(), message.size(), 0);
+        //     // }
+        //     module->clearMessages();
+        // }
+        #ifdef _WIN32
+            std::vector<std::tuple<SOCKET, std::string>> messagesNotSent;
+        #else
+            std::vector<std::tuple<int, std::string>> messagesNotSent;
+        #endif
+        if (!_messageToSend.empty())
+            std::cout << std::string("Message to send: ") + std::to_string(_messageToSend.size()) + "\n";
+        for (auto& message : _messageToSend) {
+            if (FD_ISSET(std::get<0>(message), &writefds)) {
+                std::string moduleName = "";
+                for (auto& module : _modules) {
+                    if (module->getSocket() == std::get<0>(message)) {
+                        moduleName = module->getModuleName();
+                        break;
+                    }
+                }
+                std::cout << "Core sending message: " + std::get<1>(message)
+                          + "to module: " + moduleName + "\n";
+                send(std::get<0>(message), std::get<1>(message).c_str(), std::get<1>(message).size(), 0);
+            }
+            else {
+                std::cout << "Message not sent" << std::endl;
+                messagesNotSent.push_back(message);
             }
         }
-        for (auto& module : _modules) {
-            if (module->getMessages().empty() ||
-                !FD_ISSET(module->getSocket(), &writefds))
-                continue;
-            for (auto& message : module->getMessages()) {
-                std::cout << "Core sending message: " << message
-                          << "to module: " << module->getModuleName()
-                          << std::endl;
-                send(module->getSocket(), message.c_str(), message.size(), 0);
-            }
-            module->clearMessages();
-        }
+        _messageToSend = messagesNotSent;
     }
 }
 
@@ -399,8 +378,6 @@ bool Server::isClient(const std::string ip, const std::size_t port) {
     }
     for (auto& module : _modules) {
         if (module->getModule()->getId() == moduleId) {
-            std::cout << "Core find target module" << std::endl;
-            std::cout << "ne=b communicate Modules: " << module->getModule()->getCommunicatesModules().size() << std::endl;
             for (auto& communicateModule : module->getModule()->getCommunicatesModules()) {
                 std::cout << communicateModule << " " << communicateModuleId << std::endl;
                 if (communicateModule == communicateModuleId)

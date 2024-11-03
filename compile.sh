@@ -115,13 +115,15 @@ compile_tests () {
 }
 
 compile() {
-    clean_client
+    clean_client    
     clean_server
+    copy_server_source_code
     cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON -DHEAD_SERVER=ON
     cd build
     make
     cd ..
-    mv build/server/$server_binary .
+    move_server_and_modules
+    setup_dev_tools
     mv build/client/$client_binary .
 }
 

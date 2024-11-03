@@ -48,6 +48,7 @@ void Player::move()
     if (this->_dir == LEFT) {
         this->set_x(this->get_x() - MOVE_DISTANCE);
     }
+    this->set_dir(NONE);
 }
 
 /**
