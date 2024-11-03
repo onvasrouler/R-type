@@ -22,6 +22,7 @@ clean_head_server() {
 
 clean_client() {
     rm -rf $client_binary
+    rm -rf config
 }
 
 clean_tests() {
