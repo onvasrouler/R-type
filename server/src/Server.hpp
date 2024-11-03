@@ -10,7 +10,6 @@
 #include "MultiThread.hpp"
 #include "serverModule.hpp"
 
-#define SHUTDOWN_MESSAGE "500"
 #define NEW_CONNECTION_MESSAGE "201"
 #define BAD_CONNECTION_MESSAGE "500"
 
@@ -78,7 +77,6 @@ class Server : MultiThreadElement {
         bool canCommunicateWith(std::string moduleId, std::string communicateModuleId);
         bool _Running; /*!< The state of the server. */
         std::vector<std::unique_ptr<serverModule>> _modules; /*!< The modules of the server. */
-        std::vector<Client> _clients; /*!< The clients of the server. */
         #ifdef _WIN32
             SOCKET _maxSocket; /*!< The max socket of the server. */
             std::vector<std::tuple<SOCKET, std::string>> _messageToSend; /*!< The message to send. */
