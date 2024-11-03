@@ -220,9 +220,13 @@ void NetworkElem::update()
         _Game->update();
         if (_DebugLogger)
             _DebugLogger->Log("game updated", 5);
+        if (_DaltonismFilter)
+            BeginShaderMode(_DaltonismFilter->getShader());
         _Game->draw();
         if (_DebugLogger)
             _DebugLogger->Log("game drawn", 5);
+        if (_DaltonismFilter)
+            EndShaderMode();
     }
 }
 
@@ -245,4 +249,9 @@ void NetworkElem::handleInput(int key, int pressedOrReleased)
 std::shared_ptr<Game> NetworkElem::getGame() const
 {
     return _Game;
+}
+
+void NetworkElem::setDaltonismFilter(std::shared_ptr<daltonismFilter> daltonismFilter)
+{
+    _DaltonismFilter = daltonismFilter;
 }

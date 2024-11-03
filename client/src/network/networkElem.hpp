@@ -13,6 +13,7 @@
 #include <iostream>
 #include <atomic>
 #include "../game/game.hpp"
+#include "../raylibWindow/daltonismFilter.hpp"
 
 #if defined(_WIN32)
 #define NOGDI
@@ -146,6 +147,8 @@ public:
 
     std::shared_ptr<Game> getGame() const;
 
+    void setDaltonismFilter(std::shared_ptr<daltonismFilter> daltonismFilter);
+
 
     private:
     
@@ -181,5 +184,6 @@ public:
     bool _SpacePressed;
 
 
+    std::shared_ptr<daltonismFilter> _DaltonismFilter; /**< Shared pointer to the daltonism filter. */
 
 };
