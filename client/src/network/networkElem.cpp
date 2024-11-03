@@ -80,8 +80,12 @@ void NetworkElem::connect()
 {
     this->disconnect();
     _Game->start();
+    if (_Socket.is_open())
+        _Socket.close();
+    _Socket.close();
     _Status = Status::CONNECTING;
-
+    if (_DebugLogger)
+        _DebugLogger->Log("Connecting to server", 2);
     try {
         _Socket.open(boost::asio::ip::udp::v4());
         _Timer.expires_after(std::chrono::seconds(10));
@@ -100,6 +104,9 @@ void NetworkElem::connect()
     }
      if (!_Network_thread.joinable())
         _Network_thread = std::thread([this]() { _Io_service.run(); });
+    _LastSendTime = std::chrono::steady_clock::now();
+    if (_DebugLogger)
+        _DebugLogger->Log("end of connecting to server", 2);
 }
 
 void NetworkElem::initConnection()
@@ -196,18 +203,21 @@ void NetworkElem::update()
     }
     if (_Status == Status::CONNECTED) {
 
-        if (_UpPressed == 1)
-            send("0/up\r\n");
-        if (_DownPressed == 1)
-            send("1/down\r\n");
-        if (_LeftPressed == 1)
-            send("2/left\r\n");
-        if (_RightPressed == 1){
-            send("3/right\r\n");
-        }
-        if (_SpacePressed == 1) {
-            send("1/shoot\r\n");
-            _SpacePressed = 0;
+        auto now = std::chrono::steady_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - _LastSendTime);
+
+        if (duration.count() >= 20) {
+            if (_UpPressed == 1)
+                send("0/up\r\n");
+            if (_DownPressed == 1)
+                send("1/down\r\n");
+            if (_LeftPressed == 1)
+                send("2/left\r\n");
+            if (_RightPressed == 1)
+                send("3/right\r\n");
+            if (_SpacePressed == 1)
+                send("1/shoot\r\n");
+            _LastSendTime = now;
         }
         _Game->update();
         _Game->draw();

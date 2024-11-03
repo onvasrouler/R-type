@@ -234,6 +234,8 @@ public:
     boost::asio::steady_timer _Timer2;
     std::array<char, 1024> _Buffer;
 
+    std::chrono::_V2::steady_clock::time_point _LastSendTime;
+    
     bool _DownPressed;
     bool _UpPressed;
     bool _LeftPressed;
