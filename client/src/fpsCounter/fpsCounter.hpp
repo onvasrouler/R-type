@@ -35,6 +35,8 @@ public:
      */
     FpsCounter(const Vector2 pos = DEFAULT_POS, const int zindex = DEFAULT_Z_INDEX, const int fontSize = 10, const Color color = BLACK);
 
+    ~FpsCounter() = default;
+
     /**
      * @brief Sets the current FPS value.
      * 
