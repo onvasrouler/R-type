@@ -212,6 +212,8 @@ public:
 
     void handleInput(int key, int pressedOrReleased);
 
+    std::shared_ptr<Game> getGame() const;
+
 
     private:
     
