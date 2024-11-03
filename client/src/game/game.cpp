@@ -30,7 +30,14 @@ Game::Game(std::shared_ptr<JsonParser> jsonParser, std::shared_ptr<DebugLogger> 
     _Running = false;
     _GameOver = false;
     _Username = "default";
+    _ScoreText = std::make_shared<RLText>(Vector2{10, 30}, Vector2{0, 30}, "Score : 0", 0, Color{0, 0, 0, 255});
+    _UsernameText = std::make_shared<RLText>(Vector2{10, 70}, Vector2{0, 30}, "Username : ", 0, Color{0, 0, 0, 255});
+    _ScoreText->setDisplay(true);
+    _UsernameText->setDisplay(true);
+    _BackgroundElem = std::make_shared<Background>(_WindowWidth, _WindowHeight);
+    _Score = 0;
 }
+
 
 void Game::setEntityFactoryJsonParser(std::shared_ptr<JsonParser> jsonParser)
 {
@@ -46,11 +53,13 @@ void Game::setDebugLogger(std::shared_ptr<DebugLogger> debugLogger)
 void Game::setWindowWidth(const int width)
 {
     _WindowWidth = width;
+    _BackgroundElem->setWidth(width);
 }
 
 void Game::setWindowHeight(const int height)
 {
     _WindowHeight = height;
+    _BackgroundElem->setHeight(height);
 }
 
 void Game::setWindowSize(const int width, const int height)
@@ -61,7 +70,10 @@ void Game::setWindowSize(const int width, const int height)
 
 void Game::initGame()
 {
+    _BackgroundElem->loadTextures();
     _EntitiesList.clear();
+    _ScoreText->setText("Score : 0");
+    _Score = 0;
     if (_EntitiesFactory)
         _EntitiesFactory->loadEntities(ASSETS_FILE_PATH);
     else
@@ -73,6 +85,8 @@ void Game::initGame()
 
 void Game::start()
 {
+    _Score = 0;
+    _ScoreText->setText("Score : 0");
     _Running = true;
     _ShutDown = false;
     _modif.clear();
@@ -149,6 +163,8 @@ void Game::handleData(std::vector<std::string> tokens)
 
     if (instruction == "203" || instruction == "213" || instruction == "222")
         destroyEntity(tokens);
+    if (instruction == "213")
+        _Score += 1;
     
     if (instruction == "202" || instruction == "212" || instruction == "221") {
         if (_EntitiesList.find(uuid) != _EntitiesList.end()) {
@@ -269,6 +285,7 @@ void Game::destroyEntity(std::vector<std::string> tokens)
         if(tokens[1] == _PlayerId) {
             _Running = false;
             _GameOver = true;
+            _DebugLogger->Log("Game over !!!", 4);
         }
         _EntitiesList.erase(tokens[1]);
     }
@@ -277,13 +294,24 @@ void Game::destroyEntity(std::vector<std::string> tokens)
 void Game::draw()
 {
 
-    
+    _DebugLogger->Log("Game start to draw", 4);
     if (!_Running && !_GameOver)
         return;
-
+    _DebugLogger->Log("Drawing background", 4);
+    _BackgroundElem->draw();
+    _DebugLogger->Log("Drawing entities", 4);
     for (const auto &entity : _EntitiesList)
         entity.second->draw();
-
+    _DebugLogger->Log("creating score text", 4);
+    std::string score = "Score : " + std::to_string(_Score);
+    _DebugLogger->Log("Score : " + score, 4);
+    _DebugLogger->Log("Setting score text", 4);
+    _ScoreText->setText(score);
+    _DebugLogger->Log("Drawing score text", 4);
+    _ScoreText->draw();
+    _DebugLogger->Log("Drawing username text", 4);
+    _UsernameText->draw();
+    
     if (_DebugLogger)
         _DebugLogger->Log("Game is drawing", 4);
 }
@@ -349,4 +377,5 @@ bool Game::getGameOver()
 void Game::setUserName(std::string username)
 {
     _Username = username;
+    _UsernameText->setText("Username : " + username);
 }
