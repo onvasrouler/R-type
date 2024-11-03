@@ -29,6 +29,15 @@ void guiFunction::mapFunctions()
     custom_func(GeneralSettingsButton, this->_MenuManager->setMenuType(2));
     custom_func(VideoSettingsButton, this->_MenuManager->setMenuType(3));
     custom_func(AudioSettingsButton, this->_MenuManager->setMenuType(4));
+    custom_func(applyDaltonismFilter, {
+        std::string daltinismType = this->_MenuManager->getCurrentGui()->GetValueById("daltonismFilter");
+        if (daltinismType == "")
+            return;
+        int type = std::stoi(daltinismType);
+        auto daltFilter = this->_MenuManager->getDaltonismFilter();
+        if (daltFilter)
+            daltFilter->setDaltonismType(type);
+    });
     custom_func(ControlsSettingsButton, this->_MenuManager->setMenuType(5));
     custom_func(StartFunct, {
         std::string ip = this->_MenuManager->getCurrentGui()->GetValueById("adressInput");
