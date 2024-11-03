@@ -29,6 +29,6 @@
     },
     "logger": {
         "active": true,
-        "degree": 0
+        "degree": 5
     }
 }

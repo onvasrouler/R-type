@@ -216,24 +216,76 @@
             "templates" : ["PARAM_NAVBAR"],
             "texts": [
                 {
-                    "id": "settingText",
-                    "text": "Settings",
+                    "id": "GeneralText",
+                    "text": "General",
                     "position": {
                         "x": "center",
                         "y": 10
                     },
                     "fontSize": 30,
                     "color": {
-                        "r": 0,
+                        "r": 255,
                         "g": 255,
                         "b": 255,
                         "a": 255
                     },
                     "display": true,
+                    "functionName": "defaultFunct"     
+                }
+            ],
+            "groups": [
+                {
+                    "id": "0",
+                    "position": {
+                        "x": "6%",
+                        "y": 180
+                    },
+                    "size": {
+                        "width": "22%",
+                        "height": "15%"
+                    },
+                    "text": "daltonism filter",
+                    "display": true,
+                    "functionName": "none"
+                }
+            ],
+            "dropDowns" : [
+                {
+                    "id": "daltonismFilter",
+                    "position": {
+                        "x": "7%",
+                        "y": 200
+                    },
+                    "size": {
+                        "width": "20%",
+                        "height": "10%"
+                    },
+                    "text": "none;protanopia;deuteranopia;tritanopia",
+                    "active": 0,
+                    "editMode": true,
+                    "display": true,
                     "functionName": "defaultFunct"
                 }
-            ]
+            ],
+            "buttons": [
+            {
+                "id": "videoButton",
+                "text": "apply",
+                "position": {
+                    "x": "7%",
+                    "y": "50%"
+                },
+                "size": {
+                    "width": "20%",
+                    "height": "10%"
+                },
+                "display": true,
+                "functionName": "applyDaltonismFilter"
+
+            }
+        ]
         },
+        
         "SETTINGS_VIDEO": {
             "isSimple": true,
             "templates" : ["PARAM_NAVBAR"],
