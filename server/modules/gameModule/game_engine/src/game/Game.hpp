@@ -61,9 +61,11 @@ class gameMessage {
         ~gameMessage() = default;
         std::string &getId();
         const std::string getMessage();
+        //operator=
+        gameMessage& operator=(const gameMessage &other);
     private:
         std::string _id;
-        const std::string _message;
+        std::string _message;
 };
 
 /**

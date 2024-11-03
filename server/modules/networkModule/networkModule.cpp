@@ -139,23 +139,27 @@ void NetworkModule::run() {
             continue;
         }
         // check received messages
-        if (FD_ISSET(_socket, &writefds)) {
-            _udpServer->getReceiveMutex().lock();
-            for (auto& data : _udpServer->getReceivedData()) {
-                std::string message = data.getData() + THREAD_END_MESSAGE;
-                if (isClient(data.getIp(), data.getPort())) {
-                } else {
-                    uuid userUUID;
-                    std::string userID = userUUID.toString();
-                    Client newClient(data.getIp(), data.getPort(), userID);
-                    _clients.push_back(newClient);
+        if (FD_ISSET(_socket, &writefds) && _udpServer->getReceiveMutex().try_lock()) {
+            // _udpServer->getReceiveMutex().lock();
+            // std::thread thread = std::thread([this]() -> void* {
+                for (auto& data : _udpServer->getReceivedData()) {
+                    std::string message = data.getData() + THREAD_END_MESSAGE;
+                    if (isClient(data.getIp(), data.getPort())) {
+                    } else {
+                        uuid userUUID;
+                        std::string userID = userUUID.toString();
+                        Client newClient(data.getIp(), data.getPort(), userID);
+                        _clients.push_back(newClient);
+                    }
+                    std::string messageToSend = createMessage(data.getIp(), data.getPort(), message);
+                    std::cout << "Module: " + _ModuleName + " send to core: " + messageToSend + "\n";
+                    send(_socket, messageToSend.c_str(), messageToSend.size(), 0);
                 }
-                std::string messageToSend = createMessage(data.getIp(), data.getPort(), message);
-                std::cout << "Module: " + _ModuleName + " send to core: " + messageToSend + "\n";
-                send(_socket, messageToSend.c_str(), messageToSend.size(), 0);
-            }
-            _udpServer->getReceivedData().clear();
-            _udpServer->getReceiveMutex().unlock();
+                _udpServer->getReceivedData().clear();
+                _udpServer->getReceiveMutex().unlock();
+            //     return nullptr;
+            // });
+            // thread.detach();
         }
 
         if (!FD_ISSET(_socket, &readfds)) {

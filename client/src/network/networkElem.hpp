@@ -168,7 +168,11 @@ public:
     boost::asio::steady_timer _Timer2;
     std::array<char, 1024> _Buffer;
 
-    std::chrono::_V2::steady_clock::time_point _LastSendTime;
+    #ifdef _WIN32
+        std::chrono::steady_clock::time_point _LastSendTime;
+    #else
+        std::chrono::_V2::steady_clock::time_point _LastSendTime;
+    #endif
     
     bool _DownPressed;
     bool _UpPressed;
