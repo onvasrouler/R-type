@@ -36,7 +36,8 @@ if "%OS%"=="Windows_NT" (
 )
 cmake --build . --target clean
 if "%~1"=="clean" (
-    exit /b
+    call :clean_all
+    goto :eof
 ) else if "%~1"=="tests" (
     echo Building tests
     cmake -S . -B build -DTESTS=ON -DSERVER=ON -DCLIENT=ON -DCMAKE_TOOLCHAIN_FILE=%TOOLCHAIN_FILE_PATH% -Wno-dev -D_WIN32_WINNT=0x0601
