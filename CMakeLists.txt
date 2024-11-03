@@ -32,7 +32,7 @@ if (CLIENT)
 endif()
 
 if (HEAD_SERVER)
-    add_subdirectory(HeadServer)
+    # add_subdirectory(HeadServer)
 endif()
 
 if (TESTS)
