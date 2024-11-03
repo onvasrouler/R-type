@@ -287,6 +287,7 @@ private:
     std::shared_ptr<DebugLogger> _DebugLogger; /**< Shared pointer to the debug logger. */
     std::shared_ptr<Game>        _Game; /**< Shared pointer to the game. */
     std::shared_ptr<NetworkElem> _NetworkElem; /**< Shared pointer to the network element. */
+    std::shared_ptr<daltonismFilter> _DaltonismFilter; /**< Shared pointer to the daltonism filter. */
 
     std::vector<std::pair<int, std::function<void()>>> keyDownActions = {
         {KEY_F11, [this]() { ToggleFullscreen(); }},
