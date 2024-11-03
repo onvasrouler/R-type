@@ -21,7 +21,7 @@ clean_head_server() {
 }
 
 clean_client() {
-    rm -rf Result/client
+    rm -rf $client_binary
 }
 
 clean_tests() {
@@ -91,7 +91,8 @@ compile_client() {
     make
     cd ..
     mv build/client/$client_binary .
-    mv build/client/RType .
+    cp -r client/config .
+    cp -r client/assets .
 }
 
 compile_tests () {
