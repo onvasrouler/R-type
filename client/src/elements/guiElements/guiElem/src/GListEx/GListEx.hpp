@@ -25,10 +25,9 @@ public:
     int getFocus() const;
     int getActive() const;
     std::vector<std::string> getList() const;
-    
+
 private:
     std::vector<std::string> _List;
-    int _active;
     int _ScrollIndex;
     int _Active;
     int _Focus;
