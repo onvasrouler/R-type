@@ -252,7 +252,15 @@ void Server::run() {
                 message = messages.substr(0, messages.find(THREAD_END_MESSAGE))) {
                 message += THREAD_END_MESSAGE;
                 for (auto &communicateModule : module->getCommunicatesSockets()) {
-                    _messageToSend.push_back(std::make_tuple(communicateModule, message));
+                    if (FD_ISSET(communicateModule, &writefds)) {
+                        std::cout << "Core sending message: " + message
+                                  + "from module: " + module->getModuleName() + "\n";
+                        send(communicateModule, message.c_str(), message.size(), 0);
+                    }
+                    else {
+                        std::cout << "Message not sent" << std::endl;
+                        _messageToSend.push_back(std::make_tuple(communicateModule, message));
+                    }
                 }
             }
         }

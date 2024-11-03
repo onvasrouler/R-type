@@ -122,11 +122,12 @@ void Game::destroy_player(const std::string id)
             std::string message = PLAYER_DEATH_CODE + std::string("/") + player->get_id() + END_MESSAGE_CODE;
             _sendMutex.lock();
             for (auto &player : _player) {
-                _sendMessages.push_back(gameMessage(player.get_id(), message));
+                //put the message at the top of the list
+                _sendMessages.insert(_sendMessages.begin(), gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
             this->_player.erase(player);
-            // std::cout << "Destroying player" << std::endl;
+            std::cout << "Destroying player" << std::endl;
             return;
         }
     }
@@ -173,7 +174,7 @@ void Game::destroy_enemy(const std::string enemy_id)
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
-            // std::cout << "Destroying enemy" << std::endl;
+            std::cout << "Destroying enemy" << std::endl;
             this->_enemy.erase(it);
             return;
         }
@@ -287,8 +288,19 @@ void Game::check_collisions()
     for (auto& player : this->_player) {
         for (auto& enemy : this->_enemy) {
             if (this->is_in_collision(player, enemy)) {
-                std::string message = PLAYER_DAMAGE_CODE + std::string("/") + player.get_id() + std::string("/") + "1" + END_MESSAGE_CODE;
-                to_destroy.push_back(player.get_id());
+                std::string message;
+                if (player.get_hp() == 1) {
+                    message = PLAYER_DEATH_CODE + std::string("/") + player.get_id() + END_MESSAGE_CODE;
+                    to_destroy.push_back(player.get_id());
+                } else {
+                    message = PLAYER_DAMAGE_CODE + std::string("/") + player.get_id() + std::string("/") + "1" + END_MESSAGE_CODE;
+                    player.set_hp(player.get_hp() - 1);
+                }
+                _sendMutex.lock();
+                for (auto &player : _player) {
+                    _sendMessages.push_back(gameMessage(player.get_id(), message));
+                }
+                _sendMutex.unlock();
             }
         }
     }
@@ -532,6 +544,12 @@ std::vector<Enemy> &Game::getEnemies() {
 
 std::vector<Bullet> &Game::getBullets() {
     return _bullet;
+}
+
+gameMessage &gameMessage::operator=(const gameMessage &other) {
+    _id = other._id;
+    _message = other._message;
+    return *this;
 }
 
 bool Game::isRunning() {

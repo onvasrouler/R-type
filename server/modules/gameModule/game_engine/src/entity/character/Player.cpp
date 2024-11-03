@@ -27,6 +27,7 @@ Player::Player(const int y, const std::string &id) : ACharacter(id)
     this->_dir = NONE;
     this->_cl = std::chrono::high_resolution_clock::now();
     this->_last_move = std::chrono::high_resolution_clock::now();
+    this->set_hp(PLAYER_HP);
 }
 
 /**
