@@ -55,6 +55,7 @@ if not exist "%REPO_DIR%" (
     git clone %REPO_URL% %REPO_DIR%
     cd %REPO_DIR%
     git checkout %BRANCH%
+    call compile.bat
     if %ERRORLEVEL% neq 0 (
         echo "Error: Could not checkout branch %BRANCH%."
         pause
@@ -82,7 +83,7 @@ if %ERRORLEVEL% neq 0 (
 echo "CMake configuration successful."
 
 echo "Building the project..."
-call compile.bat client
+
 if %ERRORLEVEL% neq 0 (
     echo "Error during build."
     pause
