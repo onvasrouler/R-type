@@ -1,4 +1,4 @@
-# Server Development Tool Documentation
+# R-Type Server Development Tool Documentation
 
 This documentation outlines the structure and functionality of the `server_dev_tools` for the R-Type project. This tool provides the framework for creating and managing server modules.
 
