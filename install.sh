@@ -36,7 +36,6 @@ else
     echo "vcpkg already installed at $VCPKG_DIR"
 fi
 
-
 echo "Installing required packages..."
 if [[ "$PLATFORM" == "Darwin" ]]; then
     echo "Detected macOS, skipping uuid installation."
@@ -46,11 +45,18 @@ else
     $VCPKG_DIR/vcpkg install boost gtest sfml
 fi
 
+git clone https://github.com/nlohmann/json.git
+cd json
+cmake -B build
+sudo cmake --install build
+cd ..
+
 if [ ! -d "$REPO_DIR" ]; then
     echo "Cloning project repository..."
     git clone $REPO_URL $REPO_DIR
     cd $REPO_DIR
     git checkout $BRANCH
+    ./compile.sh
 else
     echo "Project repository already exists at $REPO_DIR"
     cd $REPO_DIR
@@ -58,4 +64,3 @@ fi
 
 rm -rf build
 
-make
