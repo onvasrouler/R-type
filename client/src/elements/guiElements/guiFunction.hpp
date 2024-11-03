@@ -81,8 +81,12 @@ class guiFunction {
      */
     std::function<void()> getFunction(const std::string functionName);
 
+    bool doCloseWindow();
+
 
     private:
+
+    bool _DoCloseWindow = false; ///< A boolean to check if the window should be closed.
     std::unordered_map<std::string, std::function<void()>> _FunctionList; ///< A map of function names to functions.
     std::shared_ptr<MenuManager> _MenuManager; ///< A shared pointer to the MenuManager.
 };
