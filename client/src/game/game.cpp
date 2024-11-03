@@ -60,6 +60,7 @@ void Game::setWindowSize(const int width, const int height)
 
 void Game::initGame()
 {
+    _EntitiesList.clear();
     if (_EntitiesFactory)
         _EntitiesFactory->loadEntities(ASSETS_FILE_PATH);
     else
@@ -87,14 +88,7 @@ void Game::update()
             return;
         if (_DebugLogger)
             _DebugLogger->Log("Game received data", 4);
-        for (char c : data) {
-           if (!isalnum(c) && c != '/' && c != '-' && c != '\n' && c != '\r') {
-               if (_DebugLogger)
-                   _DebugLogger->Log("Invalid character in data", 0);
-               _modifMutex.unlock();
-               return;
-           }
-        }
+        
         if (data == "500\r\n") {
             _ShutDown = true;
             resetGame();
