@@ -57,6 +57,8 @@ public:
     std::vector<std::string> _modif;
     std::mutex _modifMutex;
 
+    void setUserName(std::string username);
+
 private:
     std::shared_ptr<EntitiesFactory> _EntitiesFactory; /**< Shared pointer to a EntitiesFactory object. */
     std::map<std::string, std::shared_ptr<Entities>> _EntitiesList; /**< Map of menu types to AEntities objects. */
@@ -73,4 +75,6 @@ private:
     std::string _PlayerId;
 
     std::string _DataBuffer;
+
+    std::string _Username;
 };
