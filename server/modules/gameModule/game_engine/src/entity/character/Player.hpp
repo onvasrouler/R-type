@@ -19,7 +19,7 @@
 #define INITIAL_X 100 ///< The initial x-coordinate of the player in pixels.
 #define INITIAL_DIMENSION 70 ///< The initial dimensions of the player in pixels.
 #define MOVE_DISTANCE 10 ///< The distance to move the player in one step in pixels.
-#define PLAYER_HP 1
+#define PLAYER_HP 1 ///< The health points of the player.
 
 /**
  * @enum Direction
