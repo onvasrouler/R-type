@@ -33,11 +33,14 @@ bool HealthCheck()
 {
     bool settingsFile = std::filesystem::exists("./config/window_settings.json");
     bool menuFile = std::filesystem::exists("./config/menu_settings.json");
+    bool daltonismFile = std::filesystem::exists("./config/daltonism_filter.fs");
     if (!settingsFile)
         std::cerr << "settings.json not found" << std::endl;
     if (!menuFile)
         std::cerr << "menu_settings.json not found" << std::endl;
-    return settingsFile && menuFile;
+    if (!daltonismFile)
+        std::cerr << "daltonism_filter.fs not found" << std::endl;
+    return settingsFile && menuFile && daltonismFile;
 }
 
 bool isIpValid(const std::string ip)
