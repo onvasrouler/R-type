@@ -33,6 +33,9 @@ Game::~Game()
     std::cout << "Game engine destroyed" << std::endl;
 }
 
+#include <algorithm>
+#include <cctype>
+
 /**
  * @brief Create a new player in the game.
  *
@@ -42,6 +45,14 @@ Game::~Game()
  */
 bool Game::create_player(const std::string id)
 {
+    // Check if the id is empty or contains only whitespace characters
+    if (id.empty() || std::all_of(id.begin(), id.end(), [](unsigned char c)
+        {
+            return std::isspace(c);
+        })) {
+        return false;
+    }
+
     if (this->_player.size() < 4) {
         Player player(500, id);
         this->_player.push_back(player);
@@ -61,7 +72,6 @@ bool Game::create_player(const std::string id)
 
     return true;
 }
-
 /**
  * @brief Create a new bullet for a given player.
  *
@@ -112,11 +122,12 @@ void Game::destroy_player(const std::string id)
             std::string message = PLAYER_DEATH_CODE + std::string("/") + player->get_id() + END_MESSAGE_CODE;
             _sendMutex.lock();
             for (auto &player : _player) {
-                _sendMessages.push_back(gameMessage(player.get_id(), message));
+                //put the message at the top of the list
+                _sendMessages.insert(_sendMessages.begin(), gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
             this->_player.erase(player);
-            // std::cout << "Destroying player" << std::endl;
+            std::cout << "Destroying player" << std::endl;
             return;
         }
     }
@@ -163,7 +174,7 @@ void Game::destroy_enemy(const std::string enemy_id)
                 _sendMessages.push_back(gameMessage(player.get_id(), message));
             }
             _sendMutex.unlock();
-            // std::cout << "Destroying enemy" << std::endl;
+            std::cout << "Destroying enemy" << std::endl;
             this->_enemy.erase(it);
             return;
         }
@@ -214,13 +225,13 @@ void Game::update_world()
     for (auto& player : this->_player) {
         if (player.get_dir() != NONE) {
             player.move();
-            std::string message = PLAYER_POSITION_CODE + std::string("/") + player.get_id() + std::string("/") + std::to_string(player.get_x()) + std::string("/") + std::to_string(player.get_y()) + END_MESSAGE_CODE;
-            _sendMutex.lock();
-            for (auto &player : _player) {
-                _sendMessages.push_back(gameMessage(player.get_id(), message));
-            }
-            _sendMutex.unlock();
         }
+        std::string message = PLAYER_POSITION_CODE + std::string("/") + player.get_id() + std::string("/") + std::to_string(player.get_x()) + std::string("/") + std::to_string(player.get_y()) + END_MESSAGE_CODE;
+        _sendMutex.lock();
+        for (auto &player : _player) {
+            _sendMessages.push_back(gameMessage(player.get_id(), message));
+        }
+        _sendMutex.unlock();
         auto cl = std::chrono::high_resolution_clock::now();
         if (player.get_has_shot() == true && std::chrono::duration<double>(cl - player.get_cl()).count() >= 1.0) {
             std::cout << "fire" << std::endl;
@@ -277,8 +288,19 @@ void Game::check_collisions()
     for (auto& player : this->_player) {
         for (auto& enemy : this->_enemy) {
             if (this->is_in_collision(player, enemy)) {
-                std::string message = PLAYER_DAMAGE_CODE + std::string("/") + player.get_id() + std::string("/") + "1" + END_MESSAGE_CODE;
-                to_destroy.push_back(player.get_id());
+                std::string message;
+                if (player.get_hp() == 1) {
+                    message = PLAYER_DEATH_CODE + std::string("/") + player.get_id() + END_MESSAGE_CODE;
+                    to_destroy.push_back(player.get_id());
+                } else {
+                    message = PLAYER_DAMAGE_CODE + std::string("/") + player.get_id() + std::string("/") + "1" + END_MESSAGE_CODE;
+                    player.set_hp(player.get_hp() - 1);
+                }
+                _sendMutex.lock();
+                for (auto &player : _player) {
+                    _sendMessages.push_back(gameMessage(player.get_id(), message));
+                }
+                _sendMutex.unlock();
             }
         }
     }
@@ -304,6 +326,27 @@ void Game::check_collisions()
     }
     for (auto id : to_destroy_bullet) {
         this->destroy_bullet(id);
+    }
+}
+
+/**
+ * @brief check player acivity.
+ * 
+ * This method check the last activity of players, and destroy them if le last move was 5 minutes ago.
+ */
+void Game::check_activity()
+{
+    auto cl = std::chrono::high_resolution_clock::now();
+    std::vector<std::string> to_destroy;
+
+    for (auto& player : this->_player) {
+        if (std::chrono::duration<double, std::ratio<60>>(cl - player.get_last_move()) >= std::chrono::duration<double, std::ratio<60>>(TIME_OUT)) {
+            to_destroy.push_back(player.get_id());
+        }
+    }
+
+    for (auto id : to_destroy) {
+        this->destroy_player(id);
     }
 }
 
@@ -362,6 +405,7 @@ void Game::run()
         if (std::chrono::duration<double>(now - cl).count() > 0.1) {
             cl = std::chrono::high_resolution_clock::now();
             this->update_world();
+            this->check_activity();
         }
         if (std::chrono::duration<double>(now - cl2).count() >= 2.0 && this->_enemy.size() < MAX_ENEMIES) {
             cl2 = std::chrono::high_resolution_clock::now();
@@ -488,4 +532,26 @@ std::string &gameMessage::getId() {
 
 const std::string gameMessage::getMessage() {
     return _message;
+}
+
+std::vector<Player> &Game::getPlayers() {
+    return _player;
+}
+
+std::vector<Enemy> &Game::getEnemies() {
+    return _enemy;
+}
+
+std::vector<Bullet> &Game::getBullets() {
+    return _bullet;
+}
+
+gameMessage &gameMessage::operator=(const gameMessage &other) {
+    _id = other._id;
+    _message = other._message;
+    return *this;
+}
+
+bool Game::isRunning() {
+    return _running;
 }

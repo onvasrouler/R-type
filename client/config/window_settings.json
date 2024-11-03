@@ -1,15 +1,34 @@
 {
-    "windowWidth": 800,
+    "windowWidth": 1200,
     "windowHeight": 600,
     "windowX": 500,
     "windowY": 500,
     "windowMaximized": false,
     "windowTitle": "R-Type",
     "backgroundColor" : {
-        "r": 255,
+        "r": 125,
         "g": 255,
-        "b": 255,
+        "b": 125,
         "a": 255
     },
-    "frameRateLimit": 60
+    "frameRateLimit": 60,
+    "fpsText": {
+        "display": true,
+        "position": {
+            "x": 10,
+            "y": 10
+        },
+        "fontSize": 20,
+        "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 255
+        },
+        "z-index": 100
+    },
+    "logger": {
+        "active": true,
+        "degree": 0
+    }
 }

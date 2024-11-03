@@ -35,6 +35,8 @@ private:
     void render();
     void tryToConnect();
 
+    bool isClicked(sf::RectangleShape &shape, sf::Vector2i mousePos);
+
     sf::RenderWindow window;
     std::map<enum menuType, sf::RectangleShape> menuOptions;
     std::map<enum menuType, sf::Text> menuTexts;
@@ -51,4 +53,11 @@ private:
     Game game;
 
     sf::Font font;
+
+    std::map<sf::Keyboard::Key, char> keyMap = {
+        {sf::Keyboard::Num0, '0'}, {sf::Keyboard::Num1, '1'}, {sf::Keyboard::Num2, '2'},
+        {sf::Keyboard::Num3, '3'}, {sf::Keyboard::Num4, '4'}, {sf::Keyboard::Num5, '5'},
+        {sf::Keyboard::Num6, '6'}, {sf::Keyboard::Num7, '7'}, {sf::Keyboard::Num8, '8'},
+        {sf::Keyboard::Num9, '9'}, {sf::Keyboard::Semicolon, '.'}, {sf::Keyboard::Apostrophe, '4'}
+    };
 };

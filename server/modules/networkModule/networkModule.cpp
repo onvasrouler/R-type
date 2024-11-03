@@ -139,18 +139,27 @@ void NetworkModule::run() {
             continue;
         }
         // check received messages
-        if (FD_ISSET(_socket, &writefds)) {
-            _udpServer->getReceiveMutex().lock();
-            for (auto& data : _udpServer->getReceivedData()) {
-                std::string message = data.getIp() + ":" +
-                                      std::to_string(data.getPort()) + "/" +
-                                      data.getData() + THREAD_END_MESSAGE;
-                // std::cout << "Message send to core: " << message <<
-                // std::endl;
-                send(_socket, message.c_str(), message.size(), 0);
-            }
-            _udpServer->getReceivedData().clear();
-            _udpServer->getReceiveMutex().unlock();
+        if (FD_ISSET(_socket, &writefds) && _udpServer->getReceiveMutex().try_lock()) {
+            // _udpServer->getReceiveMutex().lock();
+            // std::thread thread = std::thread([this]() -> void* {
+                for (auto& data : _udpServer->getReceivedData()) {
+                    std::string message = data.getData() + THREAD_END_MESSAGE;
+                    if (isClient(data.getIp(), data.getPort())) {
+                    } else {
+                        uuid userUUID;
+                        std::string userID = userUUID.toString();
+                        Client newClient(data.getIp(), data.getPort(), userID);
+                        _clients.push_back(newClient);
+                    }
+                    std::string messageToSend = createMessage(data.getIp(), data.getPort(), message);
+                    std::cout << "Module: " + _ModuleName + " send to core: " + messageToSend + "\n";
+                    send(_socket, messageToSend.c_str(), messageToSend.size(), 0);
+                }
+                _udpServer->getReceivedData().clear();
+                _udpServer->getReceiveMutex().unlock();
+            //     return nullptr;
+            // });
+            // thread.detach();
         }
 
         if (!FD_ISSET(_socket, &readfds)) {
@@ -180,6 +189,7 @@ void NetworkModule::run() {
                          messages = messages.substr(
                              messages.find(THREAD_END_MESSAGE) + 2)) {
             try {
+                std::cout << "Module: " + _ModuleName + " received: " + message + " from core\n";
                 // encode message and send to the clients
                 std::string ip = message.substr(0, message.find(":"));
                 message = message.substr(message.find(":") + 1);

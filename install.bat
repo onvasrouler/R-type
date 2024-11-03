@@ -42,7 +42,7 @@ if not exist "%VCPKG_DIR%" (
 )
 
 echo "Installing required packages (boost and gtest)..."
-%VCPKG_DIR%\vcpkg install boost gtest sfml nlohmann-json
+%VCPKG_DIR%\vcpkg install boost gtest raylib nlohmann-json
 if %ERRORLEVEL% neq 0 (
     echo "Error installing packages with vcpkg."
     pause
@@ -82,7 +82,7 @@ if %ERRORLEVEL% neq 0 (
 echo "CMake configuration successful."
 
 echo "Building the project..."
-cmake --build .
+call compile.bat client
 if %ERRORLEVEL% neq 0 (
     echo "Error during build."
     pause

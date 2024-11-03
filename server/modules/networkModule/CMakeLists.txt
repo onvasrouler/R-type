@@ -33,3 +33,4 @@ endif()
 
 # Optionally, specify the include directory for the library
 target_include_directories(networkModule PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(rtype_server_tests_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

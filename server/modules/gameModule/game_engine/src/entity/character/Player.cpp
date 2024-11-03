@@ -26,6 +26,8 @@ Player::Player(const int y, const std::string &id) : ACharacter(id)
     this->_has_shot = false;
     this->_dir = NONE;
     this->_cl = std::chrono::high_resolution_clock::now();
+    this->_last_move = std::chrono::high_resolution_clock::now();
+    this->set_hp(PLAYER_HP);
 }
 
 /**
@@ -47,6 +49,7 @@ void Player::move()
     if (this->_dir == LEFT) {
         this->set_x(this->get_x() - MOVE_DISTANCE);
     }
+    this->set_dir(NONE);
 }
 
 /**
@@ -67,6 +70,8 @@ bool Player::get_has_shot()
 void Player::set_has_shot(const bool has_shot)
 {
     this->_has_shot = has_shot;
+
+    this->_last_move = std::chrono::high_resolution_clock::now();
 }
 
 /**
@@ -87,6 +92,8 @@ enum Direction Player::get_dir()
 void Player::set_dir(const enum Direction dir)
 {
     this->_dir = dir;
+
+    this->_last_move = std::chrono::high_resolution_clock::now();
 }
 
 /**
@@ -106,3 +113,22 @@ void Player::restart_cl()
 {
     this->_cl = std::chrono::high_resolution_clock::now();
 }
+
+/**
+ * @brief Get the clock value of the player.
+ * 
+ * @return std::clock_t The clock value of the player.
+ */
+std::chrono::high_resolution_clock::time_point Player::get_last_move()
+{
+    return this->_cl;
+}
+
+/**
+ * @brief Restart the clock of the player.
+ */
+void Player::restart_last_move()
+{
+    this->_cl = std::chrono::high_resolution_clock::now();
+}
+

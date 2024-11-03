@@ -19,9 +19,11 @@ if [ "$1" = "build" ]; then
 
     mv build/modules/template/libModuleTemplate.so serverModules
     mv serverModules/libModuleTemplate.so serverModules/ModuleTemplate.so
+    mv build/modules/adminPanelModule/libAdminPanelModule.so serverModules
+    mv serverModules/libAdminPanelModule.so serverModules/AdminPanelModule.so
 else if [ "$1" = "clean" ]; then
     rm -rf build
-    rm -f serverModules/*.so
+    ls serverModules | grep -v gameModule.so | grep -v networkModule.so | xargs -I {} rm serverModules/{}
 else
     echo "Usage: ./compile.sh [build|clean]"
 fi

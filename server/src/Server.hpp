@@ -81,7 +81,9 @@ class Server : MultiThreadElement {
         std::vector<Client> _clients; /*!< The clients of the server. */
         #ifdef _WIN32
             SOCKET _maxSocket; /*!< The max socket of the server. */
+            std::vector<std::tuple<SOCKET, std::string>> _messageToSend; /*!< The message to send. */
         #else
             int _maxSocket; /*!< The max socket of the server. */
+            std::vector<std::tuple<int, std::string>> _messageToSend; /*!< The message to send. */
         #endif
 };

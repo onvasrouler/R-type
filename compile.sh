@@ -1,6 +1,7 @@
 #!/bin/bash
 
 server_binary="r-type_server"
+head_server_binary="r-type_head_server"
 client_binary="r-type_client"
 tests_binary="r-type_tests"
 serverModulesDir="serverModules"
@@ -15,8 +16,12 @@ clean_server() {
     rm -f server_dev_tools/source_code/*.hpp
 }
 
+clean_head_server() {
+    rm -f $head_server_binary
+}
+
 clean_client() {
-    rm -f $client_binary
+    rm -rf Result/client
 }
 
 clean_tests() {
@@ -25,6 +30,7 @@ clean_tests() {
 
 clean_all() {
     clean_server
+    clean_head_server
     clean_client
     clean_tests
 }
@@ -61,7 +67,7 @@ setup_dev_tools() {
 compile_server() {
     clean_server
     copy_server_source_code
-    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=OFF
+    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=OFF -DHEAD_SERVER=OFF
     cd build
     make
     cd ..
@@ -69,18 +75,28 @@ compile_server() {
     setup_dev_tools
 }
 
+compiler_head_server() {
+    clean_head_server
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=OFF -DHEAD_SERVER=ON
+    cd build
+    make
+    cd ..
+    mv build/HeadServer/$head_server_binary .
+}
+
 compile_client() {
     clean_client
-    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON
+    cmake -S . -B build -DTESTS=OFF -DSERVER=OFF -DCLIENT=ON -Wno-dev
     cd build
     make
     cd ..
     mv build/client/$client_binary .
+    mv build/client/RType .
 }
 
 compile_tests () {
     clean_all
-    cmake -S . -B build -DTESTS=ON -DSERVER=ON -DCLIENT=ON
+    cmake -S . -B build -DTESTS=ON -DSERVER=ON -DCLIENT=ON -DHEAD_SERVER=ON
     cd build
     make
     cd ..
@@ -88,13 +104,15 @@ compile_tests () {
 }
 
 compile() {
-    clean_client
+    clean_client    
     clean_server
-    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON
+    copy_server_source_code
+    cmake -S . -B build -DTESTS=OFF -DSERVER=ON -DCLIENT=ON -DHEAD_SERVER=ON
     cd build
     make
     cd ..
-    mv build/server/$server_binary .
+    move_server_and_modules
+    setup_dev_tools
     mv build/client/$client_binary .
 }
 
@@ -105,6 +123,8 @@ elif [ "$1" == "tests" ]; then
     compile_tests
 elif [ "$1" == "server" ]; then
     compile_server
+elif [ "$1" == "HeadServer" ]; then
+    compiler_head_server
 elif [ "$1" == "client" ]; then
     compile_client
 else

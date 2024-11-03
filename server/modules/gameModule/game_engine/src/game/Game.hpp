@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include "Player.hpp"
-#include "Enemy.hpp"
-#include "Bullet.hpp"
+#include "../entity/character/Player.hpp"
+#include "../entity/character/Enemy.hpp"
+#include "../entity/bullet/Bullet.hpp"
 #include "UUID.hpp"
 
 #include <vector>
@@ -27,6 +27,7 @@
 #define MAX_PLAYERS 4 ///< The maximum number of players in the game.
 #define MAX_ENEMIES 2 ///< The maximum number of enemies in the game.
 #define END_MESSAGE_CODE "\r\n"
+#define TIME_OUT 5 ///< The maximum inactive player allowed in minuts.
 
 //new Player 0:
     #define NEW_PLAYER_REQUEST_CODE "00"
@@ -60,9 +61,11 @@ class gameMessage {
         ~gameMessage() = default;
         std::string &getId();
         const std::string getMessage();
+        //operator=
+        gameMessage& operator=(const gameMessage &other);
     private:
         std::string _id;
-        const std::string _message;
+        std::string _message;
 };
 
 /**
@@ -178,6 +181,13 @@ public:
     void update_world();
 
     /**
+     * @brief check player acivity.
+     * 
+     * This method check the last activity of players, and destroy them if le last move was 5 minutes ago.
+     */
+    void check_activity();
+
+    /**
      * @brief Check if two entities are in collision.
      * 
      * @param entity1 The first entity.
@@ -196,6 +206,11 @@ public:
     std::vector<gameMessage> &getReadMessages();
     std::mutex &getSendMutex();
     std::mutex &getReadMutex();
+
+    std::vector<Player> &getPlayers();
+    std::vector<Enemy> &getEnemies();
+    std::vector<Bullet> &getBullets();
+    bool isRunning();
 
 private:
     std::vector<Player> _player; ///< List of players in the game.
