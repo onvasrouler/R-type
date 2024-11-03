@@ -111,11 +111,6 @@ RlibWindow::RlibWindow(const std::string filename)
     this->setDefaultVal();
 }
 
-RlibWindow::~RlibWindow()
-{
-    CloseWindow();
-}
-
 void RlibWindow::setWidth(const int windowWidth)
 {
     this->_WindowWidth = windowWidth;
@@ -290,6 +285,12 @@ void RlibWindow::update()
     _DebugLogger->Log("Ending draw", 3);
     this->EndRlibDraw();
     _DebugLogger->Log("Raylib Window Updated", 2);
+    if (this->_GuiFunction->doCloseWindow()) {
+        _DebugLogger->Log("Closing window", 1);
+        CloseWindow();
+
+    }
+    
 }
 
 void RlibWindow::updateKeyboadInputs()

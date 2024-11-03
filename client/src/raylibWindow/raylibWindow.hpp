@@ -51,7 +51,7 @@ public:
     /**
      * @brief Destructor to clean up resources.
      */
-    ~RlibWindow();
+    ~RlibWindow() = default;
 
     /**
      * @brief Set the width of the window.
